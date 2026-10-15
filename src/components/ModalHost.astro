@@ -102,18 +102,34 @@ const email = SITE.contact.email;
   <form class="px-5 py-4" data-kind="job">
     <div class="grid gap-3 sm:grid-cols-2">
       <div><label class="mono-label block" for="pj-co">Company *</label><input id="pj-co" name="company" required class="input mt-1" /></div>
-      <div><label class="mono-label block" for="pj-title">Role title *</label><input id="pj-title" name="title" required class="input mt-1" /></div>
-      <div><label class="mono-label block" for="pj-email">Email *</label><input id="pj-email" name="email" type="email" required class="input mt-1" /></div>
+      <div><label class="mono-label block" for="pj-title">Role title *</label><input id="pj-title" name="title" required class="input mt-1" placeholder="e.g. Backend Engineer" /></div>
+      <div><label class="mono-label block" for="pj-loc">Location</label><input id="pj-loc" name="location" class="input mt-1" placeholder="Nairobi" /></div>
+      <div><label class="mono-label block" for="pj-email">Your email *</label><input id="pj-email" name="email" type="email" required class="input mt-1" /></div>
       <div><label class="mono-label block" for="pj-tier">Package</label>
         <select id="pj-tier" name="tier" class="input-mono input mt-1">
           {SITE.jobPostPricing.map((p) => <option value={p.tier}>{p.tier} — {p.price}</option>)}
         </select>
       </div>
+      <div><label class="mono-label block" for="pj-pay">Pay (optional)</label>
+        <select id="pj-pay" name="pay" class="input-mono input mt-1">
+          <option value="Not disclosed">Not disclosed</option>
+          <option value="Negotiable">Negotiable</option>
+          <option value="Range">Range — we'll confirm by email</option>
+        </select>
+      </div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="pj-apply">How should people apply?</label>
+        <select id="pj-apply" name="apply" class="input-mono input mt-1">
+          <option value="Email CV">Email a CV to you</option>
+          <option value="WhatsApp">WhatsApp</option>
+          <option value="Portal link">Portal link — send us the URL</option>
+        </select>
+      </div>
     </div>
-    <p class="mono-label mt-3">Launch pricing — Featured KSh 25,000 · Standard KSh 12,000 · Internship KSh 6,000</p>
-    <div class="mt-5 flex justify-end gap-2">
+    <p class="mt-3 text-[12.5px] leading-relaxed text-mut">{SITE.jobPostPledge}</p>
+    <p class="mono-label mt-2">{SITE.jobPostPricing.map((p) => `${p.tier} ${p.price}`).join(' · ')}</p>
+    <div class="mt-4 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
-      <button type="submit" class="btn btn-amber h-9">Post it</button>
+      <button type="submit" class="btn btn-amber h-9">Send it for review</button>
     </div>
   </form>
 </dialog>

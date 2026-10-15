@@ -2,6 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import Chip from '@/components/Chip.astro';
 import ShareButtons from '@/components/ShareButtons.astro';
+import DataPlate from '@/components/DataPlate.astro';
 import { getCollection, render } from 'astro:content';
 import { SITE } from '@/config/site';
 
@@ -32,7 +33,7 @@ const related = (await getCollection('news')).filter((p) => p.id !== entry.id).s
     datePublished: d.date,
     author: { '@type': 'Person', name: d.author },
     publisher: { '@type': 'Organization', name: 'startups.co.ke', logo: { '@type': 'ImageObject', url: `${SITE.url}/favicon.svg` } },
-    image: `https://picsum.photos/seed/${d.imageSeed}/1200/630.jpg`,
+    image: `${SITE.url}/og.png`,
     mainEntityOfPage: `${SITE.url}/news/${entry.id}`,
   }}
 >
@@ -52,7 +53,7 @@ const related = (await getCollection('news')).filter((p) => p.id !== entry.id).s
       <button class="btn btn-ghost h-9" data-modal="trial">Save for later</button>
     </div>
 
-    <img src={`https://picsum.photos/seed/${d.imageSeed}/900/480.jpg`} alt={`Illustration for ${d.title}`} width="900" height="480" loading="eager" decoding="async" class="photo-warm aspect-video w-full border border-ink object-cover" />
+    <DataPlate seed={d.imageSeed} label={`startups.co.ke · ${d.category}`} class="aspect-video w-full border border-ink" />
 
     <div class="prose-sck mt-8 max-w-none">
       <Content />

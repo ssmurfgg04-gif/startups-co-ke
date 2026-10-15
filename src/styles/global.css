@@ -37,6 +37,9 @@
 }
 
 @layer base {
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
   html {
     scroll-behavior: smooth;
   }
@@ -97,7 +100,7 @@
   }
   .btn {
     @apply inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap border border-ink bg-ink px-4 font-mono text-[11px] uppercase tracking-[0.12em] text-paper transition-colors duration-200;
-    border-radius: 2px;
+    border-radius: 0;
   }
   .btn:hover {
     @apply bg-ink2;
@@ -134,10 +137,21 @@
   }
   .input {
     @apply w-full border border-ink bg-paper px-3 py-2.5 font-sans text-[15px] text-ink placeholder:text-mut;
-    border-radius: 2px;
+    border-radius: 0;
+  }
+  .input:focus {
+    @apply border-ink outline-none;
+    box-shadow: 3px 3px 0 rgb(24 23 18 / 0.18);
   }
   .input-mono {
     @apply font-mono text-[13px];
+  }
+  /* Terminal-style selects: no browser chrome, ink chevron */
+  select.input {
+    @apply appearance-none pr-8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23181712' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
   }
   .mono-label {
     @apply font-mono text-[10px] uppercase tracking-[0.14em] text-mut;
@@ -218,8 +232,9 @@
     background: rgb(20 19 14 / 0.62);
   }
   .dialog-card {
-    @apply m-auto w-[min(560px,92vw)] border border-ink bg-paper p-0 text-ink shadow-2xl;
-    border-radius: 3px;
+    @apply m-auto w-[min(560px,92vw)] border-2 border-ink bg-paper p-0 text-ink;
+    box-shadow: 8px 8px 0 rgb(20 19 14 / 0.3);
+    border-radius: 0;
   }
   .reduce-motion * {
     animation-duration: 0.01ms !important;

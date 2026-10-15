@@ -1,6 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro';
 import Chip from '@/components/Chip.astro';
+import DataPlate from '@/components/DataPlate.astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '@/config/site';
 
@@ -33,7 +34,7 @@ const relDate = (iso: string) => {
     <div class="mt-8 grid gap-10 lg:grid-cols-12">
       <a href={`/news/${lead.id}`} class="group block border border-ink bg-paper lg:col-span-7">
         <div class="overflow-hidden border-b border-ink">
-          <img src={`https://picsum.photos/seed/${lead.data.imageSeed}/900/480.jpg`} alt={`Illustration for ${lead.data.title}`} width="900" height="480" loading="eager" decoding="async" class="photo-warm h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+          <DataPlate seed={lead.data.imageSeed} label={`startups.co.ke · ${lead.data.category}`} class="h-64 w-full" />
         </div>
         <div class="p-5">
           <div class="flex items-center gap-2"><span class="chip chip-solid">{lead.data.category}</span><span class="chip chip-dashed">Sourced</span></div>

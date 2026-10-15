@@ -5,9 +5,9 @@
 
 export const SITE = {
   name: 'startups.co.ke',
-  title: "startups.co.ke — Kenya's Startup Ecosystem & Intelligence Hub",
+  title: "startups.co.ke — Kenya's startups, tracked properly",
   description:
-    'Verified startup profiles, funding data, an investor directory, hackathons and tech jobs across Kenya — the intelligence layer for the Kenyan startup ecosystem.',
+    'Verified profiles for Kenyan startups — what they raised, from whom, with named sources. Investor directory, live tech jobs and every hackathon in the region.',
   url: 'https://startups.co.ke',
   locale: 'en_KE',
   themeColor: '#0E4630',
@@ -92,13 +92,16 @@ export const SITE = {
         cta: { label: 'Talk to us', modal: 'sponsor', href: null },
       },
     ],
-    note: 'Launch pricing — invoice or M-PESA on activation; card flows coming.'
+    note: 'Invoice or M-PESA — no card needed. Free tier is free, no card, no trial clock.'
   },
   jobPostPricing: [
-    { tier: 'Featured', price: 'KSh 25,000' },
-    { tier: 'Standard', price: 'KSh 12,000' },
-    { tier: 'Internship', price: 'KSh 6,000' },
+    { tier: 'Free listing', price: 'KSh 0', note: 'Human-reviewed in ~48h · live 14 days' },
+    { tier: 'Standard', price: 'KSh 2,900', note: 'Live 30 days · in job alerts + WhatsApp channel' },
+    { tier: 'Featured', price: 'KSh 6,500', note: 'Pinned top of board + homepage slot · 45 days' },
   ],
+  jobPostPack: 'Hiring more than one? 3 posts for KSh 7,500 — reply to the confirmation email.',
+  jobPostPledge:
+    'Applicants never pay to apply — ever. Every listing is reviewed by a person before it goes live, so no “M-PESA registration fee” scams on this board.',
   investorSub: { price: 'KSh 4,900/mo', trial: '14-day trial' },
 };
 
