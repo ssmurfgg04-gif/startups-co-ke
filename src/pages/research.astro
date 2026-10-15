@@ -72,7 +72,7 @@ const ARXIV = [
               <p class="mt-0.5 text-[13px] text-mut">{r.blurb}</p>
               <p class="mono-label mt-1.5">{r.pages} pages · {r.date}</p>
             </div>
-            <span class={`chip shrink-0 ${r.price === 'Free' ? 'chip-solid' : r.price === 'Members' ? 'chip-dashed' : 'chip-amber'}`}>{r.price}</span>
+            <span class={`chip shrink-0 ${r.price === 'Free' ? 'chip-solid' : r.price === 'Members' ? '' : 'chip-amber'}`}>{r.price}</span>
             <button class="btn btn-ghost shrink-0" data-modal="buy">{r.price === 'Free' ? 'Download' : 'Unlock'}</button>
           </div>
         ))}

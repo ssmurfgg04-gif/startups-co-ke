@@ -6,7 +6,7 @@ import { COMPANIES } from '@/data/companies';
 import { SECTORS, STAGES, sectorColor, SECTOR_COLORS } from '@/config/sectors';
 import { SITE } from '@/config/site';
 
-const companies = COMPANIES.map((c) => ({ ...c, views: Math.round((c.raised * 137 + c.employees * 31) % 900) + 60 }));
+const companies = COMPANIES.map((c) => ({ ...c, views: Math.round(((c.raised ?? 0) * 137 + (typeof c.employees === 'number' ? c.employees : 120) * 31) % 900) + 60 }));
 const countsBySector: Record<string, number> = {};
 for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] ?? 0) + 1;
 ---
@@ -146,7 +146,7 @@ for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] 
       return true;
     });
     list = [...list].sort((a, b) => {
-      if (state.sort === 'raised') return b.raised - a.raised;
+      if (state.sort === 'raised') return (b.raised ?? -1) - (a.raised ?? -1);
       if (state.sort === 'newest') return b.founded - a.founded;
       if (state.sort === 'viewed') return b.views - a.views;
       return a.name.localeCompare(b.name);
@@ -166,7 +166,7 @@ for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] 
         <span class="hidden items-center gap-1.5 font-mono text-[11px] text-ink2 md:flex"><span class="inline-block h-2.5 w-2.5" style="background:${sectorColor(c.sector)}"></span>${c.sector}</span>
         <span class="hidden md:block"><span class="chip chip-dashed">${c.stage}</span></span>
         <span class="hidden font-mono text-[11px] text-mut md:block">${c.hq}</span>
-        <span class="hidden text-right md:block"><span class="statnum block text-[13px]">$${c.raised.toFixed(1)}M</span><span class="mono-label">f. ${c.founded}</span></span>
+        <span class="hidden text-right md:block"><span class="statnum block text-[13px]">${c.raised != null ? `$${c.raised.toFixed(1)}M` : (c.raisedDisplay ?? 'n/d')}</span><span class="mono-label">f. ${c.founded}</span></span>
         <span class="hidden text-ink transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
       </a>`
       )

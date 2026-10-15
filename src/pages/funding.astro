@@ -9,6 +9,12 @@ import { companyById } from '@/data/companies';
 import { fmtUsdM, relDays } from '@/lib/utils';
 import { SITE } from '@/config/site';
 const ytd = SERIES['All sectors'].slice(-2).reduce((s, v) => s + v, 0); // H1 2026 = $126M (Business Daily)
+const sortedRounds = [...ROUNDS].sort((a, b) => {
+  if (a.date && b.date) return b.date.localeCompare(a.date);
+  if (a.date) return -1;
+  if (b.date) return 1;
+  return 0;
+});
 ---
 <Base
   title="Funding database — Kenya startup funding rounds"
@@ -51,7 +57,7 @@ const ytd = SERIES['All sectors'].slice(-2).reduce((s, v) => s + v, 0); // H1 20
           </tr>
         </thead>
         <tbody>
-          {ROUNDS.map((r) => {
+          {sortedRounds.map((r) => {
             const c = companyById(r.companyId)!;
             return (
               <tr class="rowline hover:bg-paper2">

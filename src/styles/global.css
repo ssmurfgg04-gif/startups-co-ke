@@ -84,10 +84,13 @@
     @apply border-amber bg-amber text-paper;
   }
   .chip-dashed {
-    @apply border-dashed border-mut bg-transparent text-mut;
+    @apply border-dashed border-ink/50 bg-transparent text-ink2;
   }
   .chip-alert {
     @apply border-clay bg-clay/10 text-clay;
+  }
+  .statnum {
+    font-variant-numeric: tabular-nums;
   }
   .btn {
     @apply inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap border border-ink bg-ink px-4 font-mono text-[11px] uppercase tracking-[0.12em] text-paper transition-colors duration-200;
@@ -165,13 +168,14 @@
 }
 
 @layer utilities {
-  .rv {
+  /* Reveal is JS-gated: without JS (or before hydration) content stays visible. */
+  .js .rv {
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
     transition-delay: var(--d, 0ms);
   }
-  .rv.in {
+  .js .rv.in {
     opacity: 1;
     transform: none;
   }
