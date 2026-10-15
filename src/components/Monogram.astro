@@ -1,0 +1,17 @@
+---
+import { initials } from '@/lib/utils';
+import { sectorColor } from '@/config/sectors';
+
+interface Props { name: string; sector?: string; size?: 'sm' | 'md' | 'lg' | 'xl'; logoUrl?: string | null }
+const { name, sector = 'Other', size = 'md', logoUrl = null } = Astro.props;
+
+const sizes: Record<string, string> = {
+  sm: 'h-8 w-8 text-[11px]',
+  md: 'h-10 w-10 text-xs',
+  lg: 'h-14 w-14 text-base',
+  xl: 'h-20 w-20 text-2xl',
+};
+---
+<span class={`relative inline-flex shrink-0 items-center justify-center font-mono font-semibold text-paper ${sizes[size]}`} style={`background:${sectorColor(sector)}`}>
+  {logoUrl ? <img src={logoUrl} alt={`${name} logo`} class="absolute inset-0 h-full w-full object-cover" loading="lazy" /> : initials(name)}
+</span>

@@ -1,0 +1,217 @@
+---
+import Base from '@/layouts/Base.astro';
+import Monogram from '@/components/Monogram.astro';
+import Chip from '@/components/Chip.astro';
+import { COMPANIES } from '@/data/companies';
+import { SECTORS, STAGES, sectorColor, SECTOR_COLORS } from '@/config/sectors';
+import { SITE } from '@/config/site';
+
+const companies = COMPANIES.map((c) => ({ ...c, views: Math.round((c.raised * 137 + c.employees * 31) % 900) + 60 }));
+const countsBySector: Record<string, number> = {};
+for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] ?? 0) + 1;
+---
+<Base
+  title="Company index — Kenyan startups list"
+  description="Browse verified and unverified Kenyan startup profiles by sector, stage, HQ city and amount raised — with funding statuses and named leads."
+  jsonld={{
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Company index — Kenya',
+    url: `${SITE.url}/startups`,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: companies.slice(0, 10).map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, url: `${SITE.url}/startups/${c.id}` })),
+    },
+  }}
+>
+  <section class="wrap py-10">
+    <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / Company index</p>
+    <h1 class="mt-2 text-[clamp(34px,4vw,56px)]">Company index.</h1>
+    <p class="mt-2 max-w-2xl text-[15px] text-mut">
+      Every startup in the Kenya index — verified via registry + team checks, or self-reported pending verification. All figures illustrative samples.
+    </p>
+
+    <div class="mt-8 grid gap-8 lg:grid-cols-12">
+      <!-- Filter rail -->
+      <aside class="lg:col-span-3">
+        <div class="railbox sticky top-20 p-4" aria-label="Filters">
+          <label class="mono-label block" for="f-name">Name</label>
+          <input id="f-name" class="input input-mono mt-1" type="search" placeholder="e.g. pesa" />
+
+          <p class="mono-label mt-4 mb-1.5">Sector</p>
+          <div id="f-sectors" class="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+            {SECTORS.map((s) => (
+              <label class="flex cursor-pointer items-center gap-2 text-[13px]">
+                <input type="checkbox" value={s} class="accent-[#0E4630]" data-sector={s} />
+                <span class="inline-block h-2.5 w-2.5" style={`background:${sectorColor(s)}`}></span>
+                <span class="flex-1">{s}</span>
+                <span class="font-mono text-[10px] text-mut">{countsBySector[s] ?? 0}</span>
+              </label>
+            ))}
+          </div>
+
+          <p class="mono-label mt-4 mb-1.5">Stage</p>
+          <div id="f-stages" class="flex flex-wrap gap-1.5">
+            {STAGES.map((s) => <button class="chip chip-dashed hover:bg-paper2" data-stage={s}>{s}</button>)}
+          </div>
+
+          <label class="mono-label mt-4 block" for="f-city">HQ city</label>
+          <select id="f-city" class="input input-mono mt-1">
+            <option value="">All cities</option>
+            {['Nairobi', 'Mombasa', 'Nakuru', 'Kisumu', 'Eldoret', 'Malindi', 'Nanyuki'].map((c) => <option value={c}>{c}</option>)}
+          </select>
+
+          <label class="mt-4 flex cursor-pointer items-center justify-between text-[13px]">
+            <span>Verified only</span>
+            <input id="f-verified" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
+          </label>
+
+          <button id="f-clear" class="btn btn-ghost mt-4 w-full">Clear all filters</button>
+
+          <div class="mt-4 border-t border-line pt-3">
+            <p class="mono-label mb-1.5">Legend</p>
+            <p class="text-[12px] leading-relaxed text-mut"><Chip kind="verified" /> registry + team checks<br /><Chip kind="unverified" /> self-reported, pending</p>
+          </div>
+          <div class="mt-4 border border-amber bg-paper p-3">
+            <p class="text-[13px] font-medium">Building something?</p>
+            <p class="mt-1 text-[12px] text-mut">Get indexed and discovered by investors.</p>
+            <button class="btn btn-amber mt-2 w-full" data-modal="submit">Submit your startup</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Results -->
+      <div class="lg:col-span-9">
+        <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <p id="showing" class="font-mono text-[11px] uppercase tracking-[0.1em] text-mut" aria-live="polite">Showing {companies.length} of {companies.length} — illustrative subset</p>
+          <label class="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
+            Sort
+            <select id="f-sort" class="input input-mono h-9 w-40">
+              <option value="raised">Most raised</option>
+              <option value="newest">Newest</option>
+              <option value="az">A–Z</option>
+              <option value="viewed">Most viewed</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="rows"></div>
+
+        <div id="empty" class="hidden border border-dashed border-line2 p-10 text-center">
+          <p class="font-display text-xl">No companies match those filters.</p>
+          <p class="mt-2 text-sm text-mut">Loosen a filter — or clear all and start again.</p>
+          <button class="btn btn-ghost mt-4" onclick="document.getElementById('f-clear').click()">Clear all filters</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<!-- Client-side directory: data embedded at build, filters + deep-links client-side -->
+<script type="application/json" id="companies-data" set:html={JSON.stringify(companies)} />
+<script type="application/json" id="sector-colors" set:html={JSON.stringify(SECTOR_COLORS)} />
+<script>
+  import type { Company } from '@/data/types';
+  const DATA: (Company & { views: number })[] = JSON.parse(document.getElementById('companies-data')!.textContent!);
+
+  const state = {
+    q: '', sectors: new Set<string>(), stages: new Set<string>(), city: '', verified: false, sort: 'raised',
+  };
+
+  // deep-links from home chips / map / hero search
+  const params = new URLSearchParams(location.search);
+  state.q = params.get('q') ?? '';
+  if (params.get('sector')) state.sectors.add(params.get('sector')!);
+  if (params.get('stage')) state.stages.add(params.get('stage')!);
+  if (params.get('city')) state.city = params.get('city')!;
+
+  const rows = document.getElementById('rows')!;
+  const showing = document.getElementById('showing')!;
+  const empty = document.getElementById('empty')!;
+
+  const initials = (name: string) => {
+    const w = name.replace(/[^a-zA-Z ]/g, '').split(/\s+/).filter(Boolean);
+    return (w.length >= 2 ? w[0][0] + w[1][0] : name.slice(0, 2)).toUpperCase();
+  };
+  const COLORS = JSON.parse(document.getElementById('sector-colors')!.textContent!);
+  const sectorColor = (s: string) => COLORS[s] || '#6E6A5B';
+
+  function apply() {
+    let list = DATA.filter((c) => {
+      if (state.q && !(c.name + ' ' + c.tagline).toLowerCase().includes(state.q.toLowerCase())) return false;
+      if (state.sectors.size && !state.sectors.has(c.sector)) return false;
+      if (state.stages.size && !state.stages.has(c.stage)) return false;
+      if (state.city && c.hq !== state.city) return false;
+      if (state.verified && !c.verified) return false;
+      return true;
+    });
+    list = [...list].sort((a, b) => {
+      if (state.sort === 'raised') return b.raised - a.raised;
+      if (state.sort === 'newest') return b.founded - a.founded;
+      if (state.sort === 'viewed') return b.views - a.views;
+      return a.name.localeCompare(b.name);
+    });
+
+    showing.textContent = `Showing ${list.length} of ${DATA.length} — illustrative subset`;
+    empty.classList.toggle('hidden', list.length > 0);
+    rows.innerHTML = list
+      .map(
+        (c) => `
+      <a href="/startups/${c.id}" class="rowline group grid grid-cols-[44px_1fr] items-center gap-3 border border-ink border-t-0 first:border-t bg-paper px-4 py-3 hover:bg-paper2 md:grid-cols-[44px_2.2fr_1.2fr_90px_80px_90px_24px]">
+        <span class="relative flex h-11 w-11 items-center justify-center font-mono text-[12px] font-semibold text-paper" style="background:${sectorColor(c.sector)}">${initials(c.name)}</span>
+        <span class="min-w-0">
+          <span class="flex items-center gap-1.5 text-[15px] font-medium">${c.name}${c.verified ? '<span title="Verified — registry + team checks" class="text-[11px] text-green">✓</span>' : ''}</span>
+          <span class="block truncate text-[12.5px] text-mut">${c.tagline}</span>
+        </span>
+        <span class="hidden items-center gap-1.5 font-mono text-[11px] text-ink2 md:flex"><span class="inline-block h-2.5 w-2.5" style="background:${sectorColor(c.sector)}"></span>${c.sector}</span>
+        <span class="hidden md:block"><span class="chip chip-dashed">${c.stage}</span></span>
+        <span class="hidden font-mono text-[11px] text-mut md:block">${c.hq}</span>
+        <span class="hidden text-right md:block"><span class="statnum block text-[13px]">$${c.raised.toFixed(1)}M</span><span class="mono-label">f. ${c.founded}</span></span>
+        <span class="hidden text-ink transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
+      </a>`
+      )
+      .join('');
+  }
+
+  // initial UI state from deep links
+  (document.getElementById('f-name') as HTMLInputElement).value = state.q;
+  if (state.city) (document.getElementById('f-city') as HTMLSelectElement).value = state.city;
+  document.querySelectorAll<HTMLInputElement>('[data-sector]').forEach((cb) => {
+    if (state.sectors.has(cb.dataset.sector!)) cb.checked = true;
+  });
+  document.querySelectorAll('[data-stage]').forEach((b) => {
+    if (state.stages.has((b as HTMLElement).dataset.stage!)) b.classList.add('chip-solid');
+  });
+
+  document.getElementById('f-name')?.addEventListener('input', (e) => { state.q = (e.target as HTMLInputElement).value; apply(); });
+  document.querySelectorAll('[data-sector]').forEach((cb) =>
+    cb.addEventListener('change', () => {
+      const s = (cb as HTMLInputElement).dataset.sector!;
+      (cb as HTMLInputElement).checked ? state.sectors.add(s) : state.sectors.delete(s);
+      apply();
+    })
+  );
+  document.querySelectorAll('[data-stage]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const s = (b as HTMLElement).dataset.stage!;
+      if (state.stages.has(s)) { state.stages.delete(s); b.classList.remove('chip-solid'); }
+      else { state.stages.add(s); b.classList.add('chip-solid'); }
+      apply();
+    })
+  );
+  document.getElementById('f-city')?.addEventListener('change', (e) => { state.city = (e.target as HTMLSelectElement).value; apply(); });
+  document.getElementById('f-verified')?.addEventListener('change', (e) => { state.verified = (e.target as HTMLInputElement).checked; apply(); });
+  document.getElementById('f-sort')?.addEventListener('change', (e) => { state.sort = (e.target as HTMLSelectElement).value; apply(); });
+  document.getElementById('f-clear')?.addEventListener('click', () => {
+    state.q = ''; state.sectors.clear(); state.stages.clear(); state.city = ''; state.verified = false;
+    (document.getElementById('f-name') as HTMLInputElement).value = '';
+    (document.getElementById('f-city') as HTMLSelectElement).value = '';
+    (document.getElementById('f-verified') as HTMLInputElement).checked = false;
+    document.querySelectorAll('[data-sector]').forEach((cb) => ((cb as HTMLInputElement).checked = false));
+    document.querySelectorAll('[data-stage]').forEach((b) => b.classList.remove('chip-solid'));
+    history.replaceState(null, '', '/startups');
+    apply();
+  });
+
+  apply();
+</script>

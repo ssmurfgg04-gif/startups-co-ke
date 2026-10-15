@@ -1,0 +1,26 @@
+{
+  "name": "startups-co-ke",
+  "version": "1.0.0",
+  "description": "Kenya's startup ecosystem & business intelligence platform",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0 --port 3000 2>&1 | tee dev.log",
+    "build": "astro build",
+    "preview": "astro preview --host 0.0.0.0 --port 3000 2>&1 | tee dev.log",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.6.0",
+    "@supabase/supabase-js": "^2.58.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "astro": "^5.12.0",
+    "tailwindcss": "^4.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.0"
+  }
+}

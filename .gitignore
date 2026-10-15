@@ -1,2 +1,25 @@
-skills/
+# dependencies / build
 node_modules/
+dist/
+.astro/
+.next/
+
+# env & secrets (real values live in .env; .env.example is committed)
+.env
+.env.local
+
+# sandbox / tooling
+.zscripts/
+dev.log
+server.log
+upload/
+download/
+tool-results/
+skills/
+examples/
+mini-services/
+supabase/.temp/
+
+# misc
+.DS_Store
+*.log

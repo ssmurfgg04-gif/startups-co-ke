@@ -1,0 +1,75 @@
+---
+/** Dark footer: 4 columns + full honesty disclaimer + WhatsApp share + contacts. */
+import Logo from './Logo.astro';
+import { SITE, HONESTY } from '@/config/site';
+const year = new Date().getFullYear();
+const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup ecosystem, mapped & measured — startups.co.ke')}`;
+---
+<footer class="mt-auto bg-dark text-dpaper">
+  <div class="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <Logo variant="dark" />
+      <p class="mt-4 max-w-xs text-sm text-dmut">
+        The intelligence layer for Kenya\u2019s startup ecosystem — verified profiles, funding data, investors, hackathons and jobs.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <a class="btn btn-ondark h-9 px-3" href={waShare} target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
+        <a class="btn btn-ondark h-9 px-3" href={SITE.social.x} target="_blank" rel="noopener" aria-label="X (Twitter)">X</a>
+        <a class="btn btn-ondark h-9 px-3" href={SITE.social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+      </div>
+      <div class="mt-5 space-y-1 font-mono text-[11px] text-dmut">
+        <p><a class="hover:text-dpaper" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a></p>
+        <p><a class="hover:text-dpaper" href={`tel:${SITE.contact.phone}`}>{SITE.contact.phoneDisplay}</a></p>
+        <p>{SITE.contact.address}</p>
+      </div>
+    </div>
+
+    <div>
+      <p class="kicker mb-4 text-dmut">Platform</p>
+      <ul class="space-y-2.5 text-sm">
+        {SITE.footer.platform.map((l) => (
+          <li><a class="text-dpaper/85 hover:text-amber2" href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="kicker mb-4 text-dmut">Intelligence</p>
+      <ul class="space-y-2.5 text-sm">
+        {SITE.footer.intelligence.map((l) => (
+          <li>
+            {'href' in l && l.href ? (
+              <a class="text-dpaper/85 hover:text-amber2" href={l.href}>{l.label}</a>
+            ) : (
+              <button class="text-dpaper/85 hover:text-amber2" data-modal={l.modal}>{l.label}</button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="kicker mb-4 text-dmut">Company</p>
+      <ul class="space-y-2.5 text-sm">
+        {SITE.footer.company.map((l) => (
+          <li>
+            {'href' in l && l.href ? (
+              <a class="text-dpaper/85 hover:text-amber2" href={l.href}>{l.label}</a>
+            ) : (
+              <button class="text-dpaper/85 hover:text-amber2" data-modal={l.modal}>{l.label}</button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-darkline">
+    <div class="wrap flex flex-col gap-3 py-5 md:flex-row md:items-center md:justify-between">
+      <p class="max-w-3xl font-mono text-[10px] leading-relaxed tracking-[0.04em] text-dmut">
+        HONESTY NOTICE — {HONESTY.disclaimer}
+      </p>
+      <p class="flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-amber2" aria-hidden="true"></span> Designed &amp; built in Nairobi · © {year}
+      </p>
+    </div>
+  </div>
+</footer>

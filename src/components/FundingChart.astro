@@ -1,0 +1,86 @@
+---
+/** Quarterly funding bar chart with sector switcher. Series rendered at build; switching is client-side. */
+import { QUARTERS, SERIES } from '@/data/ecosystem';
+interface Props { dark?: boolean; height?: number }
+const { dark = true, height = 300 } = Astro.props;
+const keys = Object.keys(SERIES);
+const max = Math.max(...Object.values(SERIES).flat());
+---
+<div class={`railbox ${dark ? 'border-darkline bg-dark2' : ''}`}>
+  <div class={`flex flex-wrap items-center justify-between gap-2 border-b px-4 py-3 ${dark ? 'border-darkline' : 'border-ink'}`}>
+    <p class={`font-mono text-[11px] uppercase tracking-[0.12em] ${dark ? 'text-dpaper' : 'text-ink'}`}>Capital tracked by quarter · USD M</p>
+    <div class="flex flex-wrap gap-1.5" role="tablist" aria-label="Sector filter">
+      {keys.map((k, i) => (
+        <button
+          class={`chart-tab border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors ${dark ? 'border-darkline text-dmut' : 'border-line text-mut'}`}
+          data-series={k}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          class:list={[i === 0 && (dark ? 'bg-amber text-ink border-amber' : 'bg-ink text-paper border-ink')]}
+        >
+          {k === 'all' ? 'All sectors' : k === 'climate' ? 'Climate & Energy' : k[0].toUpperCase() + k.slice(1)}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="relative px-4 pb-4 pt-6">
+    <!-- dashed gridlines -->
+    <div class="pointer-events-none absolute inset-x-4 top-6 bottom-10 flex flex-col justify-between" aria-hidden="true">
+      {[0, 1, 2, 3].map(() => <div class={`border-t border-dashed ${dark ? 'border-darkline' : 'border-line'}`}></div>)}
+    </div>
+    <div id="quarter-bars" class="relative flex items-end justify-between gap-2 md:gap-4" style={`height:${height}px`}>
+      {QUARTERS.map((q, i) => (
+        <div class="group relative flex h-full flex-1 items-end">
+          <div
+            class="quarter-bar w-full bg-amber transition-[height] duration-700 ease-out"
+            data-i={i}
+            style={`height:0%`}
+          ></div>
+          <div class="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap border border-darkline bg-dark px-2 py-1 font-mono text-[10px] text-dpaper opacity-0 transition-opacity group-hover:opacity-100">
+            <span class="bar-amount"></span> · <span class="bar-rounds"></span> rounds · sample
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class={`mt-2 flex justify-between font-mono text-[9px] uppercase tracking-[0.1em] ${dark ? 'text-dmut' : 'text-mut'}`}>
+      {QUARTERS.map((q) => <span>{q}</span>)}
+    </div>
+  </div>
+  <p class={`border-t px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.1em] ${dark ? 'border-darkline text-dmut' : 'border-line text-mut'}`}>
+    Methodology: rounds tracked by close date · all figures illustrative samples
+  </p>
+</div>
+
+<script define:vars={{ SERIES, QUARTERS, max }}>
+  const ROUNDS_PER_Q = [6, 7, 6, 9, 8, 10, 11, 12];
+  function setSeries(key) {
+    const data = SERIES[key] || SERIES.all;
+    document.querySelectorAll('.quarter-bar').forEach((bar) => {
+      const i = Number(bar.dataset.i);
+      bar.style.height = (data[i] / max) * 100 + '%';
+      const tip = bar.parentElement.querySelector('.bar-amount');
+      const rn = bar.parentElement.querySelector('.bar-rounds');
+      if (tip) tip.textContent = '$' + data[i] + 'M';
+      if (rn) rn.textContent = ROUNDS_PER_Q[i];
+    });
+    document.querySelectorAll('.chart-tab').forEach((tab) => {
+      const on = tab.dataset.series === key;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.classList.toggle('bg-amber', on);
+      tab.classList.toggle('text-ink', on);
+      tab.classList.toggle('border-amber', on);
+      tab.classList.toggle('bg-ink', on && false);
+    });
+  }
+  document.querySelectorAll('.chart-tab').forEach((tab) => tab.addEventListener('click', () => setSeries(tab.dataset.series)));
+  // animate on first view
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) {
+      setSeries('all');
+      io.disconnect();
+    }
+  }, { threshold: 0.25 });
+  const target = document.getElementById('quarter-bars');
+  if (target) io.observe(target);
+</script>

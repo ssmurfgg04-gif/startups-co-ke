@@ -1,0 +1,28 @@
+---
+/** Toast host — listens for `sck:toast` events. Ink cards, amber border, auto-dismiss. */
+---
+<div id="toaster" class="pointer-events-none fixed bottom-4 right-4 z-[70] flex w-[min(360px,92vw)] flex-col gap-2" aria-live="polite"></div>
+
+<script>
+  type Toast = { title: string; body?: string; kind?: 'ok' | 'warn' };
+  function toast({ title, body, kind = 'ok' }: Toast) {
+    const host = document.getElementById('toaster');
+    if (!host) return;
+    const el = document.createElement('div');
+    el.className = `pointer-events-auto border-l-4 bg-ink px-4 py-3 text-paper shadow-xl transition-all duration-300 ${kind === 'warn' ? 'border-l-clay' : 'border-l-amber2'}`;
+    el.style.borderRadius = '2px';
+    el.innerHTML = `
+      <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-amber2">${title}</p>
+      ${body ? `<p class="mt-1 text-[13px] leading-snug text-dpaper/90">${body}</p>` : ''}
+    `;
+    host.appendChild(el);
+    setTimeout(() => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(6px)';
+      setTimeout(() => el.remove(), 300);
+    }, 3800);
+  }
+  document.addEventListener('sck:toast', (e) => toast((e as CustomEvent<Toast>).detail));
+  // expose globally for define:vars scripts
+  (window as unknown as { sckToast: typeof toast }).sckToast = toast;
+</script>

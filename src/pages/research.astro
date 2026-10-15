@@ -1,0 +1,78 @@
+---
+import Base from '@/layouts/Base.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Chip from '@/components/Chip.astro';
+import { REPORTS } from '@/data/ecosystem';
+import { SITE } from '@/config/site';
+const flagship = REPORTS.find((r) => r.flagship)!;
+const library = REPORTS.filter((r) => !r.flagship);
+---
+<Base
+  title="Research — Kenya startup ecosystem reports"
+  description="Original research on Kenya's startup ecosystem: funding landscape, talent & compensation, payments infrastructure and hackathon impact."
+  jsonld={{
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Research library',
+    url: `${SITE.url}/research`,
+  }}
+>
+  <section class="wrap py-10">
+    <h1 class="text-[clamp(34px,4vw,56px)]">Research.</h1>
+    <p class="mt-2 max-w-2xl text-[15px] text-mut">
+      Original reports built on our index and methodology — every figure carries a status tag. Members unlock the full library.
+    </p>
+
+    <div class="mt-8 grid items-stretch gap-8 lg:grid-cols-12">
+      <div class="rv lg:col-span-5">
+        <div class="offset-shadow border-2 border-ink bg-green p-8 text-dpaper">
+          <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-dmut">STARTUPS.CO.KE · RESEARCH</p>
+          <svg viewBox="0 0 200 210" class="mx-auto my-6 w-44" aria-hidden="true">
+            <path d="M40,180 L40,60 L100,30 L160,60 L160,180 Z" fill="none" stroke="#EFEAD9" stroke-width="1.4"></path>
+            {[[62, 120], [70, 132], [78, 140], [88, 148], [96, 152], [104, 150], [112, 144], [120, 136], [128, 126], [98, 120], [92, 110], [86, 100], [78, 92], [70, 86], [108, 118], [116, 108], [124, 100], [132, 94]].map(([x, y]) => (
+              <circle cx={x} cy={y} r="2" fill="#EFEAD9" opacity="0.75"></circle>
+            ))}
+            <circle cx="102" cy="132" r="4" fill="#E3A21A"></circle>
+          </svg>
+          <p class="text-center font-display text-[20px] leading-tight">{flagship.title}</p>
+          <p class="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">{flagship.pages} pages · sample edition</p>
+        </div>
+      </div>
+      <div class="rv lg:col-span-7" style="--d:120ms">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="chip chip-solid">Flagship</span>
+          <Chip kind="sampleContent" />
+        </div>
+        <h2 class="mt-3 text-[clamp(26px,3vw,38px)]">{flagship.title}</h2>
+        <p class="mt-3 max-w-xl text-[15px] text-ink2">{flagship.blurb}</p>
+        <ul class="mt-4 grid max-w-xl gap-1.5 text-[14px] text-ink2 md:grid-cols-2">
+          <li>✓ Capital flows by quarter &amp; sector</li>
+          <li>✓ County-level activity map</li>
+          <li>✓ Talent &amp; compensation annex</li>
+          <li>✓ Methodology &amp; status definitions</li>
+        </ul>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <button class="btn btn-amber" data-modal="buy">Buy — {flagship.price}</button>
+          <button class="btn btn-ghost" data-modal="buy">Free sample chapter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14">
+      <SectionHead title="Library — all reports." sub="Members unlock everything; individual reports available one-off." />
+      <div class="border border-ink bg-paper">
+        {library.map((r) => (
+          <div class="rowline flex flex-wrap items-center gap-4 px-5 py-4">
+            <div class="min-w-0 flex-1">
+              <p class="text-[15.5px] font-medium">{r.title}</p>
+              <p class="mt-0.5 text-[13px] text-mut">{r.blurb}</p>
+              <p class="mono-label mt-1.5">{r.pages} pages · {r.date.slice(0, 7)}</p>
+            </div>
+            <span class={`chip shrink-0 ${r.price === 'Free' ? 'chip-solid' : r.price === 'Members' ? 'chip-dashed' : 'chip-amber'}`}>{r.price}</span>
+            <button class="btn btn-ghost shrink-0" data-modal="buy">{r.price === 'Free' ? 'Download' : 'Unlock'}</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

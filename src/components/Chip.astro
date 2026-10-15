@@ -1,0 +1,20 @@
+---
+/** Honesty-system chips: verified badge, unverified, generic sample chips. */
+interface Props { kind: 'verified' | 'unverified' | 'sample' | 'sampleProfile' | 'illustrative' | 'samplePricing' | 'sampleEvent' | 'sampleContent' | 'unverifiedAmount' }
+const LABELS: Record<string, string> = {
+  verified: '✓ Verified',
+  unverified: 'Unverified',
+  sample: 'Sample data',
+  sampleProfile: 'Sample profile',
+  illustrative: 'Illustrative',
+  samplePricing: 'Sample pricing',
+  sampleEvent: 'Illustrative event — not a real listing',
+  sampleContent: 'Sample content',
+  unverifiedAmount: 'Unverified — sample data',
+};
+const { kind } = Astro.props;
+const label = LABELS[kind];
+const cls =
+  kind === 'verified' ? 'chip chip-solid' : kind === 'unverified' ? 'chip chip-dashed' : kind === 'unverifiedAmount' ? 'chip chip-dashed' : 'chip';
+---
+<span class={cls} title={kind === 'verified' ? 'Registry + team checks (design fiction, labelled)' : undefined}>{label}</span>

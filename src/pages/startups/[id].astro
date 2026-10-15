@@ -1,0 +1,251 @@
+---
+import Base from '@/layouts/Base.astro';
+import Monogram from '@/components/Monogram.astro';
+import Chip from '@/components/Chip.astro';
+import StatusDot from '@/components/StatusDot.astro';
+import Sparkline from '@/components/Sparkline.astro';
+import CompanyCard from '@/components/CompanyCard.astro';
+import { COMPANIES, companyById } from '@/data/companies';
+import { investorById } from '@/data/investors';
+import { fmtUsdM, prng } from '@/lib/utils';
+import { sectorColor } from '@/config/sectors';
+import { SITE } from '@/config/site';
+
+export function getStaticPaths() {
+  return COMPANIES.map((c) => ({ params: { id: c.id }, props: { company: c } }));
+}
+const c = Astro.props.company as NonNullable<ReturnType<typeof companyById>>;
+const momentum = `+${Math.round(prng(c.id)() * 22 + 4)}%`;
+const similar = COMPANIES.filter((x) => x.sector === c.sector && x.id !== c.id).slice(0, 4);
+const similarFill = similar.length ? similar : COMPANIES.filter((x) => x.id !== c.id).slice(0, 4);
+const sparkSeed = prng(c.id);
+const sparkData = Array.from({ length: 8 }, () => Math.round(sparkSeed() * 30 + 5));
+const openRoles = 0;
+---
+<Base
+  title={`${c.name} — ${c.tagline}`}
+  description={`${c.name}: ${c.tagline} ${c.sector} · ${c.stage} · ${c.hq}. Funding history, team and signals (sample profile).`}
+  ogType="website"
+  jsonld={{
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: c.name,
+    description: c.tagline,
+    address: { '@type': 'PostalAddress', addressLocality: c.hq, addressCountry: 'KE' },
+    foundingDate: String(c.founded),
+    url: `${SITE.url}/startups/${c.id}`,
+    numberOfEmployees: c.employees,
+  }}
+>
+  <section class="wrap py-10">
+    <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
+      <a href="/" class="hover:text-ink">Home</a> / <a href="/startups" class="hover:text-ink">Startups</a> / {c.sector} / <span class="text-ink">{c.name}</span>
+    </p>
+
+    <!-- Header -->
+    <div class="mt-4 flex flex-col gap-5 border-b border-ink pb-6 md:flex-row md:items-start md:justify-between">
+      <div class="flex gap-4">
+        <Monogram name={c.name} sector={c.sector} size="xl" />
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-[clamp(30px,3.4vw,46px)] leading-none">{c.name}</h1>
+            {c.verified ? <Chip kind="verified" /> : <Chip kind="unverified" />}
+            <Chip kind="sampleProfile" />
+          </div>
+          <p class="mt-2 max-w-xl text-[15px] text-ink2">{c.tagline}</p>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="chip"><span class="inline-block h-2 w-2" style={`background:${sectorColor(c.sector)}`}></span>{c.sector}</span>
+            <span class="chip chip-dashed">{c.stage}</span>
+            <span class="chip">📍 {c.hq}</span>
+            <span class="chip chip-dashed">Founded {c.founded}</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex shrink-0 gap-2">
+        <button class="btn" data-modal="intro">Request introduction</button>
+        <button class="btn btn-ghost" data-modal="claim">Claim profile</button>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-10 lg:grid-cols-12">
+      <!-- Main -->
+      <div class="lg:col-span-8">
+        <nav class="flex gap-1 border-b border-ink" role="tablist" aria-label="Profile sections">
+          {['Overview', 'Funding', 'Team', 'News', 'Similar'].map((t, i) => (
+            <button class="profile-tab -mb-px border border-transparent border-b-0 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-mut transition-colors hover:text-ink" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls="panel-root" data-tab={t.toLowerCase()} class:list={[i === 0 && 'border-ink border-b-paper bg-paper text-ink !border-b-paper']}>
+              {t}
+            </button>
+          ))}
+        </nav>
+
+        <!-- Overview -->
+        <div id="panel-overview" class="tab-panel">
+          <div class="py-6">
+            <p class="max-w-2xl text-[15.5px] leading-relaxed text-ink2">{c.longDesc}</p>
+
+            <p class="mono-label mt-7 mb-2">Key facts</p>
+            <div class="grid grid-cols-2 gap-px border border-ink bg-line md:grid-cols-3">
+              {[
+                ['Employees', `~${c.employees}`],
+                ['HQ', c.hq],
+                ['Sector', c.sector],
+                ['Stage', c.stage],
+                ['Founded', String(c.founded)],
+                ['Last round', c.rounds.length ? c.rounds[c.rounds.length - 1].round : '—'],
+              ].map(([k, v]) => (
+                <div class="bg-paper p-3.5">
+                  <p class="mono-label">{k}</p>
+                  <p class="mt-1 text-[14px] font-medium">{v}</p>
+                </div>
+              ))}
+            </div>
+
+            <p class="mono-label mt-7 mb-2">Technology stack <span class="text-mut">· self-reported · sample</span></p>
+            <div class="flex flex-wrap gap-1.5">{c.techStack.map((t) => <span class="chip">{t}</span>)}</div>
+
+            <p class="mono-label mt-7 mb-2">Signals we track</p>
+            <ul class="space-y-2">
+              {c.signals.map((s) => (
+                <li class="border-l-4 border-green bg-paper2 px-4 py-2.5 text-[14px]">{s}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Funding -->
+        <div id="panel-funding" class="tab-panel hidden">
+          <div class="py-6">
+            <div class="overflow-x-auto border border-ink">
+              <table class="w-full min-w-[560px] border-collapse text-[13.5px]">
+                <thead class="bg-paper2">
+                  <tr><th scope="col" class="th-mono">Round</th><th scope="col" class="th-mono">Date</th><th scope="col" class="th-mono">Amount</th><th scope="col" class="th-mono">Lead</th><th scope="col" class="th-mono">Status</th></tr>
+                </thead>
+                <tbody>
+                  {c.rounds.map((r) => (
+                    <tr class="rowline">
+                      <td class="px-3 py-2.5 font-medium">{r.round}</td>
+                      <td class="px-3 py-2.5 font-mono text-[12px] text-mut">{r.date}</td>
+                      <td class="px-3 py-2.5 statnum">{fmtUsdM(r.amount)}</td>
+                      <td class="px-3 py-2.5">{r.lead}</td>
+                      <td class="px-3 py-2.5"><Chip kind="unverifiedAmount" /></td>
+                    </tr>
+                  ))}
+                  {!c.rounds.length && <tr><td colspan="5" class="px-3 py-4 text-mut">No rounds tracked yet.</td></tr>}
+                </tbody>
+              </table>
+            </div>
+            <div class="relative mt-6 border border-ink p-5">
+              <span class="stamp right-4 top-4 text-[18px]">SAMPLE DATA</span>
+              <p class="mono-label mb-3">Funding trend (illustrative)</p>
+              <svg viewBox="0 0 320 90" class="w-full max-w-xl" role="img" aria-label="Funding trend sparkline (illustrative sample)">
+                {[20, 45, 70].map((y) => <line x1="0" y1={y} x2="320" y2={y} stroke="#D9D3C1" stroke-dasharray="4 4"></line>)}
+                <polyline
+                  points={sparkData.map((v, i) => `${(i / 7) * 300 + 10},${85 - (v / 40) * 70}`).join(' ')}
+                  fill="none" stroke="var(--color-green)" stroke-width="2"></polyline>
+                {sparkData.map((v, i) => <circle cx={(i / 7) * 300 + 10} cy={85 - (v / 40) * 70} r="2.4" fill="var(--color-amber)"></circle>)}
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team -->
+        <div id="panel-team" class="tab-panel hidden">
+          <div class="py-6">
+            <p class="mono-label mb-3">Leadership</p>
+            <div class="grid gap-3 sm:grid-cols-2">
+              {c.founders.map((f) => (
+                <div class="flex items-center gap-3 border border-ink bg-paper p-4">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-full bg-paper3 font-mono text-sm font-semibold">{f.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}</span>
+                  <span><span class="block text-[15px] font-medium">{f.name}</span><span class="mono-label">{f.role}</span></span>
+                </div>
+              ))}
+            </div>
+            <p class="mt-4 text-[13px] text-mut">Headcount note: ~{c.employees} employees (sample). Open roles link to the jobs board.</p>
+            <a class="btn btn-ghost mt-3" href="/jobs">See open roles →</a>
+          </div>
+        </div>
+
+        <!-- News -->
+        <div id="panel-news" class="tab-panel hidden">
+          <div class="py-6">
+            <div class="border border-dashed border-line2 bg-paper2 p-4 text-[13px] text-mut">
+              SAMPLE ARTICLE NOTICE — mentions below are generated coverage placeholders describing no real coverage.
+            </div>
+            {[
+              [`${c.name} raises ${c.rounds.length ? fmtUsdM(c.rounds[c.rounds.length - 1].amount) : 'a new round'} — what it changes`, '6 min'],
+              [`Inside ${c.name}\u2019s ${c.hq.toLowerCase()} build culture`, '4 min'],
+              [`${c.sector} players watch ${c.name}\u2019s next move`, '3 min'],
+            ].map(([t, m]) => (
+              <a href="/news" class="rowline flex items-center justify-between px-1 py-3 hover:bg-paper2">
+                <span class="text-[14.5px]">{t}</span><span class="mono-label">{m} · sample</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Similar -->
+        <div id="panel-similar" class="tab-panel hidden">
+          <div class="grid gap-4 py-6 sm:grid-cols-2">
+            {similarFill.map((s) => <CompanyCard company={s} />)}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right rail -->
+      <aside class="space-y-6 lg:col-span-4">
+        <div class="railbox">
+          <div class="railbox-head"><span>Momentum</span><span class="font-mono text-[12px] font-semibold text-green">{momentum}</span></div>
+          <div class="flex items-center justify-between px-4 py-3">
+            <p class="mono-label">12 weeks · sample</p>
+            <Sparkline id={c.id} w={130} h={38} />
+          </div>
+        </div>
+        <div class="railbox">
+          <div class="railbox-head"><span>Investors</span><Chip kind="sample" /></div>
+          {c.rounds.slice(0, 3).map((r) => {
+            const inv = investorById(Object.keys({}).length ? '' : (r.lead.toLowerCase().includes('rift') ? 'rift-capital' : r.lead.toLowerCase().includes('savannah') ? 'savannah-ventures' : r.lead.toLowerCase().includes('kilele') ? 'kilele-climate' : r.lead.toLowerCase().includes('acacia') ? 'acacia-angels' : r.lead.toLowerCase().includes('hornbill') ? 'hornbill-growth' : r.lead.toLowerCase().includes('lake') ? 'lake-basin' : r.lead.toLowerCase().includes('mwezi') ? 'mwezi-capital' : 'tenda-microfund'));
+            return (
+              <div class="flex items-center justify-between border-b border-line px-4 py-2.5 last:border-0">
+                <span class="text-[13.5px]">{inv?.name ?? r.lead}</span>
+                <span class="chip chip-dashed">{r.round}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div class="railbox">
+          <div class="railbox-head"><span>Hiring</span></div>
+          <div class="px-4 py-3">
+            <p class="text-[13.5px] text-mut">Open roles appear here as employers post. See the <a class="text-amber underline" href="/jobs">jobs board</a>.</p>
+          </div>
+        </div>
+        <div class="railbox">
+          <div class="railbox-head"><span>Ecosystem actions</span></div>
+          <div class="grid gap-2 p-4">
+            <button class="btn w-full" data-modal="intro">Request introduction</button>
+            <button class="btn btn-ghost w-full" data-modal="report">Report data issue</button>
+            <button class="btn btn-ghost w-full" data-modal="claim">Claim this profile</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Profile tabs
+  document.querySelectorAll<HTMLButtonElement>('.profile-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.profile-tab').forEach((t) => {
+        t.setAttribute('aria-selected', 'false');
+        t.classList.remove('border-ink', 'bg-paper', 'text-ink', '!border-b-paper');
+        t.classList.add('text-mut');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      tab.classList.add('border-ink', 'bg-paper', 'text-ink', '!border-b-paper');
+      tab.classList.remove('text-mut');
+      const name = tab.dataset.tab!;
+      document.querySelectorAll('.tab-panel').forEach((p) => p.classList.add('hidden'));
+      document.getElementById(`panel-${name}`)?.classList.remove('hidden');
+    });
+  });
+</script>

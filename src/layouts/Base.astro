@@ -1,0 +1,64 @@
+---
+/** BASE LAYOUT — head/SEO, wire ticker, masthead, page, footer, modals, toasts, cookie banner. */
+import '@/styles/global.css';
+import Seo from '@/components/Seo.astro';
+import Ticker from '@/components/Ticker.astro';
+import Masthead from '@/components/Masthead.astro';
+import Footer from '@/components/Footer.astro';
+import ModalHost from '@/components/ModalHost.astro';
+import Toaster from '@/components/Toaster.astro';
+import CookieBanner from '@/components/CookieBanner.astro';
+import JsonLd from '@/components/JsonLd.astro';
+
+export interface BaseProps {
+  title?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  author?: string;
+  jsonld?: Record<string, unknown> | Record<string, unknown>[];
+}
+const props = Astro.props as BaseProps;
+---
+<!doctype html>
+<html lang="en-KE">
+  <head>
+    <Seo
+      title={props.title}
+      description={props.description}
+      type={props.ogType}
+      publishedTime={props.publishedTime}
+      author={props.author}
+    />
+    {props.jsonld && <JsonLd data={props.jsonld} />}
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-amber focus:px-4 focus:py-2">Skip to content</a>
+    <Ticker />
+    <Masthead />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <ModalHost />
+    <Toaster />
+    <CookieBanner />
+
+    <button
+      id="sample-chip"
+      class="fixed bottom-4 left-4 z-[60] border border-amber bg-ink px-3 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-dpaper transition-colors hover:bg-dark2"
+      aria-label="About sample data (opens dialog)"
+    >
+      Mockup · Sample data
+    </button>
+
+    <script src="../scripts/core.ts"></script>
+    <script>
+      // Keyboard: Esc closes mobile nav
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') document.getElementById('mobile-nav')?.classList.add('hidden');
+      });
+    </script>
+  </body>
+</html>
