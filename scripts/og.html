@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><style>
+  * { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #0E4630; font-family: 'DejaVu Sans', sans-serif; }
+  .frame { position: absolute; inset: 22px; border: 2px solid rgba(246,243,234,.5); }
+  .poly { position: absolute; inset: 0; }
+  .brandrow { position: absolute; top: 56px; left: 64px; display: flex; align-items: center; gap: 14px; }
+  .mark { width: 34px; height: 34px; background: #0A321F; border-radius: 8px; position: relative; }
+  .mark::before { content: ''; position: absolute; left: 7px; top: 25px; width: 20px; height: 4px; background: #F6F3EA; transform: rotate(-45deg); transform-origin: center; }
+  .dot1 { position: absolute; left: 9px; top: 21px; width: 6px; height: 6px; border-radius: 50%; background: #E3A21A; }
+  .dot2 { position: absolute; right: 9px; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: #F6F3EA; }
+  .brand { color: #F6F3EA; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; font-family: Georgia, serif; }
+  .brand span { font-family: 'DejaVu Sans Mono', monospace; color: #E3A21A; font-size: 22px; }
+  .kicker { position: absolute; top: 150px; left: 64px; color: #A9A492; font-family: 'DejaVu Sans Mono', monospace; font-size: 17px; letter-spacing: 3px; }
+  h1 { position: absolute; top: 196px; left: 64px; width: 900px; color: #F6F3EA; font-family: Georgia, serif; font-weight: 600; font-size: 74px; line-height: 1.04; letter-spacing: -1.5px; }
+  h1 em { color: #E3A21A; }
+  .stats { position: absolute; bottom: 74px; left: 64px; right: 64px; display: flex; gap: 0; border-top: 1.5px solid rgba(246,243,234,.4); }
+  .stat { flex: 1; padding: 22px 0 0 0; border-right: 1px solid rgba(246,243,234,.18); }
+  .stat:last-child { border-right: none; }
+  .n { color: #F6F3EA; font-family: 'DejaVu Sans Mono', monospace; font-weight: 700; font-size: 40px; }
+  .n b { color: #E3A21A; font-weight: 700; }
+  .l { color: #A9A492; font-family: 'DejaVu Sans Mono', monospace; font-size: 14px; letter-spacing: 1.6px; margin-top: 8px; text-transform: uppercase; }
+</style></head>
+<body>
+  <svg class="poly" viewBox="0 0 1200 630">
+    <polygon points="0,0 340,0 120,630 0,630" fill="#0A321F"/>
+    <polygon points="1200,0 1200,300 860,630 1020,0" fill="#134F38"/>
+    <circle cx="960" cy="120" r="5" fill="#E3A21A"/>
+    <circle cx="1020" cy="170" r="4" fill="#EFEAD9" opacity=".7"/>
+    <circle cx="1070" cy="90" r="3.4" fill="#EFEAD9" opacity=".5"/>
+    <circle cx="1100" cy="200" r="4.4" fill="#E3A21A" opacity=".85"/>
+    <circle cx="990" cy="250" r="3.6" fill="#EFEAD9" opacity=".55"/>
+  </svg>
+  <div class="frame"></div>
+  <div class="brandrow">
+    <div class="mark"><div class="dot1"></div><div class="dot2"></div></div>
+    <div class="brand">Startups<span>.co.ke</span></div>
+  </div>
+  <p class="kicker">THE INTELLIGENCE LAYER FOR KENYA'S STARTUP ECOSYSTEM</p>
+  <h1>Kenya's startup economy, <em>mapped</em> &amp; measured.</h1>
+  <div class="stats">
+    <div class="stat"><p class="n">428<b>+</b></p><p class="l">Startups tracked</p></div>
+    <div class="stat"><p class="n">96</p><p class="l">Active investors</p></div>
+    <div class="stat"><p class="n">312</p><p class="l">Open tech jobs</p></div>
+    <div class="stat"><p class="n">38</p><p class="l">Hackathons indexed</p></div>
+  </div>
+</body>
+</html>

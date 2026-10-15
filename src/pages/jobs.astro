@@ -1,0 +1,268 @@
+---
+import Base from '@/layouts/Base.astro';
+import Monogram from '@/components/Monogram.astro';
+import Chip from '@/components/Chip.astro';
+import { JOBS, JOB_CATEGORIES } from '@/data/jobs';
+import { companyById } from '@/data/companies';
+import { relDays } from '@/lib/utils';
+import { SITE } from '@/config/site';
+
+const jobs = JOBS;
+const salaryMax = 700;
+const bands = [
+  { role: 'Backend', min: 450, max: 600 },
+  { role: 'Data / ML', min: 380, max: 550 },
+  { role: 'Product', min: 350, max: 450 },
+  { role: 'Mobile', min: 320, max: 460 },
+  { role: 'Design', min: 220, max: 300 },
+  { role: 'Growth', min: 200, max: 280 },
+];
+---
+<Base
+  title="Tech jobs Nairobi — startup jobs in Kenya"
+  description={`${jobs.length} open tech roles at Kenya's most ambitious startups — engineering, data, product and design, with salary context and verified employers.`}
+  jsonld={{
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Tech jobs at Kenyan startups',
+    itemListElement: jobs.map((j, i) => {
+      const c = companyById(j.companyId)!;
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'JobPosting',
+          title: j.title,
+          hiringOrganization: { '@type': 'Organization', name: c.name },
+          jobLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: j.location, addressCountry: 'KE' } },
+          ...(j.mode === 'Remote' ? { jobLocationType: 'TELECOMMUTE' } : {}),
+          datePosted: new Date(Date.now() - j.postedDays * 86400000).toISOString().slice(0, 10),
+          baseSalary: { '@type': 'MonetaryAmount', currency: 'KES', value: { '@type': 'QuantitativeValue', minValue: j.salaryMin * 1000, maxValue: j.salaryMax * 1000, unitText: 'MONTH' } },
+          description: j.description + ' (Sample listing)',
+          url: `${SITE.url}/jobs`,
+        },
+      };
+    }),
+  }}
+>
+  <!-- Dark hero -->
+  <section class="bg-dark py-12 text-dpaper">
+    <div class="wrap">
+      <p class="kicker text-dmut">{jobs.length * 31}+ open roles · sample index</p>
+      <h1 class="mt-3 max-w-2xl text-[clamp(34px,4.2vw,56px)] leading-[1.02]">Tech jobs at Kenya's most ambitious startups.</h1>
+      <form class="mt-6 flex max-w-2xl flex-wrap gap-2" role="search" aria-label="Search jobs">
+        <input class="input min-h-11 flex-1 border-dpaper/40 bg-dark2 text-dpaper placeholder:text-dmut" name="q" placeholder="Role, skill or company…" aria-label="Search jobs" />
+        <select class="input input-mono w-40 border-dpaper/40 bg-dark2 text-dpaper" aria-label="Location">
+          <option>All Kenya</option><option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Remote</option>
+        </select>
+        <button class="btn btn-amber" type="button" id="job-search-btn">Search</button>
+      </form>
+      <div class="mt-3 flex flex-wrap gap-1.5">
+        {['Python', 'Fintech', 'Remote', 'Product', 'Data'].map((s) => <span class="chip border-dpaper/40 text-dpaper/90">{s}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap py-10">
+    <div class="grid gap-8 lg:grid-cols-12">
+      <!-- Left: filters + rows -->
+      <div class="lg:col-span-8">
+        <div class="mb-4 flex flex-wrap items-center gap-2" role="tablist" aria-label="Job category">
+          {JOB_CATEGORIES.map((cat, i) => (
+            <button class={`job-cat border px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.1em] ${i === 0 ? 'border-ink bg-ink text-paper' : 'border-line text-mut hover:text-ink'}`} data-cat={cat} role="tab" aria-selected={i === 0 ? 'true' : 'false'}>{cat}</button>
+          ))}
+          <label class="ml-auto flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
+            Remote only <input id="remote-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
+          </label>
+        </div>
+
+        <div id="job-rows">
+          {jobs.map((j) => {
+            const c = companyById(j.companyId)!;
+            return (
+              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
+                <div class="flex w-full cursor-pointer flex-wrap items-center gap-3 px-4 py-4 text-left hover:bg-paper2" data-expand role="button" tabindex="0" aria-expanded="false">
+                  <Monogram name={c.name} sector={c.sector} size="md" />
+                  <span class="min-w-0 flex-1">
+                    <span class="flex flex-wrap items-center gap-2">
+                      <span class="text-[15px] font-medium">{j.title}</span>
+                      {j.featured && <span class="chip chip-amber">Featured</span>}
+                    </span>
+                    <span class="mono-label mt-0.5 block">
+                      <a class="text-green hover:underline" href={`/startups/${c.id}`}>{c.name}</a> · {j.location} · {j.mode}
+                      {c.verified ? <span class="ml-1.5 text-green">✓ Verified employer</span> : ''}
+                    </span>
+                  </span>
+                  <span class="text-right">
+                    <span class="statnum block text-[13px]">{j.salary}</span>
+                    <span class="mono-label">sample · {relDays(j.postedDays)}</span>
+                  </span>
+                  <button class="bookmark-btn btn btn-ghost h-9 w-9 !min-h-0 !px-0" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4-6 4Z"></path></svg>
+                  </button>
+                  <span class="jcaret text-ink transition-transform duration-200" aria-hidden="true">▾</span>
+                </div>
+                <div class="job-detail grid transition-[grid-template-rows] duration-300" style="grid-template-rows:0fr">
+                  <div class="overflow-hidden">
+                    <div class="border-t border-line px-4 py-4">
+                      <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">{j.description}</p>
+                      <div class="mt-3 flex flex-wrap gap-1.5">{j.tags.map((t) => <span class="chip chip-dashed">{t}</span>)}</div>
+                      <div class="mt-4 flex gap-2">
+                        <button class="btn btn-amber h-9" data-modal="apply">Apply now</button>
+                        <button class="btn btn-ghost h-9" data-modal="report">Report listing</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p id="jobs-empty" class="hidden border border-dashed border-line2 p-8 text-center text-mut">No roles match — clear the category or remote filter.</p>
+      </div>
+
+      <!-- Right rail -->
+      <aside class="space-y-6 lg:col-span-4">
+        <div class="railbox">
+          <div class="railbox-head"><span>Employers — post a job</span><Chip kind="samplePricing" /></div>
+          <div class="px-4 py-3">
+            {SITE.jobPostPricing.map((p) => (
+              <div class="flex items-center justify-between border-b border-line py-2 last:border-0">
+                <span class="text-[13.5px]">{p.tier}</span><span class="statnum text-[13px]">{p.price}</span>
+              </div>
+            ))}
+            <button class="btn btn-amber mt-3 w-full" data-modal="postjob">Post now</button>
+          </div>
+        </div>
+
+        <div class="railbox">
+          <div class="railbox-head"><span>Salary benchmark · KSh K/mo</span><Chip kind="illustrative" /></div>
+          <div class="px-4 py-4">
+            {bands.map((b) => (
+              <div class="mb-3 last:mb-0">
+                <div class="mb-1 flex justify-between font-mono text-[10.5px] uppercase tracking-[0.08em] text-ink2">
+                  <span>{b.role}</span><span>{b.min}–{b.max}</span>
+                </div>
+                <div class="relative h-3 bg-paper3">
+                  <div class="absolute inset-y-0 bg-amber" style={`left:${(b.min / salaryMax) * 100}%;width:${((b.max - b.min) / salaryMax) * 100}%`}></div>
+                </div>
+              </div>
+            ))}
+            <p class="mono-label mt-3">Source: employer survey (sample) · axis 0–700K</p>
+          </div>
+        </div>
+
+        <div class="railbox">
+          <div class="railbox-head"><span>Job alerts</span></div>
+          <form class="px-4 py-4" data-kind="newsletter">
+            <label class="mono-label block" for="ja-email">Email</label>
+            <input id="ja-email" name="email" type="email" required class="input mt-1" placeholder="you@dev.co.ke" />
+            <p class="mono-label mt-2">Weekly digest · sample flow</p>
+            <button class="btn mt-3 w-full" type="submit">Create alert</button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Job filters
+  const state = { cat: 'All', remote: false, q: '' };
+  const rows = document.querySelectorAll<HTMLElement>('.job-row');
+  function apply() {
+    let n = 0;
+    rows.forEach((r) => {
+      const ok =
+        (state.cat === 'All' || r.dataset.cat === state.cat) &&
+        (!state.remote || r.dataset.mode === 'Remote') &&
+        (!state.q || r.dataset.title!.includes(state.q));
+      r.classList.toggle('hidden', !ok);
+      if (ok) n++;
+    });
+    document.getElementById('jobs-empty')?.classList.toggle('hidden', n > 0);
+  }
+  document.querySelectorAll('.job-cat').forEach((b) =>
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.job-cat').forEach((x) => {
+        x.classList.remove('border-ink', 'bg-ink', 'text-paper');
+        x.classList.add('border-line', 'text-mut');
+      });
+      b.classList.add('border-ink', 'bg-ink', 'text-paper');
+      b.classList.remove('border-line', 'text-mut');
+      state.cat = (b as HTMLElement).dataset.cat!;
+      apply();
+    })
+  );
+  document.getElementById('remote-only')?.addEventListener('change', (e) => { state.remote = (e.target as HTMLInputElement).checked; apply(); });
+  document.getElementById('job-search-btn')?.addEventListener('click', () => {
+    const q = (document.querySelector('input[name="q"]') as HTMLInputElement).value.trim().toLowerCase();
+    state.q = q;
+    apply();
+  });
+
+  // Expandable rows
+  function toggleJob(row: HTMLElement) {
+    const btn = row.querySelector<HTMLElement>('[data-expand]')!;
+    const detail = row.querySelector<HTMLElement>('.job-detail')!;
+    const open = detail.style.gridTemplateRows === '1fr';
+    detail.style.gridTemplateRows = open ? '0fr' : '1fr';
+    btn.setAttribute('aria-expanded', String(!open));
+    row.querySelector('.jcaret')?.classList.toggle('rotate-180', !open);
+  }
+  document.querySelectorAll('.job-row').forEach((row) => {
+    const el = row.querySelector<HTMLElement>('[data-expand]')!;
+    el.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('.bookmark-btn') || (e.target as HTMLElement).closest('a')) return;
+      toggleJob(row as HTMLElement);
+    });
+    el.addEventListener('keydown', (e) => {
+      const ev = e as KeyboardEvent;
+      if ((ev.key === 'Enter' || ev.key === ' ') && !(ev.target as HTMLElement).closest('.bookmark-btn') && !(ev.target as HTMLElement).closest('a')) {
+        ev.preventDefault();
+        toggleJob(row as HTMLElement);
+      }
+    });
+  });
+
+  // Bookmarks (persisted locally)
+  const BM_KEY = 'sck-bookmarks';
+  const bookmarks = new Set<string>(JSON.parse(localStorage.getItem(BM_KEY) || '[]'));
+  function paintBm(id: string) {
+    document.querySelectorAll(`[data-bm="${id}"]`).forEach((b) => {
+      const on = bookmarks.has(id);
+      b.setAttribute('aria-pressed', String(on));
+      (b as HTMLElement).style.backgroundColor = on ? 'var(--color-amber2)' : '';
+      (b as HTMLElement).style.color = on ? 'var(--color-ink)' : '';
+    });
+  }
+  document.querySelectorAll('.bookmark-btn').forEach((b) =>
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = (b as HTMLElement).dataset.bm!;
+      bookmarks.has(id) ? bookmarks.delete(id) : bookmarks.add(id);
+      localStorage.setItem(BM_KEY, JSON.stringify([...bookmarks]));
+      paintBm(id);
+      const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
+      toast({ title: bookmarks.has(id) ? 'Bookmarked' : 'Bookmark removed', body: 'Saved on this device.' });
+    })
+  );
+  bookmarks.forEach(paintBm);
+
+  // Job alerts inline form
+  document.querySelector<HTMLFormElement>('form[data-kind="newsletter"]')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const email = (new FormData(form).get('email') as string) ?? '';
+    const { subscribeNewsletter } = await import('@/lib/supabase');
+    try {
+      await subscribeNewsletter(email, 'job-alerts');
+      const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
+      toast({ title: 'Alert created', body: 'Weekly digest, Mondays 06:30 EAT. (Sample flow)' });
+      form.reset();
+    } catch {
+      const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
+      toast({ title: 'Saved locally', body: 'Supabase not connected in this environment.', kind: 'warn' });
+    }
+  });
+</script>

@@ -1,0 +1,209 @@
+---
+/**
+ * THE KENYA DOT MAP — generated entirely at build time (Astro frontmatter).
+ * Border polygon encoded from real lon/lat anchors; base dot grid via
+ * point-in-polygon; Gaussian hub clusters; dashed routes; lakes; equator.
+ * Interactions (hover caption, click-filter) are wired client-side.
+ */
+import { REGIONS } from '@/data/stats';
+
+const K = 52.5; // px per degree
+const lonX = (lon: number) => (lon - 33.4) * K;
+const latY = (lat: number) => (5.6 - lat) * K;
+
+// Kenya border polygon (lon, lat) — stylised but faithful anchors
+const BORDER: [number, number][] = [
+  [35.9, 5.0], [36.4, 4.45], [36.9, 4.42], [38.0, 3.62], [39.4, 3.5], [41.0, 3.95], [41.9, 4.0],
+  [41.2, 3.5], [40.9, 2.75], [41.4, 1.9], [41.0, 1.0], [41.55, -1.65],
+  [40.9, -2.2], [40.85, -2.27], [40.2, -2.8], [40.1, -3.2], [39.65, -4.05], [39.2, -4.68],
+  [38.3, -3.7], [37.6, -3.0], [37.35, -2.95], [36.9, -2.2], [36.2, -1.7], [34.5, -1.2], [34.0, -1.05],
+  [34.05, -0.4], [34.1, 0.1], [34.5, 0.65], [34.55, 1.1], [34.7, 1.9], [34.45, 3.0], [34.4, 3.7], [34.9, 4.6],
+];
+
+// Lakes (Kenya side)
+const LAKES: [number, number][][] = [
+  [[33.78, -0.55], [34.0, -1.02], [34.3, -0.78], [34.25, -0.35], [33.95, -0.28], [33.75, -0.42]], // L. Victoria
+  [[35.95, 2.5], [36.35, 2.75], [36.5, 3.6], [36.6, 4.35], [36.3, 4.5], [36.05, 3.6], [35.88, 2.9]], // L. Turkana
+];
+
+const CITIES: Record<string, { lon: number; lat: number; count: number; capital?: boolean }> = {
+  Nairobi: { lon: 36.82, lat: -1.29, count: 268, capital: true },
+  Mombasa: { lon: 39.66, lat: -4.05, count: 41 },
+  Nakuru: { lon: 36.07, lat: -0.3, count: 33 },
+  Kisumu: { lon: 34.77, lat: -0.09, count: 28 },
+  Eldoret: { lon: 35.27, lat: 0.52, count: 19 },
+  Malindi: { lon: 40.12, lat: -3.22, count: 12 },
+};
+
+function pointInPoly(lon: number, lat: number, poly: [number, number][]): boolean {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i];
+    const [xj, yj] = poly[j];
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+function inLake(lon: number, lat: number): boolean {
+  return LAKES.some((lake) => pointInPoly(lon, lat, lake as [number, number][]));
+}
+
+// Seeded jitter
+function mulberry(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rnd = mulberry(20261015);
+
+type Dot = { x: number; y: number; r: number; d: number };
+const baseDots: Dot[] = [];
+const STEP = 0.16;
+for (let lat = -5.0; lat <= 5.4; lat += STEP) {
+  for (let lon = 33.5; lon <= 42.2; lon += STEP) {
+    if (!pointInPoly(lon, lat, BORDER) || inLake(lon, lat)) continue;
+    const jx = (rnd() - 0.5) * 0.06;
+    const jy = (rnd() - 0.5) * 0.06;
+    const d2 = (lon - CITIES.Nairobi.lon) ** 2 + (lat - CITIES.Nairobi.lat) ** 2;
+    const boost = Math.max(0, 1 - Math.sqrt(d2) / 2.2); // density falloff from capital
+    baseDots.push({
+      x: +lonX(lon + jx).toFixed(1),
+      y: +latY(lat + jy).toFixed(1),
+      r: +(1.0 + boost * 0.7 + rnd() * 0.25).toFixed(2),
+      d: Math.round(rnd() * 700),
+    });
+  }
+}
+
+// Gaussian hub clusters (Box-Muller)
+function gauss(): number {
+  const u = Math.max(rnd(), 1e-9);
+  const v = rnd();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+const hubDots: Dot[] = [];
+for (const [city, c] of Object.entries(CITIES)) {
+  const n = Math.max(6, Math.round(Math.sqrt(c.count) * 5.5));
+  const spread = city === 'Nairobi' ? 0.34 : 0.22;
+  for (let i = 0; i < n; i++) {
+    const lon = c.lon + gauss() * spread;
+    const lat = c.lat + gauss() * spread * 0.9;
+    if (!pointInPoly(lon, lat, BORDER)) continue;
+    hubDots.push({ x: +lonX(lon).toFixed(1), y: +latY(lat).toFixed(1), r: +(1.3 + rnd() * 0.7).toFixed(2), d: Math.round(rnd() * 900) });
+  }
+}
+
+const total = REGIONS.reduce((s, r) => s + r.count, 0);
+const borderPath = BORDER.map(([lon, lat], i) => `${i === 0 ? 'M' : 'L'}${lonX(lon).toFixed(1)},${latY(lat).toFixed(1)}`).join(' ') + ' Z';
+const lakePaths = LAKES.map((l) => l.map(([lon, lat], i) => `${i === 0 ? 'M' : 'L'}${lonX(lon).toFixed(1)},${latY(lat).toFixed(1)}`).join(' ') + ' Z');
+const routes = ['Mombasa', 'Nakuru', 'Kisumu', 'Eldoret'].map((c) => ({
+  city: c,
+  d: `M${lonX(CITIES.Nairobi.lon).toFixed(1)},${latY(CITIES.Nairobi.lat).toFixed(1)} L${lonX(CITIES[c].lon).toFixed(1)},${latY(CITIES[c].lat).toFixed(1)}`,
+}));
+const equatorY = latY(0).toFixed(1);
+---
+<figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's startup hubs (illustrative sample)">
+  <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full" role="img">
+    <!-- land -->
+    <path d={borderPath} fill="var(--color-paper2)"></path>
+
+    <!-- base dot grid, staggered fade-in -->
+    {baseDots.map((dot) => (
+      <circle cx={dot.x} cy={dot.y} r={dot.r} fill="#3e3b31" opacity="0.55" style={`animation: dotin .5s ease-out both; animation-delay:${dot.d}ms`}></circle>
+    ))}
+
+    <!-- hub clusters -->
+    {hubDots.map((dot) => (
+      <circle cx={dot.x} cy={dot.y} r={dot.r} fill="var(--color-green)" opacity="0.8" style={`animation: dotin .6s ease-out both; animation-delay:${dot.d + 300}ms`}></circle>
+    ))}
+
+    <!-- lakes -->
+    {lakePaths.map((p) => <path d={p} fill="#dfe6db" stroke="#b9c4b1" stroke-width="0.8"></path>)}
+    <text x={lonX(34.05)} y={latY(-0.62) + 14} class="fill-[#7c8574] font-mono" font-size="9" font-style="italic">L. VICTORIA</text>
+    <text x={lonX(36.32) + 6} y={latY(3.55)} class="fill-[#7c8574] font-mono" font-size="8" font-style="italic" transform={`rotate(-68 ${lonX(36.32) + 6} ${latY(3.55)})`}>L. TURKANA</text>
+
+    <!-- equator -->
+    <line x1="0" y1={equatorY} x2="480" y2={equatorY} stroke="#a63d2f" stroke-width="0.8" stroke-dasharray="6 5" opacity="0.65"></line>
+    <text x="408" y={Number(equatorY) - 5} class="fill-[#a63d2f] font-mono" font-size="8" letter-spacing="1.5">EQUATOR</text>
+
+    <!-- dashed animated routes -->
+    {routes.map((r) => <path d={r.d} fill="none" stroke="#b87503" stroke-width="1.2" class="anim-dash"></path>)}
+
+    <!-- city markers + labels -->
+    {Object.entries(CITIES).map(([city, c]) => {
+      const x = lonX(c.lon), y = latY(c.lat);
+      const big = Boolean(c.capital);
+      return (
+        <g class="map-hub cursor-pointer" data-city={city} data-count={c.count} tabindex="0" role="button" aria-label={`${city}: ${c.count} companies tracked (sample)`}>
+          {big && <circle cx={x} cy={y} r="9" fill="var(--color-amber2)" opacity="0.35" class="anim-pulse-ring"></circle>}
+          <circle cx={x} cy={y} r={big ? 5 : 3.6} fill="var(--color-amber)" stroke={big ? 'var(--color-paper)' : 'none'} stroke-width={big ? 1.4 : 0}></circle>
+          <text x={x + (big ? 9 : 7)} y={y + 3} class="pointer-events-none fill-[#181712] font-mono font-semibold" font-size={big ? 11 : 9.5} letter-spacing="1">{city.toUpperCase()}</text>
+          <text x={x + (big ? 9 : 7)} y={y + 13} class="pointer-events-none fill-[#6e6a5b] font-mono" font-size="8">{c.count} cos.</text>
+          <circle cx={x} cy={y} r="16" fill="transparent"></circle>
+        </g>
+      );
+    })}
+
+    <!-- ink border on top -->
+    <path d={borderPath} fill="none" stroke="#181712" stroke-width="1.6"></path>
+
+    <!-- compass -->
+    <g transform="translate(446,44)" class="fill-none stroke-[#181712]">
+      <circle r="13" stroke-width="1"></circle>
+      <path d="M0,-9 L3.4,4 L0,1.6 L-3.4,4 Z" fill="#b87503" stroke="none"></path>
+      <text y="-16" text-anchor="middle" class="fill-[#181712] stroke-none font-mono" font-size="8">N</text>
+    </g>
+
+    <!-- scale bar -->
+    <g transform="translate(26,514)">
+      <rect width={K} height="4" fill="#181712"></rect>
+      <rect x={K} width={K} height="4" fill="#181712" opacity="0.35"></rect>
+      <text y="-4" class="fill-[#181712] font-mono" font-size="8">100 KM</text>
+    </g>
+  </svg>
+
+  <figcaption class="border-t border-ink bg-paper px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
+    <span id="map-caption">Kenya — {total} companies tracked across 6 hubs · 63% in Nairobi (sample)</span>
+  </figcaption>
+</figure>
+
+<style>
+  @keyframes dotin {
+    from { opacity: 0; }
+    to { opacity: 0.7; }
+  }
+  .map-hub circle {
+    transition: r 0.15s ease;
+  }
+  .map-hub:hover circle:last-child {
+    r: 20;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<SVGElement>('.map-hub').forEach((hub) => {
+    const city = hub.dataset.city;
+    const count = hub.dataset.count;
+    const caption = document.getElementById('map-caption');
+    const activate = () => {
+      if (caption && city && count)
+        caption.textContent = `${city} — ${count} companies tracked · ${city === 'Nairobi' ? '63' : Math.round((Number(count) / 401) * 100)}% of the index (sample)`;
+      location.href = `/startups?city=${encodeURIComponent(city!)}`;
+    };
+    hub.addEventListener('mouseenter', () => {
+      if (caption && city && count) caption.textContent = `${city} — ${count} companies tracked (sample)`;
+    });
+    hub.addEventListener('mouseleave', () => {
+      if (caption) caption.textContent = `Kenya — 401 companies tracked across 6 hubs · 63% in Nairobi (sample)`;
+    });
+    hub.addEventListener('click', activate);
+    hub.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') activate();
+    });
+  });
+</script>

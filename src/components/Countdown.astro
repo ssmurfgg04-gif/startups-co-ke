@@ -1,0 +1,56 @@
+---
+/** Live countdown (D/H/M/S or HH:MM:SS) driven by a client-side offset — never dies. */
+interface Props {
+  targetOffsetMs: number; // ms from "now" at view time
+  mode?: 'dhms' | 'hms';
+  dark?: boolean;
+  id: string;
+}
+const { targetOffsetMs, mode = 'dhms', dark = false, id } = Astro.props;
+const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark ? 'border-dpaper/30 text-dpaper' : 'border-ink text-ink'} min-w-[64px] flex-1`;
+---
+<div id={id} class="flex gap-2" data-offset={targetOffsetMs} data-mode={mode}>
+  {mode === 'dhms' ? (
+    <>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="d">—</span><span class="mono-label mt-1">Days</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="h">—</span><span class="mono-label mt-1">Hours</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="m">—</span><span class="mono-label mt-1">Min</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="s">—</span><span class="mono-label mt-1">Sec</span></div>
+    </>
+  ) : (
+    <div class={cell + ' w-full flex-row items-baseline justify-center gap-2 py-2'}>
+      <span class="cd-val statnum text-xl" data-u="hms">--:--:--</span>
+      <span class="mono-label">to submissions close</span>
+    </div>
+  )}
+</div>
+
+<script define:vars={{ id }}>
+  (function () {
+    const root = document.getElementById(id);
+    if (!root) return;
+    const target = Date.now() + Number(root.dataset.offset);
+    const mode = root.dataset.mode;
+    const pad = (n) => String(n).padStart(2, '0');
+    function tick() {
+      const ms = Math.max(0, target - Date.now());
+      const s = Math.floor(ms / 1000);
+      const d = Math.floor(s / 86400);
+      const h = Math.floor((s % 86400) / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const sec = s % 60;
+      if (mode === 'dhms') {
+        const q = (u) => root.querySelector(`[data-u="${u}"]`);
+        if (q('d')) q('d').textContent = d;
+        if (q('h')) q('h').textContent = pad(h);
+        if (q('m')) q('m').textContent = pad(m);
+        if (q('s')) q('s').textContent = pad(sec);
+      } else {
+        const el = root.querySelector('[data-u="hms"]');
+        if (el) el.textContent = `${pad(h)}:${pad(m)}:${pad(sec)}`;
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

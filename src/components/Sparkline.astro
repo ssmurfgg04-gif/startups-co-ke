@@ -1,0 +1,14 @@
+---
+/** Seeded sparkline — stable across reloads (PRNG per id). */
+import { sparklinePoints } from '@/lib/utils';
+interface Props { id: string; w?: number; h?: number; stroke?: string; label?: string }
+const { id, w = 120, h = 36, stroke = 'var(--color-green)', label } = Astro.props;
+const pts = sparklinePoints(id, 12, w, h);
+const first = pts.split(' ')[0].split(',')[1];
+const last = pts.split(' ')[pts.split(' ').length - 1].split(',')[1];
+const up = Number(last) < Number(first);
+---
+<svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={label ?? `Trend sparkline for ${id} (illustrative)`}>
+  <polyline points={pts} fill="none" stroke={up ? stroke : 'var(--color-clay)'} stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+  <circle cx={w - 2} cy={last} r="2.2" fill={up ? stroke : 'var(--color-clay)'}></circle>
+</svg>

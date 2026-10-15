@@ -1,0 +1,458 @@
+---
+import Base from '@/layouts/Base.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import KenyaMap from '@/components/KenyaMap.astro';
+import FundingChart from '@/components/FundingChart.astro';
+import CompanyCard from '@/components/CompanyCard.astro';
+import Sparkline from '@/components/Sparkline.astro';
+import Chip from '@/components/Chip.astro';
+import StatusDot from '@/components/StatusDot.astro';
+import Monogram from '@/components/Monogram.astro';
+import Countdown from '@/components/Countdown.astro';
+import { COMPANIES, FEATURED_IDS } from '@/data/companies';
+import { ROUNDS, SECTOR_COUNTS } from '@/data/ecosystem';
+import { STATS, REGIONS } from '@/data/stats';
+import { HACKATHONS } from '@/data/hackathons';
+import { prng, fmtUsdM, relDays } from '@/lib/utils';
+import { SITE } from '@/config/site';
+
+const featured = FEATURED_IDS.map((id) => COMPANIES.find((c) => c.id === id)!).filter(Boolean);
+const featuredHack = HACKATHONS.find((h) => h.featured)!;
+const daysTo = Math.round((featuredHack.startOffsetMs ?? 0) / 86400000);
+const totalSector = SECTOR_COUNTS.reduce((s, r) => s + r.count, 0);
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'startups.co.ke',
+    url: SITE.url,
+    logo: `${SITE.url}/favicon.svg`,
+    address: { '@type': 'PostalAddress', addressLocality: 'Nairobi', addressCountry: 'KE', streetAddress: SITE.contact.address },
+    contactPoint: [{ '@type': 'ContactPoint', email: SITE.contact.email, telephone: SITE.contact.phone, contactType: 'customer support' }],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/startups?q={search_term_string}`, 'query-input': 'required name=search_term_string' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Featured verified startups',
+    itemListElement: featured.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, url: `${SITE.url}/startups/${c.id}` })),
+  },
+];
+---
+<Base title={SITE.title} description={SITE.description} jsonld={jsonld}>
+  <!-- 1) HERO -->
+  <section class="wrap grid items-start gap-10 py-12 md:py-16 lg:grid-cols-12">
+    <div class="rv lg:col-span-7">
+      <p class="kicker">EST. NAIROBI — The intelligence layer for Kenya's startup ecosystem</p>
+      <h1 class="mt-4 text-[clamp(40px,5.2vw,72px)] leading-[0.98]">
+        Kenya's startup economy, <em class="font-display italic text-green">mapped</em> &amp; measured.
+      </h1>
+      <p class="mt-5 max-w-xl text-[16.5px] text-ink2">
+        Verified company profiles, funding intelligence with named sources, an investor directory, every build sprint in the region, and the tech jobs behind them — one institutional record of the ecosystem.
+      </p>
+
+      <form class="mt-7 flex max-w-xl border-2 border-ink bg-paper" action="/startups" method="get" role="search" aria-label="Company search">
+        <input class="min-h-12 flex-1 bg-transparent px-4 text-[15px] outline-none placeholder:text-mut" name="q" placeholder="Search 428 companies — try “pesa”, “solar”, “Kisumu”…" aria-label="Search companies" />
+        <button class="btn border-0 border-l-2 border-ink px-5" type="submit">Search</button>
+      </form>
+
+      <div class="mt-3.5 flex flex-wrap gap-2">
+        <a class="chip hover:bg-paper2" href="/startups?sector=Fintech">Fintech</a>
+        <a class="chip hover:bg-paper2" href="/startups?sector=Health">Healthtech</a>
+        <a class="chip hover:bg-paper2" href="/startups?sector=Energy">Climate &amp; Energy</a>
+        <a class="chip hover:bg-paper2" href="/startups?stage=Seed">Seed</a>
+        <a class="chip hover:bg-paper2" href="/jobs">Tech jobs</a>
+      </div>
+      <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Sample figures shown for demonstration — <Chip kind="verified" /> entities are marked throughout.</p>
+    </div>
+
+    <!-- Ecosystem snapshot widget -->
+    <aside class="rv offset-shadow border-2 border-ink bg-paper lg:col-span-5" style="--d:120ms" aria-label="Ecosystem snapshot">
+      <div class="flex items-center justify-between border-b border-ink px-4 py-3">
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Ecosystem snapshot</p>
+        <Chip kind="sample" />
+      </div>
+      <div class="grid grid-cols-2 gap-px bg-line">
+        {[
+          { v: STATS.companiesTracked, s: '+', l: 'Startups tracked' },
+          { v: STATS.activeInvestors, l: 'Active investors' },
+          { v: STATS.openTechJobs, l: 'Open tech jobs' },
+          { v: STATS.hackathonsIndexed, l: 'Hackathons indexed' },
+        ].map((cell) => (
+          <div class="bg-paper p-4">
+            <p class="statnum text-[28px] leading-none"><span data-count={cell.v}>{cell.v}</span>{cell.s && <span class="text-amber">+</span>}</p>
+            <p class="mono-label mt-1.5">{cell.l}</p>
+          </div>
+        ))}
+      </div>
+      <div class="border-t border-ink px-4 py-3.5">
+        <p class="mono-label mb-2.5">Funding by sector · YTD</p>
+        <div class="flex h-20 items-end gap-1.5" aria-hidden="true">
+          {[62, 48, 34, 27, 21, 16, 12, 9].map((h, i) => (
+            <div class="flex-1 bg-green" style={`height:${h}%; ${i === 1 ? 'background:var(--color-amber2)' : ''}`} title={fmtUsdM(Math.round(h / 3.4))}></div>
+          ))}
+        </div>
+        <a class="link-underline mt-3 inline-block" href="/funding">Funding database →</a>
+      </div>
+    </aside>
+  </section>
+
+  <!-- 2) MAP BAND -->
+  <section class="wrap grid gap-8 pb-14 lg:grid-cols-2" aria-labelledby="regions-h">
+    <div class="rv"><KenyaMap /></div>
+    <div class="rv" style="--d:100ms">
+      <h2 id="regions-h" class="text-[clamp(26px,3.2vw,40px)]">Explore by region.</h2>
+      <p class="mt-2 max-w-md text-[14.5px] text-mut">Nairobi holds ~63% of the index, but regional hubs are the fastest-growing cohort. Click a row to filter the directory (sample).</p>
+      <div class="railbox mt-5">
+        {REGIONS.map((r) => (
+          <a href={`/startups?city=${encodeURIComponent(r.city)}`} class="rowline group flex items-center gap-4 px-4 py-3.5 hover:bg-paper2">
+            <span class="w-24 shrink-0 font-mono text-xs uppercase tracking-[0.1em]">{r.city}</span>
+            <span class="relative h-2.5 flex-1 bg-paper2">
+              <span class="absolute inset-y-0 left-0 bg-green" style={`width:${Math.round((r.count / 268) * 100)}%`}></span>
+            </span>
+            <span class="statnum w-10 text-right text-sm">{r.count}</span>
+            {r.capital && <span class="chip chip-solid shrink-0">Capital</span>}
+            <span class="text-ink opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+      <p class="mt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">* Illustrative sample counts. Regional shares recomputed quarterly.</p>
+    </div>
+  </section>
+
+  <!-- 3) STAT BAND -->
+  <section class="border-y border-ink bg-paper2" aria-label="Ecosystem stats">
+    <div class="wrap grid grid-cols-2 gap-px bg-line py-0 md:grid-cols-5">
+      {[
+        { v: STATS.companiesTracked, d: '+31 this quarter', l: 'Companies tracked' },
+        { v: STATS.capitalYTD, p: '$', d: '+18% QoQ', l: 'Capital YTD (M)' },
+        { v: STATS.medianSeed, p: '$', d: 'flat QoQ', l: 'Median seed cheque (K)' },
+        { v: STATS.roundsThisYear, d: '+11 this quarter', l: 'Rounds this year' },
+        { v: STATS.hackathonsIndexed, d: '6 regions', l: 'Hackathons indexed' },
+      ].map((s) => (
+        <div class="bg-paper2 px-4 py-6 text-center">
+          <p class="statnum text-[30px] leading-none">{s.p ?? ''}<span data-count={s.v}>{s.v}</span></p>
+          <p class="mono-label mt-1.5">{s.l}</p>
+          <p class="mt-1 font-mono text-[9px] uppercase tracking-[0.1em] text-amber">{s.d}</p>
+        </div>
+      ))}
+    </div>
+    <p class="wrap pb-3 text-right font-mono text-[9px] uppercase tracking-[0.12em] text-mut">* Illustrative sample figures</p>
+  </section>
+
+  <!-- 4) FUNDING INTELLIGENCE (dark) -->
+  <section class="bg-dark py-14" aria-labelledby="funding-h">
+    <div class="wrap">
+      <SectionHead dark no="01" title="Funding intelligence, with named sources." link={{ label: 'Full database →', href: '/funding' }} />
+      <div class="grid gap-8 lg:grid-cols-12">
+        <div class="rv lg:col-span-7"><FundingChart dark /></div>
+        <div class="rv lg:col-span-5" style="--d:120ms">
+          <div class="border border-darkline bg-dark2">
+            <div class="flex items-center justify-between border-b border-darkline px-4 py-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-dpaper">Latest tracked rounds</p>
+              <Chip kind="illustrative" />
+            </div>
+            {ROUNDS.slice(0, 6).map((r) => {
+              const c = COMPANIES.find((x) => x.id === r.companyId)!;
+              return (
+                <a href={`/startups/${c.id}`} class="block border-b border-darkline px-4 py-3 transition-colors last:border-0 hover:bg-dark">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="font-mono text-[10px] uppercase tracking-[0.1em] text-dmut">{relDays(Math.max(0, Math.round((Date.now() - new Date(r.date).getTime()) / 86400000)))}</p>
+                    <StatusDot status={r.status} />
+                  </div>
+                  <p class="mt-1 text-[14.5px] text-dpaper">
+                    {c.name} · <span class="text-dmut">{r.round}</span>
+                  </p>
+                  <p class="mt-0.5 font-mono text-[12px] text-amber2">{fmtUsdM(r.amount)} <span class="text-dmut">· lead {r.lead}</span></p>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5) FEATURED VERIFIED STARTUPS -->
+  <section class="wrap py-14" aria-labelledby="featured-h">
+    <SectionHead no="02" title="Featured verified startups." link={{ label: 'Company index →', href: '/startups' }} />
+    <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      {featured.map((c, i) => (
+        <div class="rv" style={`--d:${i * 80}ms`}><CompanyCard company={c} /></div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 6) ECOSYSTEM INSIGHTS (tinted) -->
+  <section class="bg-paper2 py-14" aria-labelledby="insights-h">
+    <div class="wrap">
+      <SectionHead no="03" title="Ecosystem insights." link={{ label: 'Investors →', href: '/investors' }} />
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div class="rv railbox">
+          <div class="railbox-head"><span>Startups tracked by sector</span><Chip kind="sample" /></div>
+          <div class="px-4 py-4">
+            {SECTOR_COUNTS.map((s) => (
+              <a href={`/startups?sector=${encodeURIComponent(s.sector)}`} class="group mb-2 flex items-center gap-3 last:mb-0">
+                <span class="w-40 shrink-0 truncate font-mono text-[11px] uppercase tracking-[0.06em] text-ink2">{s.sector}</span>
+                <span class="relative h-4 flex-1 bg-paper3"><span class="absolute inset-y-0 left-0 bg-green transition-all duration-500 group-hover:bg-amber" style={`width:${Math.round((s.count / 96) * 100)}%`}></span></span>
+                <span class="statnum w-8 text-right text-[12px]">{s.count}</span>
+                <span class="w-10 text-right font-mono text-[10px] text-mut">{Math.round((s.count / totalSector) * 100)}%</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="rv railbox" style="--d:120ms">
+          <div class="railbox-head"><span>Latest funding intelligence</span><a class="link-underline" href="/funding">All rounds</a></div>
+          {ROUNDS.map((r) => {
+            const c = COMPANIES.find((x) => x.id === r.companyId)!;
+            return (
+              <a href={`/startups/${c.id}`} class="rowline flex items-center gap-3 px-4 py-3 hover:bg-paper">
+                <Monogram name={c.name} sector={c.sector} size="sm" />
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-[13.5px]">{c.name} · {r.round}</span>
+                  <span class="mono-label">Lead: {r.lead}</span>
+                </span>
+                <span class="text-right">
+                  <span class="statnum block text-[13px]">{fmtUsdM(r.amount)}</span>
+                  <StatusDot status={r.status} />
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7) HACKATHONS (green) -->
+  <section class="bg-green py-14 text-dpaper" aria-labelledby="hack-h">
+    <div class="wrap grid items-center gap-10 lg:grid-cols-2">
+      <div class="rv">
+        <p class="kicker text-dmut">Hackathon index — East Africa builds in sprints</p>
+        <h2 id="hack-h" class="mt-3 text-[clamp(30px,3.6vw,48px)] leading-[1.02]">Every build sprint, prize pool and winning team. Tracked.</h2>
+        <p class="mt-4 max-w-md text-[15px] text-dpaper/85">
+          From Nairobi Build Week to Kisumu's lake hackathons — {STATS.hackathonsIndexed} events indexed with prize pools, tracks, organizers and what happened to the winners.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a class="btn btn-amber" href="/hackathons">Browse the hackathon index</a>
+          <button class="btn btn-ondark" data-modal="listevent">List an event — free</button>
+        </div>
+      </div>
+      <div class="rv" style="--d:120ms">
+        <div class="border border-dpaper/30 bg-green2 p-5">
+          <div class="flex items-center justify-between">
+            <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Next: {featuredHack.title}</p>
+            <Chip kind="sampleEvent" />
+          </div>
+          <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-dmut">Theme: {featuredHack.focus} · Prize {featuredHack.prize}</p>
+          <div class="mt-4">
+            <Countdown id="home-countdown" targetOffsetMs={featuredHack.startOffsetMs!} dark />
+          </div>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            {HACKATHONS.filter((h) => !h.ongoing && !h.featured).slice(0, 3).map((h) => (
+              <a class="chip border-dpaper/40 text-dpaper/90 hover:bg-dpaper/10" href="/hackathons">{h.title} · +{Math.round((h.startOffsetMs ?? 0) / 86400000)}d</a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8) NEWS -->
+  <section class="bg-paper2 py-14" aria-labelledby="news-h">
+    <div class="wrap">
+      <SectionHead no="04" title="The Wire — ecosystem news." link={{ label: 'All coverage →', href: '/news' }} />
+      <div class="grid gap-8 lg:grid-cols-12">
+        <a class="rv group block border border-ink bg-paper lg:col-span-7" href="/news/funding-quarter-five-charts">
+          <div class="overflow-hidden border-b border-ink">
+            <img src="https://picsum.photos/seed/funding-charts/900/480.jpg" alt="Abstract data illustration for the quarterly funding analysis" width="900" height="480" loading="lazy" decoding="async" class="photo-warm h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+          </div>
+          <div class="p-5">
+            <Chip kind="sampleContent" />
+            <h3 class="mt-3 font-display text-[24px] leading-tight">Kenya's funding quarter, in five charts</h3>
+            <p class="mt-2 text-[14px] text-mut">Capital volumes rose again, but the composition changed: fewer, larger rounds; climate instruments multiplying; and a seed gap angels are quietly filling.</p>
+            <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">By Njeri Mwangi · 2 hours ago · 6 min read</p>
+          </div>
+        </a>
+        <div class="rv border border-ink bg-paper lg:col-span-5" style="--d:120ms">
+          {[
+            ['Angel syndicates are quietly filling the seed gap', 'Venture'],
+            ['The real cost of expanding from Nairobi to Kigali', 'Operations'],
+            ['What hackathon pipelines actually produce', 'Talent'],
+            ['Climate capital is changing the instrument', 'Climate'],
+            ['The salary snapshot: what startups paid in 2025', 'Talent'],
+            ['Why verified data beats loud data', 'Opinion'],
+          ].map(([t, k], i) => (
+            <a href="/news" class="rowline group flex items-baseline gap-3 px-4 py-3.5 hover:bg-paper">
+              <span class="statnum text-[12px] text-amber">{String(i + 1).padStart(2, '0')}</span>
+              <span class="flex-1 text-[14px] leading-snug">{t}</span>
+              <span class="mono-label">{k}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9) RESEARCH -->
+  <section class="wrap py-14" aria-labelledby="research-h">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <div class="rv offset-shadow border-2 border-ink bg-green p-8 text-dpaper">
+        <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-dmut">STARTUPS.CO.KE · RESEARCH</p>
+        <svg viewBox="0 0 200 210" class="mx-auto my-6 w-48" aria-hidden="true">
+          <path d="M40,180 L40,60 L100,30 L160,60 L160,180 Z" fill="none" stroke="#EFEAD9" stroke-width="1.4"></path>
+          {[[62, 120], [70, 132], [78, 140], [88, 148], [96, 152], [104, 150], [112, 144], [120, 136], [128, 126], [98, 120], [92, 110], [86, 100], [78, 92], [70, 86], [108, 118], [116, 108], [124, 100], [132, 94], [100, 96], [106, 86], [112, 78], [96, 84], [90, 74]].map(([x, y]) => (
+            <circle cx={x} cy={y} r="2" fill="#EFEAD9" opacity="0.75"></circle>
+          ))}
+          <circle cx="102" cy="132" r="4" fill="#E3A21A"></circle>
+        </svg>
+        <p class="text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">State of Kenya's Startup Ecosystem 2025 · 68 pages</p>
+      </div>
+      <div class="rv" style="--d:120ms">
+        <p class="kicker">Research</p>
+        <h2 id="research-h" class="mt-3 text-[clamp(26px,3.2vw,40px)]">The State of Kenya's Startup Ecosystem 2025.</h2>
+        <p class="mt-3 max-w-md text-[14.5px] text-mut">
+          68 pages of capital flows, sector deep-dives, talent and county-level activity — with the full methodology and every status tag explained. Buy the flagship or unlock the library with membership.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <button class="btn btn-amber" data-modal="buy">Buy — KSh 4,500</button>
+          <button class="btn btn-ghost" data-modal="buy">Free sample chapter</button>
+        </div>
+        <div class="railbox mt-6">
+          {[
+            ['Funding Landscape H1 2025', '34 pages', 'Members'],
+            ['Talent & Compensation Guide', '41 pages', 'KSh 2,500'],
+            ['Hackathon Impact Study', '22 pages', 'Free'],
+          ].map(([t, p, tag]) => (
+            <a href="/research" class="rowline flex items-center justify-between gap-3 px-4 py-3 hover:bg-paper2">
+              <span><span class="block text-[13.5px]">{t}</span><span class="mono-label">{p}</span></span>
+              <span class="chip chip-dashed shrink-0">{tag}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10) BUILT FOR THE WHOLE ECOSYSTEM -->
+  <section class="wrap pb-14" aria-labelledby="audience-h">
+    <SectionHead no="05" title="Built for the whole ecosystem." />
+    <div class="grid gap-5 md:grid-cols-12">
+      <div class="rv railbox p-6 md:col-span-7">
+        <p class="mono-label">Founders</p>
+        <h3 class="mt-2 font-display text-[22px]">Get discovered by the people writing cheques.</h3>
+        <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
+          <li>· A verifiable profile with your own logo, team and funding history</li>
+          <li>· Appear in investor deal-flow requests</li>
+          <li>· Hiring page with your open roles</li>
+        </ul>
+        <div class="mt-4 flex items-center justify-between">
+          <span class="font-mono text-[12px] text-mut">Free forever</span>
+          <button class="btn" data-modal="submit">Claim profile</button>
+        </div>
+      </div>
+      <div class="rv railbox bg-ink p-6 text-paper md:col-span-5" style="--d:80ms">
+        <p class="mono-label text-dmut">Investors</p>
+        <h3 class="mt-2 font-display text-[22px]">See the market before the deck arrives.</h3>
+        <ul class="mt-3 space-y-1.5 text-[14px] text-dpaper/85">
+          <li>· Deal-flow requests from vetted founders</li>
+          <li>· Sector and stage alerts</li>
+          <li>· Verified company data export</li>
+        </ul>
+        <div class="mt-4 flex items-center justify-between">
+          <span class="font-mono text-[12px] text-dmut">KSh 2,900/mo · sample</span>
+          <button class="btn btn-amber" data-modal="trial">Start trial</button>
+        </div>
+      </div>
+      <div class="rv railbox p-6 md:col-span-5">
+        <p class="mono-label">Employers</p>
+        <h3 class="mt-2 font-display text-[22px]">Reach builders where they already read.</h3>
+        <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
+          <li>· Featured listings with verified-employer badge</li>
+          <li>· Salary benchmark context for every role</li>
+        </ul>
+        <div class="mt-4 flex items-center justify-between">
+          <span class="font-mono text-[12px] text-mut">From KSh 6,000 · sample</span>
+          <button class="btn" data-modal="postjob">Post a job</button>
+        </div>
+      </div>
+      <div class="rv railbox bg-paper2 p-6 md:col-span-7" style="--d:80ms">
+        <p class="mono-label">Partners &amp; sponsors</p>
+        <h3 class="mt-2 font-display text-[22px]">Put your name on the ecosystem's record.</h3>
+        <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
+          <li>· Sponsor hackathon index pages and research reports</li>
+          <li>· Custom data cuts and co-branded briefs</li>
+          <li>· Brand placement read by founders, funds and policy teams</li>
+        </ul>
+        <div class="mt-4 flex items-center justify-between">
+          <span class="font-mono text-[12px] text-mut">Custom</span>
+          <button class="btn" data-modal="sponsor">Become a sponsor</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11) PRICING -->
+  <section class="border-t border-ink bg-paper2 py-14" aria-labelledby="pricing-h">
+    <div class="wrap">
+      <SectionHead no="06" title="Pricing that pays for the methodology." />
+      <div class="grid gap-5 lg:grid-cols-3">
+        {SITE.pricing.tiers.map((tier, i) => (
+          <div class={`rv relative border p-6 ${tier.dark ? 'border-ink bg-ink text-paper shadow-[8px_8px_0_var(--color-amber2)]' : 'border-ink bg-paper'}`} style={`--d:${i * 90}ms`}>
+            {tier.tag && <span class="absolute -top-3 left-5 chip chip-amber">{tier.tag}</span>}
+            <p class="font-mono text-[11px] uppercase tracking-[0.14em]">{tier.name}</p>
+            <p class="mt-3"><span class="statnum text-[34px]">{tier.price}</span> <span class={`text-[12px] ${tier.dark ? 'text-dmut' : 'text-mut'}`}>{tier.per}</span></p>
+            <ul class={`mt-4 space-y-2 border-t pt-4 text-[14px] ${tier.dark ? 'border-darkline text-dpaper/90' : 'border-line text-ink2'}`}>
+              {tier.features.map((f) => <li class="flex gap-2"><span class="text-amber2">✓</span>{f}</li>)}
+            </ul>
+            <div class="mt-5">
+              {tier.cta.href
+                ? <a class={`btn w-full ${tier.dark ? 'btn-amber' : 'btn-ghost'}`} href={tier.cta.href}>{tier.cta.label}</a>
+                : <button class={`btn w-full ${tier.dark ? 'btn-amber' : 'btn-ghost'}`} data-modal={tier.cta.modal}>{tier.cta.label}</button>}
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-mut">{SITE.pricing.note}</p>
+    </div>
+  </section>
+
+  <!-- 12) NEWSLETTER BAND -->
+  <section class="bg-green2 py-14 text-dpaper" aria-labelledby="brief-h">
+    <div class="wrap flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+      <div>
+        <p class="kicker text-dmut">The Ecosystem Brief</p>
+        <h2 id="brief-h" class="mt-2 text-[clamp(24px,2.8vw,36px)]">Every Monday, 06:30 EAT. What moved, what funded, what shipped.</h2>
+      </div>
+      <form id="home-brief" class="flex w-full max-w-md border-2 border-dpaper/60" data-kind="newsletter">
+        <input class="min-h-12 flex-1 bg-transparent px-4 text-[15px] text-dpaper placeholder:text-dmut" type="email" name="email" required placeholder="you@company.co.ke" aria-label="Email for The Ecosystem Brief" />
+        <button class="btn btn-amber border-0 border-l-2 border-dpaper/60 px-5" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Home newsletter inline form
+  document.getElementById('home-brief')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const email = (new FormData(form).get('email') as string) ?? '';
+    const { subscribeNewsletter } = await import('@/lib/supabase');
+    try {
+      await subscribeNewsletter(email, 'home');
+      const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
+      toast({ title: 'Subscribed', body: 'First brief lands Monday 06:30 EAT. (Sample flow)' });
+      form.reset();
+    } catch {
+      const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
+      toast({ title: 'Saved locally', body: 'Supabase not connected in this environment.', kind: 'warn' });
+    }
+  });
+</script>

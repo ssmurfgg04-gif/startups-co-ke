@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://startups.co.ke/sitemap-index.xml

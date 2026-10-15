@@ -1,0 +1,17 @@
+---
+import Base from '@/layouts/Base.astro';
+import { SITE } from '@/config/site';
+---
+<Base title="404 — page not found" description="That page does not exist on startups.co.ke." noindex>
+  <section class="wrap flex min-h-[50vh] flex-col items-center justify-center py-20 text-center">
+    <p class="statnum text-[64px] leading-none text-amber">404</p>
+    <h1 class="mt-4 text-[clamp(26px,3vw,40px)]">This address isn't in the index.</h1>
+    <p class="mt-3 max-w-md text-[15px] text-mut">The page you're looking for was moved, renamed, or never tracked. Try the company index or the wire below.</p>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <a class="btn" href="/startups">Company index</a>
+      <a class="btn btn-ghost" href="/news">The Wire</a>
+      <a class="btn btn-ghost" href="/">Home</a>
+    </div>
+    <p class="mt-8 font-mono text-[10px] uppercase tracking-[0.14em] text-mut">{SITE.name} · {SITE.contact.city}</p>
+  </section>
+</Base>

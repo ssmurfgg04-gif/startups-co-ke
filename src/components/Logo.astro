@@ -1,0 +1,17 @@
+---
+/** Brand logo — green mark, diagonal, amber+ivory dots. Rotates on hover. */
+interface Props { variant?: 'dark' | 'light'; href?: string; class?: string }
+const { variant = 'light', href = '/', class: cls = '' } = Astro.props;
+const text = variant === 'light' ? 'text-ink' : 'text-dpaper';
+---
+<a href={href} class={`group inline-flex items-center gap-2.5 ${cls}`} aria-label="startups.co.ke home">
+  <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="shrink-0 transition-transform duration-300 group-hover:rotate-90">
+    <rect x="0" y="0" width="24" height="24" rx="5" fill="var(--color-green)"></rect>
+    <line x1="5" y1="19" x2="19" y2="5" stroke="var(--color-paper)" stroke-width="2"></line>
+    <circle cx="7.2" cy="16.8" r="2.1" fill="var(--color-amber2)"></circle>
+    <circle cx="16.8" cy="7.2" r="2.1" fill="var(--color-paper)"></circle>
+  </svg>
+  <span class={`text-[17px] leading-none ${text}`}>
+    <span class="font-display font-semibold tracking-tight">Startups</span><span class="font-mono text-amber">.co.ke</span>
+  </span>
+</a>

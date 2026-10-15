@@ -1,0 +1,13 @@
+---
+/** Numbered section header with hairline rule (the editorial motif). */
+interface Props { no?: string; title: string; sub?: string; dark?: boolean; link?: { label: string; href: string } }
+const { no, title, sub, dark = false, link } = Astro.props;
+---
+<div class={`mb-7 flex flex-wrap items-end justify-between gap-3 border-b ${dark ? 'border-dpaper/25' : 'border-ink'} pb-3`}>
+  <div>
+    {no && <p class={`kicker mb-1.5 ${dark ? 'text-dmut' : ''}`}>Section {no}</p>}
+    <h2 class={`text-[clamp(26px,3.2vw,40px)] leading-[1.05] ${dark ? 'text-dpaper' : 'text-ink'}`}>{title}</h2>
+    {sub && <p class={`mt-2 max-w-xl text-[14px] ${dark ? 'text-dmut' : 'text-mut'}`}>{sub}</p>}
+  </div>
+  {link && <a class={`link-underline shrink-0 ${dark ? 'text-amber2' : ''}`} href={link.href}>{link.label}</a>}
+</div>
