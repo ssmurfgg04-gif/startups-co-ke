@@ -86,7 +86,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
     </div>
 
     {c.statusNote && (
-      <div class="mt-4 border border-clay bg-clay/10 px-4 py-3">
+      <div class="mt-4 border-l-4 border-clay bg-clay/5 px-4 py-3">
         <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-clay">Status note</p>
         <p class="mt-1 text-[14px] text-ink2">{c.statusNote}</p>
       </div>
@@ -277,8 +277,8 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
         <div class="railbox">
           <div class="railbox-head"><span>Ecosystem actions</span></div>
           <div class="grid gap-2 p-4">
-            <button class="btn w-full" data-modal="intro">Request introduction</button>
-            <button class="btn btn-ghost w-full" data-modal="report">Report data issue</button>
+            <button class="btn btn-ghost w-full" data-modal="intro">Request introduction</button>
+            <button class="btn w-full" data-modal="report">Report data issue</button>
             <button class="btn btn-ghost w-full" data-modal="claim">Claim this profile</button>
           </div>
         </div>

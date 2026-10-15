@@ -1,4 +1,6 @@
 /** Global client behavior: scroll reveals, count-ups, auth session chip. */
+// JS gate: reveal-hidden styles only apply when JS is running (fail-safe without JS)
+document.documentElement.classList.add('js');
 
 // --- Scroll reveal (respects prefers-reduced-motion) ---
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
