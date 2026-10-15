@@ -7,6 +7,8 @@ dist/
 # env & secrets (real values live in .env; .env.example is committed)
 .env
 .env.local
+*.env
+.secrets/
 
 # sandbox / tooling
 .zscripts/
@@ -15,7 +17,6 @@ server.log
 upload/
 download/
 tool-results/
-skills/
 examples/
 mini-services/
 supabase/.temp/
