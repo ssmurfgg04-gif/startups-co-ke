@@ -1,0 +1,4 @@
+auth=GitHub+Supabase
+.env
+*.env
+.secrets/
