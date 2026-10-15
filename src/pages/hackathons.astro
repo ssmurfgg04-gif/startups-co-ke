@@ -3,33 +3,38 @@ import Base from '@/layouts/Base.astro';
 import Chip from '@/components/Chip.astro';
 import Countdown from '@/components/Countdown.astro';
 import SectionHead from '@/components/SectionHead.astro';
-import { HACKATHONS, PAST_WINNERS } from '@/data/hackathons';
+import { HACKATHONS } from '@/data/hackathons';
 import { SITE } from '@/config/site';
 
 const featured = HACKATHONS.find((h) => h.featured)!;
-const ongoing = HACKATHONS.find((h) => h.ongoing)!;
-const upcoming = HACKATHONS.filter((h) => !h.ongoing && !h.featured);
-const past = HACKATHONS.filter((h) => h.startOffsetMs).slice(0, 4).map((h, i) => ({ ...h, startOffsetMs: -(i + 1) * 14 * 86400000 }));
+const ongoing = HACKATHONS.filter((h) => h.status === 'ongoing');
+const upcoming = HACKATHONS.filter((h) => h.status === 'upcoming' && !h.featured);
+const past = HACKATHONS.filter((h) => h.status === 'past');
 const colors = ['bg-green', 'bg-amber', 'bg-ink'];
+const fmtDay = (iso: string) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'Africa/Nairobi' }).format(new Date(iso)).toUpperCase();
+const daysTo = (iso: string) => Math.max(0, Math.round((Date.parse(iso) - Date.now()) / 86400000));
 ---
 <Base
-  title="Hackathons Kenya — build sprints, prize pools & winners"
-  description="Every Kenyan hackathon and builder event: prize pools, tracks, cities, live countdowns and what winning teams did next. List your event free."
+  title="Hackathons Kenya — build sprints, conferences & competitions"
+  description="Every Kenyan hackathon and builder event: dates, tracks, cities, live countdowns and organizers. Compiled from organiser pages — list your event free."
   jsonld={{
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: "Kenya hackathon index",
-    itemListElement: HACKATHONS.filter((h) => !h.ongoing).map((h, i) => ({
+    itemListElement: HACKATHONS.filter((h) => h.startISO).map((h, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       item: {
         '@type': 'Event',
         name: h.title,
+        startDate: h.startISO,
+        endDate: h.endISO,
         eventAttendanceMode: h.mode === 'Online' ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
         location: { '@type': 'Place', name: h.city, address: { '@type': 'PostalAddress', addressLocality: h.city, addressCountry: 'KE' } },
-        organizer: { '@type': 'Organization', name: 'startups.co.ke (sample listing)' },
-        description: `${h.focus} — prize ${h.prize} (illustrative sample listing)`,
-        url: `${SITE.url}/hackathons`,
+        organizer: { '@type': 'Organization', name: h.organizers ?? 'startups.co.ke' },
+        description: h.focus,
+        url: h.url ?? `${SITE.url}/hackathons`,
       },
     })),
   }}
@@ -40,7 +45,7 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
       <p class="kicker text-dmut">BUILD · COMPETE · LAUNCH</p>
       <h1 class="mt-3 max-w-2xl text-[clamp(36px,4.4vw,60px)] leading-[1.0]">Kenya's hackathon &amp; builder events calendar.</h1>
       <p class="mt-4 max-w-xl text-[15px] text-dmut">
-        Prize pools, tracks, organizers and outcomes — every sprint, indexed. {HACKATHONS.length} live listings right now (sample).
+        Real dates from organiser pages — conferences, hackathons and competitions, indexed with tracks and live countdowns. {HACKATHONS.length} listings right now.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <button class="btn btn-amber" data-modal="listevent">Submit an event</button>
@@ -78,30 +83,30 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
             <polygon points="320,40 345,70 295,70" fill="#E3A21A"></polygon>
           </svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center text-dpaper">
-            <p class="statnum text-[44px] leading-none">NOV 14–16</p>
-            <p class="mono-label mt-2 text-dmut">Nairobi · 48 hours</p>
+            <p class="statnum text-[44px] leading-none">NOV 13–14</p>
+            <p class="mono-label mt-2 text-dmut">Nairobi · 08:00 EAT open</p>
           </div>
         </div>
         <div class="p-6 lg:col-span-7">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="chip chip-solid">Featured · Sponsored</span>
-            <Chip kind="sampleEvent" />
+            <span class="chip chip-solid">Featured</span>
+            {featured.verifiedOrganizer && <span class="chip border-green text-green">Organizer verified</span>}
           </div>
           <h2 class="mt-3 text-[clamp(24px,2.6vw,34px)]">{featured.title}</h2>
           <p class="mt-2 text-[14.5px] text-ink2">{featured.theme}</p>
           <div class="mt-4 grid gap-3 sm:grid-cols-3">
-            <div><p class="mono-label">Prize pool</p><p class="statnum mt-1 text-[18px]">{featured.prize}</p></div>
-            <div><p class="mono-label">Teams</p><p class="mt-1 text-[14px]">2–5 builders</p></div>
-            <div><p class="mono-label">Registered</p><p class="statnum mt-1 text-[18px]">{featured.builders}</p></div>
+            <div><p class="mono-label">Kind</p><p class="mt-1 text-[14px]">{featured.kind}</p></div>
+            <div><p class="mono-label">City</p><p class="mt-1 text-[14px]">{featured.city}</p></div>
+            <div><p class="mono-label">Dates</p><p class="mt-1 text-[14px]">Nov 13–14, 2026</p></div>
           </div>
           <div class="mt-3 flex flex-wrap gap-1.5">{featured.tracks!.map((t) => <span class="chip chip-dashed">{t}</span>)}</div>
           <p class="mono-label mt-3">Organizers: {featured.organizers}</p>
           <div class="mt-5">
-            <Countdown id="featured-countdown" targetOffsetMs={featured.startOffsetMs!} />
+            <Countdown id="featured-countdown" targetISO={featured.startISO} />
           </div>
           <div class="mt-4 flex flex-wrap gap-2">
-            <button class="btn btn-amber" data-modal="register">Register team</button>
-            <button class="btn btn-ghost" data-modal="register">Event details</button>
+            {featured.url && <a class="btn btn-amber" href={featured.url} target="_blank" rel="noopener noreferrer">Event details ↗</a>}
+            <button class="btn btn-ghost" data-modal="register">Get reminders</button>
           </div>
         </div>
       </div>
@@ -111,7 +116,7 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
         {upcoming.map((h, i) => (
           <div class="rv flex flex-col border border-ink bg-paper" style={`--d:${i * 60}ms`}>
             <div class={`flex h-16 items-center justify-center ${colors[i % 3]} text-dpaper`}>
-              <span class="statnum text-[16px]">+{Math.round((h.startOffsetMs ?? 0) / 86400000)} DAYS</span>
+              <span class="statnum text-[16px]">{h.startISO ? `+${daysTo(h.startISO)} DAYS` : h.dateLabel ?? 'DATES TBA'}</span>
             </div>
             <div class="flex flex-1 flex-col p-4">
               <h3 class="font-display text-[18px] leading-tight">{h.title}</h3>
@@ -119,11 +124,14 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
               <div class="mt-3 flex flex-wrap gap-1.5">
                 <span class="chip">📍 {h.city}</span>
                 <span class="chip chip-dashed">{h.mode}</span>
-                <span class="chip">{h.prize}</span>
+                {h.startISO && <span class="chip">{fmtDay(h.startISO)}</span>}
+                {!h.startISO && <Chip kind="tba" />}
               </div>
               <div class="mt-auto flex items-center justify-between pt-4">
-                {h.verifiedOrganizer ? <Chip kind="verified" /> : <span class="mono-label">{h.builders} builders</span>}
-                <button class="btn btn-ghost h-9" data-modal="register">Register</button>
+                {h.verifiedOrganizer ? <Chip kind="verified" /> : <span class="mono-label">{h.kind}</span>}
+                {h.url
+                  ? <a class="btn btn-ghost h-9" href={h.url} target="_blank" rel="noopener noreferrer">Details ↗</a>
+                  : <button class="btn btn-ghost h-9" data-modal="register">Remind me</button>}
               </div>
             </div>
           </div>
@@ -133,19 +141,27 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
 
     <!-- ONGOING -->
     <div id="ev-ongoing" class="mt-8 hidden">
-      <div class="border border-clay bg-paper p-6">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <span class="relative inline-flex h-3 w-3"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-clay opacity-75"></span><span class="relative inline-flex h-3 w-3 rounded-full bg-clay"></span></span>
-            <span class="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-clay">LIVE NOW</span>
+      {ongoing.map((h, i) => (
+        <div class={i ? 'mt-4' : ''}>
+          <div class="border border-clay bg-paper p-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <span class="relative inline-flex h-3 w-3"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-clay opacity-75"></span><span class="relative inline-flex h-3 w-3 rounded-full bg-clay"></span></span>
+                <span class="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-clay">LIVE NOW</span>
+              </div>
+              <span class="mono-label">ends {h.endISO ? fmtDay(h.endISO) : '—'}</span>
+            </div>
+            <h2 class="mt-3 text-[clamp(24px,2.6vw,34px)]">{h.title}</h2>
+            <p class="mt-1 text-[14.5px] text-ink2">{h.focus} · {h.city} · {h.mode}</p>
+            {h.endISO && <div class="mt-4 max-w-md"><Countdown id={`ongoing-countdown-${h.id}`} targetISO={h.endISO} mode="hms" dark={false} /></div>}
+            <div class="mt-4 flex gap-2">
+              {h.url && <a class="btn" href={h.url} target="_blank" rel="noopener noreferrer">Join ↗</a>}
+              <button class="btn btn-ghost" data-modal="register">Get reminders</button>
+            </div>
           </div>
-          <Chip kind="sampleEvent" />
         </div>
-        <h2 class="mt-3 text-[clamp(24px,2.6vw,34px)]">{ongoing.title}</h2>
-        <p class="mt-1 text-[14.5px] text-ink2">{ongoing.focus} · prize {ongoing.prize} · online</p>
-        <div class="mt-4 max-w-md"><Countdown id="ongoing-countdown" targetOffsetMs={ongoing.endOffsetMs!} mode="hms" dark={false} /></div>
-        <button class="btn mt-4" data-modal="register">Join mid-sprint</button>
-      </div>
+      ))}
+      {!ongoing.length && <p class="text-[14px] text-mut">Nothing live right now — check the upcoming tab.</p>}
     </div>
 
     <!-- PAST -->
@@ -153,15 +169,15 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
       <div class="overflow-x-auto border border-ink bg-paper">
         <table class="w-full min-w-[640px] border-collapse text-[13.5px]">
           <thead class="bg-paper2">
-            <tr><th scope="col" class="th-mono">Event</th><th scope="col" class="th-mono">Winning team</th><th scope="col" class="th-mono">Prize</th><th scope="col" class="th-mono">What happened next</th></tr>
+            <tr><th scope="col" class="th-mono">Event</th><th scope="col" class="th-mono">Dates</th><th scope="col" class="th-mono">City</th><th scope="col" class="th-mono">Notes</th></tr>
           </thead>
           <tbody>
-            {PAST_WINNERS.map((w) => (
+            {past.map((h) => (
               <tr class="rowline">
-                <td class="px-3 py-3 font-medium">{w.event}</td>
-                <td class="px-3 py-3">{w.team}</td>
-                <td class="px-3 py-3 statnum">{w.prize}</td>
-                <td class="px-3 py-3 text-mut">{w.outcome}</td>
+                <td class="px-3 py-3 font-medium">{h.title}</td>
+                <td class="px-3 py-3 font-mono text-[12px] text-mut">{h.startISO ? `${fmtDay(h.startISO)} – ${h.endISO ? fmtDay(h.endISO) : ''}` : h.dateLabel}</td>
+                <td class="px-3 py-3">{h.city}</td>
+                <td class="px-3 py-3 text-mut">{h.notes}</td>
               </tr>
             ))}
           </tbody>
@@ -171,7 +187,7 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
 
     <!-- Calendar -->
     <div id="calendar" class="mt-14">
-      <SectionHead title="Ecosystem calendar." sub="Amber dot = indexed hackathon. Month grid runs Monday-first (sample schedule)." />
+      <SectionHead title="Ecosystem calendar." sub="Amber dot = indexed event with a real date. Month grid runs Monday-first." />
       <div class="railbox mx-auto max-w-2xl">
         <div class="flex items-center justify-between border-b border-ink px-4 py-3">
           <button id="cal-prev" class="btn btn-ghost h-8 px-2.5" aria-label="Previous month">←</button>
@@ -180,7 +196,7 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
         </div>
         <div id="cal-grid" class="grid grid-cols-7 gap-px bg-line"></div>
         <div class="flex items-center gap-4 border-t border-ink px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">
-          <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-amber"></span>Indexed hackathon</span>
+          <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-amber"></span>Indexed event</span>
           <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-clay"></span>Featured</span>
           <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-ink ring-1 ring-ink"></span>Today</span>
         </div>
@@ -203,54 +219,58 @@ const colors = ['bg-green', 'bg-amber', 'bg-ink'];
   </section>
 </Base>
 
-<script>
+<script define:vars={{ HACKATHONS: HACKATHONS.filter((h) => h.startISO).map((h) => ({ start: h.startISO, end: h.endISO, title: h.title, featured: !!h.featured })) }}>
   // Tabs
-  document.querySelectorAll<HTMLButtonElement>('.ev-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.ev-tab').forEach((t) => {
+  document.querySelectorAll('.ev-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.ev-tab').forEach(function (t) {
         t.classList.remove('border-ink', 'bg-ink', 'text-paper');
         t.classList.add('border-line', 'text-mut');
       });
       tab.classList.add('border-ink', 'bg-ink', 'text-paper');
       tab.classList.remove('border-line', 'text-mut');
-      ['upcoming', 'ongoing', 'past'].forEach((n) => document.getElementById(`ev-${n}`)?.classList.toggle('hidden', n !== tab.dataset.tab));
+      ['upcoming', 'ongoing', 'past'].forEach(function (n) {
+        var el = document.getElementById('ev-' + n);
+        if (el) el.classList.toggle('hidden', n !== tab.dataset.tab);
+      });
     });
   });
 
-  // Calendar (offset-computed sample events)
-  const DAY = 86400000;
-  const events = [
-    { offset: 21, title: 'Nairobi Build Week 2026', featured: true },
-    ...[5, 9, 12, 18, 26, 33, 40, 47, 54, 61].map((o) => ({ offset: o, title: 'Indexed hackathon', featured: false })),
-  ];
-  let monthOffset = 0;
-  const grid = document.getElementById('cal-grid')!;
-  const titleEl = document.getElementById('cal-title')!;
-  const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  // Calendar — REAL dated events
+  var DAY = 86400000;
+  var events = HACKATHONS.map(function (h) {
+    var out = [];
+    var s = new Date(h.start);
+    var e = h.end ? new Date(h.end) : s;
+    for (var d = new Date(s); d <= e; d = new Date(d.getTime() + DAY)) out.push({ date: d.toISOString().slice(0, 10), title: h.title, featured: h.featured });
+    return out;
+  }).flat();
+  var monthOffset = 0;
+  var grid = document.getElementById('cal-grid');
+  var titleEl = document.getElementById('cal-title');
+  var DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   function render() {
-    const base = new Date();
-    const view = new Date(base.getFullYear(), base.getMonth() + monthOffset, 1);
+    var base = new Date();
+    var view = new Date(base.getFullYear(), base.getMonth() + monthOffset, 1);
     titleEl.textContent = view.toLocaleDateString('en-KE', { month: 'long', year: 'numeric' });
-    const firstDow = (view.getDay() + 6) % 7;
-    const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
-    const today = new Date();
-    let html = DOW.map((d) => `<div class="mono-label bg-paper2 px-1 py-2 text-center">${d}</div>`).join('');
-    for (let i = 0; i < firstDow; i++) html += '<div class="bg-paper"></div>';
-    for (let d = 1; d <= days; d++) {
-      const thisDate = new Date(view.getFullYear(), view.getMonth(), d);
-      const isToday = thisDate.toDateString() === today.toDateString();
-      const ev = events.find((e) => {
-        const ed = new Date(today.getTime() + e.offset * DAY);
-        return ed.getFullYear() === thisDate.getFullYear() && ed.getMonth() === thisDate.getMonth() && ed.getDate() === thisDate.getDate();
-      });
-      html += `<div class="relative min-h-[64px] bg-paper p-1.5 text-right ${isToday ? 'ring-2 ring-ink' : ''}">
-        <span class="font-mono text-[11px] ${isToday ? 'font-semibold' : 'text-mut'}">${d}</span>
-        ${ev ? `<span title="${ev.title}" class="absolute bottom-1.5 left-1.5 inline-block h-2 w-2 rounded-full ${ev.featured ? 'bg-clay' : 'bg-amber'}"></span>` : ''}
-      </div>`;
+    var firstDow = (view.getDay() + 6) % 7;
+    var days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+    var today = new Date();
+    var html = DOW.map(function (d) { return '<div class="mono-label bg-paper2 px-1 py-2 text-center">' + d + '</div>'; }).join('');
+    for (var i = 0; i < firstDow; i++) html += '<div class="bg-paper"></div>';
+    for (var d = 1; d <= days; d++) {
+      var thisDate = new Date(view.getFullYear(), view.getMonth(), d);
+      var iso = view.getFullYear() + '-' + String(view.getMonth() + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      var isToday = thisDate.toDateString() === today.toDateString();
+      var ev = events.find(function (e) { return e.date === iso; });
+      html += '<div class="relative min-h-[64px] bg-paper p-1.5 text-right ' + (isToday ? 'ring-2 ring-ink' : '') + '">'
+        + '<span class="font-mono text-[11px] ' + (isToday ? 'font-semibold' : 'text-mut') + '">' + d + '</span>'
+        + (ev ? '<span title="' + ev.title + '" class="absolute bottom-1.5 left-1.5 inline-block h-2 w-2 rounded-full ' + (ev.featured ? 'bg-clay' : 'bg-amber') + '"></span>' : '')
+        + '</div>';
     }
     grid.innerHTML = html;
   }
-  document.getElementById('cal-prev')?.addEventListener('click', () => { monthOffset--; render(); });
-  document.getElementById('cal-next')?.addEventListener('click', () => { monthOffset++; render(); });
+  document.getElementById('cal-prev').addEventListener('click', function () { monthOffset--; render(); });
+  document.getElementById('cal-next').addEventListener('click', function () { monthOffset++; render(); });
   render();
 </script>

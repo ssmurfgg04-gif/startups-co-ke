@@ -9,9 +9,10 @@ const news = defineCollection({
     dek: z.string(),
     mins: z.number(),
     date: z.string(), // ISO
-    author: z.string().default('Njeri Mwangi'),
+    author: z.string().default('startups.co.ke desk'),
     imageSeed: z.string(),
     featured: z.boolean().default(false),
+    sources: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
   }),
 });
 

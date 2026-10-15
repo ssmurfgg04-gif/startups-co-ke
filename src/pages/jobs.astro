@@ -4,19 +4,13 @@ import Monogram from '@/components/Monogram.astro';
 import Chip from '@/components/Chip.astro';
 import { JOBS, JOB_CATEGORIES } from '@/data/jobs';
 import { companyById } from '@/data/companies';
+import { SALARY_BANDS } from '@/data/ecosystem';
 import { relDays } from '@/lib/utils';
 import { SITE } from '@/config/site';
 
 const jobs = JOBS;
-const salaryMax = 700;
-const bands = [
-  { role: 'Backend', min: 450, max: 600 },
-  { role: 'Data / ML', min: 380, max: 550 },
-  { role: 'Product', min: 350, max: 450 },
-  { role: 'Mobile', min: 320, max: 460 },
-  { role: 'Design', min: 220, max: 300 },
-  { role: 'Growth', min: 200, max: 280 },
-];
+const salaryMax = 500;
+const bands = SALARY_BANDS;
 ---
 <Base
   title="Tech jobs Nairobi — startup jobs in Kenya"
@@ -38,7 +32,7 @@ const bands = [
           ...(j.mode === 'Remote' ? { jobLocationType: 'TELECOMMUTE' } : {}),
           datePosted: new Date(Date.now() - j.postedDays * 86400000).toISOString().slice(0, 10),
           baseSalary: { '@type': 'MonetaryAmount', currency: 'KES', value: { '@type': 'QuantitativeValue', minValue: j.salaryMin * 1000, maxValue: j.salaryMax * 1000, unitText: 'MONTH' } },
-          description: j.description + ' (Sample listing)',
+          description: j.description + (j.source ? ` (Source: ${j.source})` : ''),
           url: `${SITE.url}/jobs`,
         },
       };
@@ -48,7 +42,7 @@ const bands = [
   <!-- Dark hero -->
   <section class="bg-dark py-12 text-dpaper">
     <div class="wrap">
-      <p class="kicker text-dmut">{jobs.length * 31}+ open roles · sample index</p>
+      <p class="kicker text-dmut">{jobs.length} roles seen live on employer boards · indexed Oct 15, 2026</p>
       <h1 class="mt-3 max-w-2xl text-[clamp(34px,4.2vw,56px)] leading-[1.02]">Tech jobs at Kenya's most ambitious startups.</h1>
       <form class="mt-6 flex max-w-2xl flex-wrap gap-2" role="search" aria-label="Search jobs">
         <input class="input min-h-11 flex-1 border-dpaper/40 bg-dark2 text-dpaper placeholder:text-dmut" name="q" placeholder="Role, skill or company…" aria-label="Search jobs" />
@@ -82,7 +76,7 @@ const bands = [
             return (
               <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
                 <div class="flex w-full cursor-pointer flex-wrap items-center gap-3 px-4 py-4 text-left hover:bg-paper2" data-expand role="button" tabindex="0" aria-expanded="false">
-                  <Monogram name={c.name} sector={c.sector} size="md" />
+                  <Monogram name={c.name} sector={c.sector} size="md" logo={c.logo ?? undefined} domain={c.domain ?? undefined} />
                   <span class="min-w-0 flex-1">
                     <span class="flex flex-wrap items-center gap-2">
                       <span class="text-[15px] font-medium">{j.title}</span>
@@ -95,7 +89,7 @@ const bands = [
                   </span>
                   <span class="text-right">
                     <span class="statnum block text-[13px]">{j.salary}</span>
-                    <span class="mono-label">sample · {relDays(j.postedDays)}</span>
+                    <span class="mono-label">{relDays(j.postedDays)}</span>
                   </span>
                   <button class="bookmark-btn btn btn-ghost h-9 w-9 !min-h-0 !px-0" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4-6 4Z"></path></svg>
@@ -107,10 +101,12 @@ const bands = [
                     <div class="border-t border-line px-4 py-4">
                       <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">{j.description}</p>
                       <div class="mt-3 flex flex-wrap gap-1.5">{j.tags.map((t) => <span class="chip chip-dashed">{t}</span>)}</div>
-                      <div class="mt-4 flex gap-2">
-                        <button class="btn btn-amber h-9" data-modal="apply">Apply now</button>
+                      <div class="mt-4 flex flex-wrap gap-2">
+                        {j.applyUrl && <a class="btn btn-amber h-9" href={j.applyUrl} target="_blank" rel="noopener noreferrer">Apply on employer board ↗</a>}
+                        {!j.applyUrl && <button class="btn btn-amber h-9" data-modal="apply">Apply now</button>}
                         <button class="btn btn-ghost h-9" data-modal="report">Report listing</button>
                       </div>
+                      {j.source && <p class="mono-label mt-3">Source: {j.source} · salary shown is a market band, not the offer</p>}
                     </div>
                   </div>
                 </div>
@@ -124,7 +120,7 @@ const bands = [
       <!-- Right rail -->
       <aside class="space-y-6 lg:col-span-4">
         <div class="railbox">
-          <div class="railbox-head"><span>Employers — post a job</span><Chip kind="samplePricing" /></div>
+          <div class="railbox-head"><span>Employers — post a job</span></div>
           <div class="px-4 py-3">
             {SITE.jobPostPricing.map((p) => (
               <div class="flex items-center justify-between border-b border-line py-2 last:border-0">
@@ -136,7 +132,7 @@ const bands = [
         </div>
 
         <div class="railbox">
-          <div class="railbox-head"><span>Salary benchmark · KSh K/mo</span><Chip kind="illustrative" /></div>
+          <div class="railbox-head"><span>Salary benchmark · KSh K/mo</span><Chip kind="estimated" /></div>
           <div class="px-4 py-4">
             {bands.map((b) => (
               <div class="mb-3 last:mb-0">
@@ -148,7 +144,7 @@ const bands = [
                 </div>
               </div>
             ))}
-            <p class="mono-label mt-3">Source: employer survey (sample) · axis 0–700K</p>
+            <p class="mono-label mt-3">Source: CareerBuddy (Jun 2026) · Mctaba (Jun 2026) · WageIndicator (2026) · axis 0–500K</p>
           </div>
         </div>
 
@@ -157,7 +153,7 @@ const bands = [
           <form class="px-4 py-4" data-kind="newsletter">
             <label class="mono-label block" for="ja-email">Email</label>
             <input id="ja-email" name="email" type="email" required class="input mt-1" placeholder="you@dev.co.ke" />
-            <p class="mono-label mt-2">Weekly digest · sample flow</p>
+            <p class="mono-label mt-2">Weekly digest · one email a week</p>
             <button class="btn mt-3 w-full" type="submit">Create alert</button>
           </form>
         </div>

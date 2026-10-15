@@ -81,7 +81,7 @@ counters.forEach((el) => cio.observe(el));
   }
 })();
 
-// --- "Mockup · sample data" floating chip opens About modal ---
+// --- "Data · compiled from public sources" floating chip opens About modal ---
 const float = document.getElementById('sample-chip');
 if (float) {
   float.addEventListener('click', () => {

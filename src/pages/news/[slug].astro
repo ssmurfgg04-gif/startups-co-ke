@@ -41,7 +41,7 @@ const related = (await getCollection('news')).filter((p) => p.id !== entry.id).s
 
     <div class="mt-4 flex flex-wrap items-center gap-2">
       <span class="chip chip-solid">{d.category}</span>
-      <Chip kind="sampleContent" />
+      <span class="chip chip-dashed">Sourced analysis</span>
     </div>
     <h1 class="mt-3 text-[clamp(30px,3.6vw,46px)] leading-[1.05]">{d.title}</h1>
     <p class="mt-3 text-[17px] leading-relaxed text-ink2">{d.dek}</p>
@@ -57,6 +57,19 @@ const related = (await getCollection('news')).filter((p) => p.id !== entry.id).s
     <div class="prose-sck mt-8 max-w-none">
       <Content />
     </div>
+
+    {d.sources.length > 0 && (
+      <div class="railbox mt-8">
+        <div class="railbox-head"><span>Sources</span><span class="mono-label">named · public</span></div>
+        <ul class="px-4 py-3">
+          {d.sources.map((src) => (
+            <li class="border-b border-line py-2 text-[13.5px] last:border-0">
+              <a class="text-green hover:underline" href={src.url} target="_blank" rel="noopener noreferrer">{src.label} ↗</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
     <div class="mt-10 border-t border-ink pt-6">
       <p class="mono-label mb-3">More from the desk</p>

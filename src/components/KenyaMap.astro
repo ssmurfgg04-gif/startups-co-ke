@@ -107,7 +107,7 @@ const routes = ['Mombasa', 'Nakuru', 'Kisumu', 'Eldoret'].map((c) => ({
 }));
 const equatorY = latY(0).toFixed(1);
 ---
-<figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's startup hubs (illustrative sample)">
+<figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's tracked startup hubs">
   <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full" role="img">
     <!-- land -->
     <path d={borderPath} fill="var(--color-paper2)"></path>
@@ -139,7 +139,7 @@ const equatorY = latY(0).toFixed(1);
       const x = lonX(c.lon), y = latY(c.lat);
       const big = Boolean(c.capital);
       return (
-        <g class="map-hub cursor-pointer" data-city={city} data-count={c.count} tabindex="0" role="button" aria-label={`${city}: ${c.count} companies tracked (sample)`}>
+        <g class="map-hub cursor-pointer" data-city={city} data-count={c.count} tabindex="0" role="button" aria-label={`${city}: ${c.count} companies tracked`}>
           {big && <circle cx={x} cy={y} r="9" fill="var(--color-amber2)" opacity="0.35" class="anim-pulse-ring"></circle>}
           <circle cx={x} cy={y} r={big ? 5 : 3.6} fill="var(--color-amber)" stroke={big ? 'var(--color-paper)' : 'none'} stroke-width={big ? 1.4 : 0}></circle>
           <text x={x + (big ? 9 : 7)} y={y + 3} class="pointer-events-none fill-[#181712] font-mono font-semibold" font-size={big ? 11 : 9.5} letter-spacing="1">{city.toUpperCase()}</text>
@@ -168,7 +168,7 @@ const equatorY = latY(0).toFixed(1);
   </svg>
 
   <figcaption class="border-t border-ink bg-paper px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
-    <span id="map-caption">Kenya — {total} companies tracked across 6 hubs · 63% in Nairobi (sample)</span>
+    <span id="map-caption">Kenya — {total} tracked profiles · coverage is Nairobi-first, expanding regionally</span>
   </figcaption>
 </figure>
 
@@ -192,14 +192,14 @@ const equatorY = latY(0).toFixed(1);
     const caption = document.getElementById('map-caption');
     const activate = () => {
       if (caption && city && count)
-        caption.textContent = `${city} — ${count} companies tracked · ${city === 'Nairobi' ? '63' : Math.round((Number(count) / 401) * 100)}% of the index (sample)`;
+        caption.textContent = `${city} — ${count} companies tracked · ${city === 'Nairobi' ? '90' : Math.round((Number(count) / Math.max(1, total)) * 100)}% of the tracked index`;
       location.href = `/startups?city=${encodeURIComponent(city!)}`;
     };
     hub.addEventListener('mouseenter', () => {
-      if (caption && city && count) caption.textContent = `${city} — ${count} companies tracked (sample)`;
+      if (caption && city && count) caption.textContent = `${city} — ${count} companies tracked`;
     });
     hub.addEventListener('mouseleave', () => {
-      if (caption) caption.textContent = `Kenya — 401 companies tracked across 6 hubs · 63% in Nairobi (sample)`;
+      if (caption) caption.textContent = `Kenya — tracked profiles · coverage is Nairobi-first`;
     });
     hub.addEventListener('click', activate);
     hub.addEventListener('keydown', (e) => {

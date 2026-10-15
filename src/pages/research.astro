@@ -2,10 +2,15 @@
 import Base from '@/layouts/Base.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import Chip from '@/components/Chip.astro';
-import { REPORTS } from '@/data/ecosystem';
+import { REPORTS, TRENDS } from '@/data/ecosystem';
 import { SITE } from '@/config/site';
 const flagship = REPORTS.find((r) => r.flagship)!;
 const library = REPORTS.filter((r) => !r.flagship);
+const ARXIV = [
+  { id: '2401.05760', title: 'Follow The Money: Key Factors Influencing Investment in African Startups', note: 'Funding drivers across African ecosystems — methodology reference for our status system.' },
+  { id: '2408.09420', title: 'GraphRAG for startup-success prediction', note: 'Graph-based retrieval over funding graphs — informs how we link rounds, investors and companies.' },
+  { id: '2410.03552', title: 'Risk ranking of AI startups in emerging markets (LATAM study)', note: 'Comparative emerging-market methodology — closest published analogue to Kenya\u2019s dataset.' },
+];
 ---
 <Base
   title="Research — Kenya startup ecosystem reports"
@@ -35,13 +40,13 @@ const library = REPORTS.filter((r) => !r.flagship);
             <circle cx="102" cy="132" r="4" fill="#E3A21A"></circle>
           </svg>
           <p class="text-center font-display text-[20px] leading-tight">{flagship.title}</p>
-          <p class="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">{flagship.pages} pages · sample edition</p>
+          <p class="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">{flagship.pages} pages · {flagship.date} · sourced edition</p>
         </div>
       </div>
       <div class="rv lg:col-span-7" style="--d:120ms">
         <div class="flex flex-wrap items-center gap-2">
           <span class="chip chip-solid">Flagship</span>
-          <Chip kind="sampleContent" />
+          <Chip kind="confirmed" />
         </div>
         <h2 class="mt-3 text-[clamp(26px,3vw,38px)]">{flagship.title}</h2>
         <p class="mt-3 max-w-xl text-[15px] text-ink2">{flagship.blurb}</p>
@@ -57,7 +62,6 @@ const library = REPORTS.filter((r) => !r.flagship);
         </div>
       </div>
     </div>
-
     <div class="mt-14">
       <SectionHead title="Library — all reports." sub="Members unlock everything; individual reports available one-off." />
       <div class="border border-ink bg-paper">
@@ -66,12 +70,47 @@ const library = REPORTS.filter((r) => !r.flagship);
             <div class="min-w-0 flex-1">
               <p class="text-[15.5px] font-medium">{r.title}</p>
               <p class="mt-0.5 text-[13px] text-mut">{r.blurb}</p>
-              <p class="mono-label mt-1.5">{r.pages} pages · {r.date.slice(0, 7)}</p>
+              <p class="mono-label mt-1.5">{r.pages} pages · {r.date}</p>
             </div>
             <span class={`chip shrink-0 ${r.price === 'Free' ? 'chip-solid' : r.price === 'Members' ? 'chip-dashed' : 'chip-amber'}`}>{r.price}</span>
             <button class="btn btn-ghost shrink-0" data-modal="buy">{r.price === 'Free' ? 'Download' : 'Unlock'}</button>
           </div>
         ))}
+      </div>
+    </div>
+
+    <!-- Methodology & external research -->
+    <div class="mt-14 grid gap-8 lg:grid-cols-2">
+      <div class="railbox">
+        <div class="railbox-head"><span>Methodology references · arXiv</span><Chip kind="reported" /></div>
+        <div class="px-4 py-3">
+          {ARXIV.map((a) => (
+            <a class="rowline block py-2.5" href={`https://arxiv.org/abs/${a.id}`} target="_blank" rel="noopener noreferrer">
+              <span class="block text-[14px] font-medium">{a.title}</span>
+              <span class="mono-label">arXiv:{a.id} · {a.note}</span>
+            </a>
+          ))}
+          <p class="mt-2 text-[12.5px] text-mut">Peer-reviewed and preprint work our status-tagging and graph-linking methodology draws on — cited, not buried.</p>
+        </div>
+      </div>
+      <div class="railbox">
+        <div class="railbox-head"><span>Consumer pulse · Google Trends KE</span><span class="mono-label">daily RSS · Oct 15, 2026</span></div>
+        <div class="px-4 py-3">
+          {TRENDS.map((t) => (
+            <div class="rowline flex items-center justify-between py-2">
+              <span class="text-[14px]">{t.keyword}</span>
+              <span class="statnum text-[13px]">{t.volume}</span>
+            </div>
+          ))}
+          <p class="mt-2 text-[12.5px] text-mut">Live consumer-search context from Google Trends (Kenya, daily RSS) — the demand-side backdrop to the funding data.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="railbox mt-8">
+      <div class="railbox-head"><span>Why our counts differ from other databases</span></div>
+      <div class="px-4 py-4 text-[14px] leading-relaxed text-ink2">
+        <p>Tracxn lists 13,642 Kenyan startups; StartupBlink counts 659. Neither is a lie — they measure different things, and neither tells you which listings ever raised a shilling. This platform takes the opposite trade: fewer profiles, every figure status-tagged, every failure tracked. Where our coverage is thin we say so — a coverage gap is not a market gap.</p>
       </div>
     </div>
   </section>

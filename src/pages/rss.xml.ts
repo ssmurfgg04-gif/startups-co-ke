@@ -6,7 +6,7 @@ export async function GET(context: { site: URL }) {
   const posts = (await getCollection('news')).sort((a, b) => b.data.date.localeCompare(a.data.date));
   return rss({
     title: 'The Wire — startups.co.ke',
-    description: 'Analysis on Kenya\u2019s startup ecosystem: funding, venture mechanics, talent and climate capital. (Sample publication)',
+    description: 'Analysis on Kenya\u2019s startup ecosystem: funding, venture mechanics, talent and climate capital. (named sources on every figure)',
     site: context.site ?? SITE.url,
     items: posts.map((p) => ({
       title: p.data.title,

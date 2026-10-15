@@ -12,7 +12,7 @@ const email = SITE.contact.email;
 <dialog id="modal-about" class="dialog-card" aria-labelledby="about-title">
   <div class="border-b border-ink px-5 py-3.5"><p id="about-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">About this platform</p></div>
   <div class="max-h-[70vh] overflow-y-auto px-5 py-4 text-[14px] leading-relaxed">
-    <p>startups.co.ke is an ecosystem and business-intelligence platform design for Kenya's startup economy. <strong>Every entity and figure is an illustrative sample</strong> describing no real company, investor or transaction — the honesty system (chips, dots, statuses) is part of the product.</p>
+    <p>startups.co.ke is an ecosystem and business-intelligence platform for Kenya's startup economy. <strong>Data is real and compiled from public sources</strong> — every figure carries a status (Confirmed / Reported / Estimated) and a named source; Verified means cross-checked against at least two independent public sources.</p>
     <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.12em] text-mut">Things to try</p>
     <ul class="mt-2 space-y-1.5">
       <li>· Press <kbd class="border border-line px-1 font-mono text-[11px]">/</kbd> and search “pesa”</li>
@@ -32,12 +32,12 @@ const email = SITE.contact.email;
 <dialog id="modal-methodology" class="dialog-card" aria-labelledby="meth-title">
   <div class="border-b border-ink px-5 py-3.5"><p id="meth-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Methodology &amp; statuses</p></div>
   <div class="max-h-[70vh] overflow-y-auto space-y-3 px-5 py-4 text-[14px] leading-relaxed">
-    <p><strong>Verified company</strong> — registry extract plus team checks (design fiction, labelled as sample throughout).</p>
+    <p><strong>Verified company</strong> — cross-checked against ≥2 independent public sources as of Oct 15, 2026 (press, registries, investor announcements).</p>
     <p><strong>Unverified</strong> — self-reported profile pending checks. Shown with a dashed chip.</p>
     <p><strong>Confirmed</strong> — round confirmed by a company statement or lead-investor memo.</p>
     <p><strong>Reported</strong> — credible secondary source; awaiting confirmation.</p>
     <p><strong>Estimated</strong> — modelled from registry filings or comparable data.</p>
-    <p class="text-mut">All figures on this platform are illustrative samples and describe no real entity or transaction.</p>
+    <p class="text-mut">Failure states are tracked like funding states — administration, liquidation, shutdown and restructuring are visible on profiles, not hidden. Spotted an error? Use “Report data issue” on any profile.</p>
   </div>
   <div class="flex justify-end border-t border-ink px-5 py-3"><button class="btn btn-ghost h-9" data-close>Close</button></div>
 </dialog>
@@ -73,7 +73,7 @@ const email = SITE.contact.email;
       <div class="sm:col-span-2"><label class="mono-label block" for="su-tag">One-liner *</label><input id="su-tag" name="tagline" required class="input mt-1" placeholder="What you do, in one line" /></div>
       <div class="sm:col-span-2"><label class="mono-label block" for="su-logo">Logo (optional — we keep it on your profile)</label><input id="su-logo" name="logo" type="file" accept="image/*" class="input-mono input mt-1 pt-2" /></div>
     </div>
-    <p class="mono-label mt-3">Submissions land in our review queue. Sample flow — nothing is published automatically.</p>
+    <p class="mono-label mt-3">Submissions land in our review queue — nothing is published automatically. Logos are kept on your profile once approved.</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Submit for review</button>
@@ -88,7 +88,7 @@ const email = SITE.contact.email;
     <label class="mono-label block" for="cl-name">Your name *</label><input id="cl-name" name="name" required class="input mt-1" />
     <label class="mono-label mt-3 block" for="cl-email">Work email *</label><input id="cl-email" name="email" type="email" required class="input mt-1" />
     <label class="mono-label mt-3 block" for="cl-logo">Company logo (optional)</label><input id="cl-logo" name="logo" type="file" accept="image/*" class="input-mono input mt-1 pt-2" />
-    <p class="mono-label mt-3">Verification: registry extract + team confirmation call. Sample flow.</p>
+    <p class="mono-label mt-3">Verification: registry extract + team confirmation call. Your logo uploads to our secure storage and appears once the claim is approved.</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Request claim</button>
@@ -110,7 +110,7 @@ const email = SITE.contact.email;
         </select>
       </div>
     </div>
-    <p class="mono-label mt-3">Sample pricing — Featured KSh 25,000 · Standard KSh 12,000 · Internship KSh 6,000</p>
+    <p class="mono-label mt-3">Launch pricing — Featured KSh 25,000 · Standard KSh 12,000 · Internship KSh 6,000</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Post it</button>
@@ -139,7 +139,7 @@ const email = SITE.contact.email;
 <dialog id="modal-intro" class="dialog-card" aria-labelledby="intro-title">
   <div class="border-b border-ink px-5 py-3.5"><p id="intro-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Request introduction — vetted service</p></div>
   <form class="px-5 py-4" data-kind="intro">
-    <p class="text-[14px] text-mut">Intros are a paid, vetted service (Professional plan includes 2/month). We confirm fit before any intro is made. Sample flow.</p>
+    <p class="text-[14px] text-mut">Intros are a paid, vetted service (Professional plan includes 2/month). We confirm fit before any intro is made.</p>
     <label class="mono-label mt-3 block" for="in-email">Work email *</label><input id="in-email" name="email" type="email" required class="input mt-1" />
     <label class="mono-label mt-3 block" for="in-note">Why this fund/company *</label><textarea id="in-note" name="note" required rows="3" class="input mt-1"></textarea>
     <div class="mt-5 flex justify-end gap-2">
@@ -170,7 +170,7 @@ const email = SITE.contact.email;
     <label class="mono-label block" for="ap-name">Full name *</label><input id="ap-name" name="name" required class="input mt-1" />
     <label class="mono-label mt-3 block" for="ap-email">Email *</label><input id="ap-email" name="email" type="email" required class="input mt-1" />
     <label class="mono-label mt-3 block" for="ap-link">LinkedIn / portfolio</label><input id="ap-link" name="link" class="input mt-1" placeholder="https://" />
-    <p class="mono-label mt-3">Your application goes to the employer. Sample flow.</p>
+    <p class="mono-label mt-3">Your application goes to the employer via the listing’s board.</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Send application</button>
@@ -196,7 +196,7 @@ const email = SITE.contact.email;
   <div class="border-b border-ink px-5 py-3.5"><p id="tr-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Start 14-day trial — Professional</p></div>
   <form class="px-5 py-4" data-kind="trial">
     <label class="mono-label block" for="tr-email">Work email *</label><input id="tr-email" name="email" type="email" required class="input mt-1" />
-    <p class="mono-label mt-3">KSh 2,900/mo after trial · sample pricing. Cancel anytime.</p>
+    <p class="mono-label mt-3">KSh 2,900/mo after trial · invoice or M-PESA · cancel anytime.</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Start trial</button>
@@ -208,7 +208,7 @@ const email = SITE.contact.email;
   <div class="border-b border-ink px-5 py-3.5"><p id="buy-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Unlock report</p></div>
   <form class="px-5 py-4" data-kind="buy">
     <label class="mono-label block" for="buy-email">Email *</label><input id="buy-email" name="email" type="email" required class="input mt-1" />
-    <p class="mono-label mt-3">We send payment details, then the PDF + data appendix. Sample flow.</p>
+    <p class="mono-label mt-3">We send payment details, then the PDF + data appendix.</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Continue</button>
@@ -289,6 +289,7 @@ const email = SITE.contact.email;
       const data = Object.fromEntries(new FormData(form).entries());
       const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      let logoPath: string | undefined;
       try {
         if (kind === 'auth') {
           const sbMod = await import('@/lib/supabase');
@@ -306,7 +307,6 @@ const email = SITE.contact.email;
           const sbMod = await import('@/lib/supabase');
           // logo upload if a file was picked
           const fileInput = form.querySelector<HTMLInputElement>('input[type="file"]');
-          let logoPath: string | undefined;
           if (fileInput?.files?.[0] && sbMod.supabaseConfigured) {
             try { logoPath = await sbMod.uploadLogo(fileInput.files[0], String(data.name || data.company || 'logo')); }
             catch { /* non-fatal */ }
@@ -320,7 +320,9 @@ const email = SITE.contact.email;
           title: KIND_TITLES[kind] ?? 'Done',
           body: kind === 'auth'
             ? 'Check your inbox for the one-time link.'
-            : 'Sample flow — recorded in our review queue.',
+            : logoPath
+              ? 'Recorded in our review queue — logo uploaded.'
+              : 'Recorded in our review queue.',
         });
       } catch (err) {
         const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
