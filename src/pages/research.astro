@@ -15,12 +15,40 @@ const ARXIV = [
 <Base
   title="Research — Kenya startup ecosystem reports"
   description="Original research on Kenya's startup ecosystem: funding landscape, talent & compensation, payments infrastructure and hackathon impact."
-  jsonld={{
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'Research library',
-    url: `${SITE.url}/research`,
-  }}
+  jsonld={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Research library',
+      url: `${SITE.url}/research`,
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'How many startups are there in Kenya?',
+          acceptedAnswer: { '@type': 'Answer', text: 'It depends who counts. Tracxn lists 13,642 Kenyan startups; StartupBlink counts 659. The difference is methodology, not market. This platform tracks a smaller, status-tagged index with a source on every figure.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'How much did Kenyan startups raise in 2025?',
+          acceptedAnswer: { '@type': 'Answer', text: '$984M in equity — the highest in Africa for a second straight year — and about $1.04B including debt (Tech In Africa; Invest Kenya).' },
+        },
+        {
+          '@type': 'Question',
+          name: 'What happened to Twiga Foods?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Twiga Foods entered administration on August 17, 2026 after raising $185.4M, per Techpoint Africa. Failure states like this are tracked on the platform alongside funding states.' },
+        },
+        {
+          '@type': 'Question',
+          name: 'Where can I find startup jobs in Nairobi?',
+          acceptedAnswer: { '@type': 'Answer', text: 'The jobs board tracks roles seen live on employer boards (M-KOPA, SunCulture, BasiGo, Pula) with market-band salary context sourced from CareerBuddy, Mctaba and WageIndicator surveys.' },
+        },
+      ],
+    },
+  ]}}
 >
   <section class="wrap py-10">
     <h1 class="text-[clamp(34px,4vw,56px)]">Research.</h1>

@@ -5,7 +5,7 @@
 
 export const SITE = {
   name: 'startups.co.ke',
-  title: "startups.co.ke — Kenya's Startup Ecosystem & Business Intelligence Hub",
+  title: "startups.co.ke — Kenya's Startup Ecosystem & Intelligence Hub",
   description:
     'Verified startup profiles, funding data, an investor directory, hackathons and tech jobs across Kenya — the intelligence layer for the Kenyan startup ecosystem.',
   url: 'https://startups.co.ke',

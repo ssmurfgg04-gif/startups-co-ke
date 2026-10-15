@@ -26,3 +26,22 @@ Stage Summary:
 - Supabase project eezqpsbhmnhuhnmiwnsz live: auth configured, tables+RLS applied, logos bucket ready. Env vars in .env (gitignored), .env.example committed.
 - GitHub push NOT done: the github token in the pasted spec was redacted by the gateway. Repo committed locally — push with `git remote add origin … && git push`.
 - Design system fidelity: Fraunces/Archivo/IBM Plex Mono, paper/ink/green/amber tokens, hairline rules, offset shadows, honesty chips everywhere.
+
+---
+Task ID: 2
+Agent: Super Z (main agent)
+Task: Deeper research + E2E tests + real data population + logos + 10 VLM rounds + GitHub persistence (user follow-up, session 2)
+
+Work Log:
+- Reconciled divergent GitHub lineages (research corpus + taste-skill vs Astro app), merged, pushed (push-protection forced SPEC secret redaction).
+- Ran fresh research batch (companies/jobs/news/events/arXiv) → research/; refreshed Google Trends KE via raw RSS (scripts/refresh_trends.py).
+- Migrated the entire data layer to real sourced data: 21 companies (failure states tracked), 13 investors, 8 real jobs, 12 real events w/ ISO countdowns, real stats/wire/rounds/salaries; rewrote honesty system (D2) — statuses + named sources everywhere; replaced 7 fictional articles with 7 real sourced analyses; research page gained arXiv + trends + competitor rails.
+- Fetched + normalized 24 real logos; Monogram renders logo→monogram fallback; Supabase claim/startup uploads verified end-to-end.
+- VLM: 11 screenshots × 10 rounds (z-ai vision), scores 4–7.5 → 8.5–9.5; fixed directory null-raised crash, JS-gated reveals, cookie banner, sorted rounds, chips, tabular-nums (qa/vlm/SUMMARY.md).
+- E2E: investor + founder personas vs live Supabase (DB-verified writes incl. logo bucket); fixed postjob ID-collision bug; cleanup done (qa/e2e-report.md).
+- SEO/WhatsApp: audit script, title tightening, FAQ JSON-LD, wa.me share verified live (og.png 67KB 1200×630).
+
+Stage Summary:
+- Site is real-data, sourced, verified: 38 pages build clean; server on :3000; repo @ GitHub main.
+- Key artifacts: qa/vlm/*, qa/e2e-report.md, scripts/{vlm_shots,vlm_rounds,e2e_investor,e2e_founder,seo_audit,refresh_trends,sql}.?*
+- Open items: 2 test objects in logos bucket (need service key to delete); GitHub Pages/DNS still pending user registrar action.
