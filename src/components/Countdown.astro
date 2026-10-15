@@ -1,15 +1,17 @@
 ---
-/** Live countdown (D/H/M/S or HH:MM:SS) driven by a client-side offset — never dies. */
+/** Live countdown (D/H/M/S or HH:MM:SS) — ticks to an absolute ISO date in EAT
+ *  (real events) or a client-side offset (fallback). Never dies either way. */
 interface Props {
-  targetOffsetMs: number; // ms from "now" at view time
+  targetOffsetMs?: number; // ms from "now" at view time
+  targetISO?: string; // absolute date, preferred for real events
   mode?: 'dhms' | 'hms';
   dark?: boolean;
   id: string;
 }
-const { targetOffsetMs, mode = 'dhms', dark = false, id } = Astro.props;
+const { targetOffsetMs, targetISO, mode = 'dhms', dark = false, id } = Astro.props;
 const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark ? 'border-dpaper/30 text-dpaper' : 'border-ink text-ink'} min-w-[64px] flex-1`;
 ---
-<div id={id} class="flex gap-2" data-offset={targetOffsetMs} data-mode={mode}>
+<div id={id} class="flex gap-2" data-offset={targetOffsetMs} data-iso={targetISO} data-mode={mode}>
   {mode === 'dhms' ? (
     <>
       <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="d">—</span><span class="mono-label mt-1">Days</span></div>
@@ -29,9 +31,9 @@ const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark 
   (function () {
     const root = document.getElementById(id);
     if (!root) return;
-    const target = Date.now() + Number(root.dataset.offset);
+    const target = root.dataset.iso ? new Date(root.dataset.iso).getTime() : Date.now() + Number(root.dataset.offset);
     const mode = root.dataset.mode;
-    const pad = (n) => String(n).padStart(2, '0');
+    const pad = (n) => String(Math.floor(n)).padStart(2, '0');
     function tick() {
       const ms = Math.max(0, target - Date.now());
       const s = Math.floor(ms / 1000);

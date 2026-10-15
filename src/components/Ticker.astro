@@ -1,5 +1,5 @@
 ---
-/** Top wire bar: Nairobi clock + infinite marquee of sample wire items. */
+/** Top wire bar: Nairobi clock + infinite marquee of REAL, sourced wire items. */
 import { WIRE } from '@/data/stats';
 const items = WIRE;
 ---
@@ -15,7 +15,7 @@ const items = WIRE;
           <span class="inline-flex shrink-0 gap-10 pr-10">
             {items.map((item) => (
               <span class="whitespace-nowrap">
-                <span class="text-amber2">◆</span> {item}
+                <span class="text-amber2">◆</span> {item.body} <span class="text-dpaper/50">· {item.source}</span>
               </span>
             ))}
           </span>

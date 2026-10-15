@@ -3,11 +3,11 @@ import Base from '@/layouts/Base.astro';
 import Monogram from '@/components/Monogram.astro';
 import Chip from '@/components/Chip.astro';
 import StatusDot from '@/components/StatusDot.astro';
-import Sparkline from '@/components/Sparkline.astro';
 import CompanyCard from '@/components/CompanyCard.astro';
 import { COMPANIES, companyById } from '@/data/companies';
-import { investorById } from '@/data/investors';
-import { fmtUsdM, prng } from '@/lib/utils';
+import { INVESTORS } from '@/data/investors';
+import { JOBS } from '@/data/jobs';
+import { fmtUsdM } from '@/lib/utils';
 import { sectorColor } from '@/config/sectors';
 import { SITE } from '@/config/site';
 
@@ -15,16 +15,33 @@ export function getStaticPaths() {
   return COMPANIES.map((c) => ({ params: { id: c.id }, props: { company: c } }));
 }
 const c = Astro.props.company as NonNullable<ReturnType<typeof companyById>>;
-const momentum = `+${Math.round(prng(c.id)() * 22 + 4)}%`;
 const similar = COMPANIES.filter((x) => x.sector === c.sector && x.id !== c.id).slice(0, 4);
 const similarFill = similar.length ? similar : COMPANIES.filter((x) => x.id !== c.id).slice(0, 4);
-const sparkSeed = prng(c.id);
-const sparkData = Array.from({ length: 8 }, () => Math.round(sparkSeed() * 30 + 5));
-const openRoles = 0;
+const backers = INVESTORS.filter((i) => i.portfolio.includes(c.id));
+const openRoles = JOBS.filter((j) => j.companyId === c.id);
+const statusKind =
+  c.status === 'In administration' ? 'administration'
+  : c.status === 'In liquidation' ? 'liquidation'
+  : c.status === 'Shut down' ? 'shutdown'
+  : c.status === 'Restructuring' ? 'restructuring'
+  : c.status === 'Active' ? 'active'
+  : null;
+/** Cumulative disclosed funding by year (real dated rounds only). */
+const dated = c.rounds.filter((r) => r.date && r.amount != null).sort((a, b) => a.date.localeCompare(b.date));
+const byYear = new Map<number, number>();
+for (const r of dated) {
+  const y = Number(String(r.date).slice(0, 4));
+  if (!byYear.has(y)) byYear.set(y, 0);
+  byYear.set(y, (byYear.get(y) as number) + (r.amount as number));
+}
+const years = [...byYear.keys()].sort((a, b) => a - b);
+let cum = 0;
+const cumPoints = years.map((y) => { cum += byYear.get(y) as number; return { y, v: cum }; });
+const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
 ---
 <Base
   title={`${c.name} — ${c.tagline}`}
-  description={`${c.name}: ${c.tagline} ${c.sector} · ${c.stage} · ${c.hq}. Funding history, team and signals (sample profile).`}
+  description={`${c.name}: ${c.tagline} ${c.sector} · ${c.stage} · ${c.hq}. Funding history with sources, team and tracked signals. Compiled from public sources.`}
   ogType="website"
   jsonld={{
     '@context': 'https://schema.org',
@@ -45,12 +62,12 @@ const openRoles = 0;
     <!-- Header -->
     <div class="mt-4 flex flex-col gap-5 border-b border-ink pb-6 md:flex-row md:items-start md:justify-between">
       <div class="flex gap-4">
-        <Monogram name={c.name} sector={c.sector} size="xl" />
+        <Monogram name={c.name} sector={c.sector} size="xl" logo={c.logo ?? undefined} domain={c.domain ?? undefined} />
         <div>
           <div class="flex flex-wrap items-center gap-2">
             <h1 class="text-[clamp(30px,3.4vw,46px)] leading-none">{c.name}</h1>
             {c.verified ? <Chip kind="verified" /> : <Chip kind="unverified" />}
-            <Chip kind="sampleProfile" />
+            {statusKind && <Chip kind={statusKind} />}
           </div>
           <p class="mt-2 max-w-xl text-[15px] text-ink2">{c.tagline}</p>
           <div class="mt-3 flex flex-wrap gap-1.5">
@@ -58,6 +75,7 @@ const openRoles = 0;
             <span class="chip chip-dashed">{c.stage}</span>
             <span class="chip">📍 {c.hq}</span>
             <span class="chip chip-dashed">Founded {c.founded}</span>
+            {c.website && <a class="chip hover:bg-paper2" href={c.website} target="_blank" rel="noopener noreferrer">{c.domain ?? c.website.replace(/^https?:\/\//, '')} ↗</a>}
           </div>
         </div>
       </div>
@@ -66,6 +84,13 @@ const openRoles = 0;
         <button class="btn btn-ghost" data-modal="claim">Claim profile</button>
       </div>
     </div>
+
+    {c.statusNote && (
+      <div class="mt-4 border border-clay bg-clay/10 px-4 py-3">
+        <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-clay">Status note</p>
+        <p class="mt-1 text-[14px] text-ink2">{c.statusNote}</p>
+      </div>
+    )}
 
     <div class="mt-8 grid gap-10 lg:grid-cols-12">
       <!-- Main -->
@@ -86,7 +111,7 @@ const openRoles = 0;
             <p class="mono-label mt-7 mb-2">Key facts</p>
             <div class="grid grid-cols-2 gap-px border border-ink bg-line md:grid-cols-3">
               {[
-                ['Employees', `~${c.employees}`],
+                ['Employees', `${typeof c.employees === 'number' ? '~' : ''}${c.employees}`],
                 ['HQ', c.hq],
                 ['Sector', c.sector],
                 ['Stage', c.stage],
@@ -100,14 +125,15 @@ const openRoles = 0;
               ))}
             </div>
 
-            <p class="mono-label mt-7 mb-2">Technology stack <span class="text-mut">· self-reported · sample</span></p>
+            <p class="mono-label mt-7 mb-2">Technology stack <span class="text-mut">· compiled from public sources</span></p>
             <div class="flex flex-wrap gap-1.5">{c.techStack.map((t) => <span class="chip">{t}</span>)}</div>
 
-            <p class="mono-label mt-7 mb-2">Signals we track</p>
+            <p class="mono-label mt-7 mb-2">Signals we track <span class="text-mut">· each carries its source</span></p>
             <ul class="space-y-2">
               {c.signals.map((s) => (
                 <li class="border-l-4 border-green bg-paper2 px-4 py-2.5 text-[14px]">{s}</li>
               ))}
+              {!c.signals.length && <li class="text-[14px] text-mut">No signals tracked yet — coverage gap, not market gap.</li>}
             </ul>
           </div>
         </div>
@@ -115,6 +141,10 @@ const openRoles = 0;
         <!-- Funding -->
         <div id="panel-funding" class="tab-panel hidden">
           <div class="py-6">
+            <div class="mb-3 flex flex-wrap items-center gap-2">
+              <span class="statnum text-[20px]">{c.raisedDisplay ?? (c.raised != null ? `$${c.raised}M` : 'Not tracked')}</span>
+              {c.raisedSource && <span class="mono-label">· {c.raisedSource}</span>}
+            </div>
             <div class="overflow-x-auto border border-ink">
               <table class="w-full min-w-[560px] border-collapse text-[13.5px]">
                 <thead class="bg-paper2">
@@ -124,27 +154,30 @@ const openRoles = 0;
                   {c.rounds.map((r) => (
                     <tr class="rowline">
                       <td class="px-3 py-2.5 font-medium">{r.round}</td>
-                      <td class="px-3 py-2.5 font-mono text-[12px] text-mut">{r.date}</td>
-                      <td class="px-3 py-2.5 statnum">{fmtUsdM(r.amount)}</td>
+                      <td class="px-3 py-2.5 font-mono text-[12px] text-mut">{r.date || '—'}</td>
+                      <td class="px-3 py-2.5 statnum">{r.amount != null ? fmtUsdM(r.amount) : 'Undisclosed'}</td>
                       <td class="px-3 py-2.5">{r.lead}</td>
-                      <td class="px-3 py-2.5"><Chip kind="unverifiedAmount" /></td>
+                      <td class="px-3 py-2.5"><Chip kind={(r.status ?? 'Reported').toLowerCase() as 'confirmed' | 'reported' | 'estimated'} /></td>
                     </tr>
                   ))}
-                  {!c.rounds.length && <tr><td colspan="5" class="px-3 py-4 text-mut">No rounds tracked yet.</td></tr>}
+                  {!c.rounds.length && <tr><td colspan="5" class="px-3 py-4 text-mut">Per-round data not tracked on this platform — coverage gap, not market gap.</td></tr>}
                 </tbody>
               </table>
             </div>
-            <div class="relative mt-6 border border-ink p-5">
-              <span class="stamp right-4 top-4 text-[18px]">SAMPLE DATA</span>
-              <p class="mono-label mb-3">Funding trend (illustrative)</p>
-              <svg viewBox="0 0 320 90" class="w-full max-w-xl" role="img" aria-label="Funding trend sparkline (illustrative sample)">
-                {[20, 45, 70].map((y) => <line x1="0" y1={y} x2="320" y2={y} stroke="#D9D3C1" stroke-dasharray="4 4"></line>)}
-                <polyline
-                  points={sparkData.map((v, i) => `${(i / 7) * 300 + 10},${85 - (v / 40) * 70}`).join(' ')}
-                  fill="none" stroke="var(--color-green)" stroke-width="2"></polyline>
-                {sparkData.map((v, i) => <circle cx={(i / 7) * 300 + 10} cy={85 - (v / 40) * 70} r="2.4" fill="var(--color-amber)"></circle>)}
-              </svg>
-            </div>
+
+            {cumPoints.length >= 2 && (
+              <div class="mt-6 border border-ink p-5">
+                <p class="mono-label mb-3">Cumulative disclosed funding by year <span class="text-mut">· USD millions · dated rounds only</span></p>
+                <svg viewBox="0 0 320 90" class="w-full max-w-xl" role="img" aria-label={`Cumulative funding of ${c.name} by year`}>
+                  {[20, 45, 70].map((y) => <line x1="0" y1={y} x2="320" y2={y} stroke="#D9D3C1" stroke-dasharray="4 4"></line>)}
+                  <polyline
+                    points={cumPoints.map((p, i) => `${(i / Math.max(1, cumPoints.length - 1)) * 300 + 10},${85 - (p.v / maxCum) * 70}`).join(' ')}
+                    fill="none" stroke="var(--color-green)" stroke-width="2"></polyline>
+                  {cumPoints.map((p, i) => <circle cx={(i / Math.max(1, cumPoints.length - 1)) * 300 + 10} cy={85 - (p.v / maxCum) * 70} r="2.4" fill="var(--color-amber)"><title>{p.y}: ${p.v}M</title></circle>)}
+                  {cumPoints.map((p, i) => <text x={(i / Math.max(1, cumPoints.length - 1)) * 300 + 10} y="89" font-size="7" font-family="IBM Plex Mono, monospace" fill="#6E6A5B" text-anchor="middle">{p.y}</text>)}
+                </svg>
+              </div>
+            )}
           </div>
         </div>
 
@@ -152,15 +185,21 @@ const openRoles = 0;
         <div id="panel-team" class="tab-panel hidden">
           <div class="py-6">
             <p class="mono-label mb-3">Leadership</p>
-            <div class="grid gap-3 sm:grid-cols-2">
-              {c.founders.map((f) => (
-                <div class="flex items-center gap-3 border border-ink bg-paper p-4">
-                  <span class="flex h-12 w-12 items-center justify-center rounded-full bg-paper3 font-mono text-sm font-semibold">{f.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}</span>
-                  <span><span class="block text-[15px] font-medium">{f.name}</span><span class="mono-label">{f.role}</span></span>
-                </div>
-              ))}
-            </div>
-            <p class="mt-4 text-[13px] text-mut">Headcount note: ~{c.employees} employees (sample). Open roles link to the jobs board.</p>
+            {c.founders.length ? (
+              <div class="grid gap-3 sm:grid-cols-2">
+                {c.founders.map((f) => (
+                  <div class="flex items-center gap-3 border border-ink bg-paper p-4">
+                    <span class="flex h-12 w-12 items-center justify-center rounded-full bg-paper3 font-mono text-sm font-semibold">{f.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}</span>
+                    <span><span class="block text-[15px] font-medium">{f.name}</span><span class="mono-label">{f.role}</span></span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p class="text-[14px] text-mut">Leadership not tracked publicly yet — <button class="text-amber underline" data-modal="claim">claim this profile</button> to add it.</p>
+            )}
+            {typeof c.employees === 'number' || typeof c.employees === 'string' ? (
+              <p class="mt-4 text-[13px] text-mut">Headcount: {typeof c.employees === 'number' ? `~${c.employees}` : c.employees} (compiled from public sources). Open roles link to the jobs board.</p>
+            ) : null}
             <a class="btn btn-ghost mt-3" href="/jobs">See open roles →</a>
           </div>
         </div>
@@ -168,18 +207,19 @@ const openRoles = 0;
         <!-- News -->
         <div id="panel-news" class="tab-panel hidden">
           <div class="py-6">
-            <div class="border border-dashed border-line2 bg-paper2 p-4 text-[13px] text-mut">
-              SAMPLE ARTICLE NOTICE — mentions below are generated coverage placeholders describing no real coverage.
-            </div>
+            <p class="mono-label mb-3">Coverage &amp; sources on this platform</p>
             {[
-              [`${c.name} raises ${c.rounds.length ? fmtUsdM(c.rounds[c.rounds.length - 1].amount) : 'a new round'} — what it changes`, '6 min'],
-              [`Inside ${c.name}\u2019s ${c.hq.toLowerCase()} build culture`, '4 min'],
-              [`${c.sector} players watch ${c.name}\u2019s next move`, '3 min'],
-            ].map(([t, m]) => (
-              <a href="/news" class="rowline flex items-center justify-between px-1 py-3 hover:bg-paper2">
-                <span class="text-[14.5px]">{t}</span><span class="mono-label">{m} · sample</span>
+              ['/news/the-fallen', 'The fallen: what Twiga, Copia and Sendy teach the ecosystem', 'Analysis'],
+              ['/news/h1-2026-slowdown', "Kenya's H1 2026 slowdown, in five numbers", 'Funding'],
+              ['/news/sh93bn-lesson', 'The Sh93bn lesson: why verified data beats loud data', 'Analysis'],
+              ['/news/angel-syndicates-seed-gap', "Angel syndicates are filling Kenya's seed gap", 'Funding'],
+              ['/news/stablecoin-rails', "Stablecoin rails: HoneyCoin's $4.9M and the new payment stack", 'Fintech'],
+            ].map(([href, t, k]) => (
+              <a href={href} class="rowline flex items-center justify-between px-1 py-3 hover:bg-paper2">
+                <span class="text-[14.5px]">{t}</span><span class="mono-label">{k}</span>
               </a>
             ))}
+            <p class="mt-3 text-[13px] text-mut">Primary round sources: {c.rounds.map((r) => r.source).filter(Boolean).join(' · ') || 'see profile sources above'}.</p>
           </div>
         </div>
 
@@ -194,28 +234,44 @@ const openRoles = 0;
       <!-- Right rail -->
       <aside class="space-y-6 lg:col-span-4">
         <div class="railbox">
-          <div class="railbox-head"><span>Momentum</span><span class="font-mono text-[12px] font-semibold text-green">{momentum}</span></div>
-          <div class="flex items-center justify-between px-4 py-3">
-            <p class="mono-label">12 weeks · sample</p>
-            <Sparkline id={c.id} w={130} h={38} />
+          <div class="railbox-head"><span>Verification</span><span class="font-mono text-[12px] font-semibold text-green">Oct 15, 2026</span></div>
+          <div class="px-4 py-3">
+            <p class="text-[13.5px] text-mut">
+              {c.verified
+                ? 'Cross-checked against at least two independent public sources.'
+                : 'Thin-data profile — honestly labelled Unverified until cross-checked.'}
+            </p>
           </div>
         </div>
         <div class="railbox">
-          <div class="railbox-head"><span>Investors</span><Chip kind="sample" /></div>
-          {c.rounds.slice(0, 3).map((r) => {
-            const inv = investorById(Object.keys({}).length ? '' : (r.lead.toLowerCase().includes('rift') ? 'rift-capital' : r.lead.toLowerCase().includes('savannah') ? 'savannah-ventures' : r.lead.toLowerCase().includes('kilele') ? 'kilele-climate' : r.lead.toLowerCase().includes('acacia') ? 'acacia-angels' : r.lead.toLowerCase().includes('hornbill') ? 'hornbill-growth' : r.lead.toLowerCase().includes('lake') ? 'lake-basin' : r.lead.toLowerCase().includes('mwezi') ? 'mwezi-capital' : 'tenda-microfund'));
-            return (
-              <div class="flex items-center justify-between border-b border-line px-4 py-2.5 last:border-0">
-                <span class="text-[13.5px]">{inv?.name ?? r.lead}</span>
-                <span class="chip chip-dashed">{r.round}</span>
-              </div>
-            );
-          })}
+          <div class="railbox-head"><span>Known backers</span><span class="font-mono text-[10px] text-mut">{backers.length} tracked</span></div>
+          {backers.map((b) => (
+            <a href="/investors" class="flex items-center justify-between border-b border-line px-4 py-2.5 last:border-0 hover:bg-paper2">
+              <span class="text-[13.5px]">{b.name}</span>
+              <span class="chip chip-dashed">{b.type.replace('Venture capital', 'VC').replace(' (impact)', '')}</span>
+            </a>
+          ))}
+          {c.rounds.filter((r) => r.lead && r.lead !== '—').slice(0, 3).map((r) => (
+            <div class="flex items-center justify-between border-b border-line px-4 py-2.5 last:border-0">
+              <span class="text-[13.5px]">{r.lead}</span>
+              <span class="chip chip-dashed">{r.round}</span>
+            </div>
+          ))}
+          {!backers.length && !c.rounds.length && <p class="px-4 py-3 text-[13px] text-mut">No investors tracked yet.</p>}
         </div>
         <div class="railbox">
-          <div class="railbox-head"><span>Hiring</span></div>
+          <div class="railbox-head"><span>Hiring</span><span class="font-mono text-[10px] text-mut">{openRoles.length} tracked roles</span></div>
           <div class="px-4 py-3">
-            <p class="text-[13.5px] text-mut">Open roles appear here as employers post. See the <a class="text-amber underline" href="/jobs">jobs board</a>.</p>
+            {openRoles.length ? (
+              openRoles.map((j) => (
+                <a href="/jobs" class="rowline flex items-center justify-between py-2 hover:bg-paper2">
+                  <span class="text-[13.5px]">{j.title}</span>
+                  <span class="mono-label">{j.mode}</span>
+                </a>
+              ))
+            ) : (
+              <p class="text-[13.5px] text-mut">No roles tracked for this company right now. See the <a class="text-amber underline" href="/jobs">jobs board</a>.</p>
+            )}
           </div>
         </div>
         <div class="railbox">

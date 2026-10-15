@@ -86,6 +86,9 @@
   .chip-dashed {
     @apply border-dashed border-mut bg-transparent text-mut;
   }
+  .chip-alert {
+    @apply border-clay bg-clay/10 text-clay;
+  }
   .btn {
     @apply inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap border border-ink bg-ink px-4 font-mono text-[11px] uppercase tracking-[0.12em] text-paper transition-colors duration-200;
     border-radius: 2px;

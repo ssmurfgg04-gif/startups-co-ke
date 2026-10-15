@@ -2,8 +2,21 @@
 import { initials } from '@/lib/utils';
 import { sectorColor } from '@/config/sectors';
 
-interface Props { name: string; sector?: string; size?: 'sm' | 'md' | 'lg' | 'xl'; logoUrl?: string | null }
-const { name, sector = 'Other', size = 'md', logoUrl = null } = Astro.props;
+/**
+ * Entity avatar (D5): real logo (local /logos/*.png fetched from the company's
+ * domain) when available, otherwise a sector-coloured monogram tile — never a
+ * broken image. `logo` wins; `domain` lets remote logos stream in for
+ * user-claimed profiles.
+ */
+interface Props {
+  name: string;
+  sector?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  logo?: string | null; // local path e.g. /logos/m-kopa.png
+  logoUrl?: string | null; // remote URL (user uploads)
+  domain?: string | null; // fallback remote source
+}
+const { name, sector = 'Other', size = 'md', logo = null, logoUrl = null, domain = null } = Astro.props;
 
 const sizes: Record<string, string> = {
   sm: 'h-8 w-8 text-[11px]',
@@ -11,7 +24,30 @@ const sizes: Record<string, string> = {
   lg: 'h-14 w-14 text-base',
   xl: 'h-20 w-20 text-2xl',
 };
+const remote = logoUrl ?? (domain ? `https://unavatar.io/${domain}?fallback=false` : null);
 ---
-<span class={`relative inline-flex shrink-0 items-center justify-center font-mono font-semibold text-paper ${sizes[size]}`} style={`background:${sectorColor(sector)}`}>
-  {logoUrl ? <img src={logoUrl} alt={`${name} logo`} class="absolute inset-0 h-full w-full object-cover" loading="lazy" /> : initials(name)}
+<span class={`relative inline-flex shrink-0 items-center justify-center overflow-hidden font-mono font-semibold text-paper ${sizes[size]}`} style={`background:${sectorColor(sector)}`}>
+  {(logo || remote) ? (
+    <img
+      src={logo ?? remote}
+      alt={`${name} logo`}
+      class="absolute inset-0 h-full w-full bg-paper object-contain p-1"
+      loading="lazy"
+      data-monogram={initials(name)}
+    />
+  ) : (
+    initials(name)
+  )}
 </span>
+<script>
+  // If a logo fails to load, swap to the sector monogram — no broken images, ever (D5).
+  document.addEventListener('error', (e) => {
+    const img = e.target as HTMLImageElement;
+    if (img instanceof HTMLImageElement && img.dataset.monogram) {
+      const span = document.createElement('span');
+      span.className = 'font-semibold';
+      span.textContent = img.dataset.monogram;
+      img.replaceWith(span);
+    }
+  }, true);
+</script>

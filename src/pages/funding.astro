@@ -8,7 +8,7 @@ import { ROUNDS, CAPITAL_MIX, QUARTERS, SERIES } from '@/data/ecosystem';
 import { companyById } from '@/data/companies';
 import { fmtUsdM, relDays } from '@/lib/utils';
 import { SITE } from '@/config/site';
-const ytd = SERIES.all.reduce((s, v) => s + v, 0);
+const ytd = SERIES['All sectors'].slice(-2).reduce((s, v) => s + v, 0); // H1 2026 = $126M (Business Daily)
 ---
 <Base
   title="Funding database — Kenya startup funding rounds"
@@ -17,7 +17,7 @@ const ytd = SERIES.all.reduce((s, v) => s + v, 0);
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: 'Kenya Startup Funding Database',
-    description: 'Quarterly tracked funding rounds across the Kenyan startup ecosystem with source statuses. Illustrative sample dataset.',
+    description: 'Quarterly tracked funding across the Kenyan startup ecosystem with source statuses. Compiled from public sources as of Oct 15, 2026.',
     url: `${SITE.url}/funding`,
     license: `${SITE.url}/privacy`,
     creator: { '@type': 'Organization', name: 'startups.co.ke', url: SITE.url },
@@ -28,7 +28,7 @@ const ytd = SERIES.all.reduce((s, v) => s + v, 0);
       <div>
         <h1 class="text-[clamp(34px,4vw,56px)]">The funding database.</h1>
         <p class="mt-2 max-w-2xl text-[15px] text-mut">
-          ${ytd}M tracked YTD across {QUARTERS.length} quarters — every figure carries a source and a status. Export for research below.
+          $126M tracked H1 2026 (−44.5% YoY, Business Daily) — every figure carries a source and a status. Export for research below.
         </p>
       </div>
       <button class="btn" id="export-btn">Export quarterly dataset</button>
@@ -71,7 +71,7 @@ const ytd = SERIES.all.reduce((s, v) => s + v, 0);
 
     <div class="mt-12 grid gap-8 lg:grid-cols-2">
       <div class="railbox">
-        <div class="railbox-head"><span>Where the capital went · YTD</span><Chip kind="illustrative" /></div>
+        <div class="railbox-head"><span>Where the capital went · tracked rounds</span><Chip kind="confirmed" /></div>
         <div class="px-4 py-4">
           {CAPITAL_MIX.map((m) => (
             <div class="mb-3 flex items-center gap-3 last:mb-0">
@@ -88,7 +88,7 @@ const ytd = SERIES.all.reduce((s, v) => s + v, 0);
           <p><span class="font-semibold text-green">CONFIRMED</span> — round verified by company statement or lead-investor memo.</p>
           <p><span class="font-semibold text-amber">REPORTED</span> — credible secondary source (founder interview, syndicate note); confirmation pending.</p>
           <p><span class="font-semibold text-mut">ESTIMATED</span> — modelled from registry filings or comparable-round data.</p>
-          <p class="border-t border-line pt-2.5 text-mut">All figures on this page are illustrative samples describing no real transactions. Amounts in USD millions; rounds keyed by close date.</p>
+          <p class="border-t border-line pt-2.5 text-mut">Compiled from public sources as of Oct 15, 2026. Amounts in USD millions; rounds keyed by announcement where known. Every row carries its source.</p>
         </div>
       </div>
     </div>
@@ -101,15 +101,15 @@ const ytd = SERIES.all.reduce((s, v) => s + v, 0);
     const blob = new Blob([csv], { type: 'text/csv' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'startups-co-ke-funding-sample.csv';
+    a.download = 'startups-co-ke-funding-database.csv';
     a.click();
     URL.revokeObjectURL(a.href);
     const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
-    toast({ title: 'Export ready', body: 'startups-co-ke-funding-sample.csv downloaded (sample dataset).' });
+    toast({ title: 'Export ready', body: 'startups-co-ke-funding-database.csv downloaded.' });
   });
 </script>
 <script define:vars={{ QUARTERS, SERIES }}>
-  // build the sample CSV at runtime from the same build-time constants
+  // build the CSV at runtime from the same build-time constants
   window.__SCK_CSV__ = ['quarter,all,fintech,climate,commerce']
     .concat(QUARTERS.map((q, i) => [q, SERIES.all[i], SERIES.fintech[i], SERIES.climate[i], SERIES.commerce[i]].join(',')))
     .join('\n');

@@ -47,7 +47,7 @@ export const SITE = {
       { label: 'Ecosystem brief', modal: 'newsletter' },
     ],
     company: [
-      { label: 'About & sample-data notice', modal: 'about' },
+      { label: 'About & methodology', modal: 'about' },
       { label: 'Privacy policy', href: '/privacy' },
       { label: 'Post a job', modal: 'postjob' },
       { label: 'Advertise & sponsor', modal: 'sponsor' },
@@ -92,7 +92,7 @@ export const SITE = {
         cta: { label: 'Talk to us', modal: 'sponsor', href: null },
       },
     ],
-    note: 'All prices are illustrative samples.',
+    note: 'Launch pricing — invoice or M-PESA on activation; card flows coming.'
   },
   jobPostPricing: [
     { tier: 'Featured', price: 'KSh 25,000' },
@@ -102,16 +102,24 @@ export const SITE = {
   investorSub: { price: 'KSh 4,900/mo', trial: '14-day trial' },
 };
 
+/**
+ * Honesty system (docs/DECISIONS.md D2): real, sourced data with visible
+ * statuses. `Verified` = profile cross-checked against >=2 independent public
+ * sources as of 2026-10-15. Figures are Confirmed / Reported / Estimated, each
+ * with a named source. Failure states are tracked, not hidden.
+ */
 export const HONESTY = {
   disclaimer:
-    'Every company, investor, person, figure, article and event on this site is an illustrative sample describing no real entity or transaction. “Verified” describes our fictional registry-plus-team-check design, labelled as such throughout.',
+    'Compiled from public sources as of Oct 15, 2026. Every figure carries a status — Confirmed, Reported or Estimated — and a named source. “Verified” means a profile was cross-checked against at least two independent public sources. Failure states (administration, liquidation, shutdown) are tracked like funding states. Spotted an error? “Report an issue” on any profile.',
   chips: {
-    sample: 'Sample data',
-    sampleProfile: 'Sample profile',
-    illustrative: 'Illustrative',
-    samplePricing: 'Sample pricing',
-    sampleEvent: 'Illustrative event — not a real listing',
-    sampleContent: 'Sample content',
-    unverifiedAmount: 'Unverified — sample data',
+    verified: 'Verified',
+    unverified: 'Unverified',
+    confirmed: 'Confirmed',
+    reported: 'Reported',
+    estimated: 'Estimated',
+    marketBand: 'Market band — not an offer',
+    tba: 'Dates TBA',
+    asOf: 'As of Oct 15, 2026',
+    notTracked: 'Not tracked',
   },
 };

@@ -10,7 +10,7 @@ import StatusDot from '@/components/StatusDot.astro';
 import Monogram from '@/components/Monogram.astro';
 import Countdown from '@/components/Countdown.astro';
 import { COMPANIES, FEATURED_IDS } from '@/data/companies';
-import { ROUNDS, SECTOR_COUNTS } from '@/data/ecosystem';
+import { ROUNDS, SECTOR_COUNTS, REPORTS } from '@/data/ecosystem';
 import { STATS, REGIONS } from '@/data/stats';
 import { HACKATHONS } from '@/data/hackathons';
 import { prng, fmtUsdM, relDays } from '@/lib/utils';
@@ -18,8 +18,24 @@ import { SITE } from '@/config/site';
 
 const featured = FEATURED_IDS.map((id) => COMPANIES.find((c) => c.id === id)!).filter(Boolean);
 const featuredHack = HACKATHONS.find((h) => h.featured)!;
-const daysTo = Math.round((featuredHack.startOffsetMs ?? 0) / 86400000);
+const daysTo = featuredHack.startISO
+  ? Math.max(0, Math.round((Date.parse(featuredHack.startISO) - Date.now()) / 86400000))
+  : Math.round((featuredHack.startOffsetMs ?? 0) / 86400000);
 const totalSector = SECTOR_COUNTS.reduce((s, r) => s + r.count, 0);
+const nextUp = HACKATHONS.filter((h) => h.status === 'upcoming' && !h.featured && h.startISO)
+  .sort((a, b) => Date.parse(a.startISO!) - Date.parse(b.startISO!))
+  .slice(0, 3);
+const leadArticle = { slug: 'sh93bn-lesson', title: 'The Sh93bn lesson: why verified data beats loud data', dek: 'Thirteen collapses, Sh93bn in investor losses, and two databases that disagree by 13,000 companies. The case for status-tagged funding data.', mins: 6, cat: 'Analysis' };
+const wireList: [string, string, string][] = [
+  ["Kenya's H1 2026 slowdown, in five numbers", 'Funding', 'h1-2026-slowdown'],
+  ['The fallen: what Twiga, Copia and Sendy teach', 'Analysis', 'the-fallen'],
+  ["Microsoft's ADC exit and the talent pipeline", 'Talent', 'microsoft-adc-exit'],
+  ['Salary snapshot 2026: what roles actually pay', 'Talent', 'salary-snapshot-2026'],
+  ["Stablecoin rails: HoneyCoin's $4.9M", 'Fintech', 'stablecoin-rails'],
+  ["Angel syndicates are filling Kenya's seed gap", 'Funding', 'angel-syndicates-seed-gap'],
+];
+const flagship = REPORTS.find((r) => r.flagship)!;
+const regionRows = REGIONS.filter((r) => r.count > 0);
 const jsonld = [
   {
     '@context': 'https://schema.org',
@@ -58,7 +74,7 @@ const jsonld = [
       </p>
 
       <form class="mt-7 flex max-w-xl border-2 border-ink bg-paper" action="/startups" method="get" role="search" aria-label="Company search">
-        <input class="min-h-12 flex-1 bg-transparent px-4 text-[15px] outline-none placeholder:text-mut" name="q" placeholder="Search 428 companies — try “pesa”, “solar”, “Kisumu”…" aria-label="Search companies" />
+        <input class="min-h-12 flex-1 bg-transparent px-4 text-[15px] outline-none placeholder:text-mut" name="q" placeholder={`Search ${COMPANIES.length} tracked companies — try “M-KOPA”, “solar”, “fintech”…`} aria-label="Search companies" />
         <button class="btn border-0 border-l-2 border-ink px-5" type="submit">Search</button>
       </form>
 
@@ -69,14 +85,14 @@ const jsonld = [
         <a class="chip hover:bg-paper2" href="/startups?stage=Seed">Seed</a>
         <a class="chip hover:bg-paper2" href="/jobs">Tech jobs</a>
       </div>
-      <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Sample figures shown for demonstration — <Chip kind="verified" /> entities are marked throughout.</p>
+      <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Compiled from public sources · Oct 15, 2026 — every figure carries a source and a status.</p>
     </div>
 
     <!-- Ecosystem snapshot widget -->
     <aside class="rv offset-shadow border-2 border-ink bg-paper lg:col-span-5" style="--d:120ms" aria-label="Ecosystem snapshot">
       <div class="flex items-center justify-between border-b border-ink px-4 py-3">
         <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Ecosystem snapshot</p>
-        <Chip kind="sample" />
+        <Chip kind="confirmed" />
       </div>
       <div class="grid grid-cols-2 gap-px bg-line">
         {[
@@ -92,10 +108,10 @@ const jsonld = [
         ))}
       </div>
       <div class="border-t border-ink px-4 py-3.5">
-        <p class="mono-label mb-2.5">Funding by sector · YTD</p>
+        <p class="mono-label mb-2.5">Tracked profiles by sector</p>
         <div class="flex h-20 items-end gap-1.5" aria-hidden="true">
-          {[62, 48, 34, 27, 21, 16, 12, 9].map((h, i) => (
-            <div class="flex-1 bg-green" style={`height:${h}%; ${i === 1 ? 'background:var(--color-amber2)' : ''}`} title={fmtUsdM(Math.round(h / 3.4))}></div>
+          {SECTOR_COUNTS.map((s, i) => (
+            <div class="flex-1 bg-green" style={`height:${Math.max(8, Math.round((s.count / Math.max(...SECTOR_COUNTS.map((x) => x.count))) * 100))}%; ${i === 1 ? 'background:var(--color-amber2)' : ''}`} title={`${s.sector}: ${s.count}`}></div>
           ))}
         </div>
         <a class="link-underline mt-3 inline-block" href="/funding">Funding database →</a>
@@ -108,13 +124,13 @@ const jsonld = [
     <div class="rv"><KenyaMap /></div>
     <div class="rv" style="--d:100ms">
       <h2 id="regions-h" class="text-[clamp(26px,3.2vw,40px)]">Explore by region.</h2>
-      <p class="mt-2 max-w-md text-[14.5px] text-mut">Nairobi holds ~63% of the index, but regional hubs are the fastest-growing cohort. Click a row to filter the directory (sample).</p>
+      <p class="mt-2 max-w-md text-[14.5px] text-mut">Coverage is Nairobi-first — the tracked index concentrates where the deals concentrate. Regional expansion (Mombasa, Nakuru, Kisumu, Eldoret) is in progress. Click a row to filter the directory.</p>
       <div class="railbox mt-5">
-        {REGIONS.map((r) => (
+        {regionRows.map((r) => (
           <a href={`/startups?city=${encodeURIComponent(r.city)}`} class="rowline group flex items-center gap-4 px-4 py-3.5 hover:bg-paper2">
             <span class="w-24 shrink-0 font-mono text-xs uppercase tracking-[0.1em]">{r.city}</span>
             <span class="relative h-2.5 flex-1 bg-paper2">
-              <span class="absolute inset-y-0 left-0 bg-green" style={`width:${Math.round((r.count / 268) * 100)}%`}></span>
+              <span class="absolute inset-y-0 left-0 bg-green" style="width:100%"></span>
             </span>
             <span class="statnum w-10 text-right text-sm">{r.count}</span>
             {r.capital && <span class="chip chip-solid shrink-0">Capital</span>}
@@ -122,7 +138,7 @@ const jsonld = [
           </a>
         ))}
       </div>
-      <p class="mt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">* Illustrative sample counts. Regional shares recomputed quarterly.</p>
+      <p class="mt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">* Tracked profile counts · {regionRows.length} regions live · more being indexed.</p>
     </div>
   </section>
 
@@ -130,11 +146,11 @@ const jsonld = [
   <section class="border-y border-ink bg-paper2" aria-label="Ecosystem stats">
     <div class="wrap grid grid-cols-2 gap-px bg-line py-0 md:grid-cols-5">
       {[
-        { v: STATS.companiesTracked, d: '+31 this quarter', l: 'Companies tracked' },
-        { v: STATS.capitalYTD, p: '$', d: '+18% QoQ', l: 'Capital YTD (M)' },
-        { v: STATS.medianSeed, p: '$', d: 'flat QoQ', l: 'Median seed cheque (K)' },
-        { v: STATS.roundsThisYear, d: '+11 this quarter', l: 'Rounds this year' },
-        { v: STATS.hackathonsIndexed, d: '6 regions', l: 'Hackathons indexed' },
+        { v: STATS.companiesTracked, d: '+6 added Oct 2026', l: 'Companies tracked' },
+        { v: STATS.capitalYTD, p: '$', d: 'H1 2026 · Business Daily', l: 'Capital H1 (M)' },
+        { v: STATS.capital2025, p: '$', d: '2025 · Africa #1', l: 'Capital 2025 (M)' },
+        { v: STATS.investorLossesKsh, p: 'Sh', d: '13 failures · Business Daily', l: 'Investor losses (bn)' },
+        { v: STATS.hackathonsIndexed, d: 'real, dated events', l: 'Hackathons indexed' },
       ].map((s) => (
         <div class="bg-paper2 px-4 py-6 text-center">
           <p class="statnum text-[30px] leading-none">{s.p ?? ''}<span data-count={s.v}>{s.v}</span></p>
@@ -143,7 +159,7 @@ const jsonld = [
         </div>
       ))}
     </div>
-    <p class="wrap pb-3 text-right font-mono text-[9px] uppercase tracking-[0.12em] text-mut">* Illustrative sample figures</p>
+    <p class="wrap pb-3 text-right font-mono text-[9px] uppercase tracking-[0.12em] text-mut">* Compiled from public sources · Oct 15, 2026</p>
   </section>
 
   <!-- 4) FUNDING INTELLIGENCE (dark) -->
@@ -156,7 +172,7 @@ const jsonld = [
           <div class="border border-darkline bg-dark2">
             <div class="flex items-center justify-between border-b border-darkline px-4 py-3">
               <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-dpaper">Latest tracked rounds</p>
-              <Chip kind="illustrative" />
+              <span class="chip border-dpaper/40 font-mono text-[10px] uppercase tracking-[0.08em] text-dmut">Sourced</span>
             </div>
             {ROUNDS.slice(0, 6).map((r) => {
               const c = COMPANIES.find((x) => x.id === r.companyId)!;
@@ -195,12 +211,12 @@ const jsonld = [
       <SectionHead no="03" title="Ecosystem insights." link={{ label: 'Investors →', href: '/investors' }} />
       <div class="grid gap-8 lg:grid-cols-2">
         <div class="rv railbox">
-          <div class="railbox-head"><span>Startups tracked by sector</span><Chip kind="sample" /></div>
+          <div class="railbox-head"><span>Startups tracked by sector</span><a class="link-underline" href="/startups">Full index</a></div>
           <div class="px-4 py-4">
             {SECTOR_COUNTS.map((s) => (
               <a href={`/startups?sector=${encodeURIComponent(s.sector)}`} class="group mb-2 flex items-center gap-3 last:mb-0">
                 <span class="w-40 shrink-0 truncate font-mono text-[11px] uppercase tracking-[0.06em] text-ink2">{s.sector}</span>
-                <span class="relative h-4 flex-1 bg-paper3"><span class="absolute inset-y-0 left-0 bg-green transition-all duration-500 group-hover:bg-amber" style={`width:${Math.round((s.count / 96) * 100)}%`}></span></span>
+                <span class="relative h-4 flex-1 bg-paper3"><span class="absolute inset-y-0 left-0 bg-green transition-all duration-500 group-hover:bg-amber" style={`width:${Math.round((s.count / Math.max(...SECTOR_COUNTS.map((x) => x.count))) * 100)}%`}></span></span>
                 <span class="statnum w-8 text-right text-[12px]">{s.count}</span>
                 <span class="w-10 text-right font-mono text-[10px] text-mut">{Math.round((s.count / totalSector) * 100)}%</span>
               </a>
@@ -248,15 +264,15 @@ const jsonld = [
         <div class="border border-dpaper/30 bg-green2 p-5">
           <div class="flex items-center justify-between">
             <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Next: {featuredHack.title}</p>
-            <Chip kind="sampleEvent" />
+            {featuredHack.verifiedOrganizer && <span class="chip border-dpaper/40 font-mono text-[10px] uppercase tracking-[0.08em] text-dpaper/90">Organizer verified</span>}
           </div>
-          <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-dmut">Theme: {featuredHack.focus} · Prize {featuredHack.prize}</p>
+          <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-dmut">{featuredHack.focus} · starts Nov 13, 2026 · 08:00 EAT</p>
           <div class="mt-4">
-            <Countdown id="home-countdown" targetOffsetMs={featuredHack.startOffsetMs!} dark />
+            <Countdown id="home-countdown" targetISO={featuredHack.startISO} dark />
           </div>
           <div class="mt-4 flex flex-wrap gap-1.5">
-            {HACKATHONS.filter((h) => !h.ongoing && !h.featured).slice(0, 3).map((h) => (
-              <a class="chip border-dpaper/40 text-dpaper/90 hover:bg-dpaper/10" href="/hackathons">{h.title} · +{Math.round((h.startOffsetMs ?? 0) / 86400000)}d</a>
+            {nextUp.map((h) => (
+              <a class="chip border-dpaper/40 text-dpaper/90 hover:bg-dpaper/10" href="/hackathons">{h.title} · +{Math.max(0, Math.round((Date.parse(h.startISO!) - Date.now()) / 86400000))}d</a>
             ))}
           </div>
         </div>
@@ -269,27 +285,20 @@ const jsonld = [
     <div class="wrap">
       <SectionHead no="04" title="The Wire — ecosystem news." link={{ label: 'All coverage →', href: '/news' }} />
       <div class="grid gap-8 lg:grid-cols-12">
-        <a class="rv group block border border-ink bg-paper lg:col-span-7" href="/news/funding-quarter-five-charts">
+        <a class="rv group block border border-ink bg-paper lg:col-span-7" href={`/news/${leadArticle.slug}`}>
           <div class="overflow-hidden border-b border-ink">
-            <img src="https://picsum.photos/seed/funding-charts/900/480.jpg" alt="Abstract data illustration for the quarterly funding analysis" width="900" height="480" loading="lazy" decoding="async" class="photo-warm h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+            <img src={`https://picsum.photos/seed/sh93billion/900/480.jpg`} alt="Abstract data illustration for the Sh93bn analysis" width="900" height="480" loading="lazy" decoding="async" class="photo-warm h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
           </div>
           <div class="p-5">
-            <Chip kind="sampleContent" />
-            <h3 class="mt-3 font-display text-[24px] leading-tight">Kenya's funding quarter, in five charts</h3>
-            <p class="mt-2 text-[14px] text-mut">Capital volumes rose again, but the composition changed: fewer, larger rounds; climate instruments multiplying; and a seed gap angels are quietly filling.</p>
-            <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">By Njeri Mwangi · 2 hours ago · 6 min read</p>
+            <span class="chip chip-solid">{leadArticle.cat}</span>
+            <h3 class="mt-3 font-display text-[24px] leading-tight">{leadArticle.title}</h3>
+            <p class="mt-2 text-[14px] text-mut">{leadArticle.dek}</p>
+            <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">startups.co.ke desk · Oct 15, 2026 · {leadArticle.mins} min read</p>
           </div>
         </a>
         <div class="rv border border-ink bg-paper lg:col-span-5" style="--d:120ms">
-          {[
-            ['Angel syndicates are quietly filling the seed gap', 'Venture'],
-            ['The real cost of expanding from Nairobi to Kigali', 'Operations'],
-            ['What hackathon pipelines actually produce', 'Talent'],
-            ['Climate capital is changing the instrument', 'Climate'],
-            ['The salary snapshot: what startups paid in 2025', 'Talent'],
-            ['Why verified data beats loud data', 'Opinion'],
-          ].map(([t, k], i) => (
-            <a href="/news" class="rowline group flex items-baseline gap-3 px-4 py-3.5 hover:bg-paper">
+          {wireList.map(([t, k, slug], i) => (
+            <a href={`/news/${slug}`} class="rowline group flex items-baseline gap-3 px-4 py-3.5 hover:bg-paper">
               <span class="statnum text-[12px] text-amber">{String(i + 1).padStart(2, '0')}</span>
               <span class="flex-1 text-[14px] leading-snug">{t}</span>
               <span class="mono-label">{k}</span>
@@ -312,27 +321,23 @@ const jsonld = [
           ))}
           <circle cx="102" cy="132" r="4" fill="#E3A21A"></circle>
         </svg>
-        <p class="text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">State of Kenya's Startup Ecosystem 2025 · 68 pages</p>
+        <p class="text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">{flagship.title} · {flagship.pages} pages</p>
       </div>
       <div class="rv" style="--d:120ms">
         <p class="kicker">Research</p>
-        <h2 id="research-h" class="mt-3 text-[clamp(26px,3.2vw,40px)]">The State of Kenya's Startup Ecosystem 2025.</h2>
+        <h2 id="research-h" class="mt-3 text-[clamp(26px,3.2vw,40px)]">{flagship.title}.</h2>
         <p class="mt-3 max-w-md text-[14.5px] text-mut">
-          68 pages of capital flows, sector deep-dives, talent and county-level activity — with the full methodology and every status tag explained. Buy the flagship or unlock the library with membership.
+          {flagship.pages} pages of capital flows, sector deep-dives, talent and county-level activity — with the full methodology and every status tag explained. Members unlock the library; the flagship ships with a data appendix.
         </p>
         <div class="mt-5 flex flex-wrap gap-3">
-          <button class="btn btn-amber" data-modal="buy">Buy — KSh 4,500</button>
+          <button class="btn btn-amber" data-modal="buy">Get it — Members</button>
           <button class="btn btn-ghost" data-modal="buy">Free sample chapter</button>
         </div>
         <div class="railbox mt-6">
-          {[
-            ['Funding Landscape H1 2025', '34 pages', 'Members'],
-            ['Talent & Compensation Guide', '41 pages', 'KSh 2,500'],
-            ['Hackathon Impact Study', '22 pages', 'Free'],
-          ].map(([t, p, tag]) => (
+          {REPORTS.filter((r) => !r.flagship).map((r) => (
             <a href="/research" class="rowline flex items-center justify-between gap-3 px-4 py-3 hover:bg-paper2">
-              <span><span class="block text-[13.5px]">{t}</span><span class="mono-label">{p}</span></span>
-              <span class="chip chip-dashed shrink-0">{tag}</span>
+              <span><span class="block text-[13.5px]">{r.title}</span><span class="mono-label">{r.pages} pages · {r.date}</span></span>
+              <span class="chip chip-dashed shrink-0">{r.price}</span>
             </a>
           ))}
         </div>
@@ -366,7 +371,7 @@ const jsonld = [
           <li>· Verified company data export</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
-          <span class="font-mono text-[12px] text-dmut">KSh 2,900/mo · sample</span>
+          <span class="font-mono text-[12px] text-dmut">KSh 2,900/mo</span>
           <button class="btn btn-amber" data-modal="trial">Start trial</button>
         </div>
       </div>
@@ -378,7 +383,7 @@ const jsonld = [
           <li>· Salary benchmark context for every role</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
-          <span class="font-mono text-[12px] text-mut">From KSh 6,000 · sample</span>
+          <span class="font-mono text-[12px] text-mut">From KSh 6,000</span>
           <button class="btn" data-modal="postjob">Post a job</button>
         </div>
       </div>
@@ -448,7 +453,7 @@ const jsonld = [
     try {
       await subscribeNewsletter(email, 'home');
       const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
-      toast({ title: 'Subscribed', body: 'First brief lands Monday 06:30 EAT. (Sample flow)' });
+      toast({ title: 'Subscribed', body: 'First brief lands Monday 06:30 EAT.' });
       form.reset();
     } catch {
       const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;

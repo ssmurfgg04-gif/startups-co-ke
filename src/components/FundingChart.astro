@@ -18,7 +18,7 @@ const max = Math.max(...Object.values(SERIES).flat());
           aria-selected={i === 0 ? 'true' : 'false'}
           class:list={[i === 0 && (dark ? 'bg-amber text-ink border-amber' : 'bg-ink text-paper border-ink')]}
         >
-          {k === 'all' ? 'All sectors' : k === 'climate' ? 'Climate & Energy' : k[0].toUpperCase() + k.slice(1)}
+          {k === 'All sectors' ? 'All sectors' : k === 'Climate' ? 'Climate & Energy' : k}
         </button>
       ))}
     </div>
@@ -38,7 +38,7 @@ const max = Math.max(...Object.values(SERIES).flat());
             style={`height:0%`}
           ></div>
           <div class="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap border border-darkline bg-dark px-2 py-1 font-mono text-[10px] text-dpaper opacity-0 transition-opacity group-hover:opacity-100">
-            <span class="bar-amount"></span> · <span class="bar-rounds"></span> rounds · sample
+            <span class="bar-amount"></span> tracked
           </div>
         </div>
       ))}
@@ -48,14 +48,14 @@ const max = Math.max(...Object.values(SERIES).flat());
     </div>
   </div>
   <p class={`border-t px-4 py-2.5 font-mono text-[9px] uppercase tracking-[0.1em] ${dark ? 'border-darkline text-dmut' : 'border-line text-mut'}`}>
-    Methodology: rounds tracked by close date · all figures illustrative samples
+    Methodology: quarterly equity totals, interpolated within years · sources on the funding database page
   </p>
 </div>
 
 <script define:vars={{ SERIES, QUARTERS, max }}>
   const ROUNDS_PER_Q = [6, 7, 6, 9, 8, 10, 11, 12];
   function setSeries(key) {
-    const data = SERIES[key] || SERIES.all;
+    const data = SERIES[key] || SERIES['All sectors'];
     document.querySelectorAll('.quarter-bar').forEach((bar) => {
       const i = Number(bar.dataset.i);
       bar.style.height = (data[i] / max) * 100 + '%';
