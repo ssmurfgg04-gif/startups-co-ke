@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/yRhivcSoraXbLAcNLP4JwbY2DF0</id>
+  <title>arXiv Query: search_query=all:"startup ecosystem"&amp;id_list=&amp;start=0&amp;max_results=5</title>
+  <updated>2026-10-15T13:02:52Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22startup+ecosystem%22&amp;start=0&amp;max_results=5&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>5</opensearch:itemsPerPage>
+  <opensearch:totalResults>9</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2507.19775v1</id>
+    <title>AIs Structural Impact on Indias Knowledge Intensive Startup Ecosystem: A Natural Experiment in Firm Efficiency and Design</title>
+    <updated>2025-07-26T03:58:59Z</updated>
+    <link href="https://arxiv.org/abs/2507.19775v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2507.19775v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This study explores the structural and performance impacts of artificial intelligence (AI) adoption on Indias knowledge intensive startups, spanning information technology, financial technology, health technology, and educational technology, founded between 2016 and 2025. Using a natural experiment framework with the founding year as an exogenous treatment proxy, it examines firm size, revenue productivity, valuation efficiency, and capital utilization across pre AI and AI era cohorts. Findings reveal larger structures and lower efficiency in AI era firms, supported by a dataset of 914 cleaned firms. The study offers insights into AIs transformative role, suggesting that while AI era firms attract higher funding and achieve higher absolute valuations, their per employee productivity and efficiency ratios are lower, potentially indicating earlystage investments in technology that have yet to yield proportional returns. This informs global entrepreneurial strategies while highlighting the need for longitudinal research on sustainability.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-07-26T03:58:59Z</published>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Venkat Ram Reddy Ganuthula</name>
+    </author>
+    <author>
+      <name>Ramesh Kuruva</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2410.03552v1</id>
+    <title>Evaluating Investment Risks in LATAM AI Startups: Ranking of Investment Potential and Framework for Valuation</title>
+    <updated>2024-09-17T22:31:46Z</updated>
+    <link href="https://arxiv.org/abs/2410.03552v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2410.03552v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The growth of the tech startup ecosystem in Latin America (LATAM) is driven by innovative entrepreneurs addressing market needs across various sectors. However, these startups encounter unique challenges and risks that require specific management approaches. This paper explores a case study with the Total Addressable Market (TAM), Serviceable Available Market (SAM), and Serviceable Obtainable Market (SOM) metrics within the context of the online food delivery industry in LATAM, serving as a model for valuing startups using the Discounted Cash Flow (DCF) method. By analyzing key emerging powers such as Argentina, Colombia, Uruguay, Costa Rica, Panama, and Ecuador, the study highlights the potential and profitability of AI-driven startups in the region through the development of a ranking of emerging powers in Latin America for tech startup investment. The paper also examines the political, economic, and competitive risks faced by startups and offers strategic insights on mitigating these risks to maximize investment returns. Furthermore, the research underscores the value of diversifying investment portfolios with startups in emerging markets, emphasizing the opportunities for substantial growth and returns despite inherent risks.</summary>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.PM" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.PR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-09-17T22:31:46Z</published>
+    <arxiv:comment>21 pages, 7 figures, 8 tables, Accepted for publication to the International Association for Applied Business Research Journal (IAABR)</arxiv:comment>
+    <arxiv:primary_category term="q-fin.GN"/>
+    <author>
+      <name>Abraham Ramos-Torres</name>
+    </author>
+    <author>
+      <name>Laura N. Montoya</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2408.09420v5</id>
+    <title>Enhancing Startup Success Predictions in Venture Capital: A GraphRAG Augmented Multivariate Time Series Method</title>
+    <updated>2025-03-22T12:47:44Z</updated>
+    <link href="https://arxiv.org/abs/2408.09420v5" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2408.09420v5" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In the Venture Capital (VC) industry, predicting the success of startups is challenging due to limited financial data and the need for subjective revenue forecasts. Previous methods based on time series analysis often fall short as they fail to incorporate crucial inter-company relationships such as competition and collaboration. To fill the gap, this paper aims to introduce a novel approach using GraphRAG augmented time series model. With GraphRAG, time series predictive methods are enhanced by integrating these vital relationships into the analysis framework, allowing for a more dynamic understanding of the startup ecosystem in venture capital. Our experimental results demonstrate that our model significantly outperforms previous models in startup success predictions.</summary>
+    <category term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-08-18T09:31:13Z</published>
+    <arxiv:comment>ICLR 2025 Financial AI</arxiv:comment>
+    <arxiv:primary_category term="q-fin.CP"/>
+    <author>
+      <name>Zitian Gao</name>
+    </author>
+    <author>
+      <name>Yihao Xiao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2401.05760v1</id>
+    <title>Follow The Money: Exploring the Key Factors Influencing Investment in African Startups</title>
+    <updated>2024-01-11T09:09:37Z</updated>
+    <link href="https://arxiv.org/abs/2401.05760v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2401.05760v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The African continent has witnessed a notable surge in entrepreneurial activity, with the number of startups and investments made in the ecosystem growing significantly in recent years. Against this backdrop, this paper presents an in-depth analysis of the critical key factors influencing funding amounts in African startup deals. A comprehensive analysis of 2,521 startup investment deals, spanning from January 2019 to March 2023, was conducted using a combination of statistical and several machine learning techniques. The results of this study highlight a significant gender diversity gap, the importance of professional experience, and the impact of founders' academic backgrounds. The study reveals that human capital, a diversified sector approach, and cross-border collaboration strategies are crucial for a robust startup ecosystem. Additionally, we identified the potential positive impact of 'Y combinators' for African startups, the implications of exit strategies on deal amounts, and the heterogeneity as well as the incongruity of investment rounds across the continent. In light of these findings, we propose an assortment of policy recommendations aimed at fostering a propitious milieu for African entrepreneurial ventures, promoting equitable investment distribution, and enhancing cross-border collaboration. By providing a rigorous empirical analysis, this study not only contributes to the existing body of literature but also lays the foundation for future research aimed at promoting investment and catalyzing socio-economic development throughout the African continent.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-01-11T09:09:37Z</published>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Khalil Liouane</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2308.07437v1</id>
+    <title>Impact of COVID-19 Lockdown Measures on Chinese Startups and Local Government Public Finance: Challenges and Policy Implications</title>
+    <updated>2023-08-14T20:13:28Z</updated>
+    <link href="https://arxiv.org/abs/2308.07437v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2308.07437v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper aims to assess the impact of COVID-19 on the public finance of Chinese local governments, with a particular focus on the effect of lockdown measures on startups during the pandemic. The outbreak has placed significant fiscal pressure on local governments, as containment measures have led to declines in revenue and increased expenses related to public health and social welfare. In tandem, startups have faced substantial challenges, including reduced funding and profitability, due to the negative impact of lockdown measures on entrepreneurship. Moreover, the pandemic has generated short- and long-term economic shocks, affecting both employment and economic recovery. To address these challenges, policymakers must balance health concerns with economic development. In this regard, the government should consider implementing more preferential policies that focus on startups to ensure their survival and growth. Such policies may include financial assistance, tax incentives, and regulatory flexibility to foster innovation and entrepreneurship. By and large, the COVID-19 pandemic has had a profound impact on both the public finance of Chinese local governments and the startup ecosystem. Addressing the challenges faced by local governments and startups will require a comprehensive approach that balances health and economic considerations and includes targeted policies to support entrepreneurship and innovation.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-08-14T20:13:28Z</published>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Xin Sun</name>
+    </author>
+  </entry>
+</feed>

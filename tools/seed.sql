@@ -1,0 +1,245 @@
+-- ============================================================
+-- startups.co.ke — seed (real, sourced data — as of 2026-10-15)
+-- Every figure carries status + source. See docs/DECISIONS.md D2.
+-- ============================================================
+truncate public.companies, public.funding_rounds, public.investors, public.investments, public.jobs, public.hackathons, public.articles, public.reports, public.salary_bands, public.wire_items, public.trend_items;
+
+-- ---------- COMPANIES (16) ----------
+insert into public.companies (id,name,tagline,sector,stage,hq,founded,employees,verified,status,status_note,domain,website,about,tech_stack,total_raised_usd,raised_display,raised_source,logo_url,featured) values
+('m-kopa','M-KOPA','Connected financing — smartphones, solar and digital services on daily micro-payments','fintech','Series F','Nairobi',2011,'1,000+',true,'Active',null,'m-kopa.com','https://m-kopa.com',
+ 'M-KOPA pioneered pay-as-you-go financing in Kenya in 2011, using M-PESA rails to let customers pay for smartphones, solar systems and digital services in daily instalments. It has since expanded to Nigeria, Ghana and India, layering consumer finance and insurance on top of the original PAYG model. It is the most-funded startup in Kenya.',
+ ARRAY['M-PESA rails','USSD','Android device management','Internal credit scoring'],241000000,'$241M · 22 rounds','Tracxn (Sep 2026)',null,true),
+('basigo','BasiGo','Electric buses designed and assembled in Nairobi — pay-as-you-drive financing','mobility','Series A','Nairobi',2021,'250+',true,'Active',null,'basi-go.com','https://www.basi-go.com',
+ 'BasiGo assembles and supplies electric buses in Kenya, with Pay-As-You-Drive financing that removes the upfront cost barrier for bus operators. It is scaling inter-city routes and has begun expanding into Rwanda. Its $42.5M Series A (equity plus financing debt) is the largest e-mobility round in East Africa.',
+ ARRAY['EV drivetrain integration','PAYD telematics','DC charging network'],43500000,'$43.5M+ (reported)','Semafor (Mar 2026)',null,true),
+('sunculture','SunCulture','Solar-powered irrigation for smallholders — pumps on PAYG','energy','Series B','Nairobi',2012,'400+',true,'Active',null,'sunculture.com','https://sunculture.com',
+ 'SunCulture sells solar-powered water pumps to smallholder farmers on pay-as-you-go terms, replacing diesel or rain-fed irrigation. In September 2026 it closed a $10M securitisation of customer receivables — a financing instrument increasingly used by Kenyan climate companies to unlock working capital.',
+ ARRAY['IoT pump controllers','M-PESA billing','Remote monitoring'],45500000,'$45.5M · 8 rounds','Tracxn (Aug 2026)',null,true),
+('apollo','Apollo Agriculture','Bundled farm financing, inputs and advice — from seed to sale','agritech','Series B','Nairobi',2016,'500+',true,'Active',null,'apolloagriculture.com','https://www.apolloagriculture.com',
+ 'Apollo Agriculture bundles financing, seed and fertiliser, insurance and agronomic advice for smallholder farmers, underwritten with satellite and yield data. Its $40M Series B (2022), led by SoftBank and joined by the Chan Zuckerberg Initiative and CDC, remains one of Kenya''s largest agritech rounds.',
+ ARRAY['Satellite imagery','Yield models','Mobile field apps'],52000000,'$52M+ (reported)','TechCrunch (Mar 2022)',null,false),
+('pula','Pula','Agricultural insurance for smallholders across Africa, Asia and Latin America','insurtech','Series B','Nairobi',2015,'300+',true,'Active',null,'pula-advisors.com','https://www.pula-advisors.com',
+ 'Pula designs and distributes agricultural insurance — weather-index and area-yield policies — reaching millions of smallholder farmers through banks, agribusinesses and governments. Its $20M Series B (April 2024) was led by BlueOrchard''s InsuResilience strategy.',
+ ARRAY['Weather-index modelling','Area-yield data','Reinsurance partnerships'],26000000,'$26M (reported)','startupintros (Jul 2026)',null,true),
+('cellulant','Cellulant','Payments infrastructure connecting banks, telcos and merchants across 18 markets','fintech','Mature','Nairobi',2004,'500+',true,'Active',null,'cellulant.io','https://www.cellulant.io',
+ 'Cellulant builds payment infrastructure across Africa — a single API connecting merchants, banks and mobile money operators in 18 markets. Founded in 2004, it is one of Kenya''s oldest fintech scale-ups and a reference point for the continent''s payments stack.',
+ ARRAY['Single payments API','Mobile money integrations','Multi-currency settlement'],54500000,'$54.5M','Fintech News Africa (Sep 2025)',null,false),
+('twiga','Twiga Foods','B2B food distribution — produce from farmers to urban vendors','commerce','—','Nairobi',2014,'—',true,'In administration',
+ 'Entered administration Aug 17 2026 after raising $185.4M; administrator appointed (Techpoint Africa, Sep 2026)','twiga.com','https://www.twiga.com',
+ 'Twiga Foods built a B2B distribution network linking Kenyan farmers to urban food vendors, attracting over $185M from local and international investors. After years of financial pressure it entered administration in August 2026 — the ecosystem''s most consequential collapse to date.',
+ ARRAY['Vendor app network','Cold chain logistics'],185400000,'$185.4M (confirmed)','Techpoint Africa (Sep 2026)',null,false),
+('sendy','Sendy','On-demand logistics — B2B freight and fulfilment','logistics','—','Nairobi',2015,'—',true,'Shut down',
+ 'Shut down August 2023 after raising $20M (ImpactAlpha)','sendy.co.ke',null,
+ 'Sendy built an on-demand platform for B2B freight and last-mile fulfilment in Kenya and Nigeria, raising $20M in 2020. It shut down in August 2023 — an early signal of the correction that later claimed Twiga and Copia.',
+ ARRAY['Fleet routing','Warehouse ops'],20000000,'$20M+ (reported)','ImpactAlpha (2023)',null,false),
+('copia','Copia Global','E-commerce for rural consumers — agent-network ordering and delivery','commerce','—','Nairobi',2013,'—',true,'In liquidation',
+ 'Headed into liquidation Sep 2026; investors unlikely to recover funds (Business Daily)','copia.co.ke',null,
+ 'Copia Global built a network of village agents who ordered household goods for rural consumers, backed by over $100M in venture funding. It headed into liquidation in September 2026, with investors unlikely to recover their capital.',
+ ARRAY['Agent network app','Rural last-mile routing'],123000000,'$123M (reported)','Business Daily (Sep 2026)',null,false),
+('ilara','Ilara Health','Diagnostics and clinic software for African medical providers','health','Pre-Series A','Nairobi',2019,'100+',true,'Restructuring',
+ 'Restructuring and layoffs announced Sep 2025 amid delayed financing (CIO Africa)','ilarahealth.com','https://ilarahealth.com',
+ 'Ilara Health equips clinics across Kenya with affordable diagnostics and practice software, financed on subscription. After raising $11.7M it announced restructuring in September 2025 as follow-on financing slowed — a case study in the seed-to-Series-A squeeze.',
+ ARRAY['Point-of-care devices','Clinic management SaaS'],11700000,'$11.7M (reported)','Connecting Africa (Feb 2024)',null,false),
+('honeycoin','HoneyCoin','Stablecoin-powered payment rails — social payments and business treasury','fintech','Seed','Nairobi',2021,'40',true,'Active',null,'honeycoin.app','https://honeycoin.app',
+ 'HoneyCoin builds hybrid fiat-stablecoin payment infrastructure from Riverside Drive, Nairobi, letting users move, save and spend across borders. It closed a $4.9M seed in August 2025 with participation from Flourish Ventures, after starting in Antler''s Nairobi residency.',
+ ARRAY['Stablecoin rails','KYC/AML stack','React Native'],4900000,'$4.9M (confirmed)','TechCabal (Aug 2025)',null,false),
+('flowt','Flowt','AI that turns messy financial records into lender-ready data','fintech','Pre-seed','Nairobi',2024,'8',false,'Active',null,null,null,
+ 'Flowt, founded by Elana Laichena, uses AI to convert informal financial records into lender-ready data, opening working-capital financing to small businesses — with a pre-qualified lending pipeline its team sizes at $1–2M. It closed the first tranche of its pre-seed in August 2026 with Delta40, Impacc and the Argidius Foundation.',
+ ARRAY['Document AI','Cashflow underwriting models'],null,'Pre-seed, undisclosed (confirmed)','Disrupt Africa (Aug 2026)',null,false),
+('flexpay','FlexPay','Save-now-buy-later — flexible payments for shoppers and merchants','fintech','Seed','Nairobi',2015,'50',true,'Active',null,'flexpay.co.ke',null,
+ 'FlexPay lets shoppers save towards purchases and pay flexibly — a save-now-buy-later model adopted by Kenyan merchants. It has raised $785K from investors including Renew Capital and the Acacia Group, and partners with banks on goal-based savings products.',
+ ARRAY['Merchant checkout SDK','M-PESA integration'],785000,'$785K (reported)','TechCrunch (Sep 2023)',null,false),
+('tanda','Tanda','Merchant infrastructure — inventory financing and digital services for dukas','fintech','Seed','Nairobi',2019,'60',false,'Active',null,'tanda.co.ke',null,
+ 'Tanda provides merchant infrastructure — inventory financing, bill payments and digital services — through a network of agents and dukas. Its 2021 round included HAVAÍC, Zedcrest Capital, DFS Lab and angel investor Victor Asemota.',
+ ARRAY['Agent app network','Inventory credit scoring'],null,'Undisclosed (reported)','International Finance (Mar 2021)',null,false),
+('pesapal','Pesapal','Payment gateway and financial services for East African businesses','fintech','Mature','Nairobi',2012,'300+',true,'Active',null,'pesapal.com','https://www.pesapal.com',
+ 'Pesapal, founded by Agosta Liko in 2012, provides online payment and financial services to more than 30,000 businesses across East Africa — largely without venture capital, processing millions of transactions valued at Sh20.5B+ (company-disclosed).',
+ ARRAY['Payment gateway APIs','POS hardware','Settlement rails'],null,'Bootstrapped-lean (self-reported)','Company disclosures (2026)',null,false),
+('roam','Roam Electric','Electric buses and motorbikes designed and assembled in Kenya','mobility','—','Nairobi',2017,'250',false,'Active',null,'roam-electric.com','https://www.roam-electric.com',
+ 'Roam (formerly Opibus) designs and assembles electric buses and motorbikes in Nairobi — its Move and Rapid bus lines serve urban and inter-city routes. Per-round funding data is not tracked on this platform; see the company''s careers pages for open roles.',
+ ARRAY['EV powertrains','In-house assembly line'],null,'Not disclosed',null,null,false);
+
+-- ---------- FUNDING ROUNDS (dated where known) ----------
+insert into public.funding_rounds (company_id,announced,round,amount_usd,amount_display,lead,status,source,source_url,note) values
+('m-kopa','2025-11-13','Series F',166000000,'$166M',null,'confirmed','PitchBook (Nov 2025)','https://pitchbook.com','Equity; a near-$160M close was also reported by Semafor'),
+('m-kopa','2023-05-15','Debt & equity facility',255000000,'$255M','Standard Bank + Sumitomo Corporation','confirmed','Reuters (May 2023)','https://www.reuters.com','Combined new debt and equity financing'),
+('basigo',null,'Series A',42500000,'$42.5M',null,'reported','Semafor (Mar 2026)','https://semafor.com','Equity plus financing debt; closed 2025 (month undisclosed). EcoNews reports $42M'),
+('sunculture','2026-09-24','Securitisation (debt)',10000000,'$10M',null,'confirmed','Dealroom (Sep 2026)',null,'Securitisation of customer receivables'),
+('sunculture','2025-09-19','Growth round',5000000,'$5M','WaterEquity','confirmed','WeeTracker (Sep 2025)',null,null),
+('sunculture',null,'Series B',27500000,'$27.5M',null,'reported','Press compilation',null,'Oversubscribed; date not confirmed in public sources'),
+('apollo','2022-03-21','Series B',40000000,'$40M','SoftBank (reported)','confirmed','TechCrunch (Mar 2022)','https://techcrunch.com','Joined by Chan Zuckerberg Initiative and CDC'),
+('apollo',null,'Growth financing',10000000,'$10M','Swedfund + ImpactConnect','reported','Press release',null,'Expansion financing'),
+('pula','2024-04-15','Series B',20000000,'$20M','BlueOrchard (InsuResilience)','confirmed','TechCrunch (Apr 2024)','https://techcrunch.com',null),
+('cellulant','2018-01-01','Series C',47500000,'$47.5M','The Rise Fund / TPG (reported)','reported','Press (2018) via Fintech News Africa',null,'Date approximate; $54.5M total across rounds'),
+('ilara','2024-02-12','Pre-Series A',4200000,'$4.2M',null,'confirmed','Africa Private Equity News (Feb 2024)',null,'Equity and debt'),
+('ilara','2020-12-16','Series A',3750000,'$3.75M',null,'confirmed','Disrupt Africa (Dec 2020)',null,null),
+('ilara',null,'Seed',700000,'$700K','Villgro Kenya','reported','Villgro Africa',null,null),
+('honeycoin','2025-08-12','Seed',4900000,'$4.9M',null,'confirmed','TechCabal (Aug 2025)','https://techcabal.com','Flourish Ventures participated; Antler-backed founding team'),
+('flowt','2026-08-26','Pre-seed (first close)',null,'Undisclosed',null,'confirmed','Disrupt Africa (Aug 2026)','https://disruptafrica.com','Delta40 Fund I, Impacc, Argidius Foundation'),
+('flexpay','2023-09-19','Seed (cumulative)',785000,'$785K',null,'reported','TechCrunch (Sep 2023)','https://techcrunch.com','Includes Acacia Group and Renew Capital'),
+('tanda','2021-03-01','Seed',null,'Undisclosed','HAVAÍC + Zedcrest Capital + DFS Lab','reported','International Finance (Mar 2021)',null,'Angels incl. Victor Asemota');
+
+-- ---------- INVESTORS (13) ----------
+insert into public.investors (id,name,type,hq,stages,cheque,thesis,website,verified,deals,note,logo_domain) values
+('novastar','Novastar Ventures','Venture capital','Nairobi · Lagos · London','Seed–Series B','$1M–$10M+',
+ ARRAY['Mass-market East & West Africa','Profitability with social impact'],'https://www.novastarventures.com',true,60,'One of Africa''s first and largest venture firms; ~60 companies backed (Failory, Dec 2025)',null),
+('enza','Enza Capital','Venture capital','Nairobi','Seed–Series B','$500K–$5M',
+ ARRAY['Fintech','Logistics','Health','Human capital','Climate-smart'],'https://enza.capital',true,45,'40+ investments; leads and co-leads (Failory, Dec 2025)',null),
+('tlcom','TLcom Capital','Venture capital','Nairobi · London','Seed–Series A','$1M–$5M',
+ ARRAY['Early-stage Africa tech','On-the-ground local teams'],'https://tlcomcapital.com',true,30,'Early Cellulant backer (reported)',null),
+('antler','Antler Kenya','Venture builder','Nairobi','Pre-seed','$100K–$300K',
+ ARRAY['Founders from scratch','Day-one co-investment'],'https://www.antler.co',true,60,'HoneyCoin began in Antler''s Nairobi residency',null),
+('blueorchard','BlueOrchard — InsuResilience','Impact fund manager','Zurich','Growth','$5M–$25M',
+ ARRAY['Climate resilience','Insurance for the vulnerable'],'https://www.blueorchard.com',true,20,'Led Pula''s $20M Series B (Apr 2024)',null),
+('flourish','Flourish Ventures','Venture capital (impact)','San Francisco · global','Seed–Series B','$1M–$10M',
+ ARRAY['Financial health','Responsible fintech'],'https://www.flourishventures.com',true,60,'HoneyCoin seed (Aug 2025); thesis: financial health',null),
+('delta40','Delta40','Early-stage VC','Nairobi','Pre-seed','$200K–$500K',
+ ARRAY['Climate innovation','Gender-lens investing'],null,false,15,'Flowt pre-seed (Aug 2026)',null),
+('waterequity','WaterEquity','Impact investor','Grand Rapids, US','Growth','$1M–$10M',
+ ARRAY['Water & sanitation access'],null,true,30,'SunCulture $5M growth round (Sep 2025)',null),
+('renew','Renew Capital','Angel network + VC','Nairobi','Seed','$50K–$500K',
+ ARRAY['East African angel capital','Consumer fintech'],'https://www.renewcapital.com',true,25,'FlexPay backer (with Acacia Group)',null),
+('havaic','HAVAÍC','Venture capital','Cape Town · Nairobi','Seed','$250K–$2M',
+ ARRAY['Merchant infrastructure','Founding teams'],null,false,20,'Tanda 2021 round (with Zedcrest Capital, DFS Lab)',null),
+('saviu','Saviu','Venture capital','Cotonou · Nairobi','Seed','$100K–$1M',
+ ARRAY['Francophone + East Africa bridge'],'https://www.saviu.vc',false,15,'African early-stage; founded by entrepreneurs',null),
+('ajim','Ajim Capital','Pre-seed VC','Nairobi','Pre-seed','$25K–$100K',
+ ARRAY['East African founders at pre-seed'],'https://ajimcapital.com',false,10,'Pre-seed and seed East Africa',null),
+('villgro','Villgro Kenya','Incubator','Nairobi','Pre-seed','$50K–$250K',
+ ARRAY['Health and agri innovations'],'https://villgroafrica.org',true,40,'Ilara Health''s first $700K (seed)',null);
+
+insert into public.investments (investor_id,company_id,note) values
+('antler','honeycoin','Founding residency — Nairobi'),
+('flourish','honeycoin','Seed round (Aug 2025)'),
+('delta40','flowt','Pre-seed first close (Aug 2026)'),
+('waterequity','sunculture','$5M growth round (Sep 2025)'),
+('blueorchard','pula','Series B lead (Apr 2024)'),
+('renew','flexpay','Seed (with Acacia Group)'),
+('havaic','tanda','2021 round (with Zedcrest Capital, DFS Lab)'),
+('villgro','ilara','Seed — $700K'),
+('tlcom','cellulant','Early backer (reported)');
+
+-- ---------- JOBS (5 confirmed-live roles; salary = market band, labeled) ----------
+insert into public.jobs (id,company_id,title,location,mode,category,salary,salary_min_kes,salary_max_kes,posted_days,featured,verified_employer,tags,description,apply_url) values
+('j1','m-kopa','Senior Backend Engineer — Asset Finance','Nairobi','Hybrid','Engineering','KSh 350–500K · market band',350000,500000,3,true,true,
+ ARRAY['Go/Java','M-PESA rails','Payments at scale'],
+ 'Own payment orchestration services that move millions of daily micro-repayments across Kenya, Nigeria, Ghana and India. You will harden reconciliation between M-PESA, Airtel Money and card rails, and cut failure rates on the 2G/USSD edge. Title confirmed live on M-KOPA''s careers board.',
+ 'https://www.m-kopa.com/careers'),
+('j2','m-kopa','Senior Product Manager — Mobility','Nairobi','Hybrid','Product','KSh 300–450K · market band',300000,450000,5,false,true,
+ ARRAY['EV transition','Hardware + software','0→1 products'],
+ 'Pioneer the product side of M-KOPA''s electric mobility expansion — financing structures for e-motorbikes and service networks. Listed via jobs board (Blue Haven); confirm live status on the careers page.',
+ 'https://www.m-kopa.com/careers'),
+('j3','m-kopa','Retail Customer Experience Agent — Mobility','Nairobi','On-site','Operations','KSh 60–120K · market band',60000,120000,27,false,true,
+ ARRAY['Customer ops','Technical product knowledge'],
+ 'Serve as the technical and product knowledge anchor at one of M-KOPA''s retail touchpoints for the mobility line. Title confirmed on external board (Sep 2026); confirm on the careers page.',
+ 'https://www.m-kopa.com/careers'),
+('j4','m-kopa','Quality Assurance & Training Analyst','Nairobi','Hybrid','Operations','KSh 150–250K · market band',150000,250000,9,false,true,
+ ARRAY['QA','Training design'],
+ 'Build QA frameworks and training programmes across customer operations. Title confirmed live on the Ashby board; confirm on the careers page.',
+ 'https://www.m-kopa.com/careers'),
+('j5','basigo','Charging Station Attendant','Nairobi','On-site','Operations','KSh 60–120K · market band',60000,120000,14,false,true,
+ ARRAY['EV charging','Safety procedures'],
+ 'Operate and monitor DC charging stations on BasiGo''s Nairobi network — safety checks, uptime logs and driver support. Sourced via ClimateTechList; confirm live status on basi-go.com.',
+ 'https://www.basi-go.com');
+
+-- ---------- HACKATHONS / BUILDER EVENTS (dated, real) ----------
+insert into public.hackathons (id,name,kind,start,end_date,city,venue,theme,prize,tracks,organizers,url,verified_organizer,status,builders,notes,featured) values
+('devfest26','DevFest Nairobi 2026','Conference + codelabs','2026-11-13','2026-11-14','Nairobi','Nairobi (venue per GDG)','Google technologies — web, mobile, cloud, AI',null,
+ ARRAY['Android','Web','Cloud','AI/ML'],'GDG Nairobi','https://gdg.community.dev',true,'upcoming',0,
+ 'GDG Nairobi''s flagship annual developer conference. Programme times TBA — countdown targets opening day 08:00 EAT.',true),
+('gophercon26','GopherCon Africa 2026','Conference','2026-10-15','2026-10-17','Nairobi','Nairobi','The premier Go conference in Africa',null,
+ ARRAY['Go','Systems','Cloud-native'],'GopherCon Africa','https://gophercon.africa',true,'upcoming',0,
+ 'Thursday tutorials; conference Friday–Saturday. Running this week.',false),
+('fintechfest26','Fintech Festival Kenya 2026','Festival','2026-11-05','2026-11-06','Nairobi','Nairobi','The future of digital finance',null,
+ ARRAY['Payments','Regulation','Stablecoins'],'Fintech Festival Kenya','https://events.coinpedia.org',false,'upcoming',0,
+ 'Connect with fintech leaders across Africa.',false),
+('sdc26','Start Developer Competition 2026','Competition','2026-10-10','2026-11-01','Online','Online','Open developer competition',null,
+ ARRAY['Open'],'dev.events','https://dev.events',false,'ongoing',0,
+ 'Submissions close Nov 1, 2026 — live countdown on the hackathons page.',false),
+('abf26','Africa Blockchain Festival 2026','Festival',null,null,'Nairobi','Nairobi','Blockchain and Web3 in Africa',null,
+ ARRAY['Web3','Payments'],'Fintech Times / organisers','https://www.fintechtimes.com',false,'upcoming',0,
+ 'Dates TBA — see organiser channels.',false),
+('interuni26','Inter-University Hackathon 2026','Hackathon',null,null,'Nairobi','Partner universities','Student innovation',null,
+ ARRAY['Open'],'Tech Events Kenya','https://events.techgroupkenya.co.ke',false,'upcoming',0,'Dates TBA — see organiser channels.',false),
+('mcpsummit','MCP DEV Summit Nairobi','Summit',null,null,'Nairobi','Nairobi','Model context protocol tooling',null,
+ ARRAY['AI tooling'],'Tech Events Kenya','https://events.techgroupkenya.co.ke',false,'upcoming',0,'Dates TBA — see organiser channels.',false),
+('aitinkerers','AI Tinkerers Nairobi','Meetup + hackathons',null,null,'Nairobi','Nairobi','Hands-on AI builds',null,
+ ARRAY['AI'],'AI Tinkerers','https://nairobi.aitinkerers.org',false,'upcoming',0,'Recurring — global hackathon editions held; see chapter page.',false),
+('devfest25','DevFest Nairobi 2025','Conference + codelabs','2025-10-31','2025-11-01','Nairobi','Nairobi','Google technologies',null,
+ ARRAY['Android','Web','Cloud'],'GDG Nairobi','https://gdg.community.dev',true,'past',0,'Day one hands-on workshops; day two conference.',false),
+('cfwt26','Campaign Finance Watch Tool Hackathon 2026','Hackathon',null,null,'Nairobi','iLabAfrica, Strathmore','Campaign finance transparency tooling',null,
+ ARRAY['Civic tech'],'iLabAfrica + Transparency International Kenya','https://ilabafrica.strathmore.edu',true,'past',0,'Successfully hosted with TI-Kenya.',false);
+
+-- ---------- ARTICLES (6 — original desk analysis, sources attached) ----------
+insert into public.articles (id,category,title,dek,mins,published,author,date,seed,body,sources,feature,tags) values
+('sh93bn','Analysis','The Sh93bn lesson: why verified data beats loud data',
+ 'Thirteen collapses, Sh93bn in investor losses, and two databases that disagree by 13,000 companies. The case for status-tagged funding data.',
+ 6,'Oct 15, 2026','startups.co.ke desk','2026-10-15','sh93billion',
+ '[{"p":"On September 16, 2026, Business Daily tallyed the damage: investors have lost roughly Sh93 billion across thirteen Kenyan startup failures — Twiga Foods, Copia, Koko Networks and Lipa Later among them. Twiga alone had raised $185.4M before entering administration on August 17. These are not rounding errors in a young ecosystem; they are the correction arriving all at once, four years after the 2021–22 boom priced growth at any cost."},{"p":"What the correction exposes is a data problem as much as a capital problem. Ask how many startups Kenya has and the industry''s own databases disagree wildly: Tracxn lists 13,642 Kenyan startups and $13.1B of lifetime venture capital; StartupBlink counts 659. Neither figure is a lie — they measure different things with different methods, and neither tells you which of the two is inflated by listings that never raised a shilling. Investors who priced rounds off the loud number rather than the verified one are the ones wearing the Sh93bn."},{"p":"The fix is unglamorous: statuses on every figure. A round is confirmed when a company or registrar says so; reported when a single credible outlet carries it; estimated when we model it — and each status carries its source. On this platform the failure states are tracked like the funding states: Twiga''s profile reads In administration, Sendy''s reads Shut down (2023), Copia''s reads In liquidation. A directory that hides its dead companies is marketing, not intelligence."},{"p":"Kenya''s honest numbers are still strong by any African measure: $984M raised in 2025, the continent''s highest for a second straight year, before H1 2026 fell 44.5% to $126M. The discipline the ecosystem needs now is the same one this database runs on — show the source, show the date, show the status, and let the reader decide."}]'::jsonb,
+ '[{"label":"Business Daily — Sh93bn losses (Sep 16, 2026)","url":"https://www.businessdailyafrica.com"},{"label":"Techpoint Africa — Twiga administration (Sep 2026)","url":"https://techpoint.africa"},{"label":"Tracxn — Kenya overview","url":"https://tracxn.com"},{"label":"StartupBlink — Kenya (Oct 2026)","url":"https://www.startupblink.com"}]'::jsonb,
+ true,ARRAY['Funding','Data integrity']),
+('h1-2026','Funding','Kenya''s H1 2026 slowdown, in five numbers',
+ 'Equity fell 44.5% to $126M — the slowest first half since 2021. Egypt and Nigeria pulled ahead. What the figures actually say.',
+ 5,'Oct 14, 2026','startups.co.ke desk','2026-10-14','h1charts',
+ '[{"p":"Kenya''s first-half 2026 was a study in deceleration from a high base: Sh16.3B (about $126M) raised, down 44.5% year-on-year, the slowest opening half since 2021, according to Business Daily''s compilation. Egypt and Nigeria overtook Kenya for the half — a jolt for a market that had led the continent for two consecutive years."},{"p":"The continental context softens the verdict: Africa''s H1 2026 held at $1.44B, up 1.34% on the half, per TechCabal Insights; The Big Deal counted $1.36B going to startups raising $100K or more, but only 190 companies — concentration, not collapse. Kenya''s full-year 2025 was $984M in equity ($1.04B including debt, on Invest Kenya''s tally), which means the base being compared against was exceptional."},{"p":"Read structurally, the H1 figure says less about Kenya''s founders than about instrument mix. Debt, securitisation and structured facilities — SunCulture''s $10M receivables securitisation in September, M-KOPA''s $255M debt-and-equity facility before it — now carry what equity rounds once did. The seed gap at the bottom is being filled by syndicates and accelerators: Flowt''s pre-seed first close in August drew Delta40, Impacc and the Argidius Foundation."},{"p":"The working posture for H2 2026: treat every headline number as a measurement, ask what it counts, and check the source. That habit — more than any single round — will decide who compounds through the downturn."}]'::jsonb,
+ '[{"label":"Capital FM — Sh16.3bn H1 2026","url":"https://www.capitalfm.co.ke"},{"label":"TechCabal Insights — Africa H1 2026 $1.44B","url":"https://insights.techcabal.com"},{"label":"Business Daily — H1 2026","url":"https://www.businessdailyafrica.com"},{"label":"The Big Deal","url":"https://thebigdeal.substack.com"}]'::jsonb,
+ false,ARRAY['Funding','H1 2026']),
+('the-fallen','Analysis','The fallen: what Twiga, Copia and Sendy teach the ecosystem',
+ 'Between them they raised over $300M. All three are gone. A field guide to Kenya''s most instructive failures.',
+ 7,'Oct 13, 2026','startups.co.ke desk','2026-10-13','fallen',
+ '[{"p":"Twiga Foods entered administration on August 17, 2026, with an administrator appointed by the court — the end of a road that began in 2014 with a promise to fix produce distribution between Kenyan farmers and urban vendors, and $185.4M of capital later. Sendy had already shut in August 2023 after raising $20M for freight and fulfilment. Copia Global, which raised over $100M to bring e-commerce to rural consumers through agent networks, went into liquidation in September 2026, with Business Daily reporting investors are unlikely to recover much of anything."},{"p":"The pattern across the three is not mystery — it is unit economics that never closed. Twiga''s model carried cold chain and logistics costs that gross margin never covered at scale; Copia''s agent network required density that rural purchasing power could not fund; Sendy diversified into too many lines (freight, fulfilment, essentials) as capital tightened. In each case, growth metrics led while contribution margin lagged, and follow-on capital arrived on the strength of the former."},{"p":"For the ecosystem, the lesson is epistemic before it is financial. Every one of these companies looked excellent in a database that tracked raises but not contribution margin — which is to say, every database on the market. The profiles on this platform keep their failure states visible on purpose: a directory that quietly drops its dead companies teaches the next founder nothing."},{"p":"What to watch next: whether the administrators can preserve Twiga''s vendor network as a going concern, and whether Copia''s liquidation sets a recovery precedent for investors in future Kenyan collapses. Both outcomes will shape how international LPs price Kenyan exposure for years."}]'::jsonb,
+ '[{"label":"Techpoint Africa — Twiga administration","url":"https://techpoint.africa"},{"label":"Business Daily — Copia liquidation (Sep 29, 2026)","url":"https://www.businessdailyafrica.com"},{"label":"ImpactAlpha — Sendy shutdown (2023)","url":"https://impactalpha.com"}]'::jsonb,
+ false,ARRAY['Failures','Analysis']),
+('adc-exit','Talent','Microsoft''s ADC exit and the talent pipeline question',
+ 'A $100M engineering hub is closing. What it means for Kenya''s developers — and who hires them next.',
+ 5,'Oct 12, 2026','startups.co.ke desk','2026-10-12','adcexit',
+ '[{"p":"In October 2026, Microsoft confirmed the closure of its Nairobi Africa Development Centre — the $100M engineering hub opened in 2019 as a flagship bet on Kenyan engineering talent. The immediate effect is a pool of several hundred senior engineers, product managers and designers re-entering the market at once, in a half-year when venture funding has already tightened 44.5%."},{"p":"For startups, this is the cheapest senior-talent moment Nairobi has offered in years. The engineers the ADC trained — distributed systems, data platforms, developer tooling — map almost exactly onto what Kenyan startups at Series A say they cannot hire: payment-rails backend engineers, data scientists who can ship, platform engineers who can hold uptime on thin infrastructure budgets."},{"p":"The risk is retention, not supply. The ADC''s closure also signals to global tech that Nairobi is a variable-cost location, not a commitment — and the same engineers being courted by startups are being courted by remote employers abroad paying dollar salaries. Local companies competing on mission and equity will need to be honest about what they can pay; the market bands in our compensation guide are a starting point, not a ceiling."},{"p":"The policy question lands with the government and the county: the ecosystem''s pitch for the next decade cannot be cheap labour — it has to be the quality of the pipeline, and the pipeline needs the institutions (universities, certification, broadband) that keep producing engineers worth hiring at global wages."}]'::jsonb,
+ '[{"label":"CIO Africa — Microsoft ADC closure","url":"https://cioafrica.co"},{"label":"TechTrendsKE — the $100M investment to closure","url":"https://www.techtrendske.co.ke"},{"label":"Business Insider Africa — ADC engineering hub","url":"https://www.businessinsider.africa"}]'::jsonb,
+ false,ARRAY['Talent','Big tech']),
+('seed-gap','Funding','Angel syndicates are filling Kenya''s seed gap',
+ 'As institutional funds moved later, pre-seed cheques came from Delta40, Impacc, Argidius and Antler. Flowt''s round shows how.',
+ 4,'Oct 10, 2026','startups.co.ke desk','2026-10-10','seedgap',
+ '[{"p":"In August 2026, Flowt — an AI startup founded by Elana Laichena that converts informal financial records into lender-ready data — announced the first close of its pre-seed round. The syndicate behind it reads like a who''s-who of the new seed gap-fillers: Delta40 Fund I (climate and gender-lens), Impacc (impact), and the Argidius Foundation. None of them is a traditional Series A fund; all of them write cheques institutions no longer will."},{"p":"The mechanics matter for founders. Pre-seed rounds in Kenya now routinely blend grants (foundations), soft loans and priced equity, with tranches released against milestones rather than dates. Antler''s Nairobi residency continues to be a day-one founder factory — HoneyCoin, which closed a $4.9M seed in 2025, started there. The trade-off is diligence: syndicate capital is slower and more conditional, but it comes with operator support that passive capital never provided."},{"p":"For investors, the lesson of the seed gap is that the best dealflow in Nairobi is now assembled, not discovered. The accelerators and studios know which founders are weeks from fundable before any database does — which is why this platform tracks accelerators as first-class entities in the investor directory."}]'::jsonb,
+ '[{"label":"Disrupt Africa — Flowt pre-seed","url":"https://disruptafrica.com"},{"label":"FinSMEs — Flowt raises pre-seed","url":"https://www.finsmes.com"},{"label":"The SaaS News — Flowt","url":"https://www.thesaasnews.com"}]'::jsonb,
+ false,ARRAY['Pre-seed','Syndicates']),
+('stablecoin-rails','Fintech','Stablecoin rails: HoneyCoin''s $4.9M and the new payment stack',
+ 'Fiat-stablecoin infrastructure built from Riverside Drive. Why investors are paying attention.',
+ 4,'Oct 9, 2026','startups.co.ke desk','2026-10-09','stablecoins',
+ '[{"p":"When HoneyCoin closed its $4.9M seed in August 2025, the round''s most telling detail was not the size — it was the geography. A Nairobi startup, born in Antler''s residency on Riverside Drive, building hybrid fiat-stablecoin payment rails for African and global markets, with Flourish Ventures (the fintech-focused impact investor) participating."},{"p":"Stablecoins solve a specific Kenyan problem: cross-border settlement is slow and expensive, while domestic rails — M-PESA above all — are excellent. The new stack being built by HoneyCoin and peers keeps the excellent domestic layer and replaces the broken international one: stablecoin treasury for businesses, fiat on/off-ramps at the edges, KYC/AML in the middle."},{"p":"Regulation is the swing factor. Kenya''s fintech reforms reported by TechCabal in October 2026 promise clarity but could delay investment in the near term; the CBDC conversation has moved from whether to how. For founders, the honest read is that this layer will be built — the open question is whether it is built by Kenyan companies or for Kenyan customers by others."}]'::jsonb,
+ '[{"label":"TechCabal — HoneyCoin $4.9M","url":"https://techcabal.com"},{"label":"Flourish Ventures — why we invested","url":"https://www.flourishventures.com"},{"label":"TechCabal — fintech reforms (Oct 2026)","url":"https://techcabal.com"}]'::jsonb,
+ false,ARRAY['Fintech','Stablecoins']);
+
+-- ---------- REPORTS (4) ----------
+insert into public.reports (id,title,pages,date,blurb,access,price,tag,url) values
+('funding-2026','Kenya Funding Landscape 2026',42,'Oct 2026','Every tracked round, sector flow and instrument shift — with a source on every figure.','Members',null,'Members',null),
+('talent-2026','Talent & Compensation Guide 2026',28,'Sep 2026','Salary bands across engineering, data, product and design — community and published surveys, clearly labeled.','Paid','KSh 2,500','Paid',null),
+('payments-stack','Payments Infrastructure: the M-PESA rails and what is built on top',36,'Aug 2026','From USSD to stablecoins — the stack, the players, the regulation.','Members',null,'Members',null),
+('builder-events','Builder Events Impact Study',18,'Jul 2026','Do hackathons produce companies? What the tracked data says.','Free',null,'Free',null);
+
+-- ---------- SALARY BANDS (market, sourced) ----------
+insert into public.salary_bands (role,min_kes,max_kes,source) values
+('Backend',180000,400000,'CareerBuddy (Jun 2026) · Mctaba (Jun 2026)'),
+('Data / ML',200000,450000,'CareerBuddy (Jun 2026) · Mctaba (Jun 2026)'),
+('Product',200000,400000,'CareerBuddy (Jun 2026)'),
+('Mobile',180000,400000,'Mctaba (Jun 2026)'),
+('Design',120000,280000,'CareerBuddy (Jun 2026) · community'),
+('Growth',150000,350000,'community + published surveys');
+
+-- ---------- WIRE (ticker) ----------
+insert into public.wire_items (body,source,category) values
+('H1 2026 · Kenya $126M equity, −44.5% YoY — slowest first half since 2021','Business Daily','funding'),
+('M-KOPA · $166M Series F closed Nov 2025 (PitchBook)','PitchBook','round'),
+('Twiga Foods · entered administration Aug 17 2026 · $185.4M raised','Techpoint Africa','risk'),
+('SunCulture · $10M receivables securitisation (Sep 2026)','Dealroom','round'),
+('HoneyCoin · $4.9M seed · stablecoin rails','TechCabal','round'),
+('Flowt · pre-seed first close · Delta40, Impacc, Argidius','Disrupt Africa','round'),
+('Microsoft ADC Nairobi · closure announced','CIO Africa','ecosystem'),
+('Africa H1 2026 · $1.44B, +1.34% — concentration, not collapse','TechCabal Insights','funding'),
+('Investor losses · Sh93bn across 13 startup failures','Business Daily','risk'),
+('DevFest Nairobi 2026 · Nov 13–14 (GDG Nairobi)','GDG Nairobi','event'),
+('Consumer searches · fuel 5000+ · Dangote 1000+ · disease outbreak 1000+','Google Trends KE (Oct 15)','consumer');
+
+-- ---------- TRENDS (Google Trends KE snapshot) ----------
+insert into public.trend_items (keyword,volume) values
+('fuel','5000+'),('kdf day 2026 celebrations kenya','500+'),('peacebuilding','200+'),('george natembeya','200+'),
+('irungu kang''ata','500+'),('aliko dangote','1000+'),('currency','200+'),('toluwanisings','200+'),('teacher','500+'),('disease outbreak','1000+');
