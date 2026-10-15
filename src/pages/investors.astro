@@ -3,10 +3,11 @@ import Base from '@/layouts/Base.astro';
 import Monogram from '@/components/Monogram.astro';
 import Chip from '@/components/Chip.astro';
 import Sparkline from '@/components/Sparkline.astro';
-import { INVESTORS } from '@/data/investors';
+import { INVESTORS, investorRounds } from '@/data/investors';
 import { companyById } from '@/data/companies';
 import { SECTORS } from '@/config/sectors';
 import { SITE } from '@/config/site';
+import { fmtUsdM } from '@/lib/utils';
 const investors = INVESTORS;
 ---
 <Base
@@ -22,7 +23,7 @@ const investors = INVESTORS;
   <section class="wrap py-10">
     <h1 class="text-[clamp(34px,4vw,56px)]">Who is writing cheques.</h1>
     <p class="mt-2 max-w-2xl text-[15px] text-mut">
-      Funds, angel networks and micro-funds active across Kenya. Theses and cheque ranges are self-reported or compiled from public sources — every claim carries its note.
+      {investors.length} funds, angel networks and micro-funds active across Kenya — from family offices and corporate VCs to the global growth firms behind the biggest tracked rounds. Fund theses and cheque ranges are self-reported or compiled from public sources; the Kenya track record under each fund is derived from our tracked rounds feed, so every line carries its own status.
     </p>
 
     <div class="mt-8 grid gap-8 lg:grid-cols-12">
@@ -62,7 +63,7 @@ const investors = INVESTORS;
                   <span class="flex flex-wrap items-center gap-2 text-[15.5px] font-medium">
                     {inv.name} {inv.verified ? <Chip kind="verified" /> : <Chip kind="unverified" />}
                   </span>
-                  <span class="mono-label mt-0.5 block">{inv.type} · {inv.hq}</span>
+                  <span class="mono-label mt-0.5 block">{inv.type} · {inv.hq}{inv.activeSince ? ` · active since ${inv.activeSince}` : ''}</span>
                   <span class="mt-1.5 flex flex-wrap gap-1.5">
                     <span class="chip chip-dashed">{inv.stages[0]}–{inv.stages[inv.stages.length - 1]}</span>
                     <span class="chip">{inv.cheque}</span>
@@ -75,13 +76,53 @@ const investors = INVESTORS;
                   <div class="border-t border-line px-4 py-4">
                     <p class="text-[14px] leading-relaxed text-ink2">{inv.thesis}</p>
                     <div class="mt-2.5 flex flex-wrap gap-1.5">{inv.thesisPills.map((p) => <span class="chip chip-dashed">{p}</span>)}</div>
+
                     <p class="mono-label mt-3.5 mb-1.5">Tracked portfolio</p>
                     <div class="flex flex-wrap gap-1.5">
                       {inv.portfolio.map((pid) => {
                         const co = companyById(pid);
                         return co ? <a class="chip hover:bg-paper2" href={`/startups/${co.id}`}>{co.name}</a> : null;
                       })}
+                      {inv.portfolio.length === 0 && <span class="text-[12.5px] text-mut">No tracked portfolio overlap yet — fund is listed on the strength of its public Kenya activity.</span>}
                     </div>
+
+                    {(() => {
+                      const { led, context } = investorRounds(inv.id);
+                      if (!led.length && !context.length) return null;
+                      return (
+                        <div class="mt-4">
+                          <p class="mono-label mb-1.5">Kenya track record <span class="normal-case">— derived from the tracked rounds feed</span></p>
+                          <div class="space-y-1.5">
+                            {led.map((r) => (
+                              <div class="flex flex-wrap items-center gap-2 text-[13px]">
+                                <a class="text-green hover:underline" href={`/startups/${r.companyId}`}>{companyById(r.companyId)?.name ?? r.companyId}</a>
+                                <span class="text-ink2">{r.round}{r.amount ? ` · ${fmtUsdM(r.amount)}` : ''}</span>
+                                {r.date && <span class="mono-label">{r.date}</span>}
+                                <span class={`chip ${r.status === 'Confirmed' ? 'chip-green' : 'chip-dashed'}`}>{r.status}</span>
+                                {r.note && <span class="text-[12px] text-mut">{r.note}</span>}
+                              </div>
+                            ))}
+                            {context.map((r) => (
+                              <div class="flex flex-wrap items-center gap-2 text-[13px] text-ink2">
+                                <a class="text-green hover:underline" href={`/startups/${r.companyId}`}>{companyById(r.companyId)?.name ?? r.companyId}</a>
+                                <span>{r.round}{r.amount ? ` · ${fmtUsdM(r.amount)}` : ''}</span>
+                                {r.date && <span class="mono-label">{r.date}</span>}
+                                <span class="chip chip-dashed">{r.status}</span>
+                                <span class="mono-label">portfolio company round</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {inv.coInvestors && inv.coInvestors.length > 0 && (
+                      <div class="mt-3.5">
+                        <p class="mono-label mb-1.5">Verified co-investors</p>
+                        <div class="flex flex-wrap gap-1.5">{inv.coInvestors.map((c) => <span class="chip">{c}</span>)}</div>
+                      </div>
+                    )}
+
                     <p class="mt-3 text-[12.5px] text-mut">{inv.note} · {inv.deals} deals tracked</p>
                     <div class="mt-4 flex gap-2">
                       <button class="btn h-9" data-modal="intro">Request introduction</button>

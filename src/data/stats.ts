@@ -1,14 +1,18 @@
 import type { WireItem } from './types';
+import { allJobs } from './jobs';
+import { COMPANIES } from './companies';
+import { INVESTORS } from './investors';
+import { HACKATHONS } from './hackathons';
 
 /**
  * Headline stats — REAL tracked counts + sourced market figures (as of 2026-10-15).
  * Market figures carry their source in the UI where they appear.
  */
 export const STATS = {
-  companiesTracked: 21, // = COMPANIES.length, real tracked profiles
-  activeInvestors: 13, // = INVESTORS.length, real tracked investors
-  openTechJobs: 8, // = JOBS.length, roles seen live on employer boards
-  hackathonsIndexed: 12, // = HACKATHONS.length, real events
+  companiesTracked: COMPANIES.length, // derived, real tracked profiles
+  activeInvestors: INVESTORS.length, // derived, real tracked investors
+  openTechJobs: allJobs().length, // derived: curated + live ATS rows (no stale hardcode)
+  hackathonsIndexed: HACKATHONS.length, // derived, real events
   capitalYTD: 126, // H1 2026 equity, $M (Business Daily) — labelled in UI
   capital2025: 984, // 2025 equity total, $M (Tech In Africa / Fintech Assoc. Kenya)
   capital2025InclDebt: 1040, // $M incl. debt (Invest Kenya)
@@ -19,13 +23,15 @@ export const STATS = {
 };
 
 /** County spread of tracked profiles — honest counts of our own coverage. */
+// Derived from tracked HQs — honest counts of our own coverage.
+const hqCount = (city: string) => COMPANIES.filter((c) => c.hq === city).length;
 export const REGIONS: { city: string; count: number; capital: boolean }[] = [
-  { city: 'Nairobi', count: 19, capital: true },
-  { city: 'Mombasa', count: 0, capital: false },
-  { city: 'Nakuru', count: 0, capital: false },
-  { city: 'Kisumu', count: 0, capital: false },
-  { city: 'Eldoret', count: 0, capital: false },
-  { city: 'Malindi', count: 0, capital: false },
+  { city: 'Nairobi', count: hqCount('Nairobi'), capital: true },
+  { city: 'Mombasa', count: hqCount('Mombasa'), capital: false },
+  { city: 'Nakuru', count: hqCount('Nakuru'), capital: false },
+  { city: 'Kisumu', count: hqCount('Kisumu'), capital: false },
+  { city: 'Eldoret', count: hqCount('Eldoret'), capital: false },
+  { city: 'Malindi', count: hqCount('Malindi'), capital: false },
 ];
 
 /** Ticker wire items — REAL, sourced, no sample suffixes. */

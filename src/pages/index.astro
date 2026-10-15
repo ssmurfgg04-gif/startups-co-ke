@@ -12,6 +12,7 @@ import Countdown from '@/components/Countdown.astro';
 import { COMPANIES, FEATURED_IDS } from '@/data/companies';
 import { ROUNDS, SECTOR_COUNTS, REPORTS } from '@/data/ecosystem';
 import { STATS, REGIONS } from '@/data/stats';
+import { ANCHORED_COUNTIES } from '@/data/counties';
 import { HACKATHONS } from '@/data/hackathons';
 import { prng, fmtUsdM, relDays } from '@/lib/utils';
 import { SITE } from '@/config/site';
@@ -36,6 +37,7 @@ const wireList: [string, string, string][] = [
 ];
 const flagship = REPORTS.find((r) => r.flagship)!;
 const regionRows = REGIONS.filter((r) => r.count > 0);
+const hubCounties = ANCHORED_COUNTIES.filter((c) => c.id !== 'nairobi');
 const jsonld = [
   {
     '@context': 'https://schema.org',
@@ -124,7 +126,7 @@ const jsonld = [
     <div class="rv"><KenyaMap /></div>
     <div class="rv" style="--d:100ms">
       <h2 id="regions-h" class="text-[clamp(26px,3.2vw,40px)]">Explore by region.</h2>
-      <p class="mt-2 max-w-md text-[14.5px] text-mut">Coverage is Nairobi-first — the tracked index concentrates where the deals concentrate. Regional expansion (Mombasa, Nakuru, Kisumu, Eldoret) is in progress. Click a row to filter the directory.</p>
+      <p class="mt-2 max-w-md text-[14.5px] text-mut">All 47 counties are on the map — small dots mark county seats, green rings mark verified ecosystem anchors: a named hub, checked against a public source. The tracked company index remains Nairobi-concentrated, and we say so; the county anchors are where regional expansion starts. Click a hub row to see the county detail.</p>
       <div class="railbox mt-5">
         {regionRows.map((r) => (
           <a href={`/startups?city=${encodeURIComponent(r.city)}`} class="rowline group flex items-center gap-4 px-4 py-3.5 hover:bg-paper2">
@@ -138,7 +140,18 @@ const jsonld = [
           </a>
         ))}
       </div>
-      <p class="mt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">* Tracked profile counts · {regionRows.length} regions live · more being indexed.</p>
+      <div class="railbox mt-5">
+        <div class="railbox-head"><span>County anchors — verified</span><span class="mono-label">{ANCHORED_COUNTIES.length}/47</span></div>
+        {hubCounties.map((c) => (
+          <div class="rowline flex items-center gap-3 px-4 py-3">
+            <span class="w-28 shrink-0 font-mono text-xs uppercase tracking-[0.1em]">{c.name}</span>
+            <span class="min-w-0 flex-1 text-[13.5px] leading-tight">{c.hub!.name}</span>
+            <span class="chip chip-dashed shrink-0">{c.hub!.kind}</span>
+          </div>
+        ))}
+        <p class="border-t border-line px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Sources: qz.com · AfriLabs · UNDP County Profiles · UNESCO DigiKen (Feb 2025) · hub listing</p>
+      </div>
+      <p class="mt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">* Tracked profile counts · {regionRows.length} regions live · {hubCounties.length} regional anchors verified.</p>
     </div>
   </section>
 

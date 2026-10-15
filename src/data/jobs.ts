@@ -152,4 +152,49 @@ export const JOBS: Job[] = [
   },
 ];
 
-export const JOB_CATEGORIES = ['All', 'Engineering', 'Data', 'Product', 'Design', 'Growth', 'Operations', 'Executive'];
+export const JOB_CATEGORIES = ['All', 'Engineering', 'Data', 'Product', 'Design', 'Growth', 'Operations', 'Executive', 'Other'];
+
+/**
+ * LIVE LAYER — roles pulled from employers' own ATS boards at build time by
+ * scripts/fetch_jobs.mjs. No salary is invented for live rows (market bands
+ * exist only for the curated rows above). Kenya-relevance is enforced in the
+ * pipeline; fetchedAt + per-source status land on the page.
+ */
+import liveRaw from './jobs.live.json';
+import type { LiveJob, Company } from './types';
+import { BOARD_EMPLOYERS } from './boardEmployers';
+import { companyById } from './companies';
+
+export const LIVE = liveRaw as {
+  fetchedAt: string;
+  note: string;
+  sources: { id: string; company: string; board: string; count: number; kept: number; ok: boolean; error?: string; note?: string }[];
+  jobs: LiveJob[];
+};
+
+export interface EmployerRef extends Pick<Company, 'id' | 'name' | 'sector' | 'hq' | 'domain' | 'website'> {
+  logo?: string | null;
+  verified?: 0 | 1;
+  status?: Company['status'];
+  boardOnly?: boolean;
+}
+
+/** Resolve a jobs-board employer: tracked profile first, board-only record second. */
+export function employerById(id: string): EmployerRef | null {
+  const c = companyById(id);
+  if (c) return { id: c.id, name: c.name, sector: c.sector, hq: c.hq, domain: c.domain ?? null, website: c.website ?? null, logo: c.logo ?? null, verified: c.verified, status: c.status };
+  const b = BOARD_EMPLOYERS[id];
+  if (b) return { ...b, logo: null, verified: 0 };
+  return null;
+}
+
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\b(—|-)\b/g, ' ').trim();
+
+/** Curated + live, deduped on company+title similarity (curated rows win). */
+export function allJobs(): (Job | LiveJob)[] {
+  const seen = new Set(JOBS.map((j) => `${j.companyId}::${norm(j.title)}`));
+  const fresh = LIVE.jobs.filter((j) => !seen.has(`${j.companyId}::${norm(j.title)}`));
+  return [...JOBS, ...fresh];
+}
+
+export const isLive = (j: Job | LiveJob): j is LiveJob => !('salary' in j);

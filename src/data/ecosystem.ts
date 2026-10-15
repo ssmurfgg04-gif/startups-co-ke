@@ -2,7 +2,7 @@ import type { RoundItem, SalaryBand, Report } from './types';
 
 /**
  * REAL tracked rounds feed — every entry status-tagged with a named source
- * (docs/DECISIONS.md D2/D3). Compiled from public sources as of 2026-10-15.
+ * (docs/DECISIONS.md D2/D3). Compiled from public sources as of 2026-10-16.
  */
 export const ROUNDS: RoundItem[] = [
   {
@@ -170,9 +170,10 @@ export const ROUNDS: RoundItem[] = [
     date: '2020-12',
     round: 'Series A',
     amount: 3.75,
-    lead: '—',
+    lead: 'TLcom Capital',
     status: 'Confirmed',
-    source: 'Disrupt Africa (Dec 2020)',
+    source: 'Disrupt Africa (Dec 2020) · Africa Global Funds',
+    note: 'DOB Equity, Global Ventures and Chandaria Capital participated',
   },
   {
     id: 'r-honeycoin-seed',
