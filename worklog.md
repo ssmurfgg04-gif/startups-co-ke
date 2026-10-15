@@ -45,3 +45,22 @@ Stage Summary:
 - Site is real-data, sourced, verified: 38 pages build clean; server on :3000; repo @ GitHub main.
 - Key artifacts: qa/vlm/*, qa/e2e-report.md, scripts/{vlm_shots,vlm_rounds,e2e_investor,e2e_founder,seo_audit,refresh_trends,sql}.?*
 - Open items: 2 test objects in logos bucket (need service key to delete); GitHub Pages/DNS still pending user registrar action.
+
+---
+Task ID: 3
+Agent: Super Z (main agent)
+Task: Session 3 — expand coverage (47 counties + deeper investor data), wire jobs board to live postings, Netlify deploy prep, close pending gaps.
+
+Work Log:
+- Recovered environment-wipe artifacts (274-file mode churn, .env overwritten, vendored skills truncated) from HEAD before starting.
+- Research (web-verified, snippets saved to research/): county hubs outside Nairobi (qz/AfriLabs/UNDP/UNESCO), 11 new investor facts (DOB, Chandaria, Norrsken22, Safaricom Spark, ShakaVC, Global Ventures, InVhestia, Rise Fund/TPG, Tiger, SoftBank VGF2, AfricInvest), FlexPay HQ claim DISPROVEN (Nairobi, not Eldoret — left correct), ATS board discovery across Lever/Greenhouse/Workable/BambooHR/Ashby/SmartRecruiters for 21 tracked + 12 wider employers.
+- Live jobs pipeline scripts/fetch_jobs.mjs (first-party ATS APIs, Kenya filter, no invented salaries, per-board status, committed-snapshot fallback): 27 live roles from 11 boards (M-KOPA 13 via Ashby snapshot — API 401s datacenter IPs, documented; Moniepoint 12; Apollo 2). Wired into src/data/jobs.ts (merge + dedup + boardEmployers), jobs.astro rewritten (Live chips, board-status rail, Band n/a honesty, working location filter + live role counter, external-apply links).
+- Counties: src/data/counties.ts (all 47, hubs only where verified — 7/47), map plots 42 county seats + 6 verified hub rings, home map band gained "County anchors — verified" railbox with sources line.
+- Investors 13 → 24 with sourced theses + portfolio links; investorRounds() derives each fund's Kenya track record from the rounds feed (nothing typed twice); co-investor chips; r-ilara-a lead corrected to TLcom Capital.
+- Honesty fixes: STATS.* + REGIONS now DERIVED from data modules (stale "8 jobs / 13 investors / 19 Nairobi" impossible); map city labels dual-counted "≈268 est. · 21 tracked" (was misleading); fixed pre-existing client-script NaN bug (frontmatter var in <script>); "Theses" → "Fund theses" copy.
+- Netlify: netlify.toml (Node 22, npm build, cache + security headers), .nvmrc, build = fetch_jobs + astro build (snapshot fallback keeps builds green), supabase.ts public-by-design env fallbacks, .github/workflows/netlify.yml (secrets-guarded), README deployment section (UI import + Actions + domain attach), .env untracked from git.
+- Verification: npm production build (38 pages) + astro check (my new errors fixed; 19 pre-existing left, noted); browser E2E on served dist — live rows expand w/ real apply URLs, filters (category 15/35, remote 4/35), county hover captions (Garissa ring, Nakuru hub), home snapshot "35 Open tech jobs", screenshots + VLM expansion round (caught 8-vs-35 stat drift, map label semantics, copy typo — all fixed, re-shot).
+
+Stage Summary:
+- Jobs board is genuinely live (build-time ATS pull + honest board statuses); counties mapped 47/47 with verified anchors; investors doubled w/ derived track records; repo is Netlify-ready (config + workflow + README) with env-fallback hardening.
+- Open: user flips the Netlify switch (UI import or 2 GH secrets); custom domain attach after; 2 test objects in logos bucket still need a service key; 19 pre-existing astro-check strictness errors in untouched files (Masthead/research/ModalHost) noted for a cleanup pass.

@@ -6,6 +6,7 @@
  * Interactions (hover caption, click-filter) are wired client-side.
  */
 import { REGIONS } from '@/data/stats';
+import { COUNTIES, ANCHORED_COUNTIES } from '@/data/counties';
 
 const K = 52.5; // px per degree
 const lonX = (lon: number) => (lon - 33.4) * K;
@@ -99,6 +100,9 @@ for (const [city, c] of Object.entries(CITIES)) {
 }
 
 const total = REGIONS.reduce((s, r) => s + r.count, 0);
+const hubCounties = ANCHORED_COUNTIES.filter((c) => c.id !== 'nairobi');
+const cityKeys = Object.keys(CITIES);
+const trackedByCity: Record<string, number> = Object.fromEntries(REGIONS.map((r) => [r.city, r.count]));
 const borderPath = BORDER.map(([lon, lat], i) => `${i === 0 ? 'M' : 'L'}${lonX(lon).toFixed(1)},${latY(lat).toFixed(1)}`).join(' ') + ' Z';
 const lakePaths = LAKES.map((l) => l.map(([lon, lat], i) => `${i === 0 ? 'M' : 'L'}${lonX(lon).toFixed(1)},${latY(lat).toFixed(1)}`).join(' ') + ' Z');
 const routes = ['Mombasa', 'Nakuru', 'Kisumu', 'Eldoret'].map((c) => ({
@@ -107,7 +111,7 @@ const routes = ['Mombasa', 'Nakuru', 'Kisumu', 'Eldoret'].map((c) => ({
 }));
 const equatorY = latY(0).toFixed(1);
 ---
-<figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's tracked startup hubs">
+<figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's tracked startup hubs" data-anchored={ANCHORED_COUNTIES.length}>
   <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full" role="img">
     <!-- land -->
     <path d={borderPath} fill="var(--color-paper2)"></path>
@@ -115,6 +119,20 @@ const equatorY = latY(0).toFixed(1);
     <!-- base dot grid, staggered fade-in -->
     {baseDots.map((dot) => (
       <circle cx={dot.x} cy={dot.y} r={dot.r} fill="#3e3b31" opacity="0.55" style={`animation: dotin .5s ease-out both; animation-delay:${dot.d}ms`}></circle>
+    ))}
+
+    <!-- all 47 county seats — geography, not activity -->
+    {COUNTIES.filter((c) => !cityKeys.includes(c.capital)).map((c) => (
+      <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="1.6" fill="#3e3b31" opacity="0.8" class="county-dot" data-county={c.name}></circle>
+    ))}
+
+    <!-- verified county anchors: green ring = ecosystem hub with named source -->
+    {hubCounties.map((c) => (
+      <g class="map-county cursor-pointer" data-county={c.name} data-hub={c.hub!.name} tabindex="0" role="button" aria-label={`${c.name}: ${c.hub!.name}`}>
+        <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="5" fill="none" stroke="var(--color-green)" stroke-width="1.3"></circle>
+        <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="1.8" fill="var(--color-green)"></circle>
+        <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="12" fill="transparent"></circle>
+      </g>
     ))}
 
     <!-- hub clusters -->
@@ -134,16 +152,17 @@ const equatorY = latY(0).toFixed(1);
     <!-- dashed animated routes -->
     {routes.map((r) => <path d={r.d} fill="none" stroke="#b87503" stroke-width="1.2" class="anim-dash"></path>)}
 
-    <!-- city markers + labels -->
+    <!-- city markers + labels (counts are ecosystem-wide estimates; tracked counts come from REGIONS) -->
     {Object.entries(CITIES).map(([city, c]) => {
       const x = lonX(c.lon), y = latY(c.lat);
       const big = Boolean(c.capital);
+      const tracked = trackedByCity[city] ?? 0;
       return (
-        <g class="map-hub cursor-pointer" data-city={city} data-count={c.count} tabindex="0" role="button" aria-label={`${city}: ${c.count} companies tracked`}>
+        <g class="map-hub cursor-pointer" data-city={city} data-tracked={tracked} data-est={c.count} tabindex="0" role="button" aria-label={`${city}: ${tracked} tracked profiles, est. ${c.count} ecosystem companies`}>
           {big && <circle cx={x} cy={y} r="9" fill="var(--color-amber2)" opacity="0.35" class="anim-pulse-ring"></circle>}
           <circle cx={x} cy={y} r={big ? 5 : 3.6} fill="var(--color-amber)" stroke={big ? 'var(--color-paper)' : 'none'} stroke-width={big ? 1.4 : 0}></circle>
           <text x={x + (big ? 9 : 7)} y={y + 3} class="pointer-events-none fill-[#181712] font-mono font-semibold" font-size={big ? 11 : 9.5} letter-spacing="1">{city.toUpperCase()}</text>
-          <text x={x + (big ? 9 : 7)} y={y + 13} class="pointer-events-none fill-[#6e6a5b] font-mono" font-size="8">{c.count} cos.</text>
+          <text x={x + (big ? 9 : 7)} y={y + 13} class="pointer-events-none fill-[#6e6a5b] font-mono" font-size="8">≈{c.count} est. · {tracked} tracked</text>
           <circle cx={x} cy={y} r="16" fill="transparent"></circle>
         </g>
       );
@@ -168,7 +187,7 @@ const equatorY = latY(0).toFixed(1);
   </svg>
 
   <figcaption class="border-t border-ink bg-paper px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
-    <span id="map-caption">Kenya — {total} tracked profiles · coverage is Nairobi-first, expanding regionally</span>
+    <span id="map-caption">Kenya — {total} tracked profiles · {ANCHORED_COUNTIES.length}/47 counties with verified anchors</span>
   </figcaption>
 </figure>
 
@@ -183,27 +202,56 @@ const equatorY = latY(0).toFixed(1);
   .map-hub:hover circle:last-child {
     r: 20;
   }
+  .county-dot {
+    transition: r 0.15s ease, opacity 0.15s ease;
+  }
+  .county-dot:hover {
+    r: 4;
+    opacity: 1;
+  }
+  .map-county circle {
+    transition: r 0.15s ease;
+  }
+  .map-county:hover circle:first-child {
+    r: 7;
+  }
 </style>
 
 <script>
+  const totalFlat = Number(document.getElementById('kenya-map')?.closest('figure')?.dataset.anchored || 0);
+
   document.querySelectorAll<SVGElement>('.map-hub').forEach((hub) => {
     const city = hub.dataset.city;
-    const count = hub.dataset.count;
+    const tracked = hub.dataset.tracked;
+    const est = hub.dataset.est;
     const caption = document.getElementById('map-caption');
     const activate = () => {
-      if (caption && city && count)
-        caption.textContent = `${city} — ${count} companies tracked · ${city === 'Nairobi' ? '90' : Math.round((Number(count) / Math.max(1, total)) * 100)}% of the tracked index`;
+      if (caption && city && tracked)
+        caption.textContent = `${city} — ${tracked} tracked profiles (ecosystem est. ≈${est})`;
       location.href = `/startups?city=${encodeURIComponent(city!)}`;
     };
     hub.addEventListener('mouseenter', () => {
-      if (caption && city && count) caption.textContent = `${city} — ${count} companies tracked`;
+      if (caption && city && tracked) caption.textContent = `${city} — ${tracked} tracked profiles (ecosystem est. ≈${est})`;
     });
     hub.addEventListener('mouseleave', () => {
-      if (caption) caption.textContent = `Kenya — tracked profiles · coverage is Nairobi-first`;
+      if (caption) caption.textContent = `Kenya — tracked profiles · ${totalFlat}/47 counties with verified anchors`;
     });
     hub.addEventListener('click', activate);
     hub.addEventListener('keydown', (e) => {
       if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') activate();
+    });
+  });
+
+  // county anchor rings — hover shows the verified hub
+  document.querySelectorAll<SVGElement>('.map-county').forEach((el) => {
+    const county = el.dataset.county!;
+    const hub = el.dataset.hub!;
+    const caption = document.getElementById('map-caption');
+    el.addEventListener('mouseenter', () => {
+      if (caption) caption.textContent = `${county} — verified anchor: ${hub}`;
+    });
+    el.addEventListener('mouseleave', () => {
+      if (caption) caption.textContent = `Kenya — tracked profiles · ${totalFlat}/47 counties with verified anchors`;
     });
   });
 </script>

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev --host 0.0.0.0 --port 3000 2>&1 | tee dev.log",
-    "build": "astro build",
+    "build": "node scripts/fetch_jobs.mjs && astro build",
     "preview": "astro preview --host 0.0.0.0 --port 3000 2>&1 | tee dev.log",
     "astro": "astro",
     "check": "astro check"

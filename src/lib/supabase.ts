@@ -1,13 +1,19 @@
 /**
  * Supabase client (browser only). Credentials come from env:
  *   PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_ANON_KEY
- * When not configured, the site degrades gracefully: forms fall back to
- * local storage + an honest "not connected" toast.
+ * Fallbacks: both values are PUBLIC by design (the anon key ships in every
+ * visitor's bundle and RLS guards the data), so a fresh Netlify/CI build
+ * without configured env vars still produces a fully working site. Set the
+ * env vars in the host UI to override.
  */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const url = import.meta.env.PUBLIC_SUPABASE_URL as string | undefined;
-const anon = import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string | undefined;
+const FALLBACK_URL = 'https://eezqpsbhmnhuhnmiwnsz.supabase.co';
+const FALLBACK_ANON =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlenFwc2JobW5odWhubWl3bnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwNjQzMjgsImV4cCI6MjEwNzY0MDMyOH0.Ks8O3JMluiPxJuozW3CvgU-lsReS7qolo6WR4wO2fXM';
+
+const url = (import.meta.env.PUBLIC_SUPABASE_URL as string | undefined) || FALLBACK_URL;
+const anon = (import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string | undefined) || FALLBACK_ANON;
 
 export const supabaseConfigured = Boolean(url && anon);
 

@@ -69,14 +69,16 @@ Auth: magic-link sign-in (Supabase Auth), site_url + redirect allow-list preconf
 
 ## Deployment
 
-Static host (Netlify / Vercel / Cloudflare Pages), or GitHub Pages via Actions:
+**Netlify (primary — prepared, one step away):** the repo ships `netlify.toml` (Node 22, `npm run build`, `dist/`, cache + security headers) and `.github/workflows/netlify.yml`. Every build re-pulls the live job boards via `scripts/fetch_jobs.mjs` (committed snapshot is the fallback, so a build never breaks on a flaky board).
 
-```bash
-bun run build && npx netlify deploy --dir=dist --prod
-```
+Two ways to go live:
 
-GitHub Pages option (until DNS lands): https://ssmurfgg04-gif.github.io/startups-co-ke/
-DNS at the registrar: `A` @ → 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153 · `CNAME` www → ssmurfgg04-gif.github.io. HTTPS is automatic once DNS verifies.
+1. **Netlify UI (fastest):** Netlify → *Add new site → Import an existing project* → pick this repo. Build settings auto-load from `netlify.toml` — just click Deploy. Optionally set env vars `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY` (values in `.env.example`; the build also has public-by-design fallbacks, so deploys work without them).
+2. **GitHub Actions:** add two repo secrets — `NETLIFY_AUTH_TOKEN` (Netlify → User settings → Applications → Personal access token) and `NETLIFY_SITE_ID` (Site → Site settings → API) — then push to `main`. The workflow builds and ships to production; without the secrets the deploy step skips itself.
+
+Then attach the domain: Netlify → *Domain settings* → add `startups.co.ke` apex + `www` (Netlify DNS or registrar CNAME → `<site>.netlify.app`; HTTPS via Let's Encrypt is automatic). The Astro `site` is already `https://startups.co.ke`, so sitemap/OG/canonicals are correct from the first deploy.
+
+CLI alternative: `npm run build && npx netlify-cli deploy --prod --dir=dist`
 
 ## Contact
 

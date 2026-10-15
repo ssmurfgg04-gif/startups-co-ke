@@ -83,6 +83,9 @@
   .chip-amber {
     @apply border-amber bg-amber text-paper;
   }
+  .chip-green {
+    @apply border-green bg-green/10 text-green;
+  }
   .chip-dashed {
     @apply border-dashed border-ink/50 bg-transparent text-ink2;
   }

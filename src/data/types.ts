@@ -87,6 +87,12 @@ export interface Investor {
   focusSectors: string[];
   website?: string | null;
   logo?: string | null;
+  /** first verified Kenya involvement, where a public date exists */
+  activeSince?: number;
+  /** verified co-investors on the tracked rounds (D2) */
+  coInvestors?: string[];
+  /** board-only? investor known via rounds but no profile page */
+  viaRoundOnly?: boolean;
 }
 
 export interface Job {
@@ -185,4 +191,36 @@ export interface WireItem {
   body: string;
   source: string;
   category: 'funding' | 'round' | 'risk' | 'ecosystem' | 'event' | 'consumer';
+}
+
+/**
+ * County row — coordinates/capital are objective; `hub` appears only when a
+ * named public source verified the anchor (D2). Counties without a hub are
+ * shown as geography, never as activity.
+ */
+export interface County {
+  id: string;
+  name: string;
+  capital: string;
+  lon: number;
+  lat: number;
+  hub?: { name: string; kind: string; source: string };
+}
+
+/**
+ * Live job row, normalised from employer ATS boards at build time.
+ * No salary is invented: salary fields are null and the UI says so.
+ */
+export interface LiveJob {
+  id: string;
+  title: string;
+  companyId: string;
+  location: string;
+  mode: 'Hybrid' | 'On-site' | 'Remote' | '—';
+  category: 'Engineering' | 'Data' | 'Product' | 'Design' | 'Growth' | 'Operations' | 'Executive' | 'Other';
+  postedDays: number | null;
+  applyUrl: string;
+  /** board name, e.g. "Lever" / "Ashby" */
+  board: string;
+  tags: string[];
 }

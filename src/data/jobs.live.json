@@ -1,0 +1,452 @@
+{
+ "fetchedAt": "2026-10-15",
+ "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows.",
+ "sources": [
+  {
+   "id": "apollo",
+   "company": "Apollo Agriculture",
+   "board": "Lever",
+   "count": 3,
+   "kept": 2,
+   "ok": true
+  },
+  {
+   "id": "tala",
+   "company": "Tala",
+   "board": "Lever",
+   "count": 9,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "moniepoint",
+   "company": "Moniepoint",
+   "board": "Greenhouse",
+   "count": 125,
+   "kept": 12,
+   "ok": true
+  },
+  {
+   "id": "branch",
+   "company": "Branch",
+   "board": "Greenhouse",
+   "count": 2,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "cellulant",
+   "company": "Cellulant",
+   "board": "Workable",
+   "count": 0,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "pula",
+   "company": "Pula",
+   "board": "Workable",
+   "count": 0,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "marketforce",
+   "company": "MarketForce",
+   "board": "Workable",
+   "count": 0,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "roam",
+   "company": "Roam",
+   "board": "Workable",
+   "count": 0,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "tanda",
+   "company": "Tanda",
+   "board": "Workable",
+   "count": 0,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "basigo",
+   "company": "BasiGo",
+   "board": "BambooHR",
+   "count": 0,
+   "kept": 0,
+   "ok": true
+  },
+  {
+   "id": "mkopa",
+   "company": "M-KOPA",
+   "board": "Ashby",
+   "count": 40,
+   "kept": 13,
+   "ok": true,
+   "error": "HTTP 401",
+   "note": "via committed browser snapshot (API blocked from build IP)"
+  }
+ ],
+ "jobs": [
+  {
+   "id": "apollo-finance-manager",
+   "title": "Finance Manager",
+   "companyId": "apollo",
+   "location": "Nairobi",
+   "mode": "Hybrid",
+   "category": "Operations",
+   "postedDays": 35,
+   "applyUrl": "https://jobs.lever.co/apolloagriculture/3cd3a71e-d0a0-43b5-92f2-79832a60aefd",
+   "board": "Lever",
+   "tags": [
+    "Finance"
+   ]
+  },
+  {
+   "id": "apollo-manager-credit-strategy-operations",
+   "title": "Manager – Credit Strategy & Operations",
+   "companyId": "apollo",
+   "location": "Anywhere (Remote)",
+   "mode": "Hybrid",
+   "category": "Engineering",
+   "postedDays": 73,
+   "applyUrl": "https://jobs.lever.co/apolloagriculture/859ecb4c-1a82-45a4-8447-53c7076a2d91",
+   "board": "Lever",
+   "tags": [
+    "Credit"
+   ]
+  },
+  {
+   "id": "moniepoint-engineering-relations-partner",
+   "title": "Engineering Relations Partner",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya + 6 more",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 7,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-financial-planning-analyst",
+   "title": "Financial Planning Analyst",
+   "companyId": "moniepoint",
+   "location": "Nairobi, Kenya",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 24,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint--head-group-fp-a",
+   "title": " Head, Group FP&A",
+   "companyId": "moniepoint",
+   "location": "Nairobi, Kenya",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 21,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-head-of-engineering-field-verification",
+   "title": "Head of Engineering, Field Verification",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 35,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-head-of-engineering-payment-gateway-",
+   "title": "Head of Engineering, Payment Gateway ",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 36,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4971812101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-head-of-engineering-sales-management-tools",
+   "title": "Head of Engineering, Sales Management Tools",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 7,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-head-of-engineering-supply-chain",
+   "title": "Head of Engineering, Supply Chain",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 36,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972195101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint--head-product-control-accounting",
+   "title": " Head, Product Control & Accounting",
+   "companyId": "moniepoint",
+   "location": "Nairobi, Kenya",
+   "mode": "—",
+   "category": "Product",
+   "postedDays": 98,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923301101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-mobile-architect-",
+   "title": "Mobile Architect ",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya + 6 more",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 28,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4330952101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-principal-generalist-engineer",
+   "title": "Principal Generalist Engineer",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 16,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-senior-content-designer",
+   "title": "Senior Content Designer",
+   "companyId": "moniepoint",
+   "location": "Nairobi, Kenya",
+   "mode": "—",
+   "category": "Design",
+   "postedDays": 0,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint--talent-acquisition-specialist",
+   "title": " Talent Acquisition Specialist",
+   "companyId": "moniepoint",
+   "location": "Nairobi, Kenya",
+   "mode": "—",
+   "category": "Operations",
+   "postedDays": 6,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "mkopa-finance-manager",
+   "title": "Finance Manager",
+   "companyId": "m-kopa",
+   "location": "Johannesburg",
+   "mode": "Remote",
+   "category": "Operations",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/741ef060-cad0-4e9d-8ef6-0cba485f7844",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-finance-manager-kenya",
+   "title": "Finance Manager - Kenya",
+   "companyId": "m-kopa",
+   "location": "Kenya",
+   "mode": "On-site",
+   "category": "Operations",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c8342dd1-b538-413c-a475-18acdcc0d7f9",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-internal-audit-senior",
+   "title": "Internal Audit Senior",
+   "companyId": "m-kopa",
+   "location": "Kenya",
+   "mode": "Hybrid",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/b06b454f-413a-4620-816b-aad12e08b1ad",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-lead-people-partner",
+   "title": "Lead People Partner",
+   "companyId": "m-kopa",
+   "location": "Nairobi",
+   "mode": "Hybrid",
+   "category": "Executive",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/ad3d6ae1-178f-4a96-9ebe-cac4fe196af6",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-lead-people-partner-technology",
+   "title": "Lead People Partner - Technology",
+   "companyId": "m-kopa",
+   "location": "Lagos",
+   "mode": "Remote",
+   "category": "Executive",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/a13017dd-a4df-4e30-bf31-57c5bb58568d",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-lead-people-partner-technology",
+   "title": "Lead People Partner - Technology",
+   "companyId": "m-kopa",
+   "location": "London + 6 more",
+   "mode": "Remote",
+   "category": "Executive",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/38e278c7-ae7f-47a8-aa51-0b73fbee8a13",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-people-partner",
+   "title": "Senior People Partner",
+   "companyId": "m-kopa",
+   "location": "Nairobi",
+   "mode": "Hybrid",
+   "category": "Operations",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c6a95c67-af08-4ac0-a081-9d8123ed9146",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-people-partner-product-functions",
+   "title": "Senior People Partner – Product & Functions",
+   "companyId": "m-kopa",
+   "location": "London + 6 more",
+   "mode": "Remote",
+   "category": "Product",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/5a5353e4-18e9-42a8-ad98-919b324ed0c9",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-head-of-workplace-it",
+   "title": "Head of Workplace IT",
+   "companyId": "m-kopa",
+   "location": "Nairobi + 5 more",
+   "mode": "Hybrid",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fffe4725-86ca-4014-9a2d-e3004a9ce21e",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-backend-engineer-asset-sales",
+   "title": "Senior Backend Engineer - Asset Sales",
+   "companyId": "m-kopa",
+   "location": "London + 9 more",
+   "mode": "Remote",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/5fc27a56-4a23-4321-8b06-350e20758d66",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-backend-engineer-asset-sales",
+   "title": "Senior Backend Engineer - Asset Sales",
+   "companyId": "m-kopa",
+   "location": "Nairobi + 5 more",
+   "mode": "Remote",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/0c0fdef0-61b7-4f7d-bd56-c09d66471396",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-backend-engineer-mobility-12-month-ftc-",
+   "title": "Senior Backend Engineer - Mobility (12 month FTC)",
+   "companyId": "m-kopa",
+   "location": "Nairobi + 5 more",
+   "mode": "Remote",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/121d269d-f893-4e4c-9a88-eae3f6c5c917",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-backend-engineer-mobility-12-month-ftc-",
+   "title": "Senior Backend Engineer - Mobility (12 month FTC)",
+   "companyId": "m-kopa",
+   "location": "London + 9 more",
+   "mode": "Remote",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fc5b810f-6b8b-42f1-9b7d-da49a2bd1523",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  }
+ ]
+}
