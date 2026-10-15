@@ -683,4 +683,4 @@ export const COMPANIES: Company[] = [
 export const companyById = (id: string) => COMPANIES.find((c) => c.id === id);
 
 /** Featured on the home page — real companies with confirmed, sourced rounds. */
-export const FEATURED_IDS = ['m-kopa', 'basigo', 'sunculture', 'honeycoin', 'pula', 'wasoko'];
+export const FEATURED_IDS = ['m-kopa', 'basigo', 'sunculture', 'honeycoin', 'pula', 'wasoko', 'cellulant', 'turaco'];

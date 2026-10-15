@@ -64,3 +64,58 @@ Work Log:
 Stage Summary:
 - Jobs board is genuinely live (build-time ATS pull + honest board statuses); counties mapped 47/47 with verified anchors; investors doubled w/ derived track records; repo is Netlify-ready (config + workflow + README) with env-fallback hardening.
 - Open: user flips the Netlify switch (UI import or 2 GH secrets); custom domain attach after; 2 test objects in logos bucket still need a service key; 19 pre-existing astro-check strictness errors in untouched files (Masthead/research/ModalHost) noted for a cleanup pass.
+
+---
+Task ID: 4-research
+Agent: research sub-agent (general-purpose)
+Task: Kenyan market research batch — job-ad conventions, Kenyan Wall Street teardown, competitor job-posting pricing, founder visibility/directory value. No site code touched (read-only session).
+
+Work Log:
+- Read worklog.md (Tasks 1–3) + reused prior research pattern from scripts/research_batch.sh: z-ai CLI `web_search` / `page_reader` functions.
+- Ran 30+ web searches + 12 page fetches; raw JSON/html saved to research/session4/ (s01–s36*.json, kws-*.json, p-*.json, r-*.json).
+- kenyanwallstreet.co.ke is dead/unreachable (curl + JINA + headless browser all time out) — KWS now lives on kenyanwallstreet.com (Cloudflare-gated homepage fetched partially; beehiiv newsletter archive, /advertise-with-us, one /newsletter article, and t.me/s/kenyanwallstreet fetched in full). Legacy .co.ke headlines captured via search index and marked accordingly.
+- Pricing verified by fetching the actual employer pages: myjobmag.co.ke/employers (KSh 2,900 / 14,000 / 24,000 / KSh 0), fuzu.com/kenya/employers/starter (6,000 / 13,000 / 15,000 / 30,000 KES per job post), brightermonday.co.ke free-listing article (Basic listing free, "previously valued at KES 5,000"), careerpointkenya free-job-advertising, jobwebkenya.com/us (price not public), Standard print rate-card PDF 2022 (KES 200,000–700,000 classifieds).
+- Salary-disclosure evidence: no Kenya-wide % exists publicly (marked UNVERIFIED); used Fuzu's own "market with zero salary transparency" framing + verbatim disclosed-salary formats (KES 30,000-40,000 / Kes 50k-80k / (50-60K) headline suffix / "Monthly Gross Salary: KSH 80,000…" / "Salary: Negotiable").
+- Scam/trust corpus: Fuzu Inuka 8-warning-signs page (golden rule quote + Fair Work Pledge), Safaricom fraud page, Africa Check KSh1,000/day, Airkenya/Standard/KRA disclaimers, CareerPoint/MyJobsInKenya no-fee pledges.
+- Reddit blocks direct fetch ("whoa there, pardner") — r/Kenya quotes are verbatim search-index snippets with thread URLs, noted in files.
+- Wrote 4 dense sourced files (43–52 lines each) under research/session4/.
+
+Files written:
+- research/session4/kenyan-job-ads.md (structure, salary disclosure + formats, CV/WhatsApp/apply conventions, scams vs trust signals)
+- research/session4/kenyanwallstreet.md (positioning, Daily Brief cadence/channel stack, 13 verbatim headlines, Telegram formats, monetization, copy patterns to steal)
+- research/session4/competitor-jobs-pricing.md (exact KE posting prices incl. free tiers, print rate card, free channels + their gaps)
+- research/session4/founder-visibility.md (tarmacking, 12 sourced slang phrases, directory-listing value props, demo-day/press evidence)
+(+ ~50 raw JSON fetches in the same dir)
+
+Top 10 decision-relevant findings:
+1. Job-ad skeleton in KE: title → duties → qualifications → "How to Apply" = "Send your CV to jobs@…" + deadline; referees and even ID/passport-photo copies still requested (careerpoint/vezill/qarera sources).
+2. Salary disclosure is the exception: Fuzu itself calls Kenya "a market with zero salary transparency"; when shown it's "Salary: Negotiable", "KES 30,000-40,000", "Kes 50k-80k", or "(50-60K)" as headline suffix — a always-show-band board is a differentiator.
+3. Exact competitor prices: MyJobMag KSh 2,900/post (3-month run, featured 3 weeks) / KSh 14,000/mo unlimited / KSh 24,000 shortlist; Fuzu KSh 6,000–30,000/post; BrighterMonday basic listing FREE (was KES 5,000); CareerPoint free; JobWebKenya premium price not public; print classifieds KSh 150k–700k.
+4. Free channels are the real competition: #IkoKaziKE ("unspoken rule" for KE job ads), LinkedIn, FB groups, WhatsApp/Telegram groups — but they carry scam noise and zero structure; trust + structure is the wedge.
+5. Scam pattern to design against: "registration/training/uniform fee" via M-PESA, WhatsApp-only recruiters; winning trust signals = "never pay to apply/interview" pledge, verified-employer badge, per-role review, no-fee pledge (Fuzu Fair Work Pledge).
+6. KWS playbook: "The Daily Brief" beehiiv + LinkedIn newsletter, "every Monday at 9am EAT + every weekday at 7pm EAT" cadence, same host ("I'm Brian…"), tagline "Kenya's #1 newsletter among business leaders & policy makers"; audience claims 100K+ monthly readers / 50K+ subscribers; Telegram 35.2K.
+7. KWS headline formulas: named actor + hard number ("NSE Daily Equity Turnover Declines 13.7% to KSh 417.7 Million"), odd-detail twist ("Inflation is up 6.8% and milk is a major culprit"), quote-led ("'The IMF can wait' - CBK Governor Thugge"); KSh/US$ no-space style.
+8. KWS monetization beyond ads: Wall Street Africa Business Intelligence premium, Bullish Kenya invite-only event (Safaricom/KCB-backed), Best Places to Work awards, NSE Investment Challenge gamification.
+9. Founders list on directories for: SEO backlink, "as seen on" badge, referral traffic, investor discovery (r/nairobitechies thread: investor literally hunting Kenyan businesses on Reddit; StartupList Africa sells "Increased Exposure — Investment opportunities — Analytics").
+10. Language to mirror on-site: "Iko Kazi", "Naomba kazi mzee", "tarmacking", "side hustle", "Hii kazi ni referrals", "Jua Kali", "kazi", "mtaa", "hustler", "shelf company" — all with sources in founder-visibility.md §4.
+
+---
+Task ID: 4
+Agent: Super Z (main agent)
+Task: Session 4 — humanize design + founder visibility + Kenyan-market job packages + pay-disclosure honesty (user feedback round).
+
+Work Log:
+- Research batch (Task 4-research subagent) saved to research/session4/: Kenyan job-ad conventions (CV/email/WhatsApp apply, "Negotiable", referees, M-PESA scam patterns), KWS tone study (13 verbatim headlines, Daily Brief cadence), competitor job-posting prices verified on-page (MyJobMag KSh 2,900/post · 14,000/mo; BrighterMonday basic FREE since Apr 2025; Fuzu 6,000–30,000), founder-visibility evidence (StartupList pitch, investor discovery via Reddit, "as seen on" badges), 12 slang phrases (tarmacking, iko kazi, CV-not-resume).
+- Jobs pricing rebuilt to market: Free listing KSh 0 (human-reviewed ~48h, 14 days) / Standard KSh 2,900 (30 days, alerts + WhatsApp channel) / Featured KSh 6,500 (pinned + homepage, 45 days) + 3-pack KSh 7,500 + never-pay pledge (SITE.jobPostPricing/Note/Pledge). Postjob modal rebuilt: pay select (Not disclosed/Negotiable/Range), apply-method select (Email a CV / WhatsApp / Portal link), pledge + pricing ledger line.
+- Pay-disclosure honesty on /jobs: derived "Only 8 of 29 roles publish pay" hero block quoting Fuzu's "zero salary transparency" line; "pay: n/d" italic mono null-state on live rows (not bold statnum); Pay disclosed filter added (data-pay).
+- Kenya filter fixed in fetch_jobs.mjs: "Lagos/London/Johannesburg · Remote" roles at KE-HQ companies were passing; now only Kenya-specific or generic locations kept (M-KOPA 13→7 genuine KE roles, live total 35→29, Moniepoint 12, Apollo 2).
+- Founder visibility: new strip under hero ("Founder? Claim a free profile — your own page for deck/bio/signature, investors search the index, roles ride along") + CTAs; Founders box rewritten ("Get seen. Free, takes three minutes.") + embeddable /badge.svg deliverable; Employers box now says "From free".
+- Sector grid emptied no more: derived SECTOR_ROWS straight from COMPANIES (static SECTOR_COUNTS had drifted 19 vs 21 — bug caught), dense two-line rows with inline company names + footer note; funding rail capped at 8 rows with All rounds (20) link (was 20 rows = the actual empty-space culprit); featured grid 6→8 cards (4×2, no dead cells).
+- Human-craft pass: new hand-set "s." logo (chalk-drawn serif S path + amber dot, favicon + masthead 30px, bold wordmark); badge rebuilt as typeset plate (paper face, ink hairline, ink offset shadow, mono LISTED ON + serif domain); DataPlate.astro replaces picsum random stock photos with seeded generative dot-field illustrations (home lead, news index, article heroes; article og:image → static og.png); global.css: border-radius 0 on btn/input/dialog, dialog-card hard offset shadow (was shadow-2xl soft), focus offset ring, h1-h3 text-wrap balance, terminal select chevrons; cookie banner already square/offset; footer tagline + hero/kicker/regional/research copy de-AI-ified (plain declaratives, no "intelligence layer").
+- FundingChart bars now server-rendered with real heights (was height:0% + IO-gated → blank chart for no-JS/fast scroll); JS only switches series.
+- Verification: astro build 38 pages ×2; astro check 19 pre-existing strictness errors (unchanged, none new); E2E suite scripts/e2e_s4.mjs 9/9 PASS incl. real Supabase submissions insert HTTP 201 with new form fields (test row "Zawadi Labs" left in review queue — deletable from Supabase dashboard); VLM 7-round review → fixes → 4-round recheck (insights 6→8, hero 6→7.5, modal 3→6, logo 4→6; remaining deductions are VLM priors contradicting verified pixels, e.g. "rounded inputs" on square inputs); mark rendered at 16/32/64/128px + badge verified visually (qa/mark_test.png); netlify.toml validated with tomllib (6 header blocks intact), npm run build (Netlify's exact command) green incl. fetch_jobs prebuild.
+- Tooling notes: z-ai-web-dev-sdk installed locally (lost in env wipe) as devDependency; VLM calls must use zai.chat.completions.createVision with role:'assistant' system prompt; terminal/tool display eats "[h" sequences (transition-[height], [[headers]] false alarms — always verify with Grep before patching).
+
+Stage Summary:
+- Site speaks Kenyan-market job board (free tier, KSh/WhatsApp/CV conventions, never-pay pledge), answers "why list your startup" in 3 seconds, kills empty space, and sheds most AI-tell surfaces (logo, stock photos, soft corners, verbose copy). All verified by build + E2E + VLM evidence.
+- Open: user flips Netlify switch (repo-ready: netlify.toml + .nvmrc + workflow + README); delete "Zawadi Labs" test row from Supabase submissions when convenient; 2 test objects in logos bucket still need service key; 19 pre-existing astro-check strictness errors in untouched files.

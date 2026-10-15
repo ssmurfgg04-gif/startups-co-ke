@@ -1,0 +1,40 @@
+---
+/**
+ * DataPlate — a deterministic, generative illustration for articles.
+ * Seeded dot-field with a rising envelope and one amber marker: "data, not
+ * decoration". No external image services, no stock photos; each slug gets its
+ * own stable pattern at build time. Colors pull from the design tokens.
+ */
+import { prng } from '@/lib/utils';
+interface Props { seed: string; label?: string; class?: string }
+const { seed, label = 'startups.co.ke', class: cls = '' } = Astro.props;
+const rand = prng(seed);
+// 26 columns × 10 rows dot-field; column heights follow a noisy rising trend.
+const cols = 26, rows = 10;
+const dots: { x: number; y: number; o: number; hot: boolean }[] = [];
+let hotCol = -1, hotRow = -1;
+const trend = Array.from({ length: cols }, (_, c) => {
+  const base = 0.25 + (c / (cols - 1)) * 0.6; // rising envelope
+  return Math.max(0.08, Math.min(0.95, base + (rand() - 0.5) * 0.3));
+});
+hotCol = trend.indexOf(Math.max(...trend));
+hotRow = Math.round(trend[hotCol] * (rows - 1));
+for (let c = 0; c < cols; c++) {
+  const h = Math.round(trend[c] * rows);
+  for (let r = 0; r < h; r++) {
+    dots.push({ x: 14 + c * 34 + rand() * 6, y: 388 - r * 26 + rand() * 6, o: 0.45 + rand() * 0.4, hot: c === hotCol && r === hotRow });
+  }
+}
+const spark = Array.from({ length: cols }, (_, c) => `${14 + c * 34},${388 - trend[c] * 330}`);
+---
+<svg viewBox="0 0 900 480" class={cls} role="img" aria-label={`Data illustration — ${label}`} preserveAspectRatio="xMidYMid slice">
+  <rect width="900" height="480" fill="var(--color-paper2, #EFEAD9)"></rect>
+  {[120, 240, 360].map((y) => <line x1="0" y1={y} x2="900" y2={y} stroke="var(--color-line, #D8D2BE)" stroke-width="1" stroke-dasharray="2 6"></line>)}
+  <polyline points={spark.join(' ')} fill="none" stroke="var(--color-green, #0E4630)" stroke-width="2" stroke-dasharray="5 5" opacity="0.55"></polyline>
+  {dots.map((d) => (
+    <circle cx={d.x} cy={d.y} r={d.hot ? 9 : 4.2} fill={d.hot ? 'var(--color-amber2, #E3A21A)' : 'var(--color-green, #0E4630)'} opacity={d.hot ? 1 : d.o}></circle>
+  ))}
+  <line x1="0" y1="452" x2="900" y2="452" stroke="var(--color-ink, #141414)" stroke-width="2"></line>
+  <text x="16" y="472" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="15" letter-spacing="3" fill="var(--color-ink2, #4A4A42)">{label.toUpperCase()}</text>
+  <text x="884" y="472" text-anchor="end" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="15" letter-spacing="2" fill="var(--color-ink2, #4A4A42)">{String(Math.round(trend[hotCol] * 100)).padStart(2, '0')}·{seed.slice(0, 6).toUpperCase()}</text>
+</svg>

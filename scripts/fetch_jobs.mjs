@@ -74,12 +74,16 @@ function modeOf(location, workplace) {
   return '—';
 }
 
-/** Keep Kenya-based roles; keep Remote (stated anywhere in location/workplace) at Kenyan-HQ companies. */
+/** Keep Kenya-based roles. Remote roles pass only when the location string is
+ *  Kenya-specific or generic ("Remote"/"Global") — a "Lagos · Remote" ad at a
+ *  Kenyan-HQ company is a Nigeria hire, not a Kenya hire, and we don't guess. */
 function kenyaRelevant(location, mode, hq) {
-  const l = `${location || ''} ${mode === 'Remote' ? 'remote' : ''}`.toLowerCase();
+  const l = String(location || '').toLowerCase();
   const inKenya = /kenya|nairobi/.test(l);
+  // non-specific locations only (no other city/country named)
+  const generic = !l.trim() || /^(remote|global|anywhere|multiple|flexible|work from home)([ ,;+]|$)/.test(l) || /^\+ \d+ more$/.test(l);
   const remoteEligible = mode === 'Remote' || /remote|anywhere/.test(l);
-  return inKenya || (remoteEligible && hq === 'kenya');
+  return inKenya || (generic && remoteEligible && hq === 'kenya');
 }
 
 function cleanLocation(loc) {

@@ -9,6 +9,7 @@ import { SITE } from '@/config/site';
 
 const jobs = allJobs();
 const liveRows = jobs.filter((j) => isLive(j));
+const payRows = jobs.filter((j) => !isLive(j)).length; // curated rows carry market bands; live ATS rows never invent pay
 const liveSources = LIVE.sources.filter((s) => s.ok);
 const liveCompanies = [...new Set(liveRows.map((j) => j.companyId))];
 const salaryMax = 500;
@@ -50,7 +51,10 @@ const bands = SALARY_BANDS;
       <p class="kicker text-dmut">{jobs.length} open roles · {liveRows.length} pulled live from {liveCompanies.length} employer ATS boards · fetched {LIVE.fetchedAt}</p>
       <h1 class="mt-3 max-w-2xl text-[clamp(34px,4.2vw,56px)] leading-[1.02]">Tech jobs at Kenya's most ambitious startups.</h1>
       <p class="mt-4 max-w-2xl text-[14px] leading-relaxed text-dmut">
-        The <span class="text-dpaper">LIVE</span> rows below are pulled straight from employers' own hiring systems — Lever, Greenhouse, Workable, BambooHR and Ashby — every time this site rebuilds. Kenya-based roles only; apply on the employer's own portal. No salaries are invented for live rows.
+        <span class="text-dpaper">LIVE</span> rows come straight from employers' own hiring systems — Lever, Greenhouse, Workable, BambooHR and Ashby — every time this site rebuilds. You apply on the employer's own portal, never through us.
+      </p>
+      <p class="mt-3 max-w-2xl border-l-2 border-amber2 pl-3 text-[13.5px] leading-relaxed text-dpaper/85">
+        Only {payRows} of {jobs.length} roles here publish pay. That's Kenya — most employers don't (Fuzu calls this market “zero salary transparency”). So where an ad hides the money, we attach a market band from published salary surveys. Bands, not offers.
       </p>
       <form class="mt-6 flex max-w-2xl flex-wrap gap-2" role="search" aria-label="Search jobs">
         <input class="input min-h-11 flex-1 border-dpaper/40 bg-dark2 text-dpaper placeholder:text-dmut" name="q" placeholder="Role, skill or company…" aria-label="Search jobs" />
@@ -75,6 +79,9 @@ const bands = SALARY_BANDS;
           ))}
           <span id="job-count" class="mono-label ml-1 self-center">{jobs.length} roles</span>
           <label class="ml-auto flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
+            Pay disclosed <input id="pay-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
+          </label>
+          <label class="flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
             Remote only <input id="remote-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
           </label>
         </div>
@@ -84,7 +91,7 @@ const bands = SALARY_BANDS;
             const c = employerById(j.companyId)!;
             const live = isLive(j);
             return (
-              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-loc={`${j.location}`.toLowerCase()} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
+              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-pay={live ? '0' : '1'} data-loc={`${j.location}`.toLowerCase()} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
                 <div class="flex w-full cursor-pointer flex-wrap items-center gap-3 px-4 py-4 text-left hover:bg-paper2" data-expand role="button" tabindex="0" aria-expanded="false">
                   <Monogram name={c.name} sector={c.sector} size="md" logo={c.logo ?? undefined} domain={c.domain ?? undefined} />
                   <span class="min-w-0 flex-1">
@@ -102,7 +109,11 @@ const bands = SALARY_BANDS;
                     </span>
                   </span>
                   <span class="text-right">
-                    <span class="statnum block text-[13px]">{live ? 'Band n/a' : j.salary}</span>
+                    {live ? (
+                      <span class="block font-mono text-[12px] italic text-mut" title="Pay not disclosed — see market bands in the rail">pay: n/d</span>
+                    ) : (
+                      <span class="statnum block text-[13px]">{j.salary}</span>
+                    )}
                     <span class="mono-label">{live ? (j.postedDays !== null ? relDays(j.postedDays) : `via ${j.board}`) : relDays(j.postedDays)}</span>
                   </span>
                   <button class="bookmark-btn btn btn-ghost h-9 w-9 !min-h-0 !px-0" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
@@ -115,7 +126,7 @@ const bands = SALARY_BANDS;
                     <div class="border-t border-line px-4 py-4">
                       {live ? (
                         <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">
-                          Open role indexed live from {c.name}'s own {j.board} hiring board on {LIVE.fetchedAt}. Details and compensation live on the employer's portal — we don't guess them.
+                          Open role indexed live from {c.name}'s own {j.board} hiring board on {LIVE.fetchedAt}. Pay isn't published for this role — that's the norm here, not an oversight. The market bands in the rail tell you what similar roles pay.
                         </p>
                       ) : (
                         <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">{j.description}</p>
@@ -159,14 +170,19 @@ const bands = SALARY_BANDS;
         </div>
 
         <div class="railbox">
-          <div class="railbox-head"><span>Employers — post a job</span></div>
+          <div class="railbox-head"><span>Post a job</span><span class="mono-label">from free</span></div>
           <div class="px-4 py-3">
             {SITE.jobPostPricing.map((p) => (
-              <div class="flex items-center justify-between border-b border-line py-2 last:border-0">
-                <span class="text-[13.5px]">{p.tier}</span><span class="statnum text-[13px]">{p.price}</span>
+              <div class="border-b border-line py-2.5 last:border-0">
+                <div class="flex items-center justify-between">
+                  <span class="text-[13.5px]">{p.tier}</span><span class="statnum text-[13px]">{p.price}</span>
+                </div>
+                <p class="mono-label mt-0.5">{p.note}</p>
               </div>
             ))}
-            <button class="btn btn-amber mt-3 w-full" data-modal="postjob">Post now</button>
+            <p class="mono-label mt-2.5">{SITE.jobPostPack}</p>
+            <p class="mt-2 text-[12.5px] leading-relaxed text-mut">{SITE.jobPostPledge}</p>
+            <button class="btn btn-amber mt-3 w-full" data-modal="postjob">Post a role</button>
           </div>
         </div>
 
@@ -183,7 +199,7 @@ const bands = SALARY_BANDS;
                 </div>
               </div>
             ))}
-            <p class="mono-label mt-3">Source: CareerBuddy (Jun 2026) · Mctaba (Jun 2026) · WageIndicator (2026) · axis 0–500K</p>
+            <p class="mono-label mt-3">Source: CareerBuddy (Jun 2026) · Mctaba (Jun 2026) · WageIndicator (2026) · axis 0–500K. Most Kenyan ads hide pay — these bands are the market context the ads leave out.</p>
           </div>
         </div>
 
@@ -203,7 +219,7 @@ const bands = SALARY_BANDS;
 
 <script>
   // Job filters
-  const state = { cat: 'All', remote: false, q: '', loc: '' };
+  const state = { cat: 'All', remote: false, pay: false, q: '', loc: '' };
   const rows = document.querySelectorAll<HTMLElement>('.job-row');
   function apply() {
     let n = 0;
@@ -211,6 +227,7 @@ const bands = SALARY_BANDS;
       const ok =
         (state.cat === 'All' || r.dataset.cat === state.cat) &&
         (!state.remote || r.dataset.mode === 'Remote') &&
+        (!state.pay || r.dataset.pay === '1') &&
         (!state.loc || (state.loc === 'remote' ? /remote/i.test(r.dataset.mode ?? '') : (r.dataset.loc || '').includes(state.loc))) &&
         (!state.q || r.dataset.title!.includes(state.q));
       r.classList.toggle('hidden', !ok);
@@ -233,6 +250,7 @@ const bands = SALARY_BANDS;
     })
   );
   document.getElementById('remote-only')?.addEventListener('change', (e) => { state.remote = (e.target as HTMLInputElement).checked; apply(); });
+  document.getElementById('pay-only')?.addEventListener('change', (e) => { state.pay = (e.target as HTMLInputElement).checked; apply(); });
   document.getElementById('job-loc')?.addEventListener('change', (e) => { state.loc = (e.target as HTMLSelectElement).value; apply(); });
   document.getElementById('job-search-btn')?.addEventListener('click', () => {
     const q = (document.querySelector('input[name="q"]') as HTMLInputElement).value.trim().toLowerCase();

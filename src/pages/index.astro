@@ -8,9 +8,10 @@ import Sparkline from '@/components/Sparkline.astro';
 import Chip from '@/components/Chip.astro';
 import StatusDot from '@/components/StatusDot.astro';
 import Monogram from '@/components/Monogram.astro';
+import DataPlate from '@/components/DataPlate.astro';
 import Countdown from '@/components/Countdown.astro';
 import { COMPANIES, FEATURED_IDS } from '@/data/companies';
-import { ROUNDS, SECTOR_COUNTS, REPORTS } from '@/data/ecosystem';
+import { ROUNDS, REPORTS } from '@/data/ecosystem';
 import { STATS, REGIONS } from '@/data/stats';
 import { ANCHORED_COUNTIES } from '@/data/counties';
 import { HACKATHONS } from '@/data/hackathons';
@@ -22,7 +23,6 @@ const featuredHack = HACKATHONS.find((h) => h.featured)!;
 const daysTo = featuredHack.startISO
   ? Math.max(0, Math.round((Date.parse(featuredHack.startISO) - Date.now()) / 86400000))
   : Math.round((featuredHack.startOffsetMs ?? 0) / 86400000);
-const totalSector = SECTOR_COUNTS.reduce((s, r) => s + r.count, 0);
 const nextUp = HACKATHONS.filter((h) => h.status === 'upcoming' && !h.featured && h.startISO)
   .sort((a, b) => Date.parse(a.startISO!) - Date.parse(b.startISO!))
   .slice(0, 3);
@@ -38,6 +38,14 @@ const wireList: [string, string, string][] = [
 const flagship = REPORTS.find((r) => r.flagship)!;
 const regionRows = REGIONS.filter((r) => r.count > 0);
 const hubCounties = ANCHORED_COUNTIES.filter((c) => c.id !== 'nairobi');
+const sectorCompanies = (sector: string) => COMPANIES.filter((c) => c.sector === sector);
+// Derived, never typed: sector counts come straight from the company index
+// (a static list drifted 19 vs 21 — see worklog Task 4).
+const SECTOR_ROWS = [...new Set(COMPANIES.map((c) => c.sector))]
+  .map((sector) => ({ sector, count: sectorCompanies(sector).length }))
+  .sort((a, b) => b.count - a.count);
+const totalSector = SECTOR_ROWS.reduce((s, r) => s + r.count, 0);
+const sectorMax = Math.max(...SECTOR_ROWS.map((r) => r.count));
 const jsonld = [
   {
     '@context': 'https://schema.org',
@@ -67,12 +75,12 @@ const jsonld = [
   <!-- 1) HERO -->
   <section class="wrap grid items-start gap-10 py-12 md:py-16 lg:grid-cols-12">
     <div class="rv lg:col-span-7">
-      <p class="kicker">EST. NAIROBI — The intelligence layer for Kenya's startup ecosystem</p>
+      <p class="kicker">Est. Nairobi — Kenya's startup record, kept in the open</p>
       <h1 class="mt-4 text-[clamp(40px,5.2vw,72px)] leading-[0.98]">
         Kenya's startup economy, <em class="font-display italic text-green">mapped</em> &amp; measured.
       </h1>
       <p class="mt-5 max-w-xl text-[16.5px] text-ink2">
-        Verified company profiles, funding intelligence with named sources, an investor directory, every build sprint in the region, and the tech jobs behind them — one institutional record of the ecosystem.
+        {COMPANIES.length} Kenyan startups with verified profiles — what they raised, from whom, and who failed. The investors actually writing cheques here. Tech jobs pulled from employer boards every build. No hype; every number names its source.
       </p>
 
       <form class="mt-7 flex max-w-xl border-2 border-ink bg-paper" action="/startups" method="get" role="search" aria-label="Company search">
@@ -112,8 +120,8 @@ const jsonld = [
       <div class="border-t border-ink px-4 py-3.5">
         <p class="mono-label mb-2.5">Tracked profiles by sector</p>
         <div class="flex h-20 items-end gap-1.5" aria-hidden="true">
-          {SECTOR_COUNTS.map((s, i) => (
-            <div class="flex-1 bg-green" style={`height:${Math.max(8, Math.round((s.count / Math.max(...SECTOR_COUNTS.map((x) => x.count))) * 100))}%; ${i === 1 ? 'background:var(--color-amber2)' : ''}`} title={`${s.sector}: ${s.count}`}></div>
+          {SECTOR_ROWS.map((s, i) => (
+            <div class="flex-1 bg-green" style={`height:${Math.max(8, Math.round((s.count / sectorMax) * 100))}%; ${i === 1 ? 'background:var(--color-amber2)' : ''}`} title={`${s.sector}: ${s.count}`}></div>
           ))}
         </div>
         <a class="link-underline mt-3 inline-block" href="/funding">Funding database →</a>
@@ -121,12 +129,26 @@ const jsonld = [
     </aside>
   </section>
 
+  <!-- 1b) FOUNDER STRIP — the 3-second answer: visibility -->
+  <section class="border-y-2 border-ink bg-paper2" aria-label="For founders">
+    <div class="wrap flex flex-col items-start gap-4 py-9 lg:flex-row lg:items-center lg:gap-8">
+      <p class="kicker shrink-0">Founder?</p>
+      <p class="max-w-2xl text-[15px] leading-relaxed text-ink2">
+        Claim a free profile and get seen: your own page — <a class="link-underline text-green" href="/startups">startups.co.ke/startups/your-name</a> — to drop in your deck, bio and email signature. Investors search this index for deal flow; your open roles ride along.
+      </p>
+      <div class="flex shrink-0 gap-2 lg:ml-auto">
+        <button class="btn btn-amber" data-modal="submit">Claim your profile — free</button>
+        <a class="btn btn-ghost" href="/startups/m-kopa">See a real profile</a>
+      </div>
+    </div>
+  </section>
+
   <!-- 2) MAP BAND -->
   <section class="wrap grid gap-8 pb-14 lg:grid-cols-2" aria-labelledby="regions-h">
     <div class="rv"><KenyaMap /></div>
     <div class="rv" style="--d:100ms">
       <h2 id="regions-h" class="text-[clamp(26px,3.2vw,40px)]">Explore by region.</h2>
-      <p class="mt-2 max-w-md text-[14.5px] text-mut">All 47 counties are on the map — small dots mark county seats, green rings mark verified ecosystem anchors: a named hub, checked against a public source. The tracked company index remains Nairobi-concentrated, and we say so; the county anchors are where regional expansion starts. Click a hub row to see the county detail.</p>
+      <p class="mt-2 max-w-md text-[14.5px] text-mut">All 47 counties on the map. Small dots = county seats; green rings = verified anchors — a named hub, checked against a public source. Most tracked startups are still Nairobi-based; we say so, and the anchors show where the next ones come from. Click a hub row for county detail.</p>
       <div class="railbox mt-5">
         {regionRows.map((r) => (
           <a href={`/startups?city=${encodeURIComponent(r.city)}`} class="rowline group flex items-center gap-4 px-4 py-3.5 hover:bg-paper2">
@@ -225,20 +247,26 @@ const jsonld = [
       <div class="grid gap-8 lg:grid-cols-2">
         <div class="rv railbox">
           <div class="railbox-head"><span>Startups tracked by sector</span><a class="link-underline" href="/startups">Full index</a></div>
-          <div class="px-4 py-4">
-            {SECTOR_COUNTS.map((s) => (
-              <a href={`/startups?sector=${encodeURIComponent(s.sector)}`} class="group mb-2 flex items-center gap-3 last:mb-0">
-                <span class="w-40 shrink-0 truncate font-mono text-[11px] uppercase tracking-[0.06em] text-ink2">{s.sector}</span>
-                <span class="relative h-4 flex-1 bg-paper3"><span class="absolute inset-y-0 left-0 bg-green transition-all duration-500 group-hover:bg-amber" style={`width:${Math.round((s.count / Math.max(...SECTOR_COUNTS.map((x) => x.count))) * 100)}%`}></span></span>
-                <span class="statnum w-8 text-right text-[12px]">{s.count}</span>
-                <span class="w-10 text-right font-mono text-[10px] text-mut">{Math.round((s.count / totalSector) * 100)}%</span>
+          <div>
+            {SECTOR_ROWS.map((s) => (
+              <a href={`/startups?sector=${encodeURIComponent(s.sector)}`} class="group block border-b border-line px-4 py-2.5 transition-colors last:border-0 hover:bg-paper2">
+                <span class="flex items-baseline gap-2">
+                  <span class="font-mono text-[11px] font-medium uppercase tracking-[0.06em] text-ink">{s.sector}</span>
+                  <span class="relative mx-1 h-1 flex-1 self-center bg-paper3"><span class="absolute inset-y-0 left-0 bg-green transition-all duration-500 group-hover:bg-amber" style={`width:${Math.round((s.count / sectorMax) * 100)}%`}></span></span>
+                  <span class="statnum text-[12px]">{s.count}</span>
+                  <span class="w-9 text-right font-mono text-[10px] text-mut">{Math.round((s.count / totalSector) * 100)}%</span>
+                </span>
+                <span class="mt-1 block truncate text-[12.5px] text-ink2 transition-colors group-hover:text-ink">
+                  {sectorCompanies(s.sector).map((c) => c.name).join(' · ')}
+                </span>
               </a>
             ))}
           </div>
+          <p class="border-t border-line px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">{totalSector} tracked · every profile status-tagged · counts derived from the index</p>
         </div>
         <div class="rv railbox" style="--d:120ms">
-          <div class="railbox-head"><span>Latest funding intelligence</span><a class="link-underline" href="/funding">All rounds</a></div>
-          {ROUNDS.map((r) => {
+          <div class="railbox-head"><span>Latest funding intelligence</span><a class="link-underline" href="/funding">All rounds ({ROUNDS.length})</a></div>
+          {ROUNDS.slice(0, 8).map((r) => {
             const c = COMPANIES.find((x) => x.id === r.companyId)!;
             return (
               <a href={`/startups/${c.id}`} class="rowline flex items-center gap-3 px-4 py-3 hover:bg-paper">
@@ -300,7 +328,7 @@ const jsonld = [
       <div class="grid gap-8 lg:grid-cols-12">
         <a class="rv group block border border-ink bg-paper lg:col-span-7" href={`/news/${leadArticle.slug}`}>
           <div class="overflow-hidden border-b border-ink">
-            <img src={`https://picsum.photos/seed/sh93billion/900/480.jpg`} alt="Abstract data illustration for the Sh93bn analysis" width="900" height="480" loading="lazy" decoding="async" class="photo-warm h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+            <DataPlate seed="sh93billion" label="startups.co.ke · analysis" class="h-64 w-full" />
           </div>
           <div class="p-5">
             <span class="chip chip-solid">{leadArticle.cat}</span>
@@ -340,7 +368,7 @@ const jsonld = [
         <p class="kicker">Research</p>
         <h2 id="research-h" class="mt-3 text-[clamp(26px,3.2vw,40px)]">{flagship.title}.</h2>
         <p class="mt-3 max-w-md text-[14.5px] text-mut">
-          {flagship.pages} pages of capital flows, sector deep-dives, talent and county-level activity — with the full methodology and every status tag explained. Members unlock the library; the flagship ships with a data appendix.
+          {flagship.pages} pages on capital flows, sectors, talent and county-level activity — methodology and every status tag explained. Members read the full library; the flagship ships with a data appendix.
         </p>
         <div class="mt-5 flex flex-wrap gap-3">
           <button class="btn btn-amber" data-modal="buy">Get it — Members</button>
@@ -364,14 +392,15 @@ const jsonld = [
     <div class="grid gap-5 md:grid-cols-12">
       <div class="rv railbox p-6 md:col-span-7">
         <p class="mono-label">Founders</p>
-        <h3 class="mt-2 font-display text-[22px]">Get discovered by the people writing cheques.</h3>
+        <h3 class="mt-2 font-display text-[22px]">Get seen. Free, takes three minutes.</h3>
         <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
-          <li>· A verifiable profile with your own logo, team and funding history</li>
-          <li>· Appear in investor deal-flow requests</li>
-          <li>· Hiring page with your open roles</li>
+          <li>· Your own page — put the link in your deck, bio and email signature</li>
+          <li>· Show up when investors search the index for Kenya deals</li>
+          <li>· Your open roles appear on your profile — hiring rides along free</li>
+          <li>· <a class="link-underline text-green" href="/badge.svg" download>“Listed on startups.co.ke” badge</a> for your site</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
-          <span class="font-mono text-[12px] text-mut">Free forever</span>
+          <span class="font-mono text-[12px] text-mut">Free forever · no card</span>
           <button class="btn" data-modal="submit">Claim profile</button>
         </div>
       </div>
@@ -390,13 +419,13 @@ const jsonld = [
       </div>
       <div class="rv railbox p-6 md:col-span-5">
         <p class="mono-label">Employers</p>
-        <h3 class="mt-2 font-display text-[22px]">Reach builders where they already read.</h3>
+        <h3 class="mt-2 font-display text-[22px]">Hire where builders already read.</h3>
         <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
-          <li>· Featured listings with verified-employer badge</li>
-          <li>· Salary benchmark context for every role</li>
+          <li>· Free listing — a human checks it and it's live in ~48h</li>
+          <li>· Applicants never pay, ever — we keep the “pay to apply” scams out</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
-          <span class="font-mono text-[12px] text-mut">From KSh 6,000</span>
+          <span class="font-mono text-[12px] text-mut">From free · KSh 2,900 for 30 days</span>
           <button class="btn" data-modal="postjob">Post a job</button>
         </div>
       </div>
@@ -419,7 +448,7 @@ const jsonld = [
   <!-- 11) PRICING -->
   <section class="border-t border-ink bg-paper2 py-14" aria-labelledby="pricing-h">
     <div class="wrap">
-      <SectionHead no="06" title="Pricing that pays for the methodology." />
+      <SectionHead no="06" title="Simple pricing. Free to start." />
       <div class="grid gap-5 lg:grid-cols-3">
         {SITE.pricing.tiers.map((tier, i) => (
           <div class={`rv relative border p-6 ${tier.dark ? 'border-ink bg-ink text-paper shadow-[8px_8px_0_var(--color-amber2)]' : 'border-ink bg-paper'}`} style={`--d:${i * 90}ms`}>

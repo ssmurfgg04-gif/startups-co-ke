@@ -5,6 +5,7 @@ interface Props { dark?: boolean; height?: number }
 const { dark = true, height = 300 } = Astro.props;
 const keys = Object.keys(SERIES);
 const max = Math.max(...Object.values(SERIES).flat());
+const allSeries = SERIES['All sectors'] ?? SERIES[keys[0]];
 ---
 <div class={`railbox ${dark ? 'border-darkline bg-dark2' : ''}`}>
   <div class={`flex flex-wrap items-center justify-between gap-2 border-b px-4 py-3 ${dark ? 'border-darkline' : 'border-ink'}`}>
@@ -35,7 +36,7 @@ const max = Math.max(...Object.values(SERIES).flat());
           <div
             class="quarter-bar w-full bg-amber transition-[height] duration-700 ease-out"
             data-i={i}
-            style={`height:0%`}
+            style={`height:${Math.max(2, (allSeries[i] / max) * 100)}%`}
           ></div>
           <div class="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap border border-darkline bg-dark px-2 py-1 font-mono text-[10px] text-dpaper opacity-0 transition-opacity group-hover:opacity-100">
             <span class="bar-amount"></span> tracked
@@ -74,13 +75,5 @@ const max = Math.max(...Object.values(SERIES).flat());
     });
   }
   document.querySelectorAll('.chart-tab').forEach((tab) => tab.addEventListener('click', () => setSeries(tab.dataset.series)));
-  // animate on first view
-  const io = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) {
-      setSeries('all');
-      io.disconnect();
-    }
-  }, { threshold: 0.25 });
-  const target = document.getElementById('quarter-bars');
-  if (target) io.observe(target);
+  // Bars ship server-rendered (no-JS safe); JS only switches series on tab click.
 </script>

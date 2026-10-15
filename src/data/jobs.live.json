@@ -87,7 +87,7 @@
    "company": "M-KOPA",
    "board": "Ashby",
    "count": 40,
-   "kept": 13,
+   "kept": 7,
    "ok": true,
    "error": "HTTP 401",
    "note": "via committed browser snapshot (API blocked from build IP)"
@@ -129,7 +129,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 7,
+   "postedDays": 8,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "tags": []
@@ -267,20 +267,6 @@
    "tags": []
   },
   {
-   "id": "mkopa-finance-manager",
-   "title": "Finance Manager",
-   "companyId": "m-kopa",
-   "location": "Johannesburg",
-   "mode": "Remote",
-   "category": "Operations",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/741ef060-cad0-4e9d-8ef6-0cba485f7844",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
    "id": "mkopa-finance-manager-kenya",
    "title": "Finance Manager - Kenya",
    "companyId": "m-kopa",
@@ -323,34 +309,6 @@
    ]
   },
   {
-   "id": "mkopa-lead-people-partner-technology",
-   "title": "Lead People Partner - Technology",
-   "companyId": "m-kopa",
-   "location": "Lagos",
-   "mode": "Remote",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/a13017dd-a4df-4e30-bf31-57c5bb58568d",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-lead-people-partner-technology",
-   "title": "Lead People Partner - Technology",
-   "companyId": "m-kopa",
-   "location": "London + 6 more",
-   "mode": "Remote",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/38e278c7-ae7f-47a8-aa51-0b73fbee8a13",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
    "id": "mkopa-senior-people-partner",
    "title": "Senior People Partner",
    "companyId": "m-kopa",
@@ -365,20 +323,6 @@
    ]
   },
   {
-   "id": "mkopa-senior-people-partner-product-functions",
-   "title": "Senior People Partner – Product & Functions",
-   "companyId": "m-kopa",
-   "location": "London + 6 more",
-   "mode": "Remote",
-   "category": "Product",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/5a5353e4-18e9-42a8-ad98-919b324ed0c9",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
    "id": "mkopa-head-of-workplace-it",
    "title": "Head of Workplace IT",
    "companyId": "m-kopa",
@@ -387,20 +331,6 @@
    "category": "Engineering",
    "postedDays": null,
    "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fffe4725-86ca-4014-9a2d-e3004a9ce21e",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-senior-backend-engineer-asset-sales",
-   "title": "Senior Backend Engineer - Asset Sales",
-   "companyId": "m-kopa",
-   "location": "London + 9 more",
-   "mode": "Remote",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/5fc27a56-4a23-4321-8b06-350e20758d66",
    "board": "Ashby",
    "tags": [
     "Ashby snapshot"
@@ -429,20 +359,6 @@
    "category": "Engineering",
    "postedDays": null,
    "applyUrl": "https://jobs.ashbyhq.com/m-kopa/121d269d-f893-4e4c-9a88-eae3f6c5c917",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-senior-backend-engineer-mobility-12-month-ftc-",
-   "title": "Senior Backend Engineer - Mobility (12 month FTC)",
-   "companyId": "m-kopa",
-   "location": "London + 9 more",
-   "mode": "Remote",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fc5b810f-6b8b-42f1-9b7d-da49a2bd1523",
    "board": "Ashby",
    "tags": [
     "Ashby snapshot"
