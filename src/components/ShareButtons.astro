@@ -43,7 +43,7 @@ const links = [
     btn.addEventListener('click', async () => {
       const url = btn.getAttribute('data-copy-link');
       try {
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(url ?? location.href);
         document.dispatchEvent(new CustomEvent('sck:toast', { detail: { title: 'Link copied', body: url } }));
       } catch {
         document.dispatchEvent(new CustomEvent('sck:toast', { detail: { title: 'Copy failed', body: 'Select the URL manually.' } }));

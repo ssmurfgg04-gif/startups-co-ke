@@ -12,9 +12,21 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 
     <nav class="ml-4 hidden items-center gap-5 lg:flex" aria-label="Primary">
       {nav.map((item) => (
-        <a class={`link-underline ${isActive(item.href) ? 'text-amber' : ''}`} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-          {item.label}
-        </a>
+        <div class="relative group">
+          <a class={`link-underline flex items-center gap-1 ${isActive(item.href) ? 'text-amber' : ''}`} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined} aria-haspopup={item.children ? 'true' : undefined}>
+            {item.label}
+            {item.children && (
+              <svg class="h-3 w-3 text-mut transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            )}
+          </a>
+          {item.children && (
+            <div class="invisible absolute left-0 top-full z-50 w-56 translate-y-1 border border-ink bg-paper opacity-0 shadow-[6px_6px_0_var(--color-paper3)] transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              {item.children.map((child) => (
+                <a class="block border-b border-line px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.1em] last:border-0 hover:bg-paper2" href={child.href}>{child.label}</a>
+              ))}
+            </div>
+          )}
+        </div>
       ))}
     </nav>
 
@@ -38,9 +50,15 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 
   <nav id="mobile-nav" class="hidden border-t border-ink bg-paper lg:hidden" aria-label="Mobile">
     {nav.map((item) => (
-      <a class="block border-b border-line px-5 py-3.5 font-mono text-xs uppercase tracking-[0.14em]" href={item.href}>{item.label}</a>
+      <div>
+        <a class="block border-b border-line px-5 py-3.5 font-mono text-xs uppercase tracking-[0.14em]" href={item.href}>{item.label}</a>
+        {item.children?.map((child) => (
+          <a class="block border-b border-line py-2.5 pl-9 pr-5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink2" href={child.href}>· {child.label}</a>
+        ))}
+      </div>
     ))}
-    <a class="block border-b border-line px-5 py-3.5 font-mono text-xs uppercase tracking-[0.14em] text-amber" href="/research">Research</a>
+    <a class="block border-b border-line px-5 py-3.5 font-mono text-xs uppercase tracking-[0.14em] text-amber" href="/about">About</a>
+    <a class="block border-b border-line px-5 py-3.5 font-mono text-xs uppercase tracking-[0.14em] text-amber" href="/contact">Contact</a>
   </nav>
 </header>
 
@@ -67,11 +85,15 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
   const panel = document.getElementById('search-panel');
   const input = document.getElementById('global-search') as HTMLInputElement | null;
 
-  async function ensureIndex() {
+  async function ensureIndex(): Promise<SearchItem[]> {
     if (!INDEX) {
-      INDEX = await (await fetch('/search-index.json')).json();
+      try {
+        INDEX = await (await fetch('/search-index.json')).json();
+      } catch {
+        INDEX = [];
+      }
     }
-    return INDEX;
+    return INDEX ?? [];
   }
 
   function renderResults(q: string, index: SearchItem[]) {

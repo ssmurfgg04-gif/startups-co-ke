@@ -1,0 +1,36 @@
+---
+import Base from '@/layouts/Base.astro';
+import { SITE } from '@/config/site';
+import { STATS } from '@/data/stats';
+const updated = '2026-10-16';
+---
+<Base title="About startups.co.ke — who keeps Kenya's startup record" description="What startups.co.ke is, why it exists, how the data is kept honest, and who it is for. Built in Nairobi, free to read.">
+  <article class="wrap max-w-3xl py-10">
+    <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / About</p>
+    <h1 class="mt-2 text-[clamp(32px,3.8vw,50px)]">Kenya's startup record, kept in the open.</h1>
+    <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-mut">Last updated {updated} · Nairobi, Kenya</p>
+
+    <div class="prose-sck mt-8">
+      <p><strong>What this is.</strong> startups.co.ke is a working record of Kenya's startup economy: {STATS.companiesTracked} tracked company profiles, the investors writing cheques here, every round we can source, live tech jobs pulled from employers' own hiring boards, and hackathons across the country. It is free to read. It exists because Kenya has world-class startup activity and no single place where the facts about it are kept properly — with a source on every figure and the failures tracked as carefully as the raises.</p>
+
+      <p><strong>Why we bother.</strong> Ask a founder here how fundraising is going and you'll hear the same thing: investors ask for traction, founders ask for visibility, and both sides waste time on mismatched introductions. Meanwhile the numbers that circulate are either loud and wrong or quiet and stale. A shared, sourced record fixes the boring part of the problem — who raised what, from whom, who's hiring, who shut down — so founders spend their time building and pitching, not reconstructing spreadsheets. If you're building in Mombasa or Kisumu, being findable in this index is the cheapest visibility you can buy.</p>
+
+      <p><strong>How the data stays honest.</strong> Every figure carries a status — <a class="text-amber underline" href="/methodology">Confirmed, Reported or Estimated</a> — and a named public source. "Verified" on a profile means we cross-checked it against at least two independent public sources. Undisclosed amounts render as "Undisclosed", never as zero. Companies that entered administration, liquidation or shutdown stay in the index with their failure state visible; a directory that only shows winners is marketing, not data. When we get something wrong, you can hit "Report data issue" on any profile and a human fixes it.</p>
+
+      <p><strong>Who it's for.</strong> Founders use it to be seen and to know their market. Investors use it for deal flow with the noise turned down. Employers post roles where builders already read. Researchers and journalists use the sources and the research library. Job-seekers use the board knowing they will never pay to apply — that's a rule, not a slogan, and every listing is reviewed by a person before it goes live.</p>
+
+      <p><strong>How it pays for itself.</strong> Reading is free, forever. The platform earns from optional job-posting upgrades (KSh 2,900 and KSh 6,500 tiers, with the basic listing always free), Professional and Institution memberships, and sponsorships. We don't sell data and we don't charge applicants — ever. If that ever changes, this page is where we'll say so first.</p>
+
+      <p><strong>Who's behind it.</strong> An independent desk based in Nairobi — {SITE.contact.address}. Built and maintained in the open: the methods are public, the sources are named, and the update cadence is written down in the <a class="text-amber underline" href="/methodology">methodology</a>. Corrections, tips and "we raised and you missed it" emails all go to the same place.</p>
+    </div>
+
+    <div class="mt-10 border border-ink bg-paper2 p-6">
+      <p class="mono-label">Talk to the desk</p>
+      <p class="mt-2 text-[15px] text-ink2">Corrections, tips, partnerships or a profile to claim — we answer everything.</p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <a class="btn btn-amber" href="/contact">Contact page</a>
+        <a class="btn btn-ghost" href="/methodology">Read the methodology</a>
+      </div>
+    </div>
+  </article>
+</Base>
