@@ -1,6 +1,11 @@
 {
- "fetchedAt": "2026-10-15",
- "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows.",
+ "fetchedAt": "2026-10-16",
+ "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
+ "linkCheck": {
+  "checked": 21,
+  "dropped": 2,
+  "ambiguous": 0
+ },
  "sources": [
   {
    "id": "apollo",
@@ -14,7 +19,7 @@
    "id": "tala",
    "company": "Tala",
    "board": "Lever",
-   "count": 9,
+   "count": 10,
    "kept": 0,
    "ok": true
   },
@@ -95,34 +100,6 @@
  ],
  "jobs": [
   {
-   "id": "apollo-finance-manager",
-   "title": "Finance Manager",
-   "companyId": "apollo",
-   "location": "Nairobi",
-   "mode": "Hybrid",
-   "category": "Operations",
-   "postedDays": 35,
-   "applyUrl": "https://jobs.lever.co/apolloagriculture/3cd3a71e-d0a0-43b5-92f2-79832a60aefd",
-   "board": "Lever",
-   "tags": [
-    "Finance"
-   ]
-  },
-  {
-   "id": "apollo-manager-credit-strategy-operations",
-   "title": "Manager – Credit Strategy & Operations",
-   "companyId": "apollo",
-   "location": "Anywhere (Remote)",
-   "mode": "Hybrid",
-   "category": "Engineering",
-   "postedDays": 73,
-   "applyUrl": "https://jobs.lever.co/apolloagriculture/859ecb4c-1a82-45a4-8447-53c7076a2d91",
-   "board": "Lever",
-   "tags": [
-    "Credit"
-   ]
-  },
-  {
    "id": "moniepoint-engineering-relations-partner",
    "title": "Engineering Relations Partner",
    "companyId": "moniepoint",
@@ -153,7 +130,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 21,
+   "postedDays": 22,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "tags": []
@@ -165,7 +142,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 35,
+   "postedDays": 36,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
    "tags": []
@@ -177,7 +154,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 36,
+   "postedDays": 37,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4971812101",
    "board": "Greenhouse",
    "tags": []
@@ -189,7 +166,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 7,
+   "postedDays": 8,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
    "board": "Greenhouse",
    "tags": []
@@ -201,7 +178,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 36,
+   "postedDays": 37,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972195101",
    "board": "Greenhouse",
    "tags": []
@@ -213,7 +190,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Product",
-   "postedDays": 98,
+   "postedDays": 99,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923301101",
    "board": "Greenhouse",
    "tags": []
@@ -225,7 +202,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 28,
+   "postedDays": 29,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4330952101",
    "board": "Greenhouse",
    "tags": []
@@ -237,7 +214,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 16,
+   "postedDays": 17,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
    "board": "Greenhouse",
    "tags": []
@@ -249,7 +226,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Design",
-   "postedDays": 0,
+   "postedDays": 1,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
    "tags": []
@@ -261,7 +238,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Operations",
-   "postedDays": 6,
+   "postedDays": 7,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
    "tags": []

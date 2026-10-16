@@ -6,7 +6,7 @@ import Chip from '@/components/Chip.astro';
 import Monogram from '@/components/Monogram.astro';
 import { ROUNDS, CAPITAL_MIX, QUARTERS, SERIES } from '@/data/ecosystem';
 import { companyById } from '@/data/companies';
-import { fmtUsdM, relDays } from '@/lib/utils';
+import { fmtAmount } from '@/lib/utils';
 import { SITE } from '@/config/site';
 const ytd = SERIES['All sectors'].slice(-2).reduce((s, v) => s + v, 0); // H1 2026 = $126M (Business Daily)
 const sortedRounds = [...ROUNDS].sort((a, b) => {
@@ -61,10 +61,10 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
             const c = companyById(r.companyId)!;
             return (
               <tr class="rowline hover:bg-paper2">
-                <td class="px-3 py-3 font-mono text-[12px] text-mut">{r.date}</td>
+                <td class="px-3 py-3 font-mono text-[12px] text-mut">{r.date || '—'}</td>
                 <td class="px-3 py-3"><a class="font-medium hover:text-green" href={`/startups/${c.id}`}>{c.name}</a></td>
                 <td class="px-3 py-3">{r.round}</td>
-                <td class="px-3 py-3 statnum">{fmtUsdM(r.amount)}</td>
+                <td class="px-3 py-3 statnum">{fmtAmount(r.amount)}</td>
                 <td class="px-3 py-3">{r.lead}</td>
                 <td class="px-3 py-3 font-mono text-[11px] text-mut">{r.source}</td>
                 <td class="px-3 py-3"><StatusDot status={r.status} /></td>
@@ -110,7 +110,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
     a.download = 'startups-co-ke-funding-database.csv';
     a.click();
     URL.revokeObjectURL(a.href);
-    const toast = (window as unknown as { sckToast: (t: { title: string; body?: string }) => void }).sckToast;
+    const toast = window.sckToast;
     toast({ title: 'Export ready', body: 'startups-co-ke-funding-database.csv downloaded.' });
   });
 </script>

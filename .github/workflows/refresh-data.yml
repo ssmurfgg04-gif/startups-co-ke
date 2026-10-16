@@ -1,0 +1,58 @@
+# Daily jobs-board refresh — the "piggyback" automation.
+#
+# The jobs page pulls from employers' own ATS boards (Lever / Greenhouse /
+# Workable / BambooHR / Ashby) at build time. This workflow keeps that feed
+# fresh WITHOUT anyone pressing a button:
+#
+#   1. Daily at 06:00 EAT (03:00 UTC): fetch_jobs.mjs re-pulls every board,
+#      link-checks every application URL and drops confirmed-dead listings.
+#   2. If the snapshot changed, it commits + pushes it.
+#   3. The push triggers Netlify's auto-deploy → the live site rebuilds.
+#
+# No secrets needed: uses the built-in GITHUB_TOKEN with contents:write.
+# Also runs on demand (workflow_dispatch) and covers trending-keyword refresh.
+
+name: Daily data refresh
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # 06:00 EAT daily
+  workflow_dispatch:
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install (runtime deps only)
+        run: npm install --no-audit --no-fund
+
+      - name: Refresh live jobs snapshot (link-checks included)
+        run: node scripts/fetch_jobs.mjs
+
+      - name: Refresh Google Trends snapshot (best effort)
+        run: node scripts/refresh_trends.py || echo "trends refresh skipped"
+
+      - name: Commit if changed
+        run: |
+          git config user.name "sck-data-bot"
+          git config user.email "bot@startups.co.ke"
+          git add src/data/jobs.live.json src/data/ research/ || true
+          if git diff --cached --quiet; then
+            echo "No data changes — nothing to commit."
+          else
+            git commit -m "data: daily jobs board refresh $(date -u +%F)"
+            git push
+          fi

@@ -165,8 +165,12 @@ const bands = SALARY_BANDS;
                 </span>
               </div>
             ))}
-            <p class="mono-label mt-3">{liveSources.length} employer boards checked at build · Kenya-relevant rows kept, everything else left out. Boards re-pull on every deploy.</p>
+            <p class="mono-label mt-3">{liveSources.length} employer boards checked at build · Kenya-relevant rows kept, everything else left out{LIVE.linkCheck && LIVE.linkCheck.dropped > 0 ? ` · ${LIVE.linkCheck.dropped} dead link${LIVE.linkCheck.dropped === 1 ? '' : 's'} auto-dropped on the last pull` : ''}. Boards re-pull on every deploy — daily via GitHub Actions.</p>
           </div>
+        </div>
+
+        <div class="border border-line bg-paper2 px-4 py-3">
+          <p class="text-[12.5px] leading-relaxed text-ink2">Coverage check: StartupJobs Kenya tracked <span class="statnum">54</span> startup roles nationwide (Oct 2026). We're smaller and honest about it — but every row here is sourced from the employer's own board, link-checked, and never scraped from a middleman.</p>
         </div>
 
         <div class="railbox">

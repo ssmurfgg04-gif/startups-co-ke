@@ -229,7 +229,7 @@
     transform: rotate(0deg);
   }
   dialog::backdrop {
-    background: rgb(20 19 14 / 0.62);
+    background: rgb(20 19 14 / 0.45);
   }
   .dialog-card {
     @apply m-auto w-[min(560px,92vw)] border-2 border-ink bg-paper p-0 text-ink;

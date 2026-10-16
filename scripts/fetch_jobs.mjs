@@ -166,6 +166,42 @@ const fetchers = {
   },
 };
 
+/** Link-check every apply URL; drop listings that are CONFIRMED dead (404/410).
+ *  Ambiguous failures (timeouts, 403 bot-walls, 5xx) keep the listing — a bot
+ *  check blocking our build IP must not silently empty the board. This is what
+ *  retired the SunCulture careers link and an expired Apollo listing (audit). */
+async function checkLinks(jobs) {
+  const CHECK_CONCURRENCY = 6;
+  const queue = [...jobs];
+  const dead = new Set();
+  let ambiguous = 0;
+  const worker = async () => {
+    while (queue.length) {
+      const job = queue.shift();
+      const check = async (method, extraHeaders) => {
+        const res = await fetch(job.applyUrl, {
+          method,
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; startups.co.ke link check)', ...extraHeaders },
+          redirect: 'follow',
+          signal: AbortSignal.timeout(10000),
+        });
+        try { if (method === 'GET') res.body?.cancel(); } catch {}
+        return res.status;
+      };
+      try {
+        let status = await check('HEAD', {});
+        if (status === 405 || status === 403 || status >= 500) status = await check('GET', { Range: 'bytes=0-512' });
+        if (status === 404 || status === 410) dead.add(job.id);
+      } catch {
+        ambiguous++;
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: CHECK_CONCURRENCY }, worker));
+  const kept = jobs.filter((j) => !dead.has(j.id));
+  return { kept, checked: jobs.length, dropped: jobs.length - kept.length, ambiguous };
+}
+
 async function main() {
   const sources = [];
   const jobs = [];
@@ -244,14 +280,19 @@ async function main() {
     return;
   }
 
+  // Link-check: retire listings whose application URL is confirmed dead.
+  const lc = await checkLinks(jobs);
+  if (lc.dropped > 0) console.log(`✂ link check: dropped ${lc.dropped} dead listing(s) of ${lc.checked}${lc.ambiguous ? ` (${lc.ambiguous} ambiguous, kept)` : ''}`);
+
   const out = {
     fetchedAt: NOW.toISOString().slice(0, 10),
-    note: 'Pulled from employers\u2019 own ATS boards. No salaries are invented for live rows.',
+    note: 'Pulled from employers\u2019 own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.',
+    linkCheck: { checked: lc.checked, dropped: lc.dropped, ambiguous: lc.ambiguous },
     sources,
-    jobs,
+    jobs: lc.kept,
   };
   writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
-  console.log(`→ wrote ${jobs.length} live jobs from ${totalOk}/${sources.length} sources to src/data/jobs.live.json`);
+  console.log(`→ wrote ${lc.kept.length} live jobs from ${totalOk}/${sources.length} sources to src/data/jobs.live.json`);
 }
 
 main().catch((e) => {

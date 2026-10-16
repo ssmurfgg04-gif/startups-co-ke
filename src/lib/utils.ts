@@ -54,12 +54,27 @@ export function sparklinePoints(id: string, weeks = 12, w = 120, h = 36, drift =
 }
 
 export function relDays(days: number): string {
+  if (!Number.isFinite(days)) return 'Date unavailable';
   if (days <= 0) return 'Today';
   if (days === 1) return '1 day ago';
   if (days < 7) return `${days} days ago`;
   if (days < 14) return '1 week ago';
   if (days < 31) return `${Math.floor(days / 7)} weeks ago`;
   return `${Math.floor(days / 30)} mo ago`;
+}
+
+/** Feed money: an unknown amount renders "Undisclosed" — never $0K (audit fix). */
+export function fmtAmount(m: number | null | undefined): string {
+  if (m == null || !Number.isFinite(m) || m <= 0) return 'Undisclosed';
+  return fmtUsdM(m);
+}
+
+/** Safe relative date for feed rows — blank/unparseable dates render honestly. */
+export function relDate(date: string | null | undefined): string {
+  if (!date || !date.trim()) return 'Date unavailable';
+  const t = Date.parse(date);
+  if (Number.isNaN(t)) return 'Date unavailable';
+  return relDays(Math.max(0, Math.round((Date.now() - t) / 86400000)));
 }
 
 export function pct(n: number, total: number): number {

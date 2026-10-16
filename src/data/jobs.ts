@@ -168,6 +168,7 @@ import { companyById } from './companies';
 export const LIVE = liveRaw as {
   fetchedAt: string;
   note: string;
+  linkCheck?: { checked: number; dropped: number; ambiguous?: number };
   sources: { id: string; company: string; board: string; count: number; kept: number; ok: boolean; error?: string; note?: string }[];
   jobs: LiveJob[];
 };

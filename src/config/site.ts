@@ -24,13 +24,30 @@ export const SITE = {
     whatsapp: 'https://whatsapp.com/channel/startupscoke',
   },
   nav: [
-    { label: 'Startups', href: '/startups' },
-    { label: 'Investors', href: '/investors' },
-    { label: 'Funding', href: '/funding' },
-    { label: 'Hackathons', href: '/hackathons' },
-    { label: 'Jobs', href: '/jobs' },
-    { label: 'News', href: '/news' },
-    { label: 'Research', href: '/research' },
+    {
+      label: 'Discover', href: '/startups',
+      children: [
+        { label: 'Company index', href: '/startups' },
+        { label: 'Investor directory', href: '/investors' },
+      ],
+    },
+    {
+      label: 'Capital', href: '/funding',
+      children: [
+        { label: 'Funding database', href: '/funding' },
+        { label: 'Investor directory', href: '/investors' },
+      ],
+    },
+    { label: 'Careers', href: '/jobs' },
+    { label: 'Events', href: '/hackathons' },
+    {
+      label: 'Insights', href: '/news',
+      children: [
+        { label: 'The Wire (news)', href: '/news' },
+        { label: 'Research library', href: '/research' },
+        { label: 'Methodology', href: '/methodology' },
+      ],
+    },
   ],
   footer: {
     platform: [
@@ -43,11 +60,13 @@ export const SITE = {
     intelligence: [
       { label: 'The Wire (news)', href: '/news' },
       { label: 'Research library', href: '/research' },
-      { label: 'Methodology & statuses', modal: 'methodology' },
+      { label: 'Methodology & statuses', href: '/methodology' },
       { label: 'Ecosystem brief', modal: 'newsletter' },
     ],
     company: [
-      { label: 'About & methodology', modal: 'about' },
+      { label: 'About', href: '/about' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Methodology', href: '/methodology' },
       { label: 'Privacy policy', href: '/privacy' },
       { label: 'Post a job', modal: 'postjob' },
       { label: 'Advertise & sponsor', modal: 'sponsor' },

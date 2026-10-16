@@ -53,19 +53,36 @@ Copy `.env.example` → `.env`:
 ```
 PUBLIC_SUPABASE_URL=...
 PUBLIC_SUPABASE_ANON_KEY=...
+# review-queue email notifications (server-side only — see below)
+RESEND_API_KEY=re_...
+NOTIFY_EMAIL=jackblessed191@gmail.com
 # optional privacy-friendly analytics (loads only after cookie consent)
 PUBLIC_ANALYTICS_DOMAIN=startups.co.ke
 ```
+
+**Resend / review-queue emails.** Every form (submit startup, post a job, claim, sponsor, …) writes into the Supabase `submissions` table and then pings `POST /.netlify/functions/notify`, which emails the desk a digest via the Resend API. Set in **Netlify UI → Site configuration → Environment variables** (server-side only — the key never reaches the browser bundle):
+
+- `RESEND_API_KEY` — required to actually send; without it the function no-ops (202) so forms never break.
+- `NOTIFY_EMAIL` — recipient. Default `jackblessed191@gmail.com` (the Resend account owner — reachable today via Resend's test sender).
+- `RESEND_FROM` — once `startups.co.ke` is verified at resend.com/domains, set to `startups.co.ke <notices@startups.co.ke>` and switch `NOTIFY_EMAIL` to `jack@startups.co.ke`.
+
+Local check: `node scripts/test_notify.mjs --live` (prints the exact email body, then really calls Resend).
 
 ## Supabase
 
 Project ref: `eezqpsbhmnhuhnmiwnsz` (region eu-west-2). Schema in `supabase/migrations/0001_init.sql` + `tools/schema.sql`:
 
-- `submissions` — every user-submitted flow (startup, claim, job, event, intro, issue, trial, buy, sponsor, register). Public insert, owner-only read (RLS).
+- `submissions` — every user-submitted flow (startup, claim, job, event, intro, issue, trial, buy, sponsor, register). Public insert, owner-only read (RLS). **This table is the review queue** — browse it in the Supabase dashboard → Table Editor → submissions; every entry also lands in the desk inbox via the Resend function above.
 - `newsletter_subscribers` — The Ecosystem Brief signups (unique email).
 - `logos` — public storage bucket for user-uploaded company logos.
 
 Auth: magic-link sign-in (Supabase Auth), site_url + redirect allow-list preconfigured.
+
+## Jobs automation (piggyback, zero manual upkeep)
+
+- **Build-time pull:** `scripts/fetch_jobs.mjs` reads employers' own ATS boards (Lever / Greenhouse / Workable / BambooHR / Ashby), keeps Kenya-relevant roles only, **link-checks every application URL** (confirmed 404/410 → dropped; ambiguous bot-wall → kept, never silently empties the board) and writes `src/data/jobs.live.json`.
+- **Daily refresh:** `.github/workflows/refresh-data.yml` runs 06:00 EAT daily — re-pulls boards, commits the changed snapshot with `GITHUB_TOKEN` (no secrets needed), and the push triggers Netlify's auto-deploy. Run on demand via *Run workflow*.
+- **Add an employer:** append one line to `SOURCES` in `scripts/fetch_jobs.mjs` (board slug + display name). That's it.
 
 ## Deployment
 
