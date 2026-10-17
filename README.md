@@ -63,8 +63,8 @@ PUBLIC_ANALYTICS_DOMAIN=startups.co.ke
 **Resend / review-queue emails.** Every form (submit startup, post a job, claim, sponsor, …) writes into the Supabase `submissions` table and then pings `POST /.netlify/functions/notify`, which emails the desk a digest via the Resend API. Set in **Netlify UI → Site configuration → Environment variables** (server-side only — the key never reaches the browser bundle):
 
 - `RESEND_API_KEY` — required to actually send; without it the function no-ops (202) so forms never break.
-- `NOTIFY_EMAIL` — recipient. Default `jackblessed191@gmail.com` (the Resend account owner — reachable today via Resend's test sender).
-- `RESEND_FROM` — once `startups.co.ke` is verified at resend.com/domains, set to `startups.co.ke <notices@startups.co.ke>` and switch `NOTIFY_EMAIL` to `contact@startups.co.ke`.
+- `NOTIFY_EMAIL` — recipient. Default `jackblessed191@gmail.com` (a proven inbox). To receive at `contact@startups.co.ke`, set this var — but only once that mailbox exists (Resend sends FROM your domain; it does not host mailboxes for it).
+- `RESEND_FROM` — default `startups.co.ke <notices@startups.co.ke>` (domain verified ✓ — delivers to any inbox, replies route to the submitter).
 
 Local check: `node scripts/test_notify.mjs --live` (prints the exact email body, then really calls Resend).
 
@@ -96,6 +96,8 @@ Two ways to go live:
 Then attach the domain: Netlify → *Domain settings* → add `startups.co.ke` apex + `www` (Netlify DNS or registrar CNAME → `<site>.netlify.app`; HTTPS via Let's Encrypt is automatic). The Astro `site` is already `https://startups.co.ke`, so sitemap/OG/canonicals are correct from the first deploy.
 
 CLI alternative: `npm run build && npx netlify-cli deploy --prod --dir=dist`
+
+**"Powered by Netlify" badge:** the floating badge on the live site is injected by Netlify's edge (it renders in an isolated frame, so site CSS can't remove it). Turn it off in the dashboard: **Project configuration → General → Powered by Netlify badge → off**. Takes effect on the next page request — no redeploy needed.
 
 ## Contact
 

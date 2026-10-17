@@ -12,13 +12,14 @@
  * variables — server-side only, never shipped to the browser):
  *   RESEND_API_KEY  required to send (re_…). Without it the function
  *                   responds 202 {skipped} so forms never break in previews.
- *   NOTIFY_EMAIL    optional. Who gets the alert. Default: jackblessed191@gmail.com (the Resend
- *                   account owner — test-sender deliverable today). Switch to a
- *                   notices@startups.co.ke sender after domain verification.
- *   RESEND_FROM     optional. Default "startups.co.ke <onboarding@resend.dev>".
- *                   Until startups.co.ke is verified in Resend, onboarding@
- *                   resend.dev only delivers to the Resend account owner's
- *                   own address — verify the domain for real delivery.
+ *   NOTIFY_EMAIL    optional. Who gets the alert. Default: jackblessed191@gmail.com (a proven
+ *                   inbox). To receive at contact@startups.co.ke instead, set this
+ *                   env var — but only once that mailbox actually exists (Resend
+ *                   sends FROM your domain; it does not HOST mailboxes for it).
+ *   RESEND_FROM     optional. Default "startups.co.ke <notices@startups.co.ke>".
+ *                   startups.co.ke is verified in Resend, so this sender is live
+ *                   and delivers to any inbox (previously onboarding@resend.dev
+ *                   could only reach the Resend account owner).
  */
 
 const json = (status, obj) =>
@@ -64,7 +65,7 @@ export default async (req) => {
   if (!kind || typeof payload !== 'object') return json(400, { ok: false, error: 'missing kind/payload' });
 
   const to = process.env.NOTIFY_EMAIL || 'jackblessed191@gmail.com';
-  const from = process.env.RESEND_FROM || 'startups.co.ke <onboarding@resend.dev>';
+  const from = process.env.RESEND_FROM || 'startups.co.ke <notices@startups.co.ke>';
   const label = KIND_LABELS[kind] || 'New submission';
   const subject = `[review queue] ${label}${email ? ` — ${email}` : ''}`;
   const text = [
@@ -76,6 +77,7 @@ export default async (req) => {
     '--',
     'Review it: Supabase dashboard → Table Editor → submissions (project eezqpsbhmnhuhnmiwnsz)',
     'This is an automated ping from startups.co.ke — the record is already saved.',
+    'Reply goes to the submitter\'s email when they gave one.',
   ].join('\n');
 
   try {
