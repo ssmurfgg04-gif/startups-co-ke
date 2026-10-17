@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-10-16",
+ "fetchedAt": "2026-10-17",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 21,
+  "checked": 25,
   "dropped": 2,
   "ambiguous": 0
  },
@@ -27,8 +27,8 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 125,
-   "kept": 12,
+   "count": 154,
+   "kept": 16,
    "ok": true
   },
   {
@@ -100,13 +100,37 @@
  ],
  "jobs": [
   {
+   "id": "moniepoint-engineering-manager",
+   "title": "Engineering Manager",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 1,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-engineering-manager",
+   "title": "Engineering Manager",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya + 4 more",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 1,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
    "id": "moniepoint-engineering-relations-partner",
    "title": "Engineering Relations Partner",
    "companyId": "moniepoint",
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 8,
+   "postedDays": 9,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "tags": []
@@ -118,7 +142,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 24,
+   "postedDays": 25,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "tags": []
@@ -130,7 +154,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 22,
+   "postedDays": 23,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "tags": []
@@ -142,7 +166,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 36,
+   "postedDays": 37,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
    "tags": []
@@ -154,8 +178,20 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 37,
+   "postedDays": 38,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4971812101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-head-of-engineering-rewards",
+   "title": "Head of Engineering, Rewards",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 1,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4974187101",
    "board": "Greenhouse",
    "tags": []
   },
@@ -166,7 +202,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 8,
+   "postedDays": 9,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
    "board": "Greenhouse",
    "tags": []
@@ -178,7 +214,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 37,
+   "postedDays": 38,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972195101",
    "board": "Greenhouse",
    "tags": []
@@ -190,7 +226,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Product",
-   "postedDays": 99,
+   "postedDays": 100,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923301101",
    "board": "Greenhouse",
    "tags": []
@@ -202,7 +238,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 29,
+   "postedDays": 30,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4330952101",
    "board": "Greenhouse",
    "tags": []
@@ -214,8 +250,20 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 17,
+   "postedDays": 18,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
+   "board": "Greenhouse",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-principal-mobile-engineer-pos-terminal-",
+   "title": "Principal Mobile Engineer (POS Terminal)",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 1,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5009081101",
    "board": "Greenhouse",
    "tags": []
   },
@@ -226,7 +274,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Design",
-   "postedDays": 1,
+   "postedDays": 2,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
    "tags": []
@@ -238,7 +286,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Operations",
-   "postedDays": 7,
+   "postedDays": 8,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
    "tags": []
