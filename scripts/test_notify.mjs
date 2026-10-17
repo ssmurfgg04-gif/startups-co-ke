@@ -59,8 +59,8 @@ const text = [
 ].join('\n');
 
 console.log('--- email preview ---');
-console.log(`To: ${env.NOTIFY_EMAIL || 'jack@startups.co.ke'}`);
-console.log(`From: ${env.RESEND_FROM || 'startups.co.ke <onboarding@resend.dev>'}`);
+console.log(`To: ${env.NOTIFY_EMAIL || 'jackblessed191@gmail.com'}`);
+console.log(`From: ${env.RESEND_FROM || 'startups.co.ke <notices@startups.co.ke>'}`);
 console.log(`Subject: ${subject}`);
 console.log(text);
 console.log('---------------------');
@@ -79,8 +79,8 @@ const res = await fetch('https://api.resend.com/emails', {
   method: 'POST',
   headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    from: env.RESEND_FROM || 'startups.co.ke <onboarding@resend.dev>',
-    to: [env.NOTIFY_EMAIL || 'jack@startups.co.ke'],
+    from: env.RESEND_FROM || 'startups.co.ke <notices@startups.co.ke>',
+    to: [env.NOTIFY_EMAIL || 'jackblessed191@gmail.com'],
     subject,
     text,
     reply_to: sample.email,
@@ -89,5 +89,5 @@ const res = await fetch('https://api.resend.com/emails', {
 const data = await res.json().catch(() => ({}));
 console.log(`Resend responded ${res.status}:`, JSON.stringify(data));
 if (res.status === 403) {
-  console.log('ℹ Expected until the sending domain is verified: onboarding@resend.dev can only deliver to the Resend account owner\u2019s own address. Verify startups.co.ke in the Resend dashboard (Domains → Add domain → add the DNS records), then set RESEND_FROM to notices@startups.co.ke.');
+  console.log('ℹ 403 from Resend — check the sending address against verified domains at resend.com/domains, and the recipient against your account\u2019s allowed list.');
 }

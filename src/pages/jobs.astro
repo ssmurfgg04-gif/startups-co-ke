@@ -14,6 +14,14 @@ const liveSources = LIVE.sources.filter((s) => s.ok);
 const liveCompanies = [...new Set(liveRows.map((j) => j.companyId))];
 const salaryMax = 500;
 const bands = SALARY_BANDS;
+
+/** Compact relative date for the mobile pay strip ('3d', '2w', '1mo') — full form lives on desktop. */
+function shortDays(pd: number): string {
+  if (pd <= 0) return 'today';
+  if (pd < 14) return `${pd}d`;
+  if (pd < 60) return `${Math.round(pd / 7)}w`;
+  return `${Math.round(pd / 30)}mo`;
+}
 ---
 <Base
   title="Tech jobs Nairobi — startup jobs in Kenya"
@@ -78,11 +86,14 @@ const bands = SALARY_BANDS;
             <button class={`job-cat border px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[0.1em] ${i === 0 ? 'border-ink bg-ink text-paper' : 'border-line text-mut hover:text-ink'}`} data-cat={cat} role="tab" aria-selected={i === 0 ? 'true' : 'false'}>{cat}</button>
           ))}
           <span id="job-count" class="mono-label ml-1 self-center">{jobs.length} roles</span>
-          <label class="ml-auto flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
+          <label class="ml-auto flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut" title="Show only roles that publish a salary or band">
             Pay disclosed <input id="pay-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
           </label>
           <label class="flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
             Remote only <input id="remote-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
+          </label>
+          <label class="flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut" title="Only employers cross-checked against 2+ public sources">
+            Verified only <input id="verified-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
           </label>
         </div>
 
@@ -90,11 +101,16 @@ const bands = SALARY_BANDS;
           {jobs.map((j) => {
             const c = employerById(j.companyId)!;
             const live = isLive(j);
+            const when = live ? (j.postedDays !== null ? relDays(j.postedDays) : `via ${j.board}`) : relDays(j.postedDays);
+            // Compact strip date for 375px — full form stays on the desktop column (and in title=).
+            const shortWhen = live && j.postedDays === null ? `via ${j.board}` : shortDays(live ? j.postedDays ?? 0 : j.postedDays);
+            // Standardized pay line (ovrion-style): every row states money in the same format, same slot.
+            const payBand = live ? null : j.salaryMin != null && j.salaryMax != null ? `KSh ${j.salaryMin}–${j.salaryMax}K` : j.salary;
             return (
-              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-pay={live ? '0' : '1'} data-loc={`${j.location}`.toLowerCase()} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
-                <div class="flex w-full cursor-pointer flex-wrap items-center gap-3 px-4 py-4 text-left hover:bg-paper2" data-expand role="button" tabindex="0" aria-expanded="false">
+              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-pay={live ? '0' : '1'} data-v={c.verified ? '1' : '0'} data-loc={`${j.location}`.toLowerCase()} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
+                <div class="grid w-full cursor-pointer grid-cols-[2.75rem_minmax(0,1fr)_auto] items-start gap-x-3 px-4 pb-3 pt-4 text-left hover:bg-paper2 md:grid-cols-[2.75rem_minmax(0,1fr)_9.5rem_5.5rem_auto_auto] md:items-center md:gap-y-0 md:pb-4" data-expand role="button" tabindex="0" aria-expanded="false">
                   <Monogram name={c.name} sector={c.sector} size="md" logo={c.logo ?? undefined} domain={c.domain ?? undefined} />
-                  <span class="min-w-0 flex-1">
+                  <span class="min-w-0">
                     <span class="flex flex-wrap items-center gap-2">
                       <span class="text-[15px] font-medium">{j.title}</span>
                       {live && <span class="chip chip-green font-semibold">● Live</span>}
@@ -104,22 +120,39 @@ const bands = SALARY_BANDS;
                     <span class="mono-label mt-0.5 block">
                       {!c.boardOnly && <a class="text-green hover:underline" href={`/startups/${c.id}`}>{c.name}</a>}
                       {c.boardOnly && <span class="text-ink2">{c.name} <span class="text-mut">· board-only employer</span></span>}
-                      {' '}· {j.location} · {j.mode}
-                      {c.verified ? <span class="ml-1.5 text-green">✓ Verified employer</span> : ''}
+                      {' '}· {j.location}
+                      {j.mode && j.mode !== '—' && ` · ${j.mode}`}
+                      {c.verified ? <span class="ml-1.5 font-semibold text-green">✓ Verified employer</span> : ''}
                     </span>
                   </span>
-                  <span class="text-right">
+                  <span class="hidden text-right md:block">
                     {live ? (
-                      <span class="block font-mono text-[12px] italic text-mut" title="Pay not disclosed — see market bands in the rail">pay: n/d</span>
+                      <span class="block whitespace-nowrap font-mono text-[12px] italic text-mut" title="Pay not disclosed — see market bands in the rail">pay: n/d</span>
                     ) : (
-                      <span class="statnum block text-[13px]">{j.salary}</span>
+                      <span class="statnum block whitespace-nowrap text-[13px]">{payBand}</span>
                     )}
-                    <span class="mono-label">{live ? (j.postedDays !== null ? relDays(j.postedDays) : `via ${j.board}`) : relDays(j.postedDays)}</span>
+                    <span class="mono-label block whitespace-nowrap">{live ? 'not disclosed' : 'market band · mo'}</span>
                   </span>
-                  <button class="bookmark-btn btn btn-ghost h-9 w-9 !min-h-0 !px-0" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
+                  <span class="hidden text-right md:block"><span class="mono-label">{when}</span></span>
+                  <button class="bookmark-btn btn btn-ghost hidden h-9 w-9 !min-h-0 !px-0 md:inline-flex" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4-6 4Z"></path></svg>
                   </button>
-                  <span class="jcaret text-ink transition-transform duration-200" aria-hidden="true">▾</span>
+                  <span class="jcaret mt-0.5 text-ink transition-transform duration-200 md:mt-0" aria-hidden="true">▾</span>
+                  <span class="col-span-full mt-1.5 flex items-center justify-between gap-2 border-t border-dashed border-line2 pt-2 md:hidden">
+                    <span class="flex min-w-0 items-baseline gap-1.5">
+                      {live ? (
+                        <span class="whitespace-nowrap font-mono text-[12.5px] italic text-mut" title="Pay not disclosed — see market bands in the rail">pay: n/d</span>
+                      ) : (
+                        <span class="statnum whitespace-nowrap text-[13.5px]">{payBand}<span class="ml-1 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-mut">/ mo · band</span></span>
+                      )}
+                    </span>
+                    <span class="flex shrink-0 items-center gap-1.5">
+                      <span class="mono-label whitespace-nowrap" title={when}>{shortWhen}</span>
+                      <button class="bookmark-btn btn btn-ghost -my-1.5 h-11 w-11 !min-h-0 !px-0 md:hidden" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-4-6 4Z"></path></svg>
+                      </button>
+                    </span>
+                  </span>
                 </div>
                 <div class="job-detail grid transition-[grid-template-rows] duration-300" style="grid-template-rows:0fr">
                   <div class="overflow-hidden">
@@ -169,8 +202,17 @@ const bands = SALARY_BANDS;
           </div>
         </div>
 
-        <div class="border border-line bg-paper2 px-4 py-3">
-          <p class="text-[12.5px] leading-relaxed text-ink2">Coverage check: StartupJobs Kenya tracked <span class="statnum">54</span> startup roles nationwide (Oct 2026). We're smaller and honest about it — but every row here is sourced from the employer's own board, link-checked, and never scraped from a middleman.</p>
+        <div class="railbox">
+          <div class="railbox-head"><span>How listings are vetted</span><Chip kind="confirmed" /></div>
+          <div class="px-4 py-3">
+            <ul class="space-y-2 text-[13px] leading-snug text-ink2">
+              <li><span class="mr-1.5 font-semibold text-green">✓</span>Every apply link is re-checked on each daily pull — dead ones drop automatically.</li>
+              <li><span class="mr-1.5 font-semibold text-green">✓</span>Live roles come from employers' own hiring boards. Never a middleman, never scraped listings.</li>
+              <li><span class="mr-1.5 font-semibold text-green">✓</span>Applying is free, always. Report anything that asks you for a fee.</li>
+              <li><span class="mr-1.5 font-semibold text-green">✓</span>Pay bands come from published surveys, labelled as bands — never invented offers.</li>
+            </ul>
+            <p class="mono-label mt-3">Benchmark: StartupJobs Kenya tracked 54 startup roles nationwide (Oct 2026) — we're smaller, and say so. <a class="text-green hover:underline" href="/methodology">Methodology →</a></p>
+          </div>
         </div>
 
         <div class="railbox">
@@ -223,7 +265,7 @@ const bands = SALARY_BANDS;
 
 <script>
   // Job filters
-  const state = { cat: 'All', remote: false, pay: false, q: '', loc: '' };
+  const state = { cat: 'All', remote: false, pay: false, v: false, q: '', loc: '' };
   const rows = document.querySelectorAll<HTMLElement>('.job-row');
   function apply() {
     let n = 0;
@@ -232,6 +274,7 @@ const bands = SALARY_BANDS;
         (state.cat === 'All' || r.dataset.cat === state.cat) &&
         (!state.remote || r.dataset.mode === 'Remote') &&
         (!state.pay || r.dataset.pay === '1') &&
+        (!state.v || r.dataset.v === '1') &&
         (!state.loc || (state.loc === 'remote' ? /remote/i.test(r.dataset.mode ?? '') : (r.dataset.loc || '').includes(state.loc))) &&
         (!state.q || r.dataset.title!.includes(state.q));
       r.classList.toggle('hidden', !ok);
@@ -255,6 +298,7 @@ const bands = SALARY_BANDS;
   );
   document.getElementById('remote-only')?.addEventListener('change', (e) => { state.remote = (e.target as HTMLInputElement).checked; apply(); });
   document.getElementById('pay-only')?.addEventListener('change', (e) => { state.pay = (e.target as HTMLInputElement).checked; apply(); });
+  document.getElementById('verified-only')?.addEventListener('change', (e) => { state.v = (e.target as HTMLInputElement).checked; apply(); });
   document.getElementById('job-loc')?.addEventListener('change', (e) => { state.loc = (e.target as HTMLSelectElement).value; apply(); });
   document.getElementById('job-search-btn')?.addEventListener('click', () => {
     const q = (document.querySelector('input[name="q"]') as HTMLInputElement).value.trim().toLowerCase();
