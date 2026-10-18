@@ -70,8 +70,8 @@
   force = true
 
 [[redirects]]
-  from = "/startups/community/:slug"
-  to = "/.netlify/functions/startup-page?slug=:slug"
+  from = "/startups/community/*"
+  to = "/.netlify/functions/startup-page?slug=:splat"
   status = 200
   force = true
 
