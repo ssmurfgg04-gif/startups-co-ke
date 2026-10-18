@@ -64,10 +64,10 @@ if (outcome === 'published') {
   ok(`UI submit published instantly → ${liveUrl}`, /^https:\/\/startups\.co\.ke\/startups\/community\/[a-z0-9-]+$/.test(liveUrl));
   // visit the founder's live page as a stranger would — poll like the UI does
   // (blobs replicate cross-region within seconds)
-  let page2: import('playwright').Page | null = null;
+  let page2 = null;
   const t0 = Date.now();
   while (Date.now() - t0 < 60000) {
-    const probe = await p.request.get(liveUrl);
+    const probe = await p.request.get(`${liveUrl}?cb=${Date.now()}`); // cache-bust: 404s used to be edge-cached
     if (probe.ok()) { page2 = await b.newPage(); await page2.goto(liveUrl, { waitUntil: 'networkidle', timeout: 60000 }); break; }
     await p.waitForTimeout(3000);
   }

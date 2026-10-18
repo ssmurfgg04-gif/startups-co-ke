@@ -31,7 +31,9 @@ export default async (req) => {
   if (!slug) {
     return new Response(notFoundPage(''), {
       status: 404,
-      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0, s-maxage=60', 'X-Robots-Tag': 'noindex' },
+      // 404s are NEVER CDN-cached — the "not found" state includes
+      // just-published listings still replicating across regions.
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' },
     });
   }
 
@@ -50,7 +52,7 @@ export default async (req) => {
   if (!rec || rec.status !== 'published') {
     return new Response(notFoundPage(slug), {
       status: 404,
-      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=0, s-maxage=60', 'X-Robots-Tag': 'noindex' },
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' },
     });
   }
 
