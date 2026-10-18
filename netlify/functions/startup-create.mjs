@@ -44,7 +44,9 @@ export default async (req) => {
     const user = await verifyUser(req);
     const store = getStore('community_startups');
     const ip = clientIp(req);
-    const cap = user ? 10 : 2;
+    // 5/day for anon (shared office NATs are real), 10/day with a verified
+    // magic-link session. Both are spam-tight thanks to the honeypot + caps.
+    const cap = user ? 10 : 5;
 
     const allowed = await checkRateLimit(store, ip, cap);
     if (!allowed) {

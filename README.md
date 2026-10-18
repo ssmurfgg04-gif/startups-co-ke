@@ -110,7 +110,7 @@ CLI alternative: `npm run build && npx netlify-cli deploy --prod --dir=dist`
   counters `__rl:<ip>:<date>`). Zero schema migration; nothing to configure — the
   runtime injects credentials automatically.
 - **Spam controls:** hidden honeypot (`company_url`), strict field caps, https-only
-  website links, per-IP daily cap (2 anon / 10 with a Supabase magic-link session,
+  website links, per-IP daily cap (5 anon / 10 with a Supabase magic-link session,
   verified server-side via `/auth/v1/user` — no service key needed), `rel="nofollow ugc"`
   on founder links, Founder-submitted badge until editorially verified.
 - **Removing a bad listing** (dashboard → Netlify UI has no Blobs browser): run
