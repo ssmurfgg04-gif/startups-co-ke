@@ -28,7 +28,16 @@ export default async (req) => {
   }
 
   const store = getStore('community_startups');
-  const rec = await store.get(listingKey(slug), { type: 'json' }).catch(() => null);
+  let rec = await store.get(listingKey(slug), { type: 'json' }).catch(() => null);
+
+  // Blobs are eventually consistent ACROSS regions: a just-written listing can
+  // be invisible to a direct get() from another edge for a short while, while
+  // list() replication sees it. Fall back to a prefix scan (tiny N) before 404.
+  if (!rec) {
+    const scan = await store.list({ prefix: listingKey(slug) }).catch(() => null);
+    const hit = scan?.blobs?.find((b) => b.key === listingKey(slug))?.key;
+    if (hit) rec = await store.get(hit, { type: 'json' }).catch(() => null);
+  }
 
   if (!rec || rec.status !== 'published') {
     return new Response(notFoundPage(slug), {
