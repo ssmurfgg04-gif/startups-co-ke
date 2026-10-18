@@ -1,10 +1,12 @@
 /**
  * NETLIFY FUNCTION — GET /.netlify/functions/startup-page?slug=<slug>
  * Server-renders the public profile page for a founder-listed startup.
- * Rewritten from /startups/community/:slug via netlify.toml (status 200),
- * so the URL bar and canonical both show the clean path.
  *
- * ?format=md → text/markdown (the TrustMRR "AI-readable Markdown" pattern).
+ * CLEAN URLs: this function CLAIMS its own route via `config.path` (Functions
+ * API v2) — /startups/community/:slug invokes it directly, so the slug is read
+ * from the request pathname. (Netlify rewrites do NOT forward placeholders in
+ * the to-query — confirmed against docs/community reports — so redirects are
+ * not used for routing here.) `?format=md` still works as a plain query.
  *
  * Caching: CDN-cached 5 min + stale-while-revalidate 1 day — new listings
  * appear within 5 minutes, founder edits propagate quickly, and crawler
@@ -13,11 +15,17 @@
 import { getStore } from '@netlify/blobs';
 import { json, listingKey, notFoundPage, renderMarkdown, renderPage } from './_lib.mjs';
 
+export const config = { path: "/startups/community/:slug" };
+
 const HTML_CACHE = 'public, max-age=0, s-maxage=300, stale-while-revalidate=86400';
 
 export default async (req) => {
   const url = new URL(req.url);
-  const slug = String(url.searchParams.get('slug') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 64);
+  // slug from the claimed clean path (…/community/<slug>), with ?slug= as a
+  // fallback for direct /.netlify/functions calls.
+  const lastSeg = url.pathname.split('/').filter(Boolean).pop() || '';
+  const slug = String(url.searchParams.get('slug') || lastSeg)
+    .toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 64);
   const wantsMd = url.searchParams.get('format') === 'md';
 
   if (!slug) {

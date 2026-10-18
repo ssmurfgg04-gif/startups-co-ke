@@ -7,6 +7,9 @@
 import { getStore } from '@netlify/blobs';
 import { json, listingKey } from './_lib.mjs';
 
+// Claim the clean feed URL directly (Functions API v2 path management).
+export const config = { path: "/startups/community/list.json" };
+
 export default async () => {
   try {
     const store = getStore('community_startups');

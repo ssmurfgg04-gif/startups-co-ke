@@ -56,24 +56,17 @@
 
 # ---------------------------------------------------------------------------
 # Founder-listed startups (community directory) — instant publish, no approval.
-# Clean URLs are server-rendered by Netlify Functions (see netlify/functions/):
-#   /startups/community/:slug  → startup-page  (HTML or ?format=md)
+# Clean URLs are served by Netlify Functions v2 `config.path` route claims
+# (see netlify/functions/startup-page.mjs + startup-list.mjs):
+#   /startups/community/:slug     → startup-page (HTML or ?format=md)
 #   /startups/community/list.json → startup-list (public JSON feed)
+# NOTE: netlify.toml redirects are intentionally NOT used — Netlify rewrites
+# do not forward placeholders from the path into the target query string, and
+# the functions claim their routes natively instead.
 # Listings live in Netlify Blobs (store community_startups). The functions set
 # their own CDN cache headers (s-maxage=300 + stale-while-revalidate), so
 # crawler bursts never reach storage.
 # ---------------------------------------------------------------------------
-[[redirects]]
-  from = "/startups/community/list.json"
-  to = "/.netlify/functions/startup-list"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/startups/community/*"
-  to = "/.netlify/functions/startup-page?slug=:splat"
-  status = 200
-  force = true
 
 # ---------------------------------------------------------------------------
 # Security headers (site-wide)
