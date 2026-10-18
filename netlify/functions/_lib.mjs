@@ -331,7 +331,7 @@ export function notFoundPage(slug) {
 <div class="wrap">
   <p class="mono" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase">404 · No founder listing at this address</p>
   <h1>Nothing listed here${slug ? ` for “${esc(slug)}”` : ''}.</h1>
-  <p>The listing may have been removed, or the address is mistyped. Browsing the verified company index is a good place to land instead.</p>
+  <p>The listing may have been removed, the address mistyped — or it was <em>just</em> published and is still propagating across our network (takes a few seconds; retry shortly). Browsing the verified company index is a good place to land instead.</p>
   <a class="btn" href="https://startups.co.ke/startups">Browse the company index</a>
 </div>
 </body>

@@ -417,6 +417,28 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     submitForm?.querySelector('#publish-success')?.classList.remove('hidden');
     submitForm?.querySelector('[data-publish-actions]')?.classList.add('hidden');
     submitForm?.querySelector('[data-toggle-mode]')?.closest('p')?.classList.add('hidden');
+    // Blobs replicate across regions within seconds — poll the live page until
+    // it answers 200, then arm the “Open my profile” button. Honest UX: the
+    // button says “Going live…” until the page REALLY answers.
+    const btn = submitForm?.querySelector<HTMLAnchorElement>('[data-open-live]');
+    if (btn) {
+      btn.textContent = 'Going live…';
+      btn.setAttribute('aria-disabled', 'true');
+      const started = Date.now();
+      const poll = async (): Promise<void> => {
+        try {
+          const r = await fetch(url, { method: 'HEAD' });
+          if (r.ok) {
+            btn.textContent = 'Open my profile →';
+            btn.removeAttribute('aria-disabled');
+            return;
+          }
+        } catch { /* keep polling */ }
+        if (Date.now() - started < 45000) setTimeout(poll, 2000);
+        else btn.textContent = 'Open my profile (retry) →';
+      };
+      setTimeout(poll, 1500);
+    }
   }
   submitForm?.querySelector('[data-copy-live]')?.addEventListener('click', async (ev) => {
     const btn = ev.currentTarget as HTMLButtonElement | null;
