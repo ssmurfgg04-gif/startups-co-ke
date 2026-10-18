@@ -10,7 +10,7 @@ const updated = '2026-10-15';
     <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-mut">Last updated {updated} · startups.co.ke · {SITE.contact.city}</p>
 
     <div class="prose-sck mt-8">
-      <p><strong>1. Who we are.</strong> startups.co.ke is an ecosystem and business-intelligence platform for Kenya's startup economy, operated from {SITE.contact.address}. You can reach us at <a class="text-amber underline" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a> or {SITE.contact.phoneDisplay}. Data on the platform is compiled from public sources with visible statuses and sources; this policy is straight about how the site itself handles your data.</p>
+      <p><strong>1. Who we are.</strong> startups.co.ke is an ecosystem and business-intelligence platform for Kenya's startup economy, operated from {SITE.contact.address}. You can reach us at <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> or {SITE.contact.phoneDisplay}. Data on the platform is compiled from public sources with visible statuses and sources; this policy is straight about how the site itself handles your data.</p>
 
       <p><strong>2. What we collect.</strong> When you sign in, we use Supabase Auth with one-time "magic link" emails: we store your email address, a user identifier and session metadata. When you submit a startup, claim a profile, post a job, list an event, request an introduction or report a data issue, we store the details of that submission (including any optional logo you upload) in our submissions queue. When you subscribe to The Ecosystem Brief, we store your email for the newsletter only.</p>
 
@@ -22,13 +22,13 @@ const updated = '2026-10-15';
 
       <p><strong>6. How long we keep it.</strong> Account and submission records are kept while your profile or request is active and for 24 months after our last interaction, then deleted or anonymised. Newsletter emails are kept until you unsubscribe. Analytics aggregates contain no personal identifiers.</p>
 
-      <p><strong>7. Your rights.</strong> Under the Kenya Data Protection Act (2019) and GDPR where applicable, you can request access, correction, deletion, portability of your data, or object to processing — email <a class="text-amber underline" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a> and we will respond within 30 days. You can also unsubscribe from any email with one click, and you can object to a listing's existence via the "Report data issue" action on any profile.</p>
+      <p><strong>7. Your rights.</strong> Under the Kenya Data Protection Act (2019) and GDPR where applicable, you can request access, correction, deletion, portability of your data, or object to processing — email <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> and we will respond within 30 days. You can also unsubscribe from any email with one click, and you can object to a listing's existence via the "Report data issue" action on any profile.</p>
 
       <p><strong>8. Security.</strong> Data is stored with Supabase (PostgreSQL with row-level security, TLS in transit). The submissions table is write-only for the public: anonymous visitors may insert, but only authenticated owners can read their own rows. Uploaded logos live in a public storage bucket by design — do not upload images you would not publish.</p>
 
       <p><strong>9. Children &amp; third-party links.</strong> The platform is not directed at persons under 18. External links (news sources, investor sites) have their own policies we do not control.</p>
 
-      <p><strong>10. Changes.</strong> We will post any material change to this policy on this page with a new "last updated" date. Questions? <a class="text-amber underline" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>.</p>
+      <p><strong>10. Changes.</strong> We will post any material change to this policy on this page with a new "last updated" date. Questions? <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a>.</p>
     </div>
   </article>
 </Base>

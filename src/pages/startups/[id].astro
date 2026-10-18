@@ -82,6 +82,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
       <div class="flex shrink-0 gap-2">
         <button class="btn" data-modal="intro">Request introduction</button>
         <button class="btn btn-ghost" data-modal="claim">Claim profile</button>
+        <a class="btn btn-ghost" href={`/startups/${c.id}.md`} title="LLM-readable markdown version of this profile">AI-readable Markdown</a>
       </div>
     </div>
 

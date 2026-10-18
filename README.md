@@ -26,6 +26,7 @@ Built on the "standing on shoulders of giants" principle: [Astro 5](https://astr
 | Data       | Typed TypeScript modules, real sourced entities | `src/data/*.ts`         |
 | Editorial  | Content collections (Markdown)       | `src/content/news/*.md`            |
 | Backend    | Supabase (auth + Postgres + storage) | `src/lib/supabase.ts`              |
+| Instant listings | Netlify Functions + Netlify Blobs | `netlify/functions/`, `/startups/community` |
 | SEO        | Sitemap, RSS, JSON-LD, OG images     | `src/components/Seo.astro`, etc.   |
 
 ## Commands
@@ -98,6 +99,41 @@ Then attach the domain: Netlify → *Domain settings* → add `startups.co.ke` a
 CLI alternative: `npm run build && npx netlify-cli deploy --prod --dir=dist`
 
 **"Powered by Netlify" badge:** the floating badge on the live site is injected by Netlify's edge (it renders in an isolated frame, so site CSS can't remove it). Turn it off in the dashboard: **Project configuration → General → Powered by Netlify badge → off**. Takes effect on the next page request — no redeploy needed.
+
+## Founder-listed startups (instant publish, no approval) — Session 7
+
+- **Flow:** founder opens *List your startup* → publishes → live immediately at
+  `/startups/community/<slug>` (server-rendered by `netlify/functions/startup-page.mjs`,
+  rewritten from the clean URL via `netlify.toml`). No review queue. Optional review
+  fallback still writes to the Supabase `submissions` table.
+- **Storage:** Netlify Blobs, store `community_startups` (keys `s:<slug>`; rate-limit
+  counters `__rl:<ip>:<date>`). Zero schema migration; nothing to configure — the
+  runtime injects credentials automatically.
+- **Spam controls:** hidden honeypot (`company_url`), strict field caps, https-only
+  website links, per-IP daily cap (2 anon / 10 with a Supabase magic-link session,
+  verified server-side via `/auth/v1/user` — no service key needed), `rel="nofollow ugc"`
+  on founder links, Founder-submitted badge until editorially verified.
+- **Removing a bad listing** (dashboard → Netlify UI has no Blobs browser): run
+  `NETLIFY_AUTH_TOKEN=<token> NETLIFY_SITE_ID=<site-id> node tools/remove_listing.mjs <slug>`
+  (see `tools/`), or purge via API. The `?format=md` + list function exclude any record
+  whose `status` is not `published`.
+- **Caching:** functions answer with `s-maxage=300, stale-while-revalidate=86400`;
+  static assets are immutable (`/_astro/*`, `/fonts/*`); HTML revalidates. Googlebot
+  crawls the edge, not your origin.
+
+## Performance & Cloudflare notes (Session 7)
+
+- **Fonts are self-hosted** in `public/fonts/` (Fraunces/Archivo/IBM Plex Mono, latin,
+  ~260 KB total) with 3 preloads in `Seo.astro` — the render-blocking third-party font
+  stylesheet is gone. Add new weights via `scripts/fetch_fonts.py`.
+- **Email addresses are base64-encoded** (`data-email` + `core.ts` decode) so Cloudflare
+  Email Obfuscation never finds an address and stops injecting its
+  `/cdn-cgi/l/email-decode` script. Keep the feature on in Cloudflare — it's now inert.
+  The literal address appears only inside JSON-LD `contactPoint` (inert data, not scrambled).
+- **SVG dash/pulse animations are hover-gated** and all animations respect
+  `prefers-reduced-motion` at the CSS level (no-JS included).
+- Verified: `scripts/unit_s7.mjs` (26 checks), `scripts/e2e_s7.mjs` (44 checks),
+  `scripts/e2e_s4.mjs` (32), `scripts/e2e_s6.mjs` (6).
 
 ## Contact
 

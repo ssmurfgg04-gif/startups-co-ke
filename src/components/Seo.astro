@@ -55,13 +55,13 @@ const fullTitle = title === SITE.title ? title : `${title} · startups.co.ke`;
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 
-<!-- Fonts: preconnect + swap -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-  rel="stylesheet"
-/>
+<!-- Fonts: self-hosted in /fonts/ (see global.css @font-face). Preloading the
+     three above-the-fold faces removes the render-blocking third-party font
+     stylesheet + its connection chain that delayed first paint by seconds on
+     mobile. font-display: swap covers the rest; italic faces load on use. -->
+<link rel="preload" href="/fonts/fraunces-100-900-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/archivo-100-900-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/plexmono-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
 <!-- hreflang (single locale for now, kept for future Swahili edition) -->
 <link rel="alternate" hreflang="en-ke" href={canonical} />

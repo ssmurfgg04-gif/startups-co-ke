@@ -7,7 +7,6 @@
 import { SITE } from '@/config/site';
 import { supabaseConfigured } from '@/lib/supabase';
 import { COUNTIES } from '@/data/counties';
-const email = SITE.contact.email;
 const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !== 'Nairobi').sort()];
 ---
 <!-- AUTH (magic link) -->
@@ -28,10 +27,10 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
 <!-- SUBMIT / CLAIM STARTUP (shared form) -->
 <dialog id="modal-submit" class="dialog-card" aria-labelledby="submit-title">
   <div class="flex items-center justify-between border-b border-ink px-5 py-3.5">
-    <p id="submit-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Submit your startup</p>
+    <p id="submit-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">List your startup — live instantly</p>
     <button class="btn btn-ghost h-8 w-8 border border-ink !px-0" data-close aria-label="Close">✕</button>
   </div>
-  <form class="max-h-[70vh] overflow-y-auto px-5 py-4" data-kind="startup">
+  <form class="max-h-[70vh] overflow-y-auto px-5 py-4" data-kind="startup" data-mode="instant" novalidate>
     <div class="grid gap-3 sm:grid-cols-2">
       <div><label class="mono-label block" for="su-name">Company name *</label><input id="su-name" name="name" required class="input mt-1" placeholder="Acme Robotics" /></div>
       <div><label class="mono-label block" for="su-email">Contact email *</label><input id="su-email" name="email" type="email" required class="input mt-1" placeholder="founder@acme.co.ke" /></div>
@@ -42,12 +41,14 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
         </select>
       </div>
       <div><label class="mono-label block" for="su-sector">Sector</label>
-        <select id="su-sector" name="sector" class="input input-mono mt-1"><option>Fintech</option><option>Commerce</option><option>Logistics</option><option>Agritech</option><option>Energy</option><option>Health</option><option>Edtech</option><option>Proptech</option><option>SaaS</option><option>HR &amp; Future of Work</option><option>Media</option></select>
+        <select id="su-sector" name="sector" class="input input-mono mt-1"><option>Fintech</option><option>Commerce</option><option>Logistics</option><option>Agritech</option><option>Energy</option><option>Health</option><option>Edtech</option><option>Proptech</option><option>SaaS</option><option>HR &amp; Future of Work</option><option>Media</option><option>Climate &amp; Energy</option><option>Other</option></select>
       </div>
       <div><label class="mono-label block" for="su-stage">Stage</label>
-        <select id="su-stage" name="stage" class="input input-mono mt-1"><option>Pre-seed</option><option>Seed</option><option>Series A</option><option>Series B</option></select>
+        <select id="su-stage" name="stage" class="input input-mono mt-1"><option>Pre-seed</option><option>Seed</option><option>Series A</option><option>Series B</option><option>Growth</option></select>
       </div>
       <div class="sm:col-span-2"><label class="mono-label block" for="su-tag">One-liner *</label><input id="su-tag" name="tagline" required class="input mt-1" placeholder="What you do, in one crisp sentence" /></div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="su-desc">About (optional)</label><textarea id="su-desc" name="description" rows="3" class="input mt-1" placeholder="What you're building, who it's for, traction you can name — your page reads exactly what you write here"></textarea></div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="su-founder">Founder / contact name (optional)</label><input id="su-founder" name="founderName" class="input mt-1" placeholder="Shown as “Founder: …” on your page" /></div>
       <div class="sm:col-span-2">
         <label class="mono-label block" for="su-logo">Company logo — optional</label>
         <div class="mt-1" data-dropzone>
@@ -59,14 +60,33 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
         </div>
       </div>
     </div>
+    <!-- Honeypot: hidden from humans ( bots autofill it ) -->
+    <div class="hidden" aria-hidden="true">
+      <label for="su-company-url">Company URL</label>
+      <input id="su-company-url" name="company_url" type="text" tabindex="-1" autocomplete="off" />
+    </div>
     <p class="mt-3 flex items-start gap-1.5 text-[12.5px] leading-relaxed text-mut">
       <svg class="mt-0.5 h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M12 11v5"></path></svg>
-      <span>Submissions are reviewed by a person before going live — usually within 48 hours. Your logo appears once the profile is approved.</span>
+      <span><strong class="text-ink">No waiting, no approval.</strong> Your profile goes live the moment you publish — your own page at startups.co.ke/startups/community/your-name, linked to your site. Listings carry a “Founder-submitted” tag until we verify them against public sources.</span>
     </p>
-    <div class="mt-4 flex items-center justify-end gap-5">
-      <button type="button" class="text-[13px] text-mut underline hover:text-ink" data-close>Cancel</button>
-      <button type="submit" class="btn btn-amber h-10 px-5">Submit for review →</button>
+    <div id="publish-success" class="mt-4 hidden border border-green bg-green/5 px-4 py-4">
+      <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-green">✓ Your startup is live</p>
+      <p class="mt-1.5 text-[14px] text-ink2">It's published — here's your page:</p>
+      <p class="mt-1.5 break-all font-mono text-[12.5px] text-ink" data-live-url></p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <a class="btn btn-amber h-9 px-4" data-open-live href="/startups/community" target="_blank" rel="noopener">Open my profile →</a>
+        <button type="button" class="btn btn-ghost h-9 px-4" data-copy-live>Copy link</button>
+        <button type="button" class="btn btn-ghost h-9 px-4" data-list-another>List another</button>
+      </div>
     </div>
+    <div data-publish-actions class="mt-4 flex items-center justify-end gap-5">
+      <button type="button" class="text-[13px] text-mut underline hover:text-ink" data-close>Cancel</button>
+      <button type="submit" class="btn btn-amber h-10 px-5">Publish now — live immediately →</button>
+    </div>
+    <p class="mt-2 text-right text-[12px] text-mut">
+      Prefer a human check first?
+      <button type="button" class="underline hover:text-ink" data-toggle-mode data-alt="Publish instantly instead">Submit for review instead</button>
+    </p>
   </form>
 </dialog>
 
@@ -261,7 +281,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
   <form class="px-5 py-4" data-kind="sponsor">
     <label class="mono-label block" for="sp-name">Name / company *</label><input id="sp-name" name="name" required class="input mt-1" />
     <label class="mono-label mt-3 block" for="sp-email">Email *</label><input id="sp-email" name="email" type="email" required class="input mt-1" />
-    <p class="mono-label mt-3">Or reach us directly at <a class="text-amber underline" href={`mailto:${email}`}>{email}</a> · {SITE.contact.phoneDisplay}</p>
+    <p class="mono-label mt-3">Or reach us directly at <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> · {SITE.contact.phoneDisplay}</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Send</button>
@@ -378,6 +398,43 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     } catch { /* non-fatal by design */ }
   }
 
+  // --- submit-your-startup: instant publish (no approval) or review fallback ---
+  const submitForm = document.querySelector<HTMLFormElement>('form[data-kind="startup"]');
+  const toggleBtn = submitForm?.querySelector<HTMLButtonElement>('[data-toggle-mode]');
+  toggleBtn?.addEventListener('click', () => {
+    const instant = submitForm!.dataset.mode === 'instant';
+    submitForm!.dataset.mode = instant ? 'review' : 'instant';
+    toggleBtn.textContent = instant ? 'Publish instantly instead' : 'Submit for review instead';
+    const go = submitForm!.querySelector<HTMLButtonElement>('[data-publish-actions] button[type="submit"]');
+    if (go) go.textContent = instant ? 'Submit for review →' : 'Publish now — live immediately →';
+  });
+
+  function showPublishSuccess(slug: string) {
+    const url = `https://startups.co.ke/startups/community/${slug}`;
+    submitForm?.querySelector('[data-live-url]')?.replaceChildren(document.createTextNode(url));
+    const open = submitForm?.querySelector<HTMLAnchorElement>('[data-open-live]');
+    if (open) open.href = url;
+    submitForm?.querySelector('#publish-success')?.classList.remove('hidden');
+    submitForm?.querySelector('[data-publish-actions]')?.classList.add('hidden');
+    submitForm?.querySelector('[data-toggle-mode]')?.closest('p')?.classList.add('hidden');
+  }
+  submitForm?.querySelector('[data-copy-live]')?.addEventListener('click', async (ev) => {
+    const btn = ev.currentTarget as HTMLButtonElement | null;
+    if (!btn) return;
+    try {
+      await navigator.clipboard.writeText(submitForm?.querySelector('[data-live-url]')?.textContent || '');
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => { btn.textContent = 'Copy link'; }, 1600);
+    } catch { /* clipboard blocked — the URL is selectable text anyway */ }
+  });
+  submitForm?.querySelector('[data-list-another]')?.addEventListener('click', () => {
+    submitForm!.querySelector('#publish-success')?.classList.add('hidden');
+    submitForm!.querySelector('[data-publish-actions]')?.classList.remove('hidden');
+    submitForm!.querySelector('[data-toggle-mode]')?.closest('p')?.classList.remove('hidden');
+    submitForm!.reset();
+    submitForm!.querySelectorAll('input[type="file"]').forEach((fi) => fi.dispatchEvent(new Event('change')));
+  });
+
   document.querySelectorAll<HTMLFormElement>('dialog form[data-kind]').forEach((form) => {
     form.addEventListener('submit', async (ev) => {
       ev.preventDefault();
@@ -386,6 +443,9 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
       if (btn) { btn.dataset.origLabel = btn.textContent ?? ''; btn.disabled = true; btn.textContent = 'Sending…'; }
       let logoPath: string | undefined;
+      // Track whether this submit was an instant publish (needs its own
+      // success + error UX: the dialog stays open and shows the live URL).
+      const instantPublish = kind === 'startup' && form.dataset.mode === 'instant';
       try {
         if (kind === 'auth') {
           const sbMod = await import('@/lib/supabase');
@@ -399,6 +459,43 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
         } else if (kind === 'newsletter') {
           const sbMod = await import('@/lib/supabase');
           await sbMod.subscribeNewsletter(String(data.email), 'modal');
+        } else if (instantPublish) {
+          const sbMod = await import('@/lib/supabase');
+          // 1) logo upload first (logos bucket is public-write)
+          const fileInput = form.querySelector<HTMLInputElement>('input[type="file"]');
+          if (fileInput?.files?.[0] && sbMod.supabaseConfigured) {
+            try { logoPath = await sbMod.uploadLogo(fileInput.files[0], String(data.name || 'logo')); }
+            catch { /* non-fatal — listing works without a logo */ }
+          }
+          // 2) magic-link identity (optional — raises rate limit, marks signedin)
+          let token: string | undefined;
+          try {
+            const sb = sbMod.supabase();
+            const sess = sb ? await sb.auth.getSession() : null;
+            token = sess?.data.session?.access_token;
+          } catch { /* anon publish is supported */ }
+          // 3) publish — live immediately
+          const res = await fetch('/.netlify/functions/startup-create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify({
+              ...data,
+              logoUrl: logoPath ? sbMod.logoPublicUrl(logoPath) : undefined,
+            }),
+          });
+          const out = await res.json().catch(() => ({}) as Record<string, unknown>);
+          if (!res.ok || !out.ok) {
+            const errs = (out as { errors?: Record<string, string> }).errors;
+            const msg = errs ? Object.values(errs).join(' · ') : String((out as { error?: string }).error || `HTTP ${res.status}`);
+            throw new Error(`publish-failed: ${msg}`);
+          }
+          notifyDesk('startup', { ...data, logoPath, published: 'instant', slug: out.slug }, (data.email as string) || undefined);
+          showPublishSuccess(String(out.slug));
+          window.sckToast({ title: 'Live now', body: 'Your startup page is published — grab the link below.' });
+          return; // dialog stays open on the success panel
         } else {
           const sbMod = await import('@/lib/supabase');
           // logo upload if a file was picked
@@ -426,7 +523,14 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
         });
       } catch (err) {
         const toast = window.sckToast;
-        if (String(err).includes('not-configured') || kind !== 'auth') {
+        if (instantPublish) {
+          // Keep the form open so the founder can fix and retry — never
+          // pretend a failed publish succeeded.
+          const msg = String(err).startsWith('publish-failed:')
+            ? String(err).slice('publish-failed: '.length)
+            : 'Network hiccup — try again.';
+          toast({ title: 'Publish failed', body: msg, kind: 'warn' });
+        } else if (String(err).includes('not-configured') || kind !== 'auth') {
           form.closest('dialog')?.close();
           toast({ title: 'Saved locally', body: 'Supabase is not connected in this environment — your entry is queued on this device.', kind: 'warn' });
         } else {

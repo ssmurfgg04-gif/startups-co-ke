@@ -18,7 +18,7 @@ const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup 
         <a class="btn btn-ondark h-9 px-3" href={SITE.social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
       </div>
       <div class="mt-5 space-y-1 font-mono text-[11px] text-dpaper/85">
-        <p><a class="hover:text-dpaper" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a></p>
+        <p><a class="hover:text-dpaper" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a></p>
         <p><a class="hover:text-dpaper" href={`tel:${SITE.contact.phone}`}>{SITE.contact.phoneDisplay}</a></p>
         <p>{SITE.contact.address}</p>
       </div>

@@ -13,6 +13,12 @@ export const SITE = {
   themeColor: '#0E4630',
   contact: {
     email: 'jack@startups.co.ke',
+    /** Base64 of the desk email — anchors carry data-email (never the literal
+     *  address) so Cloudflare's Email Obfuscation has nothing to rewrite and
+     *  stops injecting its render-blocking email-decode script. core.ts
+     *  decodes at runtime: sets the mailto href + visible text. */
+    emailB64: 'amFja0BzdGFydHVwcy5jby5rZQ==',
+    emailLabel: 'Email the desk',
     phone: '+254721725958',
     phoneDisplay: '+254 721 725 958',
     city: 'Nairobi, Kenya',
@@ -28,6 +34,8 @@ export const SITE = {
       label: 'Discover', href: '/startups',
       children: [
         { label: 'Company index', href: '/startups' },
+        { label: 'Climate & Energy hub', href: '/climate-tech' },
+        { label: 'Founder-listed startups', href: '/startups/community' },
         { label: 'Investor directory', href: '/investors' },
       ],
     },
@@ -52,6 +60,8 @@ export const SITE = {
   footer: {
     platform: [
       { label: 'Company index', href: '/startups' },
+      { label: 'Climate & Energy hub', href: '/climate-tech' },
+      { label: 'Founder-listed startups', href: '/startups/community' },
       { label: 'Investor directory', href: '/investors' },
       { label: 'Funding database', href: '/funding' },
       { label: 'Hackathon index', href: '/hackathons' },
@@ -62,6 +72,7 @@ export const SITE = {
       { label: 'Research library', href: '/research' },
       { label: 'Methodology & statuses', href: '/methodology' },
       { label: 'Ecosystem brief', modal: 'newsletter' },
+      { label: 'llms.txt — AI-readable index', href: '/llms.txt' },
     ],
     company: [
       { label: 'About', href: '/about' },

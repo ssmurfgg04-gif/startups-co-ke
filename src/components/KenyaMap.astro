@@ -112,7 +112,7 @@ const routes = ['Mombasa', 'Nakuru', 'Kisumu', 'Eldoret'].map((c) => ({
 const equatorY = latY(0).toFixed(1);
 ---
 <figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's tracked startup hubs" data-anchored={ANCHORED_COUNTIES.length}>
-  <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full" role="img">
+  <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full" role="img" aria-label="Map of Kenya showing tracked startup hubs, county anchors and routes from Nairobi">
     <!-- land -->
     <path d={borderPath} fill="var(--color-paper2)"></path>
 
@@ -128,7 +128,7 @@ const equatorY = latY(0).toFixed(1);
 
     <!-- verified county anchors: green ring = ecosystem hub with named source -->
     {hubCounties.map((c) => (
-      <g class="map-county cursor-pointer" data-county={c.name} data-hub={c.hub!.name} tabindex="0" role="button" aria-label={`${c.name}: ${c.hub!.name}`}>
+      <g class="map-county" data-county={c.name} data-hub={c.hub!.name}>
         <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="5" fill="none" stroke="var(--color-green)" stroke-width="1.3"></circle>
         <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="1.8" fill="var(--color-green)"></circle>
         <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="12" fill="transparent"></circle>

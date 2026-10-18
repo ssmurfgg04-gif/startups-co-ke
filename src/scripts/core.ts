@@ -90,3 +90,18 @@ if (float) {
     (document.getElementById('modal-about') as HTMLDialogElement | null)?.showModal();
   });
 }
+
+// --- Email links, de-obfuscated for Cloudflare ---
+// Anchors carry the address base64-encoded in data-email (the HTML payload
+// never contains a literal email), so Cloudflare Email Obfuscation has nothing
+// to rewrite and stops injecting its render-blocking /cdn-cgi/ email-decode
+// script on every page. JS restores the real href + label at runtime; without
+// JS the anchors still navigate to /contact, which has phone + form.
+document.querySelectorAll<HTMLAnchorElement>('a[data-email]').forEach((a) => {
+  try {
+    const email = atob(a.dataset.email || '');
+    if (!email.includes('@')) return;
+    if (a.dataset.emailText !== 'keep') a.textContent = email;
+    a.href = `mailto:${email}`;
+  } catch { /* malformed payload — fallback href stays */ }
+});
