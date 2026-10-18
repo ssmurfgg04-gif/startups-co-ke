@@ -15,7 +15,7 @@
  */
 import { getStore } from '@netlify/blobs';
 import {
-  checkRateLimit, clientIp, json, listingKey, uniqueSlug, validateListing, verifyUser,
+  checkRateLimit, clientIp, json, listingKey, slugify, uniqueSlug, validateListing, verifyUser,
 } from './_lib.mjs';
 
 const CORS = {
