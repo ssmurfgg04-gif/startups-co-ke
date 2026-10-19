@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import { SITE } from '@/config/site';
+const updated = '2026-10-19';
+---
+<Base title="Terms of use" description="The plain-Kenyan terms for using startups.co.ke: what the data is, what it isn't, and the rules for listings, submissions and accounts.">
+  <article class="wrap max-w-3xl py-10">
+    <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / Terms of use</p>
+    <h1 class="mt-2 text-[clamp(32px,3.8vw,50px)]">Terms of use.</h1>
+    <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-mut">Last updated {updated} · startups.co.ke · {SITE.contact.city}</p>
+
+    <div class="prose-sck mt-8">
+      <p><strong>1. What this site is.</strong> startups.co.ke is an independent record of Kenya's startup economy: tracked companies, funding rounds, investors, jobs and events, compiled from public sources. Every figure carries a named source and a status (Confirmed / Reported / Estimated). We are not a news outlet acting for any company, an investment adviser, a broker, or a recruiter.</p>
+
+      <p><strong>2. Not investment advice.</strong> Nothing here is a recommendation, offer or solicitation. Funding data is historical and may be incomplete; status tags tell you how confident we are. Do your own diligence — the site's job is to make that diligence faster, not to do it for you.</p>
+
+      <p><strong>3. Listings you submit.</strong> Founder listings publish instantly and stay your responsibility: your company must be real, your description honest, your link your own (or one you're allowed to share). We may unlist anything that is spam, misleading, impersonates someone else, or breaks Kenyan law — the honeypot and rate limits keep the worst out, and a human reviews what goes up. Job postings are reviewed by a person before going live, and applicants never pay to apply.</p>
+
+      <p><strong>4. Free while we build momentum.</strong> Everything on the site is free right now — listings, the funding database, job posts, research. If we ever introduce paid tiers, this page and the methodology page will say so first, and what you already have stays yours.</p>
+
+      <p><strong>5. Accounts.</strong> Sign-in uses one-time magic-link emails (no passwords). Keep access to your mailbox; don't submit on behalf of others without their OK. You can ask us to delete your account or listings any time via the contact page.</p>
+
+      <p><strong>6. Our data.</strong> The compiled index (statuses, sources, structure) is ours; the underlying facts belong to the public record and their sources. Attribution is appreciated for reasonable reuse: "Source: startups.co.ke". Scraping that ignores the status tags or strips sources misrepresents the data — don't.</p>
+
+      <p><strong>7. Corrections.</strong> We correct verified errors fast. Every profile has a "Report data issue" action; email <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> works too. Failure states (shutdowns, administration) are tracked like funding states — they are reporting, not defamation.</p>
+
+      <p><strong>8. Liability.</strong> The site is provided as-is. We're not liable for decisions made purely on our data, for outages, or for content on sites we link to. Nothing here limits liability where Kenyan law says it can't be limited.</p>
+
+      <p><strong>9. Law.</strong> These terms are governed by the laws of Kenya; disputes go to the courts of Kenya. Questions first, though — <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a>.</p>
+    </div>
+  </article>
+</Base>

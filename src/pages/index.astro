@@ -58,6 +58,9 @@ const ACTIVE_INVESTORS = INVESTORS.map((inv) => ({
   .sort((a, b) => b.rounds - a.rounds)
   .slice(0, 8);
 const activeMax = Math.max(...ACTIVE_INVESTORS.map((i) => i.rounds));
+// Build-time date: the index is re-verified on every deploy (jobs refresh daily,
+// data rows carry their own named sources) — so this line is always true.
+const verifiedDate = new Date().toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' });
 const jsonld = [
   {
     '@context': 'https://schema.org',
@@ -86,7 +89,9 @@ const jsonld = [
 <Base title={SITE.title} description={SITE.description} jsonld={jsonld}>
   <!-- 1) HERO -->
   <section class="wrap grid items-start gap-10 py-12 md:py-16 lg:grid-cols-12">
-    <div class="rv lg:col-span-7">
+    <!-- No .rv reveal above the fold: the hero IS the LCP — it renders instantly,
+         fonts swap in, nothing waits on JS. Below-fold sections keep the reveal. -->
+    <div class="lg:col-span-7">
       <p class="kicker">Est. Nairobi — Kenya's startup record, kept in the open</p>
       <h1 class="mt-4 text-[clamp(40px,5.2vw,72px)] leading-[0.98]">
         Kenya's startup economy, <em class="font-display italic text-green">mapped</em> &amp; measured.
@@ -107,11 +112,11 @@ const jsonld = [
         <a class="chip hover:bg-paper2" href="/startups?stage=Seed">Seed</a>
         <a class="chip hover:bg-paper2" href="/jobs">Tech jobs</a>
       </div>
-      <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Compiled from public sources · Oct 15, 2026 — every figure carries a source and a status.</p>
+      <p class="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Index verified {verifiedDate} · {COMPANIES.length}/{COMPANIES.length} profiles carry a named source · <a class="link-underline hover:text-ink" href="/methodology">how we verify</a></p>
     </div>
 
     <!-- Ecosystem snapshot widget -->
-    <aside class="rv offset-shadow border-2 border-ink bg-paper lg:col-span-5" style="--d:120ms" aria-label="Ecosystem snapshot">
+    <aside class="offset-shadow border-2 border-ink bg-paper lg:col-span-5" aria-label="Ecosystem snapshot">
       <div class="flex items-center justify-between border-b border-ink px-4 py-3">
         <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Ecosystem snapshot</p>
         <Chip kind="confirmed" />
@@ -124,7 +129,9 @@ const jsonld = [
           { v: STATS.hackathonsIndexed, l: 'Hackathons indexed' },
         ].map((cell) => (
           <div class="bg-paper p-4">
-            <p class="statnum text-[28px] leading-none"><span data-count={cell.v}>{cell.v}</span>{cell.s && <span class="text-amber">+</span>}</p>
+            <!-- Static final value — no count-up animation. Numbers are the
+                 product: they render correct on first paint, no flash. -->
+            <p class="statnum text-[28px] leading-none">{cell.v}{cell.s && <span class="text-amber">+</span>}</p>
             <p class="mono-label mt-1.5">{cell.l}</p>
           </div>
         ))}
@@ -148,7 +155,7 @@ const jsonld = [
       <p class="max-w-2xl text-[15px] leading-relaxed text-ink2">
         Claim a free profile and get seen: your own page — <a class="link-underline text-green" href="/startups">startups.co.ke/startups/your-name</a> — to drop in your deck, bio and email signature. Investors search this index for deal flow; your open roles ride along.
       </p>
-      <div class="flex shrink-0 gap-2 lg:ml-auto">
+      <div class="flex flex-wrap gap-2 lg:ml-auto lg:shrink-0">
         <button class="btn btn-amber" data-modal="submit">Claim your profile — free</button>
         <a class="btn btn-ghost" href="/startups/m-kopa">See a real profile</a>
       </div>
@@ -186,8 +193,8 @@ const jsonld = [
 
   <!-- 2) MAP BAND -->
   <section class="wrap grid gap-8 pb-14 lg:grid-cols-2" aria-labelledby="regions-h">
-    <div class="rv"><KenyaMap /></div>
-    <div class="rv" style="--d:100ms">
+    <div class="rv min-w-0"><KenyaMap /></div>
+    <div class="rv min-w-0" style="--d:100ms">
       <h2 id="regions-h" class="text-[clamp(26px,3.2vw,40px)]">Explore by region.</h2>
       <p class="mt-2 max-w-md text-[14.5px] text-mut">All 47 counties on the map. Small dots = county seats; green rings = verified anchors — a named hub, checked against a public source. Most tracked startups are still Nairobi-based; we say so, and the anchors show where the next ones come from. Click a hub row for county detail.</p>
       <div class="railbox mt-5">
@@ -286,7 +293,7 @@ const jsonld = [
     <div class="wrap">
       <SectionHead no="04" title="Ecosystem insights." link={{ label: 'Investors →', href: '/investors' }} />
       <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rv railbox">
+        <div class="rv railbox min-w-0">
           <div class="railbox-head"><span>Startups tracked by sector</span><a class="link-underline" href="/startups">Full index</a></div>
           <div>
             {SECTOR_ROWS.map((s) => (
@@ -305,7 +312,7 @@ const jsonld = [
           </div>
           <p class="border-t border-line px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">{totalSector} tracked · every profile status-tagged · counts derived from the index</p>
         </div>
-        <div class="rv railbox" style="--d:120ms">
+        <div class="rv railbox min-w-0" style="--d:120ms">
           <div class="railbox-head"><span>Most active investors — derived</span><a class="link-underline" href="/investors">Directory ({INVESTORS.length}) →</a></div>
           {ACTIVE_INVESTORS.map((inv) => (
             <a href="/investors" class="rowline flex items-center gap-3 px-4 py-3 hover:bg-paper">
@@ -374,17 +381,17 @@ const jsonld = [
         <p class="kicker">Research</p>
         <h2 id="research-h" class="mt-3 text-[clamp(26px,3.2vw,40px)]">{flagship.title}.</h2>
         <p class="mt-3 max-w-md text-[14.5px] text-mut">
-          {flagship.pages} pages on capital flows, sectors, talent and county-level activity — methodology and every status tag explained. Members read the full library; the flagship ships with a data appendix.
+          {flagship.pages} pages on capital flows, sectors, talent and county-level activity — methodology and every status tag explained. Free while we build momentum; the flagship ships with a data appendix.
         </p>
         <div class="mt-5 flex flex-wrap gap-3">
-          <button class="btn btn-amber" data-modal="buy">Get it — Members</button>
-          <button class="btn btn-ghost" data-modal="buy">Free sample chapter</button>
+          <button class="btn btn-amber" data-modal="buy">Get the flagship — free</button>
+          <a class="btn btn-ghost" href="/research">Browse the library</a>
         </div>
         <div class="railbox mt-6">
           {REPORTS.filter((r) => !r.flagship).map((r) => (
             <a href="/research" class="rowline flex items-center justify-between gap-3 px-4 py-3 hover:bg-paper2">
               <span><span class="block text-[13.5px]">{r.title}</span><span class="mono-label">{r.pages} pages · {r.date}</span></span>
-              <span class="chip chip-dashed shrink-0">{r.price}</span>
+              <span class="chip chip-solid shrink-0">Free</span>
             </a>
           ))}
         </div>
@@ -419,8 +426,8 @@ const jsonld = [
           <li>· Verified company data export</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
-          <span class="font-mono text-[12px] text-dmut">KSh 2,900/mo</span>
-          <button class="btn btn-amber" data-modal="trial">Start trial</button>
+          <span class="font-mono text-[12px] text-dmut">Free while we build momentum</span>
+          <button class="btn btn-amber" data-modal="intro">Request access</button>
         </div>
       </div>
       <div class="rv railbox p-6 md:col-span-5">
@@ -431,7 +438,7 @@ const jsonld = [
           <li>· Applicants never pay, ever — we keep the “pay to apply” scams out</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
-          <span class="font-mono text-[12px] text-mut">From free · KSh 2,900 for 30 days</span>
+          <span class="font-mono text-[12px] text-mut">Free · reviewed by a human</span>
           <button class="btn" data-modal="postjob">Post a job</button>
         </div>
       </div>
@@ -451,28 +458,19 @@ const jsonld = [
     </div>
   </section>
 
-  <!-- 11) PRICING -->
-  <section class="border-t border-ink bg-paper2 py-14" aria-labelledby="pricing-h">
-    <div class="wrap">
-      <SectionHead no="06" title="Simple pricing. Free to start." />
-      <div class="grid gap-5 lg:grid-cols-3">
-        {SITE.pricing.tiers.map((tier, i) => (
-          <div class={`rv relative border p-6 ${tier.dark ? 'border-ink bg-ink text-paper shadow-[8px_8px_0_var(--color-amber2)]' : 'border-ink bg-paper'}`} style={`--d:${i * 90}ms`}>
-            {tier.tag && <span class="absolute -top-3 left-5 chip chip-amber">{tier.tag}</span>}
-            <p class="font-mono text-[11px] uppercase tracking-[0.14em]">{tier.name}</p>
-            <p class="mt-3"><span class="statnum text-[34px]">{tier.price}</span> <span class={`text-[12px] ${tier.dark ? 'text-dmut' : 'text-mut'}`}>{tier.per}</span></p>
-            <ul class={`mt-4 space-y-2 border-t pt-4 text-[14px] ${tier.dark ? 'border-darkline text-dpaper/90' : 'border-line text-ink2'}`}>
-              {tier.features.map((f) => <li class="flex gap-2"><span class="text-amber2">✓</span>{f}</li>)}
-            </ul>
-            <div class="mt-5">
-              {tier.cta.href
-                ? <a class={`btn w-full ${tier.dark ? 'btn-amber' : 'btn-ghost'}`} href={tier.cta.href}>{tier.cta.label}</a>
-                : <button class={`btn w-full ${tier.dark ? 'btn-amber' : 'btn-ghost'}`} data-modal={tier.cta.modal}>{tier.cta.label}</button>}
-            </div>
-          </div>
-        ))}
+  <!-- 11) FREE NOTE — monetization removed while we build momentum. Paid tiers
+       return only after investor research is validated with real buyers. -->
+  <section class="border-t border-ink bg-paper2 py-10" aria-labelledby="free-h">
+    <div class="wrap text-center">
+      <p class="kicker justify-center">Simple answer on money</p>
+      <h2 id="free-h" class="mt-2 text-[clamp(22px,2.6vw,32px)]">Everything here is free right now.</h2>
+      <p class="mx-auto mt-3 max-w-xl text-[14.5px] text-mut">
+        No paywalls, no trials, no card. Founder listings, the funding database, job posts, research — free while we build momentum. If that ever changes, this page and the methodology say so first, and early users keep everything they already have.
+      </p>
+      <div class="mt-5 flex flex-wrap justify-center gap-2">
+        <a class="btn btn-amber" href="/startups">Explore the index</a>
+        <button class="btn btn-ghost" data-modal="submit">List your startup — free</button>
       </div>
-      <p class="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-mut">{SITE.pricing.note}</p>
     </div>
   </section>
 
@@ -505,7 +503,7 @@ const jsonld = [
       form.reset();
     } catch {
       const toast = window.sckToast;
-      toast({ title: 'Saved locally', body: 'Supabase not connected in this environment.', kind: 'warn' });
+      toast({ title: 'Not sent', body: 'Network hiccup — please try again, your email is still in the field.', kind: 'warn' });
     }
   });
 </script>

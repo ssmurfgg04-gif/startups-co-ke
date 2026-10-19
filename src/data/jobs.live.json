@@ -2,7 +2,7 @@
  "fetchedAt": "2026-10-19",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 25,
+  "checked": 24,
   "dropped": 2,
   "ambiguous": 0
  },
@@ -27,8 +27,8 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 158,
-   "kept": 16,
+   "count": 157,
+   "kept": 15,
    "ok": true
   },
   {

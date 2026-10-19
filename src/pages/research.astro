@@ -53,11 +53,11 @@ const ARXIV = [
   <section class="wrap py-10">
     <h1 class="text-[clamp(34px,4vw,56px)]">Research.</h1>
     <p class="mt-2 max-w-2xl text-[15px] text-mut">
-      Original reports built on our index and methodology — every figure carries a status tag. Members unlock the full library.
+      Original reports built on our index and methodology — every figure carries a status tag. The full library is free while we build momentum.
     </p>
 
     <div class="mt-8 grid items-stretch gap-8 lg:grid-cols-12">
-      <div class="rv lg:col-span-5">
+      <div class="lg:col-span-5">
         <div class="offset-shadow border-2 border-ink bg-green p-8 text-dpaper">
           <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-dmut">STARTUPS.CO.KE · RESEARCH</p>
           <svg viewBox="0 0 200 210" class="mx-auto my-6 w-44" aria-hidden="true">
@@ -71,7 +71,7 @@ const ARXIV = [
           <p class="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">{flagship.pages} pages · {flagship.date} · sourced edition</p>
         </div>
       </div>
-      <div class="rv lg:col-span-7" style="--d:120ms">
+      <div class="lg:col-span-7" style="--d:120ms">
         <div class="flex flex-wrap items-center gap-2">
           <span class="chip chip-solid">Flagship</span>
           <Chip kind="confirmed" />
@@ -85,13 +85,13 @@ const ARXIV = [
           <li>✓ Methodology &amp; status definitions</li>
         </ul>
         <div class="mt-5 flex flex-wrap gap-3">
-          <button class="btn btn-amber" data-modal="buy">Buy — {flagship.price}</button>
+          <button class="btn btn-amber" data-modal="buy">Get it — free</button>
           <button class="btn btn-ghost" data-modal="buy">Free sample chapter</button>
         </div>
       </div>
     </div>
     <div class="mt-14">
-      <SectionHead title="Library — all reports." sub="Members unlock everything; individual reports available one-off." />
+      <SectionHead title="Library — all reports." sub="Everything is free right now — download what's useful." />
       <div class="border border-ink bg-paper">
         {library.map((r) => (
           <div class="rowline flex flex-wrap items-center gap-4 px-5 py-4">
@@ -100,8 +100,8 @@ const ARXIV = [
               <p class="mt-0.5 text-[13px] text-mut">{r.blurb}</p>
               <p class="mono-label mt-1.5">{r.pages} pages · {r.date}</p>
             </div>
-            <span class={`chip shrink-0 ${r.price === 'Free' ? 'chip-solid' : r.price === 'Members' ? '' : 'chip-amber'}`}>{r.price}</span>
-            <button class="btn btn-ghost shrink-0" data-modal="buy">{r.price === 'Free' ? 'Download' : 'Unlock'}</button>
+            <span class="chip chip-solid shrink-0">Free</span>
+            <button class="btn btn-ghost shrink-0" data-modal="buy">Download</button>
           </div>
         ))}
       </div>

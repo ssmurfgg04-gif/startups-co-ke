@@ -164,7 +164,7 @@ for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] 
           <span class="block truncate text-[12.5px] text-mut">${c.tagline}</span>
         </span>
         <span class="hidden items-center gap-1.5 font-mono text-[11px] text-ink2 md:flex"><span class="inline-block h-2.5 w-2.5" style="background:${sectorColor(c.sector)}"></span>${c.sector}</span>
-        <span class="hidden md:block"><span class="chip chip-dashed">${c.stage}</span></span>
+        <span class="hidden md:block"><span class="chip chip-dashed">${c.stage === '—' ? 'n/d' : c.stage}</span></span>
         <span class="hidden font-mono text-[11px] text-mut md:block">${c.hq}</span>
         <span class="hidden text-right md:block"><span class="statnum block text-[13px]">${c.raised != null ? `$${c.raised.toFixed(1)}M` : (c.raisedDisplay ?? 'n/d')}</span><span class="mono-label">f. ${c.founded}</span></span>
         <span class="hidden text-ink transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>

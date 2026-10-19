@@ -111,8 +111,8 @@ const routes = ['Mombasa', 'Nakuru', 'Kisumu', 'Eldoret'].map((c) => ({
 }));
 const equatorY = latY(0).toFixed(1);
 ---
-<figure class="railbox relative overflow-hidden" aria-label="Dot-density map of Kenya's tracked startup hubs" data-anchored={ANCHORED_COUNTIES.length}>
-  <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full" role="img" aria-label="Map of Kenya showing tracked startup hubs, county anchors and routes from Nairobi">
+<figure class="railbox relative min-w-0 overflow-hidden" aria-label="Dot-density map of Kenya's tracked startup hubs" data-anchored={ANCHORED_COUNTIES.length}>
+  <svg id="kenya-map" viewBox="0 0 480 540" class="block h-auto w-full max-w-full" role="img" aria-label="Map of Kenya showing tracked startup hubs, county anchors and routes from Nairobi">
     <!-- land -->
     <path d={borderPath} fill="var(--color-paper2)"></path>
 

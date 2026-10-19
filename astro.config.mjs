@@ -7,6 +7,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://startups.co.ke',
   integrations: [sitemap()],
+  build: {
+    // Inline all CSS into <style> in the HTML head — removes the render-
+    // blocking /_astro/*.css request PSI measured at ~890ms on mobile.
+    inlineStylesheets: 'always',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

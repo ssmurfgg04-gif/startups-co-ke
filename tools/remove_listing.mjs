@@ -12,7 +12,12 @@
  * Env (from Netlify UI → User settings → Applications → Personal access token):
  *   NETLIFY_AUTH_TOKEN  required
  *   NETLIFY_SITE_ID     required (Site → Site settings → API → Site ID)
+ *
+ * Uses @netlify/blobs in manual-credential mode (getStore({ siteID, token, name }))
+ * — the supported write path, unlike the ad-hoc REST endpoint.
  */
+import { getStore } from '@netlify/blobs';
+
 const SITE_ID = process.env.NETLIFY_SITE_ID;
 const TOKEN = process.env.NETLIFY_AUTH_TOKEN;
 const [slugArg, actionArg] = process.argv.slice(2);
@@ -22,43 +27,36 @@ if (!SITE_ID || !TOKEN) {
   process.exit(1);
 }
 
-const API = `https://api.netlify.com/api/v1`;
-const headers = { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' };
-
-const siteRes = await fetch(`${API}/sites/${SITE_ID}`, { headers });
-if (!siteRes.ok) { console.error(`Site lookup failed: ${siteRes.status}`); process.exit(1); }
-const site = await siteRes.json();
-
-// Blobs API: list + read + write metadata via the site's blob store endpoint.
-const STORE = 'community_startups';
+const store = getStore({ siteID: SITE_ID, token: TOKEN, name: 'community_startups' });
 
 async function listAll() {
-  const res = await fetch(`${API}/sites/${SITE_ID}/blobs/stores/${STORE}/entries`, { headers });
-  if (!res.ok) {
-    console.error(`Blob list failed (${res.status}). Note: the Blobs REST API may not be enabled for this site — alternatively remove listings from the Supabase-backed review flow or ask the desk.`);
-    process.exit(1);
+  // list() shape differs across @netlify/blobs generations — read {blobs}.
+  const res = await store.list({ prefix: 's:' });
+  const keys = (res?.blobs ?? []).map((b) => b.key).filter((k) => k && k.startsWith('s:'));
+  if (!keys.length) {
+    console.log('(no community listings found)');
+    return;
   }
-  const j = await res.json();
-  for (const e of j.entries ?? []) {
-    if (!e.key.startsWith('s:')) continue;
-    const r = JSON.parse(e.value ?? '{}');
-    console.log(`${e.key.padEnd(40)} ${String(r.name ?? '').padEnd(28)} ${r.status ?? '?'}`);
+  for (const key of keys.sort()) {
+    const r = await store.get(key, { type: 'json' }).catch(() => null);
+    if (!r) { console.log(`${key.padEnd(42)} (unreadable)`); continue; }
+    console.log(
+      `${String(r.slug ?? key).padEnd(38)} ${String(r.name ?? '').padEnd(30).slice(0, 30)} ${r.status ?? '?'} ${r.source ?? ''}`,
+    );
   }
 }
 
 async function setStatus(slug, status) {
-  const key = `s:${slug}`;
-  const get = await fetch(`${API}/sites/${SITE_ID}/blobs/stores/${STORE}/entries/${encodeURIComponent(key)}`, { headers });
-  if (!get.ok) { console.error(`Read failed: ${get.status} — is the slug right?`); process.exit(1); }
-  const rec = await get.json();
-  const recObj = typeof rec.value === 'string' ? JSON.parse(rec.value) : (rec.value ?? rec);
-  recObj.status = status;
-  const put = await fetch(`${API}/sites/${SITE_ID}/blobs/stores/${STORE}/entries/${encodeURIComponent(key)}`, {
-    method: 'PUT', headers, body: JSON.stringify(recObj),
-  });
-  console.log(put.ok ? `${slug} → status=${status} ✓` : `Update failed: ${put.status}`);
+  const rec = await store.get(`s:${slug}`, { type: 'json' });
+  if (!rec) {
+    console.error(`No listing at s:${slug} — run "node tools/remove_listing.mjs" to list all slugs.`);
+    process.exit(1);
+  }
+  rec.status = status;
+  await store.setJSON(`s:${slug}`, rec);
+  console.log(`${slug} → status=${status} ✓`);
 }
 
-if (!slugArg) await listAll();
+if (!slugArg || slugArg === 'list') await listAll();
 else if (actionArg === 'restore') await setStatus(slugArg, 'published');
 else await setStatus(slugArg, actionArg === 'list' ? 'published' : 'unlisted');

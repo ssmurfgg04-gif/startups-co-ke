@@ -23,7 +23,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: 'Kenya Startup Funding Database',
-    description: 'Quarterly tracked funding across the Kenyan startup ecosystem with source statuses. Compiled from public sources as of Oct 15, 2026.',
+    description: 'Quarterly tracked funding across the Kenyan startup ecosystem with source statuses. Compiled from public sources; last index refresh 19 Oct 2026.',
     url: `${SITE.url}/funding`,
     license: `${SITE.url}/privacy`,
     creator: { '@type': 'Organization', name: 'startups.co.ke', url: SITE.url },
@@ -42,7 +42,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
 
     <div class="mt-8"><FundingChart dark /></div>
 
-    <h2 class="mt-12 text-[clamp(24px,2.8vw,34px)]">Notable rounds — this quarter.</h2>
+    <h2 class="mt-12 text-[clamp(24px,2.8vw,34px)]">Notable rounds — newest first.</h2>
     <div class="mt-2 mb-3 flex flex-wrap gap-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">
       <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-green"></span>Confirmed</span>
       <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-amber"></span>Reported</span>
@@ -94,7 +94,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
           <p><span class="font-semibold text-green">CONFIRMED</span> — round verified by company statement or lead-investor memo.</p>
           <p><span class="font-semibold text-amber">REPORTED</span> — credible secondary source (founder interview, syndicate note); confirmation pending.</p>
           <p><span class="font-semibold text-mut">ESTIMATED</span> — modelled from registry filings or comparable-round data.</p>
-          <p class="border-t border-line pt-2.5 text-mut">Compiled from public sources as of Oct 15, 2026. Amounts in USD millions; rounds keyed by announcement where known. Every row carries its source.</p>
+          <p class="border-t border-line pt-2.5 text-mut">Compiled from public sources; last index refresh 19 Oct 2026. Amounts in USD millions; rounds keyed by announcement where known. Every row carries its source.</p>
         </div>
       </div>
     </div>
@@ -116,7 +116,17 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
 </script>
 <script define:vars={{ QUARTERS, SERIES }}>
   // build the CSV at runtime from the same build-time constants
+  // (SERIES keys are display names — 'All sectors', Fintech, Climate, Commerce)
+  const col = (name) => (SERIES[name] ?? []).map((v) => (v ?? ''));
   window.__SCK_CSV__ = ['quarter,all,fintech,climate,commerce']
-    .concat(QUARTERS.map((q, i) => [q, SERIES.all[i], SERIES.fintech[i], SERIES.climate[i], SERIES.commerce[i]].join(',')))
+    .concat(
+      QUARTERS.map((q, i) => [
+        q,
+        col('All sectors')[i] ?? '',
+        col('Fintech')[i] ?? '',
+        col('Climate')[i] ?? '',
+        col('Commerce')[i] ?? '',
+      ].join(','))
+    )
     .join('\n');
 </script>

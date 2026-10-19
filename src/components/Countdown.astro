@@ -1,6 +1,9 @@
 ---
 /** Live countdown (D/H/M/S or HH:MM:SS) — ticks to an absolute ISO date in EAT
- *  (real events) or a client-side offset (fallback). Never dies either way. */
+ *  (real events) or a client-side offset (fallback). Never dies either way.
+ *  Initial D/H/M/S is computed at BUILD time and server-rendered, so users and
+ *  crawlers see real numbers instead of "—" dashes before JS ticks (the
+ *  dashes were flagged in an external audit). JS takes over immediately. */
 interface Props {
   targetOffsetMs?: number; // ms from "now" at view time
   targetISO?: string; // absolute date, preferred for real events
@@ -10,14 +13,35 @@ interface Props {
 }
 const { targetOffsetMs, targetISO, mode = 'dhms', dark = false, id } = Astro.props;
 const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark ? 'border-dpaper/30 text-dpaper' : 'border-ink text-ink'} min-w-[64px] flex-1`;
+
+// Server-side initial values (build time). If the target already passed,
+// clamp at zero — an expired countdown reads 00s, not dashes.
+const init = { d: '00', h: '00', m: '00', s: '00' };
+if (targetISO) {
+  const left = Math.max(0, Date.parse(targetISO) - Date.now());
+  const s = Math.floor(left / 1000);
+  init.d = String(Math.min(99, Math.floor(s / 86400))).padStart(2, '0');
+  init.h = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
+  init.m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+  init.s = String(s % 60).padStart(2, '0');
+}
+const passed = targetISO ? Date.parse(targetISO) < Date.now() : false;
 ---
+{passed ? (
+  <div id={id} class="flex gap-2" data-iso={targetISO} data-mode={mode}>
+    <div class={cell + ' w-full items-baseline justify-center gap-2 py-2'}>
+      <span class="statnum text-xl">Underway / closed</span>
+      <span class="mono-label">see organiser page for results</span>
+    </div>
+  </div>
+) : (
 <div id={id} class="flex gap-2" data-offset={targetOffsetMs} data-iso={targetISO} data-mode={mode}>
   {mode === 'dhms' ? (
     <>
-      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="d">—</span><span class="mono-label mt-1">Days</span></div>
-      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="h">—</span><span class="mono-label mt-1">Hours</span></div>
-      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="m">—</span><span class="mono-label mt-1">Min</span></div>
-      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="s">—</span><span class="mono-label mt-1">Sec</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="d">{init.d}</span><span class="mono-label mt-1">Days</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="h">{init.h}</span><span class="mono-label mt-1">Hours</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="m">{init.m}</span><span class="mono-label mt-1">Min</span></div>
+      <div class={cell}><span class="cd-val statnum text-2xl md:text-3xl" data-u="s">{init.s}</span><span class="mono-label mt-1">Sec</span></div>
     </>
   ) : (
     <div class={cell + ' w-full flex-row items-baseline justify-center gap-2 py-2'}>
@@ -26,12 +50,14 @@ const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark 
     </div>
   )}
 </div>
+)}
 
 <script define:vars={{ id }}>
   (function () {
     const root = document.getElementById(id);
     if (!root) return;
     const target = root.dataset.iso ? new Date(root.dataset.iso).getTime() : Date.now() + Number(root.dataset.offset);
+    if (root.dataset.iso && target - Date.now() <= 0) return; // expired — static state already correct
     const mode = root.dataset.mode;
     const pad = (n) => String(Math.floor(n)).padStart(2, '0');
     function tick() {
@@ -42,14 +68,14 @@ const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark 
       const m = Math.floor((s % 3600) / 60);
       const sec = s % 60;
       if (mode === 'dhms') {
-        const q = (u) => root.querySelector(`[data-u="${u}"]`);
-        if (q('d')) q('d').textContent = d;
+        const q = (u) => root.querySelector('[data-u="' + u + '"]');
+        if (q('d')) q('d').textContent = Math.min(99, d);
         if (q('h')) q('h').textContent = pad(h);
         if (q('m')) q('m').textContent = pad(m);
         if (q('s')) q('s').textContent = pad(sec);
       } else {
         const el = root.querySelector('[data-u="hms"]');
-        if (el) el.textContent = `${pad(h)}:${pad(m)}:${pad(sec)}`;
+        if (el) el.textContent = pad(h) + ':' + pad(m) + ':' + pad(sec);
       }
     }
     tick();

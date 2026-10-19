@@ -42,7 +42,7 @@ const investors = INVESTORS;
           <label class="mono-label mt-4 block" for="inv-stage">Stage</label>
           <select id="inv-stage" class="input input-mono mt-1">
             <option value="">Any stage</option>
-            {['Pre-seed', 'Seed', 'Series A', 'Series B'].map((s) => <option value={s}>{s}</option>)}
+            {['Pre-seed', 'Seed', 'Series A', 'Series B', 'Growth'].map((s) => <option value={s}>{s}</option>)}
           </select>
           <label class="mt-4 flex cursor-pointer items-center justify-between text-[13px]">
             <span>Verified only</span>
@@ -168,16 +168,15 @@ const investors = INVESTORS;
     <div class="mt-12 border border-ink bg-green p-6 text-dpaper md:p-8">
       <div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h2 class="text-[22px]">Investor membership</h2>
+          <h2 class="text-[22px]">Investor tools — free right now</h2>
           <ul class="mt-2 grid gap-1 text-[13.5px] text-dpaper/90 md:grid-cols-2">
             <li>✓ Deal-flow request queue</li><li>✓ Verified company data export</li>
             <li>✓ Sector &amp; stage alerts</li><li>✓ Intros without the cold email</li>
           </ul>
         </div>
         <div class="text-left md:text-right">
-          <p class="statnum text-[26px]">{SITE.investorSub.price}</p>
-          <p class="mono-label mt-1 text-dmut">after {SITE.investorSub.trial} · cancel anytime</p>
-          <button class="btn btn-amber mt-3" data-modal="trial">Start trial</button>
+          <p class="mono-label mt-1 text-dmut">No card, no trial countdown — free while we build momentum. Paid tiers return only after the research is validated with real buyers.</p>
+          <button class="btn btn-amber mt-3" data-modal="intro">Request access</button>
         </div>
       </div>
     </div>

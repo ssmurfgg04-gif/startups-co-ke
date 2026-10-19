@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /desk
 
 Sitemap: https://startups.co.ke/sitemap-index.xml

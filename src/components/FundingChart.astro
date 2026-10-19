@@ -17,7 +17,7 @@ const allSeries = SERIES['All sectors'] ?? SERIES[keys[0]];
           data-series={k}
           role="tab"
           aria-selected={i === 0 ? 'true' : 'false'}
-          class:list={[i === 0 && (dark ? 'bg-amber text-ink border-amber' : 'bg-ink text-paper border-ink')]}
+          class:list={[i === 0 && (dark ? 'bg-amber2 text-ink border-amber2' : 'bg-ink text-paper border-ink')]}
         >
           {k === 'All sectors' ? 'All sectors' : k === 'Climate' ? 'Climate & Energy' : k}
         </button>

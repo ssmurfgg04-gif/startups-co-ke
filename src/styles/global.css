@@ -78,7 +78,7 @@
   --color-green: #0e4630;
   --color-green2: #0a321f;
   --color-green3: #134f38;
-  --color-amber: #96610a; /* darkened from #b87503 — amber TEXT now passes AA small-text on paper (4.72:1) */
+  --color-amber: #7a4e07; /* darkened — amber TEXT passes AA small-text on paper AND paper2 (the 9px kickers live on paper2: 5.9:1) */
   --color-amber2: #e3a21a;
   --color-clay: #a63d2f;
   --color-dark: #14130e;
@@ -143,7 +143,7 @@
     @apply border-green bg-green text-paper;
   }
   .chip-amber {
-    @apply border-amber bg-amber text-ink; /* ink on amber = 5.5:1 (paper on amber failed at 3.1) */
+    @apply border-amber bg-amber2 text-ink; /* ink on amber2 = 8.1:1 — bg-amber(#7a4e07)+ink failed at 2.5:1 */
   }
   .chip-green {
     @apply border-green bg-green/10 text-green;
@@ -165,10 +165,11 @@
     @apply bg-ink2;
   }
   .btn-amber {
-    @apply border-amber bg-amber text-ink;
+    @apply border-amber bg-amber2 text-ink; /* ink on amber2 = 8.1:1 (bg-amber+ink was 3.4:1 — PSI contrast fail) */
   }
   .btn-amber:hover {
-    @apply bg-amber2 border-amber2 text-ink;
+    background: #efbb49;
+    @apply border-amber text-ink;
   }
   .btn-ghost {
     @apply border-ink/30 bg-transparent text-ink;
@@ -181,6 +182,26 @@
   }
   .btn-ondark:hover {
     @apply bg-dpaper text-ink;
+  }
+  /* Long CTAs are allowed to wrap on narrow screens (default .btn is nowrap). */
+  .btn-wrap {
+    white-space: normal;
+    text-align: left;
+  }
+  /* Horizontally scrollable rails (profile tabs) — hide the scrollbar, keep the scroll. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* When any <dialog> is open, hide fixed page chrome — iOS Safari paints fixed
+     elements above top-layer dialogs, which buried the cookie banner / data chip
+     over modals on real phones. */
+  body.modal-open #cookie-banner,
+  body.modal-open #sample-chip {
+    display: none;
   }
   .railbox {
     @apply border border-ink bg-paper;
@@ -333,9 +354,10 @@
 }
 
 @keyframes blink {
-  to {
-    visibility: hidden;
-  }
+  /* opacity-only: compositor-friendly (visibility keyframes force main-thread
+     paint work and were flagged as non-composited animation by Lighthouse) */
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 @keyframes marquee {
   from {

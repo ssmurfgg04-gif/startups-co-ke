@@ -1,0 +1,62 @@
+# Housekeeping tasks that need NETLIFY_AUTH_TOKEN / NETLIFY_SITE_ID (repo
+# secrets — never printed). Run from the Actions tab → "Admin housekeeping"
+# → Run workflow, or via the API:
+#   gh api repos/ssmurfgg04-gif/startups-co-ke/actions/workflows/admin.yml/dispatches \
+#     -f '{"ref":"main","inputs":{"task":"remove-test-listings"}}'
+#
+# Tasks:
+#   remove-test-listings — set status=unlisted on the clearly-labeled Zawadi
+#     test listings left by QA (pages 404, feed hides them, records kept for
+#     audit). Slug list is explicit + hardcoded (no free-text injection).
+#   list-community-blobs — dump slug · name · status of every community
+#     listing so removals can be audited from the workflow log.
+
+name: Admin housekeeping
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task'
+        required: true
+        type: choice
+        options:
+          - remove-test-listings
+          - list-community-blobs
+
+concurrency:
+  group: admin-housekeeping
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Guard — secrets must exist
+        run: |
+          if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "::error::NETLIFY_AUTH_TOKEN / NETLIFY_SITE_ID secrets are not set on this repo."
+            exit 1
+          fi
+
+      - name: List community listings
+        if: inputs.task == 'list-community-blobs'
+        run: node tools/remove_listing.mjs
+
+      - name: Remove labeled QA test listings
+        if: inputs.task == 'remove-test-listings'
+        run: |
+          for slug in zawadi-labs-test zawadi-ui-test zawadi-ui-test-zt7 zawadi-ui-test-u20 zawadi-ui-test-h9o; do
+            echo "== $slug =="
+            node tools/remove_listing.mjs "$slug" remove || echo "::warning::removal of $slug failed — see output above"
+          done
+          echo "== remaining =="
+          node tools/remove_listing.mjs

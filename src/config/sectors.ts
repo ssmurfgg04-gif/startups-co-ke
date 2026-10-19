@@ -12,12 +12,15 @@ export const SECTOR_COLORS: Record<string, string> = {
   SaaS: '#3E4A3A',
   'HR & Future of Work': '#7C6A00',
   Media: '#33312A',
+  Mobility: '#44566B',
   Other: '#6E6A5B',
 };
 
 export const SECTORS = Object.keys(SECTOR_COLORS);
 
-export const STAGES = ['Pre-seed', 'Seed', 'Series A', 'Series B'] as const;
+/** Full stage ladder — includes every stage value present in company data
+ *  (Series F / Mature / Pre-Series A were previously unfilterable). */
+export const STAGES = ['Pre-seed', 'Seed', 'Pre-Series A', 'Series A', 'Series B', 'Series F', 'Mature'] as const;
 
 export const CITIES = ['Nairobi', 'Mombasa', 'Nakuru', 'Kisumu', 'Eldoret', 'Malindi', 'Nanyuki'] as const;
 

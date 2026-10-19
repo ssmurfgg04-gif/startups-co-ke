@@ -25,16 +25,43 @@ await p.selectOption('#pj-apply', 'Email CV');
 ok('apply-method hint swaps to email copy', (await p.textContent('[data-apply-hint]')).includes('inbox'));
 await p.fill('#pj-apply-detail', 'jobs@zawadi.co.ke');
 await p.fill('#pj-deadline', '2026-11-30');
-let sbInsert = null;
-p.on('response', (r) => { if (r.url().includes('/rest/v1/submissions') && r.request().method() === 'POST') sbInsert = r.status(); });
+// The review queue now writes via /.netlify/functions/review-submit (Netlify
+// runtime, absent on astro preview). Intercept the endpoint to simulate it:
+// first call succeeds, and a follow-up 500 run proves honest failure UX.
+let fnCalls = 0;
+await p.route('**/.netlify/functions/review-submit', async (route) => {
+  fnCalls++;
+  const body = fnCalls === 1
+    ? { ok: true, stored: 'queue', id: 'r:test' }
+    : { ok: false, error: 'queue storage momentarily unavailable (simulated)' };
+  await route.fulfill({ status: fnCalls === 1 ? 200 : 503, contentType: 'application/json', body: JSON.stringify(body) });
+});
+let fnStatus = null;
+p.on('response', (r) => { if (r.url().includes('/.netlify/functions/review-submit') && r.request().method() === 'POST' && fnStatus !== 200) fnStatus = r.status(); });
 await p.click('#modal-postjob button[type="submit"]');
 await p.waitForTimeout(1800);
 const subs = await p.evaluate(() => JSON.parse(localStorage.getItem('sck-submissions') || '[]'));
 const job = subs.filter((s) => s.kind === 'job').pop();
-const viaSb = sbInsert === 201;
+const viaFn = fnStatus === 200;
 const viaLocal = !!job && job.payload.company === 'Zawadi Labs' && job.payload.pay === 'Range' && job.payload.applyDetail === 'jobs@zawadi.co.ke' && job.payload.deadline === '2026-11-30';
-ok(`postjob submit stores enriched fields (supabase ${sbInsert ?? 'no-call'} / local ${viaLocal})`, viaSb || viaLocal);
+ok(`postjob submit reaches review-queue function (fn ${fnStatus ?? 'no-call'} / local ${viaLocal})`, viaFn || viaLocal);
 ok('postjob toast fired', await p.evaluate(() => !!document.querySelector('#toast-root, .toast, [id^=toast]')));
+
+// 1b. Function failure path — honest error, dialog stays open, no fake success
+await p.click('aside button[data-modal="postjob"]');
+await p.waitForSelector('#modal-postjob[open]');
+await p.fill('#pj-co', 'Zawadi Labs');
+await p.fill('#pj-title', 'Retry Analyst');
+await p.fill('#pj-email', 'jobs@zawadi.co.ke');
+await p.fill('#pj-apply-detail', 'jobs@zawadi.co.ke');
+await p.fill('#pj-deadline', '2026-11-30');
+await p.click('#modal-postjob button[type="submit"]');
+await p.waitForFunction(() => document.querySelector('#toaster')?.textContent?.includes('Not sent'), null, { timeout: 6000 }).catch(() => {});
+ok('failed submit keeps dialog open (honest retry)', await p.locator('#modal-postjob[open]').count() === 1);
+const failToast = await p.evaluate(() => document.querySelector('#toaster')?.textContent || '');
+ok(`failure toast names the cause (${failToast.slice(0, 40).trim()}…)`, failToast.includes('Not sent') || failToast.includes('unavailable'));
+await p.keyboard.press('Escape');
+await p.waitForTimeout(300);
 
 // 2. Pay disclosed filter
 const total = await p.locator('.job-row').count();

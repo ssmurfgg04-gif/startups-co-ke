@@ -4,7 +4,7 @@ Living document. Everything non-obvious we decided, and why. Date base: **2026-1
 
 ## D1. Architecture — single self-contained HTML file + Supabase
 - `index.html` at repo root, deployed via **GitHub Pages** with `CNAME` = startups.co.ke (see README for the 2 DNS records).
-- Backend: **Supabase** project `startups-co-ke` (ref `eezqpsbhmnhuhnmiwnsz`), region `eu-west-2` (closest available to Nairobi; af-south-1 not offered on free plan).
+- Backend: **Supabase** project `startups-co-ke` (ref `<project-ref>`), region `eu-west-2` (closest available to Nairobi; af-south-1 not offered on free plan).
 - Auth: Supabase built-in email auth. Data: Postgres + RLS. Logos: Supabase Storage bucket `logos`.
 - Client loads `@supabase/supabase-js@2` from CDN; data fetched via REST with **anon key** (safe by design — RLS enforced). Service key NEVER leaves `.secrets/` / repo Actions secrets.
 - Offline/double-click resilience: a build-time snapshot of the seeded data is embedded in the HTML as fallback; localStorage caches live data.

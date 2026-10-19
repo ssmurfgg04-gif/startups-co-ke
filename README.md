@@ -71,7 +71,7 @@ Local check: `node scripts/test_notify.mjs --live` (prints the exact email body,
 
 ## Supabase
 
-Project ref: `eezqpsbhmnhuhnmiwnsz` (region eu-west-2). Schema in `supabase/migrations/0001_init.sql` + `tools/schema.sql`:
+Project ref: `<project-ref>` (region eu-west-2). Schema in `supabase/migrations/0001_init.sql` + `tools/schema.sql`:
 
 - `submissions` — every user-submitted flow (startup, claim, job, event, intro, issue, trial, buy, sponsor, register). Public insert, owner-only read (RLS). **This table is the review queue** — browse it in the Supabase dashboard → Table Editor → submissions; every entry also lands in the desk inbox via the Resend function above.
 - `newsletter_subscribers` — The Ecosystem Brief signups (unique email).

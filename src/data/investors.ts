@@ -36,7 +36,7 @@ export const INVESTORS: Investor[] = [
     verified: 1,
     note: '40+ investments; leads and co-leads (Failory, Dec 2025).',
     portfolio: [],
-    focusSectors: ['Fintech', 'Logistics', 'Health', 'Hr'],
+    focusSectors: ['Fintech', 'Logistics', 'Health', 'HR & Future of Work'],
     website: 'https://enza.capital',
     logo: null,
   },

@@ -4,6 +4,9 @@
 interface Props { variant?: 'dark' | 'light'; href?: string; class?: string }
 const { variant = 'light', href = '/', class: cls = '' } = Astro.props;
 const text = variant === 'light' ? 'text-ink' : 'text-dpaper';
+// ".co.ke" accent: #7a4e07 passes on paper; on the dark footer the same token
+// sits at 2.5:1 — the bright amber2 (8.9:1 on dark) takes over there.
+const accent = variant === 'light' ? 'text-amber' : 'text-amber2';
 ---
 <a href={href} class={`group inline-flex items-center gap-2.5 ${cls}`} aria-label="startups.co.ke home">
   <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" class="shrink-0 transition-transform duration-300 group-hover:-rotate-6">
@@ -12,6 +15,6 @@ const text = variant === 'light' ? 'text-ink' : 'text-dpaper';
     <circle cx="50.5" cy="46.5" r="5.2" fill="var(--color-amber2)"></circle>
   </svg>
   <span class={`text-[18px] leading-none ${text}`}>
-    <span class="font-display font-bold tracking-tight">startups</span><span class="font-mono font-semibold text-amber">.co.ke</span>
+    <span class="font-display font-bold tracking-tight">startups</span><span class={`font-mono font-semibold ${accent}`}>.co.ke</span>
   </span>
 </a>

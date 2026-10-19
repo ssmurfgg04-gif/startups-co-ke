@@ -147,6 +147,49 @@ export function validateListing(body = {}) {
 /** Store keys are namespaced so the rate-limit keys never collide. */
 export const listingKey = (slug) => `s:${slug}`;
 
+/* ------------------------------------------------------------------ */
+/* Desk identity + best-effort email (shared by review-submit/newsletter) */
+/* ------------------------------------------------------------------ */
+
+/** The desk mailbox — the site owner. Overridable via NOTIFY_EMAIL env. */
+export const deskEmail = () =>
+  String(process.env.NOTIFY_EMAIL || 'jackblessed191@gmail.com').trim().toLowerCase();
+
+/**
+ * Best-effort email via Resend. NEVER throws — email is an enhancement;
+ * the queue (Blobs) is the source of truth. Returns a small status object.
+ * kind: 'desk' (review-queue digest to the desk) | 'welcome' (to a subscriber).
+ */
+export async function attemptEmail({ to, subject, text, replyTo }) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { sent: false, reason: 'RESEND_API_KEY not configured' };
+  const rcpt = String(to || deskEmail());
+  if (!rcpt || !rcpt.includes('@')) return { sent: false, reason: 'no recipient' };
+  const from = process.env.RESEND_FROM || 'startups.co.ke <notices@startups.co.ke>';
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from, to: [rcpt], subject, text, ...(replyTo ? { reply_to: replyTo } : {}) }),
+      signal: AbortSignal.timeout(8000),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { sent: false, reason: `resend ${res.status}` };
+    return { sent: true, id: data.id };
+  } catch (err) {
+    return { sent: false, reason: String((err && err.message) || err).slice(0, 120) };
+  }
+}
+
+/** Flatten a payload into "- key: value" digest lines (control chars stripped). */
+export function digestLines(payload = {}) {
+  const clean = (v) => String(v ?? '').replace(/[\u0000-\u001f<>]/g, '').slice(0, 500);
+  return Object.entries(payload)
+    .filter(([, v]) => v !== undefined && v !== null && String(v).trim() !== '' && !String(v).startsWith('data:'))
+    .map(([k, v]) => `- ${k}: ${clean(v)}`)
+    .join('\n');
+}
+
 /** Unique slug: try base, then -2 … -50. */
 export async function uniqueSlug(store, base) {
   if (!(await store.get(listingKey(base)))) return base;

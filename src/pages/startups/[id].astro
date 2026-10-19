@@ -79,7 +79,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
           </div>
         </div>
       </div>
-      <div class="flex shrink-0 gap-2">
+      <div class="flex flex-wrap gap-2 md:shrink-0">
         <button class="btn" data-modal="intro">Request introduction</button>
         <button class="btn btn-ghost" data-modal="claim">Claim profile</button>
         <a class="btn btn-ghost" href={`/startups/${c.id}.md`} title="LLM-readable markdown version of this profile">AI-readable Markdown</a>
@@ -95,10 +95,10 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
 
     <div class="mt-8 grid gap-10 lg:grid-cols-12">
       <!-- Main -->
-      <div class="lg:col-span-8">
-        <nav class="flex gap-1 border-b border-ink" role="tablist" aria-label="Profile sections">
+      <div class="lg:col-span-8 min-w-0">
+        <nav class="no-scrollbar -mx-1 flex gap-1 overflow-x-auto border-b border-ink px-1" role="tablist" aria-label="Profile sections">
           {['Overview', 'Funding', 'Team', 'News', 'Similar'].map((t, i) => (
-            <button class="profile-tab -mb-px border border-transparent border-b-0 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-mut transition-colors hover:text-ink" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls="panel-root" data-tab={t.toLowerCase()} class:list={[i === 0 && 'border-ink border-b-paper bg-paper text-ink !border-b-paper']}>
+            <button class="profile-tab shrink-0 -mb-px border border-transparent border-b-0 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-mut transition-colors hover:text-ink" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls="panel-root" data-tab={t.toLowerCase()} class:list={[i === 0 && 'border-ink border-b-paper bg-paper text-ink !border-b-paper']}>
               {t}
             </button>
           ))}
