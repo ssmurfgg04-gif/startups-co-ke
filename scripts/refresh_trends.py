@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Refresh TRENDS in src/data/ecosystem.ts from Google Trends KE daily RSS (D8: raw endpoint, zero deps)."""
-import re, urllib.request, datetime
+import re, urllib.request, datetime, os
 
-XML = "/home/z/my-project/research/gtrends-fresh.xml"
-TS = "/home/z/my-project/src/data/ecosystem.ts"
+# Repo-root relative so the script runs locally AND in CI (it used to carry
+# absolute sandbox paths that made the workflow line fail silently).
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+XML = os.path.join(ROOT, "research", "gtrends-fresh.xml")
+TS = os.path.join(ROOT, "src", "data", "ecosystem.ts")
 
 req = urllib.request.Request("https://trends.google.com/trending/rss?geo=KE", headers={"User-Agent": "Mozilla/5.0"})
 xml = urllib.request.urlopen(req, timeout=20).read().decode("utf-8", "ignore")

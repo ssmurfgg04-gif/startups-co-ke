@@ -8,6 +8,7 @@ Built on the "standing on shoulders of giants" principle: [Astro 5](https://astr
 ## Repo layout
 
 - `src/` — the Astro 5 app (pages, components, layouts, data, content collections)
+- `worker/` — the Cloudflare Worker: the single production backend (`index.js` + `lib.mjs` + `render.mjs` + `brief.mjs`)
 - `docs/` — `DECISIONS.md` (why everything is the way it is), `SPEC.md` (product spec), `TASTE-SKILL-README.md`
 - `research/` — raw research captures (search results, Google News RSS, arXiv, Google Trends)
 - `tools/` — `schema.sql`, `seed.sql` (real sourced seed data), `run_sql.py` (Supabase Management API runner)
@@ -26,7 +27,7 @@ Built on the "standing on shoulders of giants" principle: [Astro 5](https://astr
 | Data       | Typed TypeScript modules, real sourced entities | `src/data/*.ts`         |
 | Editorial  | Content collections (Markdown)       | `src/content/news/*.md`            |
 | Backend    | Supabase (auth + Postgres + storage) | `src/lib/supabase.ts`              |
-| Instant listings | Netlify Functions + Netlify Blobs | `netlify/functions/`, `/startups/community` |
+| Dynamic backend | Cloudflare Worker (Supabase REST, service key) | `worker/index.js`, `/api/*`, `/startups/community/*`, `/desk` |
 | SEO        | Sitemap, RSS, JSON-LD, OG images     | `src/components/Seo.astro`, etc.   |
 
 ## Commands
@@ -54,20 +55,22 @@ Copy `.env.example` → `.env`:
 ```
 PUBLIC_SUPABASE_URL=...
 PUBLIC_SUPABASE_ANON_KEY=...
-# review-queue email notifications (server-side only — see below)
+# worker secrets (Cloudflare dashboard — never in source)
 RESEND_API_KEY=re_...
-NOTIFY_EMAIL=jackblessed191@gmail.com
+SUPABASE_SERVICE_ROLE_KEY=...
+NOTIFY_EMAIL=desk@startups.co.ke   # the desk mailbox, no code fallback
 # optional privacy-friendly analytics (loads only after cookie consent)
 PUBLIC_ANALYTICS_DOMAIN=startups.co.ke
 ```
 
-**Resend / review-queue emails.** Every form (submit startup, post a job, claim, sponsor, …) writes into the Supabase `submissions` table and then pings `POST /.netlify/functions/notify`, which emails the desk a digest via the Resend API. Set in **Netlify UI → Site configuration → Environment variables** (server-side only — the key never reaches the browser bundle):
+**Worker runtime config.** The Cloudflare Worker is the only backend. Non-secret vars ship in `wrangler.jsonc` (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `NOTIFY_EMAIL`); secrets live ONLY in **Cloudflare dashboard → Workers → startups-co-ke → Settings → Variables & Secrets** (never in source):
 
-- `RESEND_API_KEY` — required to actually send; without it the function no-ops (202) so forms never break.
-- `NOTIFY_EMAIL` — recipient. Default `jackblessed191@gmail.com` (a proven inbox). To receive at `contact@startups.co.ke`, set this var — but only once that mailbox exists (Resend sends FROM your domain; it does not host mailboxes for it).
-- `RESEND_FROM` — default `startups.co.ke <notices@startups.co.ke>` (domain verified ✓ — delivers to any inbox, replies route to the submitter).
+- `SUPABASE_SERVICE_ROLE_KEY` — required for writes; the Worker answers 503 without it (check `/api/health`).
+- `RESEND_API_KEY` — required to actually send email; without it email no-ops and the database stays the source of truth.
+- `NOTIFY_EMAIL` — the desk mailbox. No hardcoded fallback: missing config fails closed (the desk simply won't unlock).
+- `RESEND_FROM` — default `startups.co.ke <notices@startups.co.ke>` (domain verified ✓).
 
-Local check: `node scripts/test_notify.mjs --live` (prints the exact email body, then really calls Resend).
+The legacy `POST /api/notify` endpoint was deleted (unauthenticated email relay).
 
 ## Supabase
 
@@ -82,44 +85,36 @@ Auth: magic-link sign-in (Supabase Auth), site_url + redirect allow-list preconf
 ## Jobs automation (piggyback, zero manual upkeep)
 
 - **Build-time pull:** `scripts/fetch_jobs.mjs` reads employers' own ATS boards (Lever / Greenhouse / Workable / BambooHR / Ashby), keeps Kenya-relevant roles only, **link-checks every application URL** (confirmed 404/410 → dropped; ambiguous bot-wall → kept, never silently empties the board) and writes `src/data/jobs.live.json`.
-- **Daily refresh:** `.github/workflows/refresh-data.yml` runs 06:00 EAT daily — re-pulls boards, commits the changed snapshot with `GITHUB_TOKEN` (no secrets needed), and the push triggers Netlify's auto-deploy. Run on demand via *Run workflow*.
+- **Daily refresh:** `.github/workflows/refresh-data.yml` runs 06:00 EAT daily — re-pulls boards, commits the changed snapshot with `GITHUB_TOKEN` (no secrets needed), and the push triggers the Cloudflare Workers git integration rebuild. Run on demand via *Run workflow*.
 - **Add an employer:** append one line to `SOURCES` in `scripts/fetch_jobs.mjs` (board slug + display name). That's it.
 
 ## Deployment
 
-**Netlify (primary — prepared, one step away):** the repo ships `netlify.toml` (Node 22, `npm run build`, `dist/`, cache + security headers) and `.github/workflows/netlify.yml`. Every build re-pulls the live job boards via `scripts/fetch_jobs.mjs` (committed snapshot is the fallback, so a build never breaks on a flaky board).
+**Cloudflare Workers (the only deploy target).** `wrangler.jsonc` serves the Astro `dist/` as static assets from the Worker (`worker/index.js` handles `/api/*`, `/startups/community/*`, `/desk`, `/auth/*`).
 
-Two ways to go live:
-
-1. **Netlify UI (fastest):** Netlify → *Add new site → Import an existing project* → pick this repo. Build settings auto-load from `netlify.toml` — just click Deploy. Optionally set env vars `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_ANON_KEY` (values in `.env.example`; the build also has public-by-design fallbacks, so deploys work without them).
-2. **GitHub Actions:** add two repo secrets — `NETLIFY_AUTH_TOKEN` (Netlify → User settings → Applications → Personal access token) and `NETLIFY_SITE_ID` (Site → Site settings → API) — then push to `main`. The workflow builds and ships to production; without the secrets the deploy step skips itself.
-
-Then attach the domain: Netlify → *Domain settings* → add `startups.co.ke` apex + `www` (Netlify DNS or registrar CNAME → `<site>.netlify.app`; HTTPS via Let's Encrypt is automatic). The Astro `site` is already `https://startups.co.ke`, so sitemap/OG/canonicals are correct from the first deploy.
-
-CLI alternative: `npm run build && npx netlify-cli deploy --prod --dir=dist`
-
-**"Powered by Netlify" badge:** the floating badge on the live site is injected by Netlify's edge (it renders in an isolated frame, so site CSS can't remove it). Turn it off in the dashboard: **Project configuration → General → Powered by Netlify badge → off**. Takes effect on the next page request — no redeploy needed.
+- **Auto-deploy:** the Cloudflare Workers git integration watches `main` — every push runs `bun run build` and ships. Keep `bun.lock` the ONLY lockfile (`package-lock.json` is gitignored; mixed lockfiles broke builds before).
+- **Secrets:** Cloudflare dashboard → Workers → startups-co-ke → Settings → Variables & Secrets (see the list above). `wrangler.jsonc` `vars` holds only non-secrets.
+- **Manual deploy (rare):** `bun run build && bunx wrangler deploy`.
+- **Post-deploy smoke:** `GET /api/health` → `{"ok":true,"storage":true,"email":true,"anon":true}`.
+- **Supabase Auth URL config (dashboard):** Site URL `https://startups.co.ke`; redirect allow-list includes `https://startups.co.ke/**` and `https://startups.co.ke/auth/reset`.
 
 ## Founder-listed startups (instant publish, no approval) — Session 7
 
 - **Flow:** founder opens *List your startup* → publishes → live immediately at
-  `/startups/community/<slug>` (server-rendered by `netlify/functions/startup-page.mjs`,
-  rewritten from the clean URL via `netlify.toml`). No review queue. Optional review
-  fallback still writes to the Supabase `submissions` table.
-- **Storage:** Netlify Blobs, store `community_startups` (keys `s:<slug>`; rate-limit
-  counters `__rl:<ip>:<date>`). Zero schema migration; nothing to configure — the
-  runtime injects credentials automatically.
+  `/startups/community/<slug>` (server-rendered by the Worker from Supabase).
+  No review queue. Optional review fallback still writes to the Supabase
+  `submissions` table.
+- **Storage:** Supabase table `community_startups` (slug-keyed) via the Worker's
+  service key; rate-limit counters live in the `rate_limits` table.
 - **Spam controls:** hidden honeypot (`company_url`), strict field caps, https-only
-  website links, per-IP daily cap (5 anon / 10 with a Supabase magic-link session,
-  verified server-side via `/auth/v1/user` — no service key needed), `rel="nofollow ugc"`
-  on founder links, Founder-submitted badge until editorially verified.
-- **Removing a bad listing** (dashboard → Netlify UI has no Blobs browser): run
-  `NETLIFY_AUTH_TOKEN=<token> NETLIFY_SITE_ID=<site-id> node tools/remove_listing.mjs <slug>`
-  (see `tools/`), or purge via API. The `?format=md` + list function exclude any record
-  whose `status` is not `published`.
-- **Caching:** functions answer with `s-maxage=300, stale-while-revalidate=86400`;
-  static assets are immutable (`/_astro/*`, `/fonts/*`); HTML revalidates. Googlebot
-  crawls the edge, not your origin.
+  website links, per-IP daily cap from `cf-connecting-ip` only (5 anon / 10 with a
+  verified session), `rel="nofollow ugc"` on founder links, Founder-submitted badge
+  until editorially verified.
+- **Removing a bad listing:** `/desk` → Unlist or Delete (one click, session-gated;
+  records are kept for audit except explicit delete). Any record whose `status` is
+  not `published` is excluded from `?format=md` and the list feed.
+- **Caching:** dynamic pages answer `s-maxage=300, stale-while-revalidate=86400`;
+  static assets are immutable (`/_astro/*`, `/fonts/*`); HTML revalidates.
 
 ## Performance & Cloudflare notes (Session 7)
 
@@ -132,8 +127,8 @@ CLI alternative: `npm run build && npx netlify-cli deploy --prod --dir=dist`
   The literal address appears only inside JSON-LD `contactPoint` (inert data, not scrambled).
 - **SVG dash/pulse animations are hover-gated** and all animations respect
   `prefers-reduced-motion` at the CSS level (no-JS included).
-- Verified: `scripts/unit_s7.mjs` (26 checks), `scripts/e2e_s7.mjs` (44 checks),
-  `scripts/e2e_s4.mjs` (32), `scripts/e2e_s6.mjs` (6).
+- Verified: `scripts/unit_s7.mjs` + `scripts/unit_s8.mjs` (43 checks, run against
+  `worker/lib.mjs` + `worker/render.mjs` — the code that actually ships).
 
 ## Contact
 

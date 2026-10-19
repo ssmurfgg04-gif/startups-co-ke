@@ -1,17 +1,14 @@
-// Unit checks for session 8 additions: desk email identity, digest lines,
-// review-submit + newsletter request handling (store-free paths), and the
-// clientRef sanitizer. No Blobs needed — pure functions + early-return paths.
-import { deskEmail, digestLines, attemptEmail } from '../netlify/functions/_lib.mjs';
+// Unit checks for worker/lib.mjs security-critical helpers.
+// Pure / stubbed — no network. Run: node scripts/unit_s8.mjs
+import { deskEmail, digestLines, attemptEmail, clientIp, unsubToken, unsubValid } from '../worker/lib.mjs';
 
 const ok = (name, cond) => { console.log(`${cond ? 'PASS' : 'FAIL'} ${name}`); if (!cond) process.exitCode = 1; };
-const R = (req, options = {}) => new Request('http://x/.netlify/functions/t', req instanceof Request ? req : { method: 'POST', body: typeof req === 'string' ? req : JSON.stringify(req), ...options });
 
-// ---- deskEmail ----
-delete process.env.NOTIFY_EMAIL;
-ok('deskEmail default', deskEmail() === 'jackblessed191@gmail.com');
-process.env.NOTIFY_EMAIL = 'Owner@Startups.co.ke ';
-ok('deskEmail normalizes case+space', deskEmail() === 'owner@startups.co.ke');
-delete process.env.NOTIFY_EMAIL;
+// ---- deskEmail: env-only, fails closed ----
+const env = { NOTIFY_EMAIL: 'Owner@Startups.co.ke ' };
+ok('deskEmail normalizes case+space', deskEmail(env) === 'owner@startups.co.ke');
+ok('deskEmail missing config → empty (no hardcoded fallback)', deskEmail({}) === '');
+ok('deskEmail empty string → empty', deskEmail({ NOTIFY_EMAIL: '' }) === '');
 
 // ---- digestLines ----
 const d = digestLines({ name: 'Acme', empty: '', dropped: undefined, dataUrl: 'data:image/png;base64,xx', n: 5 });
@@ -19,55 +16,32 @@ ok('digest drops empty/undefined/data:', !d.includes('empty') && !d.includes('dr
 ok('digest strips control chars + angles (to empty)', !digestLines({ x: 'a\nb<c>' }).includes('\n') && !digestLines({ x: '<' }).includes('<'));
 
 // ---- attemptEmail: no key → skipped, never throws ----
-delete process.env.RESEND_API_KEY;
-const r1 = await attemptEmail({ subject: 't', text: 't' });
+const R = () => ({ RESEND_API_KEY: undefined });
+const r1 = await attemptEmail(R(), { subject: 't', text: 't' });
 ok('attemptEmail skips without key', r1.sent === false && /not configured/.test(r1.reason));
-process.env.RESEND_API_KEY = 're_test_123';
-const r2 = await attemptEmail({ subject: 't', text: 't' }).catch((e) => ({ sent: false, reason: String(e) }));
+const r2 = await attemptEmail({ RESEND_API_KEY: 're_test_123' }, { subject: 't', text: 't' }).catch((e) => ({ sent: false, reason: String(e) }));
 ok('attemptEmail with key never throws (network err → {sent:false})', r2.sent === false);
-delete process.env.RESEND_API_KEY;
+const r3 = await attemptEmail({ RESEND_API_KEY: 're_test_123' }, { subject: 't', text: 't' });
+ok('attemptEmail without recipient fails closed', r3.sent === false && r3.reason === 'no recipient');
 
-// ---- review-submit: store-free paths (honeypot, kind, bad json) ----
-const rs = (await import('../netlify/functions/review-submit.mjs')).default;
-let res = await rs(R({ company_url: 'bot', kind: 'claim', payload: {} }));
-ok('review-submit honeypot → fake success', res.status === 200);
-res = await rs(R({ kind: 'nope', payload: {} }));
-ok('review-submit unknown kind → 422', res.status === 422);
-res = await rs(R('not-json'));
-ok('review-submit bad json → 400', res.status === 400);
-res = await rs(new Request('http://x/.netlify/functions/t', { method: 'GET' }));
-ok('review-submit GET → 405', res.status === 405);
+// ---- clientIp: cf-connecting-ip only, XFF never trusted ----
+ok('clientIp uses cf-connecting-ip', clientIp({ headers: new Headers({ 'cf-connecting-ip': '1.2.3.4', 'x-forwarded-for': '9.9.9.9' }) }) === '1.2.3.4');
+ok('clientIp ignores spoofed XFF', clientIp({ headers: new Headers({ 'x-forwarded-for': '9.9.9.9' }) }) === 'unknown');
+ok('clientIp no headers → unknown bucket', clientIp({ headers: new Headers() }) === 'unknown');
 
-// ---- newsletter: store-free paths ----
-const nl = (await import('../netlify/functions/newsletter.mjs')).default;
-res = await nl(R({ company_url: 'bot', email: 'a@b.co' }));
-ok('newsletter honeypot → fake success', res.status === 200);
-res = await nl(R({ email: 'not-an-email' }));
-ok('newsletter invalid email → 422', res.status === 422);
-res = await nl(R({ email: 'a@b.co' })); // valid email → proceeds to store → may fail locally; accept 200/429/503 but NOT 422
-const nlRes2 = res.status;
-ok('newsletter valid email passes validation gate', [200, 429, 503, 500].includes(nlRes2));
+// ---- unsubToken: service-key only, no anon fallback ----
+const anon = 'eyJhbGciOiJIUzI1NiJ9.anon.fake';
+const noSvc = { SUPABASE_SERVICE_ROLE_KEY: '', PUBLIC_SUPABASE_ANON_KEY: anon };
+ok('unsubToken without service key → empty (fail closed)', (await unsubToken(noSvc, 'a@b.co')) === '');
+ok('unsubValid without service key → false', (await unsubValid(noSvc, 'a@b.co', 'f'.repeat(64))) === false);
+const svc = { SUPABASE_SERVICE_ROLE_KEY: 'svc-secret-123' };
+const t1 = await unsubToken(svc, 'a@b.co');
+ok('unsubToken with service key is 64 hex', /^[0-9a-f]{64}$/.test(t1));
+ok('unsubValid accepts correct token', (await unsubValid(svc, 'a@b.co', t1)) === true);
+ok('unsubValid rejects wrong token', (await unsubValid(svc, 'a@b.co', '0'.repeat(64))) === false);
+ok('unsubValid rejects other address', (await unsubValid(svc, 'other@b.co', t1)) === false);
+// Determinism: same key+email → same token; different key → different token.
+ok('unsubToken deterministic per key', (await unsubToken(svc, 'a@b.co')) === t1);
+ok('unsubToken bound to the key', (await unsubToken({ SUPABASE_SERVICE_ROLE_KEY: 'svc-secret-124' }, 'a@b.co')) !== t1);
 
-// ---- startup-create: clientRef sanitizer + validate-before-ratelimit ordering ----
-const sc = (await import('../netlify/functions/startup-create.mjs')).default;
-res = await sc(R({ company_url: 'bot' }));
-ok('startup-create honeypot → fake success', res.status === 200);
-// invalid listing (missing fields) must 422 WITHOUT burning the rate limit —
-// verify via two identical invalid calls: both 422 (if rate-limit ran first
-// and the limiter were cap 1 the second call would still be 422 — so instead
-// assert the error shape is validation, not rate-limit).
-res = await sc(R({ name: 'T', website: 'https://t.co', tagline: '1234', email: 'bad-email' }));
-const body = await res.json().catch(() => ({}));
-ok('startup-create invalid email → 422 validation', res.status === 422 && body.errors?.email);
-res = await sc(R('not-json'));
-ok('startup-create bad json → 400', res.status === 400);
-
-// ---- desk: stealth on unauthenticated data fetch ----
-const desk = (await import('../netlify/functions/desk.mjs')).default;
-res = await desk(new Request('http://x/desk/data'));
-ok('desk/data unauthenticated → stealth 404', res.status === 404);
-res = await desk(new Request('http://x/desk'));
-const html = await res.text();
-ok('desk shell renders sign-in state', res.status === 200 && html.includes('Checking your session'));
-
-console.log('s8 unit checks done');
+console.log('worker security unit checks done');

@@ -1,5 +1,7 @@
-// Unit checks for netlify function helpers (no blobs needed — pure fns).
-import { esc, slugify, validateListing, renderPage, renderMarkdown, uniqueSlug } from '../netlify/functions/_lib.mjs';
+// Unit checks for the LIVE worker helpers (worker/lib.mjs + worker/render.mjs).
+// Pure functions only — no network. Run: node scripts/unit_s7.mjs
+import { esc, slugify, validateListing } from '../worker/lib.mjs';
+import { renderPage, renderMarkdown } from '../worker/render.mjs';
 
 const ok = (name, cond) => { console.log(`${cond ? 'PASS' : 'FAIL'} ${name}`); if (!cond) process.exitCode = 1; };
 
@@ -48,11 +50,7 @@ const md = renderMarkdown(l, 'x');
 ok('md has no raw html', !md.includes('<img'));
 ok('md advertises canonical URL', md.includes('https://startups.co.ke/startups/community/x'));
 
-// uniqueSlug against a fake store
-const fakeStore = { seen: new Set(), async get(k) { return this.seen.has(k) ? {} : null; } };
-fakeStore.seen.add('s:acme');
-ok('uniqueSlug skips taken base', await uniqueSlug(fakeStore, 'acme') === 'acme-2');
-fakeStore.seen.add('s:acme-2');
-ok('uniqueSlug increments again', await uniqueSlug(fakeStore, 'acme') === 'acme-3');
+// uniqueSlug's collision logic needs the live store (Supabase REST via env),
+// so it is covered by the production smoke checks, not here.
 
 console.log('lib unit checks done');

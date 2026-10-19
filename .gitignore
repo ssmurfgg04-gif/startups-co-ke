@@ -26,3 +26,7 @@ supabase/.temp/
 *.log
 .dev.vars
 .wrangler/
+
+# Single lockfile policy: bun.lock only (Cloudflare builds with bun).
+package-lock.json
+node_modules/
