@@ -153,9 +153,10 @@ export const deskEmail = (env) =>
 
 /**
  * Best-effort email via Resend. NEVER throws; email is an enhancement, the
- * database is the source of truth.
+ * database is the source of truth. `headers` passes through to Resend
+ * (used for List-Unsubscribe on broadcast mail).
  */
-export async function attemptEmail(env, { to, subject, text, replyTo }) {
+export async function attemptEmail(env, { to, subject, text, replyTo, headers }) {
   const key = env.RESEND_API_KEY;
   if (!key) return { sent: false, reason: 'RESEND_API_KEY not configured' };
   const rcpt = String(to || deskEmail(env));
@@ -165,7 +166,14 @@ export async function attemptEmail(env, { to, subject, text, replyTo }) {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: [rcpt], subject, text, ...(replyTo ? { reply_to: replyTo } : {}) }),
+      body: JSON.stringify({
+        from,
+        to: [rcpt],
+        subject,
+        text,
+        ...(replyTo ? { reply_to: replyTo } : {}),
+        ...(headers ? { headers } : {}),
+      }),
       signal: AbortSignal.timeout(8000),
     });
     const data = await res.json().catch(() => ({}));
@@ -174,6 +182,48 @@ export async function attemptEmail(env, { to, subject, text, replyTo }) {
   } catch (err) {
     return { sent: false, reason: String((err && err.message) || err).slice(0, 120) };
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Unsubscribe tokens (The Ecosystem Brief)                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Per-address HMAC token. Keyed by the service-role key, which only the
+ * Worker ever holds: nobody can forge an unsubscribe for someone else
+ * without the secret. Not printed, not logged.
+ */
+export async function unsubToken(env, email) {
+  const data = new TextEncoder().encode(`brief-unsub:${String(email).toLowerCase()}`);
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(svcKey(env) || sbAnon(env)),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, data);
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+export async function unsubValid(env, email, token) {
+  if (!email || !token) return false;
+  const want = await unsubToken(env, email);
+  // Constant-time-ish compare; length is fixed (64 hex) so early exit is safe.
+  if (String(token).length !== want.length) return false;
+  let diff = 0;
+  for (let i = 0; i < want.length; i++) diff |= want.charCodeAt(i) ^ String(token).charCodeAt(i);
+  return diff === 0;
+}
+
+/** Remove a subscriber. Returns rows deleted (0/1) or null on storage error. */
+export async function removeSubscriber(env, email) {
+  const r = await sb(env, `/rest/v1/newsletter_subscribers?email=eq.${encodeURIComponent(email)}`, {
+    method: 'DELETE',
+    prefer: 'return=representation',
+  });
+  if (r.status >= 200 && r.status < 300) return Array.isArray(r.data) ? r.data.length : 0;
+  return null;
 }
 
 /** Flatten a payload into "- key: value" digest lines (control chars stripped). */
@@ -243,8 +293,18 @@ export function validateListing(body = {}) {
 /* Storage ops (community listings / review queue / newsletter)        */
 /* ------------------------------------------------------------------ */
 
-/** Map a community_startups row to the record shape the UI expects. */
-const rowToRec = (row) => ({ ...(row?.data || {}), status: row?.status || 'published' });
+/**
+ * Map a community_startups row to the record shape the UI expects.
+ * `slug` is a real column AND is copied into `data` at write time — but rows
+ * written by earlier versions (or by hand) may lack it inside `data`, which
+ * is how /startups/community/undefined happened. The column is the source of
+ * truth; it always wins.
+ */
+const rowToRec = (row) => ({
+  ...(row?.data || {}),
+  slug: row?.slug || row?.data?.slug || undefined,
+  status: row?.status || 'published',
+});
 
 export async function getListing(env, slug) {
   const r = await sb(env, `/rest/v1/community_startups?slug=eq.${encodeURIComponent(slug)}&select=*`);

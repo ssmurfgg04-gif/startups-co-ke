@@ -3,8 +3,8 @@
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
   "checked": 24,
-  "dropped": 1,
-  "ambiguous": 1
+  "dropped": 2,
+  "ambiguous": 0
  },
  "sources": [
   {
@@ -99,20 +99,6 @@
   }
  ],
  "jobs": [
-  {
-   "id": "apollo-finance-manager",
-   "title": "Finance Manager",
-   "companyId": "apollo",
-   "location": "Nairobi",
-   "mode": "Hybrid",
-   "category": "Operations",
-   "postedDays": 39,
-   "applyUrl": "https://jobs.lever.co/apolloagriculture/3cd3a71e-d0a0-43b5-92f2-79832a60aefd",
-   "board": "Lever",
-   "tags": [
-    "Finance"
-   ]
-  },
   {
    "id": "moniepoint-engineering-manager",
    "title": "Engineering Manager",

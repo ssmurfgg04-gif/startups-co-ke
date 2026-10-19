@@ -1,9 +1,9 @@
 ---
 import Base from '@/layouts/Base.astro';
 import { SITE } from '@/config/site';
-const updated = '2026-10-15';
+const updated = '2026-10-19';
 ---
-<Base title="Privacy policy" description="How startups.co.ke handles data: cookies, Supabase-powered accounts, submissions, analytics and your rights under the Kenya Data Protection Act.">
+<Base title="Privacy policy" description="How startups.co.ke handles data: cookies, accounts, submissions, analytics and your rights under the Kenya Data Protection Act.">
   <article class="wrap max-w-3xl py-10">
     <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / Privacy policy</p>
     <h1 class="mt-2 text-[clamp(32px,3.8vw,50px)]">Privacy policy.</h1>
@@ -12,19 +12,19 @@ const updated = '2026-10-15';
     <div class="prose-sck mt-8">
       <p><strong>1. Who we are.</strong> startups.co.ke is an ecosystem and business-intelligence platform for Kenya's startup economy, operated from {SITE.contact.address}. You can reach us at <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> or {SITE.contact.phoneDisplay}. Data on the platform is compiled from public sources with visible statuses and sources; this policy is straight about how the site itself handles your data.</p>
 
-      <p><strong>2. What we collect.</strong> When you sign in, we use Supabase Auth with one-time "magic link" emails, or an email address plus a password you set yourself: we store your email address, a user identifier and session metadata. When you submit a startup, claim a profile, post a job, list an event, request an introduction or report a data issue, we store the details of that submission (including any optional logo you upload) in our submissions queue. When you subscribe to The Ecosystem Brief, we store your email for the newsletter only.</p>
+      <p><strong>2. What we collect.</strong> When you sign in, we collect your email address and, if you choose the password option, a cryptographically hashed copy of your password (never the password itself), plus the session data needed to keep you signed in. When you submit a startup, claim a profile, post a job, list an event, request an introduction or report a data issue, we store the details of that submission (including any optional logo you upload) so we can review and, where appropriate, publish it. When you subscribe to The Ecosystem Brief, we store your email address for the newsletter only.</p>
 
-      <p><strong>3. Cookies and local storage.</strong> We use a small set of "usual" cookies and browser storage: an essential session cookie for sign-in (Supabase), your cookie-consent choice and job bookmarks (local storage on your device), and (only after you press "Accept all") privacy-friendly analytics (Plausible-compatible, no cross-site tracking, no advertising profiles). You can withdraw consent at any time by clearing site data; essential-only keeps the site fully usable.</p>
+      <p><strong>3. Cookies and local storage.</strong> We use a small set of "usual" cookies and browser storage: an essential session cookie for sign-in, your cookie-consent choice and job bookmarks (local storage on your device), and (only after you press "Accept all") privacy-friendly analytics (Plausible-compatible, no cross-site tracking, no advertising profiles). You can withdraw consent at any time by clearing site data; essential-only keeps the site fully usable.</p>
 
-      <p><strong>4. Why we process it.</strong> To provide the platform (accounts, submissions, profiles with your own logos), to communicate (magic links, the newsletter, replies to your submissions), and to improve the product (aggregate analytics after consent). Our legal bases are your consent, and our legitimate interest in operating and securing the service.</p>
+      <p><strong>4. Why we process it.</strong> To provide the platform (accounts, submissions, founder profiles), to communicate (sign-in and password-reset emails, the newsletter, replies to your submissions), and to improve the product (aggregate analytics after consent). Our legal bases are your consent, and our legitimate interest in operating and securing the service.</p>
 
-      <p><strong>5. Who we share with.</strong> Processors: Supabase (database, auth and storage, data hosted in the EU, region eu-west-2), our email delivery provider for magic links and the newsletter, and privacy-friendly analytics if opted in. We do not sell personal data, and we do not share it with advertisers. Submissions you send are visible only to our editorial team.</p>
+      <p><strong>5. Who we share with.</strong> We use a small number of service providers: a database and account provider, an email delivery provider for sign-in and newsletter mail, and privacy-friendly analytics if you opt in. We do not sell personal data, and we do not share it with advertisers. Submissions you send are visible only to our editorial team until you choose to publish them.</p>
 
-      <p><strong>6. How long we keep it.</strong> Account and submission records are kept while your profile or request is active and for 24 months after our last interaction, then deleted or anonymised. Newsletter emails are kept until you unsubscribe. Analytics aggregates contain no personal identifiers.</p>
+      <p><strong>6. How long we keep it.</strong> Account and submission records are kept while your profile or request is active and for 24 months after our last interaction, then deleted or anonymised. Newsletter emails are kept until you unsubscribe; every newsletter carries a one-click unsubscribe link that removes the address immediately. Analytics aggregates contain no personal identifiers.</p>
 
-      <p><strong>7. Your rights.</strong> Under the Kenya Data Protection Act (2019) and GDPR where applicable, you can request access, correction, deletion, portability of your data, or object to processing, email <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> and we will respond within 30 days. You can also unsubscribe from any email with one click, and you can object to a listing's existence via the "Report data issue" action on any profile.</p>
+      <p><strong>7. Your rights.</strong> Under the Kenya Data Protection Act (2019) and GDPR where applicable, you can request access, correction, deletion, portability of your data, or object to processing, email <a class="text-amber underline" data-email={SITE.contact.emailB64} href="/contact">{SITE.contact.emailLabel}</a> and we will respond within 30 days. You can unsubscribe from any email with one click, and you can object to a listing's existence via the "Report data issue" action on any profile.</p>
 
-      <p><strong>8. Security.</strong> Data is stored with Supabase (PostgreSQL with row-level security, TLS in transit). The submissions table is write-only for the public: anonymous visitors may insert, but only authenticated owners can read their own rows. Uploaded logos live in a public storage bucket by design, do not upload images you would not publish.</p>
+      <p><strong>8. Security.</strong> Data travels over TLS and is stored by our database provider under industry-standard safeguards. Access to submission queues and account data is limited to the site's operator. Uploaded logos are visible publicly once a profile is published, so do not upload images you would not publish.</p>
 
       <p><strong>9. Children &amp; third-party links.</strong> The platform is not directed at persons under 18. External links (news sources, investor sites) have their own policies we do not control.</p>
 

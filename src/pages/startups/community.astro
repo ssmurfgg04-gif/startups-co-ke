@@ -167,11 +167,29 @@ const jsonld = {
         listEl.replaceChildren(...list.map((l) => {
           const a = document.createElement('a');
           a.className = 'group block border border-ink bg-paper p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_var(--color-paper3)]';
-          a.href = `/startups/community/${encodeURIComponent(String(l.slug))}`;
+          // Slug now always comes from the worker (column-backed), but never
+          // build a dead /undefined link again — fall back to the directory.
+          const slug = String(l.slug || '').trim();
+          a.href = slug ? `/startups/community/${encodeURIComponent(slug)}` : '/startups/community';
           const hue = SECTOR_HUES[String(l.sector ?? '')] ?? SECTOR_HUES.Other;
+          const logo = String(l.logoUrl || '').trim();
+          const initialsTile = () => {
+            const s = document.createElement('span');
+            s.setAttribute('aria-hidden', 'true');
+            s.className = 'flex h-11 w-11 shrink-0 items-center justify-center font-mono text-[12px] font-semibold text-paper';
+            s.style.background = hue;
+            s.textContent = initials(String(l.name ?? '?'));
+            return s;
+          };
+          let head: string;
+          if (logo) {
+            head = `<img src="${esc(logo)}" alt="" loading="lazy" width="44" height="44" class="h-11 w-11 shrink-0 border border-line bg-white object-contain p-0.5" data-logo />`;
+          } else {
+            head = `<span aria-hidden="true" class="flex h-11 w-11 shrink-0 items-center justify-center font-mono text-[12px] font-semibold text-paper" style="background:${hue}">${esc(initials(String(l.name ?? '?')))}</span>`;
+          }
           a.innerHTML = `
             <div class="flex items-start gap-3">
-              <span aria-hidden="true" class="flex h-11 w-11 shrink-0 items-center justify-center font-mono text-[12px] font-semibold text-paper" style="background:${hue}">${esc(initials(String(l.name ?? '?')))}</span>
+              ${head}
               <span class="min-w-0 flex-1">
                 <span class="flex items-center justify-between gap-2">
                   <h3 class="truncate font-display text-[19px] leading-tight">${esc(l.name)}</h3>
@@ -189,6 +207,9 @@ const jsonld = {
               <span class="truncate">${esc(String(l.website || '').replace(/^https?:\/\//, ''))}</span>
               <span class="flex items-center gap-2"><span>${esc(fmtDate(l.createdAt == null ? undefined : String(l.createdAt)))}</span><span class="text-ink transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span></span>
             </div>`;
+          // If the founder's logo ever 404s, degrade to the initials tile.
+          const img = a.querySelector('img[data-logo]');
+          if (img) img.addEventListener('error', () => img.replaceWith(initialsTile()), { once: true });
           return a;
         }));
       }

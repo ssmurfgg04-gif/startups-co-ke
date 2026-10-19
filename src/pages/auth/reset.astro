@@ -1,0 +1,150 @@
+---
+/**
+ * PASSWORD RESET (/auth/reset) — the dedicated screen the recovery email
+ * opens. Uses the documented Supabase Auth flow only:
+ *   1. recovery email link → Supabase verifies the token and redirects here
+ *      (URL must be allowlisted in Supabase Auth → Redirect URLs);
+ *   2. supabase-js consumes the session from the URL fragment
+ *      (detectSessionInUrl, default) — no manual token handling;
+ *   3. the new password is set through sb.auth.updateUser();
+ *   4. if the link is missing, expired or reused, a generic message is shown
+ *      and a fresh recovery email can be requested — no account existence
+ *      is revealed either way.
+ */
+import Base from '@/layouts/Base.astro';
+import { supabaseConfigured } from '@/lib/supabase';
+---
+<Base
+  title="Set a new password"
+  description="Set a new password for your startups.co.ke account."
+  noindex={true}
+>
+  <section class="wrap py-12">
+    <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / Set a new password</p>
+    <h1 class="mt-2 text-[clamp(30px,3.4vw,44px)] leading-[1.05]">Set a new password.</h1>
+
+    <div class="mt-8 max-w-md border border-ink bg-paper p-6" id="reset-box">
+      <p class="text-[14px] text-mut" id="reset-state">Checking your reset link…{supabaseConfigured ? '' : ' (auth is not connected in this preview)'}</p>
+
+      <div id="reset-form" class="hidden">
+        <label class="mono-label mt-4 block" for="rp1">New password (min 8 characters)</label>
+        <div class="relative mt-1.5">
+          <input id="rp1" type="password" required minlength="8" class="input pr-16" placeholder="New password" autocomplete="new-password" />
+          <button type="button" id="rp-toggle" class="absolute right-2 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-[0.1em] text-mut hover:text-ink" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+        <label class="mono-label mt-3 block" for="rp2">Repeat new password</label>
+        <input id="rp2" type="password" required minlength="8" class="input mt-1.5" placeholder="Repeat password" autocomplete="new-password" />
+        <p id="rp-msg" class="mt-3 hidden text-[13px] leading-relaxed text-mut" role="alert"></p>
+        <button id="rp-save" class="btn btn-amber mt-4 h-10 w-full">Save new password</button>
+      </div>
+
+      <div id="reset-invalid" class="hidden">
+        <p class="text-[14px] text-ink2">This reset link is invalid, was already used, or has expired. Request a fresh one below — the new email usually arrives within a minute.</p>
+        <label class="mono-label mt-4 block" for="ri-email">Your email</label>
+        <input id="ri-email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" autocomplete="email" />
+        <p id="ri-msg" class="mt-3 hidden text-[13px] leading-relaxed text-mut" role="status"></p>
+        <button id="ri-send" class="btn mt-4 h-10 w-full">Send me a new reset link</button>
+      </div>
+
+      <div id="reset-done" class="hidden">
+        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-green">✓ Password updated</p>
+        <p class="mt-2 text-[14px] text-ink2">Your new password is saved and already works. Go back to the site and sign in with it on the Password tab.</p>
+        <a class="btn btn-amber mt-4 h-10" href="/">Back to startups.co.ke</a>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="mt-4 max-w-md border border-line bg-paper2 px-4 py-3 text-[13.5px] text-ink2">
+        Setting a new password needs JavaScript. If you cannot enable it, contact us via the
+        <a class="text-amber underline" href="/contact">contact page</a> and we will help.
+      </p>
+    </noscript>
+  </section>
+
+  <script>
+    (async () => {
+      const state = document.getElementById('reset-state');
+      const form = document.getElementById('reset-form');
+      const invalid = document.getElementById('reset-invalid');
+      const done = document.getElementById('reset-done');
+      if (!state) return;
+
+      const { supabase } = await import('@/lib/supabase');
+      const sb = supabase();
+      if (!sb) { state.textContent = 'Auth is not connected right now. Please try again later.'; return; }
+
+      // detectSessionInUrl (default) has already consumed the recovery hash
+      // from the URL by the time getSession() resolves. No manual tokens.
+      const { data } = await sb.auth.getSession();
+      const session = data?.session;
+
+      if (!session) {
+        state.textContent = '';
+        invalid?.classList.remove('hidden');
+        const send = document.getElementById('ri-send');
+        const msg = document.getElementById('ri-msg');
+        send?.addEventListener('click', async () => {
+          const email = (document.getElementById('ri-email') as HTMLInputElement | null)?.value?.trim() || '';
+          if (!msg) return;
+          if (!email || !email.includes('@')) { msg.textContent = 'Type your email address first.'; msg.classList.remove('hidden'); return; }
+          msg.textContent = 'Sending…';
+          msg.classList.remove('hidden');
+          try {
+            const { error } = await sb.auth.resetPasswordForEmail(email, {
+              redirectTo: `${window.location.origin}/auth/reset`,
+            });
+            // Same wording whether or not the address has an account.
+            msg.textContent = error
+              ? `Could not send the reset email (${error.message}). Try again in a minute.`
+              : 'If that address has an account, a fresh reset link is on its way. Open it on this device.';
+          } catch (err) {
+            msg.textContent = `Could not send the reset email (${String((err as Error).message || err)}).`;
+          }
+          msg.classList.remove('hidden');
+        });
+        return;
+      }
+
+      state.textContent = '';
+      form?.classList.remove('hidden');
+
+      const toggle = document.getElementById('rp-toggle');
+      const pw1 = document.getElementById('rp1') as HTMLInputElement | null;
+      toggle?.addEventListener('click', () => {
+        if (!pw1) return;
+        pw1.type = pw1.type === 'password' ? 'text' : 'password';
+        toggle.textContent = pw1.type === 'password' ? 'Show' : 'Hide';
+        toggle.setAttribute('aria-pressed', String(pw1.type !== 'password'));
+      });
+
+      const save = document.getElementById('rp-save');
+      const msg = document.getElementById('rp-msg');
+      save?.addEventListener('click', async () => {
+        if (!msg || !pw1) return;
+        const p1 = pw1.value || '';
+        const p2 = (document.getElementById('rp2') as HTMLInputElement | null)?.value || '';
+        msg.textContent = '';
+        if (p1.length < 8) { msg.textContent = 'Use at least 8 characters.'; msg.classList.remove('hidden'); return; }
+        if (p1 !== p2) { msg.textContent = 'The two passwords do not match.'; msg.classList.remove('hidden'); return; }
+        if (save instanceof HTMLButtonElement) save.disabled = true;
+        msg.textContent = 'Saving…';
+        msg.classList.remove('hidden');
+        try {
+          const { error } = await sb.auth.updateUser({ password: p1 });
+          if (error) {
+            msg.textContent = `Could not save the new password (${error.message}). If the link has expired, request a fresh one below.`;
+            if (save instanceof HTMLButtonElement) save.disabled = false;
+            return;
+          }
+          // Clean up: end this recovery session on the device.
+          try { await sb.auth.signOut(); } catch { /* session may already be gone */ }
+          form?.classList.add('hidden');
+          done?.classList.remove('hidden');
+        } catch (err) {
+          msg.textContent = `Could not save the new password (${String((err as Error).message || err)}).`;
+          if (save instanceof HTMLButtonElement) save.disabled = false;
+        }
+      });
+    })();
+  </script>
+</Base>

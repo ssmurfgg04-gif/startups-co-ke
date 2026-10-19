@@ -23,10 +23,11 @@
 import {
   attemptEmail, checkRateLimit, clientIp, deleteListing, deskEmail, digestLines, findByClientRef,
   getListing, json, listListings, listSubscribers, newsletterSubscribe, putListing, queueInsert,
-  queueMarkDone, queueList, sb, setListingStatus, slugify, subscriberCount,
-  uniqueSlug, validateListing, verifyUser,
+  queueMarkDone, queueList, removeSubscriber, sb, setListingStatus, slugify, subscriberCount,
+  uniqueSlug, unsubToken, unsubValid, validateListing, verifyUser,
 } from './lib.mjs';
-import { deskHtml, notFoundPage, renderMarkdown, renderPage } from './render.mjs';
+import { deskHtml, notFoundPage, renderMarkdown, renderPage, unsubscribePage } from './render.mjs';
+import { BRIEF, briefFooter, briefHeaders } from './brief.mjs';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -41,6 +42,14 @@ const SECURITY = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+};
+
+/** Unsubscribe pages: server-rendered, never cached, never indexed. */
+const UNSUB_HEADERS = {
+  'Content-Type': 'text/html; charset=utf-8',
+  ...NO_STORE,
+  'X-Robots-Tag': 'noindex',
+  ...SECURITY,
 };
 
 const KINDS = new Set([
@@ -168,7 +177,16 @@ async function handlePage(req, env, slugRaw) {
   });
 }
 
-async function handleCreate(req, env) {
+/** Run background work past the response: without waitUntil, workerd may
+ *  cancel an un-awaited promise the instant the response is returned —
+ *  which silently swallowed the desk pings and the brief audit entries. */
+function bg(ctx, p) {
+  const q = Promise.resolve(p).catch(() => {});
+  try { ctx?.waitUntil(q); } catch { /* dev runtime without waitUntil */ }
+  return q;
+}
+
+async function handleCreate(req, env, ctx) {
   let body;
   try { body = await req.json(); } catch { return json(400, { ok: false, error: 'invalid JSON' }, CORS); }
 
@@ -220,7 +238,7 @@ async function handleCreate(req, env) {
   }
 
   // Desk ping (best-effort, never blocks the founder's success).
-  Promise.resolve(attemptEmail(env, {
+  bg(ctx, attemptEmail(env, {
     subject: `[instant listing] ${record.name} went live — /startups/community/${slug}`,
     text: [
       'A founder published a startup instantly (no review):',
@@ -231,12 +249,12 @@ async function handleCreate(req, env) {
       '--',
       'Automated ping from startups.co.ke.',
     ].join('\n'),
-  })).catch(() => {});
+  }));
 
   return json(200, { ok: true, slug, url: `https://startups.co.ke/startups/community/${slug}` }, { ...CORS, ...NO_STORE });
 }
 
-async function handleReview(req, env) {
+async function handleReview(req, env, ctx) {
   let body;
   try { body = await req.json(); } catch { return json(400, { ok: false, error: 'invalid JSON' }, CORS); }
 
@@ -276,7 +294,7 @@ async function handleReview(req, env) {
     return json(503, { ok: false, error: 'Queue storage is momentarily unavailable. Please try again in a moment.' }, { ...CORS, ...NO_STORE });
   }
 
-  Promise.resolve(attemptEmail(env, {
+  bg(ctx, attemptEmail(env, {
     subject: `[review queue] ${record.label}${email ? ` — ${email}` : ''}`,
     text: [
       record.label,
@@ -289,12 +307,12 @@ async function handleReview(req, env) {
       'Automated ping from startups.co.ke — the record is already saved.',
     ].join('\n'),
     replyTo: email || undefined,
-  })).catch(() => {});
+  }));
 
   return json(200, { ok: true, stored: 'queue', id }, { ...CORS, ...NO_STORE });
 }
 
-async function handleNewsletter(req, env) {
+async function handleNewsletter(req, env, ctx) {
   let body;
   try { body = await req.json(); } catch { return json(400, { ok: false, error: 'invalid JSON' }, CORS); }
 
@@ -324,7 +342,7 @@ async function handleNewsletter(req, env) {
   }
 
   if (!res.duplicate) {
-    Promise.resolve(attemptEmail(env, {
+    bg(ctx, attemptEmail(env, {
       to: email,
       subject: 'Welcome to The Ecosystem Brief — startups.co.ke',
       text: [
@@ -336,12 +354,12 @@ async function handleNewsletter(req, env) {
         '',
         "-- startups.co.ke — Kenya's startup record, kept in the open",
       ].join('\n'),
-    })).catch(() => {});
+    }));
 
-    Promise.resolve(attemptEmail(env, {
+    bg(ctx, attemptEmail(env, {
       subject: `[newsletter] new subscriber — ${email}`,
       text: `New newsletter signup (source: ${source}).\nManage everything at https://startups.co.ke/desk`,
-    })).catch(() => {});
+    }));
   }
 
   return json(200, { ok: true, stored: 'queue', duplicate: res.duplicate }, { ...CORS, ...NO_STORE });
@@ -422,12 +440,35 @@ async function handleDeskData(req, env) {
 }
 
 /**
- * POST /desk/brief-send — desk-gated. Emails The Ecosystem Brief to the
- * subscriber list (or a single test address). Body: { subject, text,
- * to? } — `to` overrides the list (used for the verified test send).
- * Text only, one Resend call per recipient, result count returned.
+ * GET /desk/brief — desk-gated. The current edition draft (from worker/brief.mjs,
+ * fact-checked and versioned in git) plus the live recipient list state, so the
+ * desk can preview sender identity, links, recipient count and dedupe state
+ * before anything is sent.
  */
-async function handleBriefSend(req, env) {
+async function handleBriefGet(req, env) {
+  const user = await deskGuard(env, req);
+  if (!user) return json(404, { ok: false, error: 'not found' }, NO_STORE);
+  const subs = (await listSubscribers(env)) || [];
+  const deduped = [...new Set(subs)];
+  return json(200, {
+    ok: true,
+    edition: { id: BRIEF.id, updatedAt: BRIEF.updatedAt, from: BRIEF.from, subject: BRIEF.subject, body: BRIEF.body },
+    testAddress: BRIEF.testAddress,
+    // The exact footer the test address would receive (real tokenised link).
+    sampleFooterLink: await unsubToken(env, BRIEF.testAddress).then((t) => briefFooter(env, BRIEF.testAddress, t)),
+    recipients: { count: deduped.length, raw: subs.length, duplicates: subs.length - deduped.length, list: deduped },
+  }, NO_STORE);
+}
+
+/**
+ * POST /desk/brief-send — desk-gated. Emails The Ecosystem Brief to the
+ * subscriber list (or a single test address via `to`). Body: { subject,
+ * text, to?, approve? }. A list send REQUIRES approve:true (the desk UI
+ * gates it behind an explicit review checkbox); a test send does not.
+ * Every send carries a per-recipient one-click unsubscribe link and
+ * List-Unsubscribe headers, and is audit-logged to the review queue.
+ */
+async function handleBriefSend(req, env, ctx) {
   const user = await deskGuard(env, req);
   if (!user) return json(404, { ok: false, error: 'not found' }, NO_STORE);
   let body;
@@ -441,22 +482,71 @@ async function handleBriefSend(req, env) {
 
   const toOverride = String(body?.to ?? '').trim().toLowerCase();
   let recipients;
+  let mode = 'test';
   if (toOverride) {
     if (!/^[^\s@"'<>]+@[^\s@"'<>]+\.[a-z]{2,}$/i.test(toOverride)) {
       return json(422, { ok: false, error: 'invalid recipient' }, NO_STORE);
     }
     recipients = [toOverride];
   } else {
-    recipients = (await listSubscribers(env)) || [];
+    if (body?.approve !== true) {
+      return json(403, { ok: false, error: 'A full-list send requires the approval checkbox (approve:true) after reviewing the preview.' }, NO_STORE);
+    }
+    mode = 'list';
+    const subs = (await listSubscribers(env)) || [];
+    recipients = [...new Set(subs)]; // dedupe; unsubscribed rows are already deleted
   }
   if (!recipients.length) return json(200, { ok: true, sent: 0, failed: 0 }, NO_STORE);
 
   let sent = 0, failed = 0;
   for (const rcpt of recipients.slice(0, 2000)) {
-    const out = await attemptEmail(env, { to: rcpt, subject, text });
+    const token = await unsubToken(env, rcpt);
+    const out = await attemptEmail(env, {
+      to: rcpt,
+      subject,
+      text: `${text}\n\n${briefFooter(env, rcpt, token)}`,
+      headers: briefHeaders(env, rcpt, token),
+    });
     if (out.sent) sent += 1; else failed += 1;
   }
-  return json(200, { ok: sent > 0, sent, failed }, NO_STORE);
+
+  // Audit trail: the desk queue keeps a record of every broadcast/test.
+  bg(ctx, queueInsert(env, {
+    id: `brief:${Date.now().toString(36)}`,
+    kind: 'brief-send',
+    label: `Ecosystem Brief ${mode === 'list' ? 'BROADCAST' : 'test send'} — ${subject.slice(0, 80)}`,
+    payload: {
+      edition: BRIEF.id,
+      mode,
+      subject,
+      recipients: mode === 'list' ? `list (${sent + failed})` : toOverride,
+      sent: String(sent),
+      failed: String(failed),
+      by: user.email,
+    },
+    email: user.email,
+    status: 'done',
+    createdAt: new Date().toISOString(),
+  }));
+
+  return json(200, { ok: sent > 0, sent, failed, mode }, NO_STORE);
+}
+
+/**
+ * GET + POST /api/unsubscribe — one-click unsubscribe for The Ecosystem Brief.
+ * The address and its HMAC token must both match; anything else gets a neutral
+ * page that leaks nothing. POST (RFC 8058 one-click) and GET behave the same.
+ */
+async function handleUnsubscribe(req, env) {
+  const url = new URL(req.url);
+  let email = String(url.searchParams.get('e') ?? '').trim().toLowerCase();
+  const token = String(url.searchParams.get('t') ?? '').trim();
+  if (!email || !token) return new Response(unsubscribePage('invalid'), { status: 400, headers: UNSUB_HEADERS });
+  if (!/^[^\s@"'<>]+@[^\s@"'<>]+\.[a-z]{2,}$/i.test(email)) return new Response(unsubscribePage('invalid'), { status: 400, headers: UNSUB_HEADERS });
+  if (!(await unsubValid(env, email, token))) return new Response(unsubscribePage('invalid'), { status: 403, headers: UNSUB_HEADERS });
+  const n = await removeSubscriber(env, email);
+  if (n === null) return new Response(unsubscribePage('error'), { status: 500, headers: UNSUB_HEADERS });
+  return new Response(unsubscribePage('done'), { status: 200, headers: UNSUB_HEADERS });
 }
 
 /* ------------------------------------------------------------------ */
@@ -492,6 +582,14 @@ export default {
           headers: { 'Content-Type': 'text/html; charset=utf-8', ...NO_STORE, ...SECURITY },
         });
       }
+      if (path === '/desk/reset') {
+        // Recovery links land here; the same shell shows the reset panel.
+        return new Response(deskHtml(env), {
+          status: 200,
+          headers: { 'Content-Type': 'text/html; charset=utf-8', ...NO_STORE, ...SECURITY },
+        });
+      }
+      if (path === '/desk/brief') return handleBriefGet(req, env);
       if (path === '/desk/data') return handleDeskData(req, env);
       // Health probe: boolean configuration checks ONLY. No versions, no URLs,
       // no values — safe to poll from anywhere.
@@ -503,17 +601,22 @@ export default {
           anon: Boolean(env.PUBLIC_SUPABASE_ANON_KEY),
         }, { ...CORS, ...NO_STORE });
       }
+      if (path === '/api/unsubscribe') {
+        const res = await handleUnsubscribe(req, env);
+        return method === 'HEAD' ? new Response(null, { status: res.status, headers: res.headers }) : res;
+      }
       return asset404(req, env);
     }
 
     // ---- writes ----
     if (method === 'POST') {
-      if (path === '/api/startup-create' || path === '/.netlify/functions/startup-create') return handleCreate(req, env);
-      if (path === '/api/review-submit' || path === '/.netlify/functions/review-submit') return handleReview(req, env);
-      if (path === '/api/newsletter' || path === '/.netlify/functions/newsletter') return handleNewsletter(req, env);
+      if (path === '/api/startup-create' || path === '/.netlify/functions/startup-create') return handleCreate(req, env, ctx);
+      if (path === '/api/review-submit' || path === '/.netlify/functions/review-submit') return handleReview(req, env, ctx);
+      if (path === '/api/newsletter' || path === '/.netlify/functions/newsletter') return handleNewsletter(req, env, ctx);
       if (path === '/api/notify' || path === '/.netlify/functions/notify') return handleNotify(req, env);
       if (path === '/desk/data') return handleDeskData(req, env);
-      if (path === '/desk/brief-send') return handleBriefSend(req, env);
+      if (path === '/desk/brief-send') return handleBriefSend(req, env, ctx);
+      if (path === '/api/unsubscribe') return handleUnsubscribe(req, env);
       return json(404, { ok: false, error: 'not found' }, { ...CORS, ...NO_STORE });
     }
 

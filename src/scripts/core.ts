@@ -27,6 +27,30 @@ if (reduce) {
 // wrong (or "contradictory") value, burned main-thread frames and delayed the
 // moment the stat band reads true. Static final values now ship in the HTML.
 
+// --- Auth link landing (magic links + recovery emails) ---
+// Supabase Auth's redirect allowlist currently points every email link at
+// the site root, so sessions arrive HERE as a URL fragment. Consume the
+// session immediately (not on the idle path — the sck-auth-none guard below
+// would skip it), then send recovery links on to the dedicated /auth/reset
+// screen. When the allowlist gains /auth/reset, links land there directly
+// and this bridge simply becomes a no-op for them.
+(async () => {
+  if (!location.hash.includes('access_token')) return;
+  const isRecovery = /type=recovery/.test(location.hash);
+  const isSignup = /type=signup/.test(location.hash);
+  try {
+    const { supabase } = await import('@/lib/supabase');
+    const sb = supabase();
+    if (!sb) return;
+    const { data } = await sb.auth.getSession(); // consumes + persists the hash session
+    if (data?.session) localStorage.removeItem('sck-auth-none');
+    if (isRecovery) location.replace('/auth/reset');
+    else if (isSignup) window.sckToast?.({ title: 'Email confirmed', body: 'Your address is verified. You can sign in with your password now.' });
+  } catch {
+    /* leave the hash untouched; nothing else in the page depends on it */
+  }
+})();
+
 // --- Auth session chip (Supabase magic-link session) ---
 // Deferred to browser idle + skipped entirely once this device is known to be
 // signed out, the 56KB Supabase bundle never competes with page load on the

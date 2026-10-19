@@ -181,6 +181,49 @@ export function notFoundPage(slug) {
 </html>`;
 }
 
+/**
+ * One-click unsubscribe landing page. Neutral on purpose: an invalid token
+ * and an unknown address produce the same copy, so the endpoint leaks
+ * nothing about who is on the list.
+ */
+export function unsubscribePage(state) {
+  const copy = state === 'done'
+    ? { h: 'You are unsubscribed.', p: 'The address has been removed from The Ecosystem Brief. Resubscribe any time at startups.co.ke.' }
+    : state === 'error'
+      ? { h: 'That did not go through.', p: 'A storage error got in the way. Please try the link again in a moment; if it keeps failing, the contact page has a form and a phone number.' }
+      : { h: 'This link does not work.', p: 'The unsubscribe link is incomplete or was altered. The one in your email works: open the latest edition of The Ecosystem Brief and use its link. If it keeps failing, the contact page has a form and a phone number.' };
+  return `<!doctype html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unsubscribe | startups.co.ke</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<style>
+  body { margin:0; background:#f6f3ea; color:#181712; font:16px/1.55 Archivo, system-ui, sans-serif; }
+  .wrap { max-width:560px; margin:0 auto; padding:80px 20px; }
+  h1 { font-family:Fraunces, Georgia, serif; font-size:30px; margin:0 0 10px; }
+  p { color:#3e3b31; }
+  .mono { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#5d5949; }
+  .btn { display:inline-flex; align-items:center; min-height:44px; padding:0 18px; border:1px solid #181712; background:#181712; color:#f6f3ea; font:400 11px/1 'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.12em; text-decoration:none; margin-top:16px; }
+  .btn.ghost { background:transparent; color:#181712; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="mono">startups.co.ke &middot; The Ecosystem Brief</p>
+  <h1>${esc(copy.h)}</h1>
+  <p>${esc(copy.p)}</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <a class="btn" href="/">startups.co.ke</a>
+    <a class="btn ghost" href="/contact">Contact</a>
+  </div>
+</div>
+</body>
+</html>`;
+}
+
 export function deskHtml(env) {
   const SB = esc(String(env.PUBLIC_SUPABASE_URL || 'https://eezqpsbhmnhuhnmiwnsz.supabase.co'));
   const KEY = esc(String(env.PUBLIC_SUPABASE_ANON_KEY || ''));
@@ -193,6 +236,7 @@ export function deskHtml(env) {
 <meta name="robots" content="noindex, nofollow" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="stylesheet" href="/fonts/fonts.css" />
+<script src="/vendor/supabase-js.js"></script>
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
@@ -203,8 +247,9 @@ export function deskHtml(env) {
   header .brand b { color:#e3a21a; }
   .wrap { max-width:960px; margin:0 auto; padding:22px 20px 60px; }
   h1 { font-family:Fraunces, Georgia, serif; font-weight:550; font-size:26px; margin:0 0 4px; }
+  h2 { font-family:Fraunces, Georgia, serif; font-weight:550; font-size:20px; margin:30px 0 10px; }
   .mut { color:#5d5949; }
-  .stats { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 22px; }
+  .stats { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 22px; align-items:center; }
   .stat { border:1px solid #181712; padding:8px 12px; font:500 11px/1.4 "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.08em; background:#ede8d9; }
   .card { border:1px solid #181712; background:#fff; margin-bottom:14px; }
   .card-h { display:flex; flex-wrap:wrap; gap:6px 14px; justify-content:space-between; align-items:center; border-bottom:1px solid #d9d3c1; padding:10px 14px; background:#ede8d9; }
@@ -216,15 +261,26 @@ export function deskHtml(env) {
   button.ghost { background:transparent; color:#181712; }
   button.danger { background:transparent; color:#8a1f11; border-color:#8a1f11; }
   button.act { height:30px; padding:0 10px; margin-left:6px; }
-  button.act:disabled { opacity:.45; cursor:wait; }
-  input { height:40px; border:1px solid #181712; padding:0 10px; font:14px Archivo, sans-serif; min-width:0; flex:1; }
+  button.act:disabled, button:disabled { opacity:.45; cursor:wait; }
+  input, textarea { border:1px solid #181712; padding:0 10px; font:14px Archivo, sans-serif; min-width:0; }
+  input { height:40px; flex:1; }
+  textarea { width:100%; min-height:200px; padding:10px; margin-top:12px; resize:vertical; }
   .row { display:flex; gap:8px; margin-top:12px; max-width:440px; flex-wrap:wrap; }
+  .row.wide { max-width:680px; }
   .empty { border:1px dashed #96610a; padding:18px; color:#5d5949; }
   a { color:#96610a; }
-  textarea { width:100%; min-height:180px; border:1px solid #181712; padding:10px; font:14px Archivo, sans-serif; margin-top:12px; resize:vertical; }
   .authbox { border:1px dashed #181712; background:#fff; padding:14px; margin-top:12px; max-width:480px; }
-  .tabrow { margin-top:0; }
   .tab.on { background:#181712; color:#f6f3ea; }
+  label.mlab { display:block; font:500 10px/1.6 "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.1em; color:#5d5949; }
+  .msg { font-family:"IBM Plex Mono",monospace; font-size:10.5px; line-height:1.6; margin-top:8px; color:#5d5949; white-space:pre-wrap; }
+  .msg.err { color:#8a1f11; }
+  .msg.ok { color:#0e4630; }
+  .prev { border:1px solid #181712; background:#fff; max-width:680px; margin-top:12px; }
+  .prev .ph { border-bottom:1px solid #d9d3c1; background:#ede8d9; padding:8px 12px; font:500 10px/1.5 "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.08em; word-break:break-all; }
+  .prev pre { margin:0; padding:14px; font:12.5px/1.6 ui-monospace, "IBM Plex Mono", monospace; white-space:pre-wrap; word-break:break-word; }
+  details { margin-top:8px; font-size:13px; }
+  summary { cursor:pointer; color:#96610a; }
+  .checkline { display:flex; gap:8px; align-items:flex-start; margin-top:12px; max-width:680px; font-size:13px; }
 </style>
 </head>
 <body>
@@ -238,199 +294,204 @@ export function deskHtml(env) {
   <div id="state" class="empty">Checking your session…</div>
 </div>
 <script>
-  const SB = '${SB}', KEY = '${KEY}', LS = 'sb-eezqpsbhmnhuhnmiwnsz-auth-token';
-  const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  // Official Supabase JS SDK (vendored UMD build of @supabase/supabase-js v2).
+  // All auth goes through documented APIs: signInWithPassword, signInWithOtp,
+  // resetPasswordForEmail, updateUser, signOut. No hand-rolled token storage:
+  // the SDK owns persistence, refresh and hash detection.
+  var SB = '${SB}', KEY = '${KEY}';
+  var RESET_MODE = location.pathname.replace(/\\/+$/, '') === '/desk/reset';
+  var sb = window.supabase.createClient(SB, KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+  });
 
-  function tokenFromStorage() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(LS) || 'null');
-      if (!raw) return null;
-      if (raw.access_token) return raw.access_token;
-      if (raw.currentSession?.access_token) return raw.currentSession.access_token;
-      if (Array.isArray(raw.sessions) && raw.sessions[0]?.access_token) return raw.sessions[0].access_token;
-    } catch {}
-    return null;
-  }
-  // Magic link lands with #access_token=... — store it the way supabase-js does.
-  function tokenFromHash() {
-    if (!location.hash.includes('access_token')) return null;
-    const h = new URLSearchParams(location.hash.slice(1));
-    const at = h.get('access_token');
-    if (at && h.get('expires_in')) {
-      localStorage.setItem(LS, JSON.stringify({
-        access_token: at, refresh_token: h.get('refresh_token'), token_type: 'bearer',
-        expires_in: Number(h.get('expires_in')), expires_at: Date.now() + Number(h.get('expires_in')) * 1000,
-        user: null,
-      }));
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+  function setMsg(el, text, kind) { if (el) { el.textContent = text || ''; el.className = 'msg' + (kind ? ' ' + kind : ''); } }
+  function errText(e) { return String((e && e.message) || e || 'unknown error'); }
+
+  /* ---------------- sign-in shell ---------------- */
+  function showSignIn(notice, noticeKind) {
+    var st = $('state');
+    st.innerHTML = (notice ? '<p class="msg ' + (noticeKind || '') + '">' + esc(notice) + '</p>' : '') +
+      '<div class="authbox">' +
+      '<div class="row" style="margin-top:0"><button type="button" id="tab-pass" class="ghost tab on">Password</button>' +
+      '<button type="button" id="tab-link" class="ghost tab">Email me a link</button></div>' +
+      '<div id="pane-pass">' +
+      '<label class="mlab" for="pemail" style="margin-top:10px">Email</label><div class="row" style="margin-top:4px"><input id="pemail" type="email" autocomplete="email" placeholder="desk mailbox" style="max-width:280px" /></div>' +
+      '<label class="mlab" for="ppass" style="margin-top:10px">Password</label>' +
+      '<div class="row" style="margin-top:4px"><input id="ppass" type="password" autocomplete="current-password" placeholder="password" /><button type="button" id="pshow" class="ghost" style="height:40px">Show</button></div>' +
+      '<div class="row"><button id="pgo">Sign in</button></div>' +
+      '<p class="mut" style="font-size:12.5px;margin:12px 0 0">Forgot your password? <a href="#" id="recover">Email me a reset link</a>.</p>' +
+      '<p id="pmsg" class="msg"></p></div>' +
+      '<div id="pane-link" style="display:none">' +
+      '<label class="mlab" for="demail" style="margin-top:10px">Email</label><div class="row" style="margin-top:4px"><input id="demail" type="email" autocomplete="email" placeholder="desk mailbox" style="max-width:280px" /><button id="dgo">Send link</button></div>' +
+      '<p class="mut mono" style="font-size:10px;margin-top:8px">One-time sign-in link, works once, expires in 60 minutes. Check spam. Prefer the password tab next time.</p>' +
+      '<p id="dmsg" class="msg"></p></div>' +
+      '</div>';
+
+    var tabP = $('tab-pass'), tabL = $('tab-link'), paneP = $('pane-pass'), paneL = $('pane-link');
+    function tab(useP) {
+      paneP.style.display = useP ? '' : 'none';
+      paneL.style.display = useP ? 'none' : '';
+      tabP.classList.toggle('on', useP); tabL.classList.toggle('on', !useP);
     }
-    history.replaceState(null, '', location.pathname);
-    return at;
-  }
+    tabP.addEventListener('click', function () { tab(true); });
+    tabL.addEventListener('click', function () { tab(false); });
 
-  async function signIn(email) {
-    const r = await fetch(SB + '/auth/v1/otp', {
-      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, create_user: true, options: { email_redirect_to: location.origin + '/desk' } }),
-    });
-    return r.ok;
-  }
-
-  /** Email + password sign-in (Supabase /token?grant_type=password). */
-  async function signInPassword(email, pw) {
-    const r = await fetch(SB + '/auth/v1/token?grant_type=password', {
-      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password: pw, gotrue_meta_security: {} }),
-    });
-    const d = await r.json().catch(() => ({}));
-    if (!r.ok || !d.access_token) {
-      return { ok: false, error: d.error_description || d.error || ('HTTP ' + r.status) };
-    }
-    localStorage.setItem(LS, JSON.stringify({
-      access_token: d.access_token, refresh_token: d.refresh_token, token_type: 'bearer',
-      expires_in: d.expires_in || 3600, expires_at: Date.now() + (d.expires_in || 3600) * 1000,
-      user: d.user || null,
-    }));
-    return { ok: true, token: d.access_token };
-  }
-
-  /** Forgot password: emails a reset link that signs the desk in, then a new
-   *  password can be set with the "Set a password" card below the queue. */
-  async function sendRecover(email) {
-    const r = await fetch(SB + '/auth/v1/recover', {
-      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    return r.ok;
-  }
-
-  function shell(msg, withForm) {
-    document.getElementById('state').innerHTML = msg + (withForm ? \`
-      <div class="authbox">
-        <div class="row tabrow"><button type="button" id="tab-link" class="ghost tab on">Magic link</button>
-        <button type="button" id="tab-pass" class="ghost tab">Password</button></div>
-        <div id="pane-link">
-          <div class="row"><input id="demail" type="email" placeholder="desk mailbox" autocomplete="email" />
-          <button id="dgo">Send link</button></div>
-          <p class="mut mono" style="font-size:10px;margin-top:8px">One link per address. Check spam. The link works once and expires in 60 minutes.</p>
-        </div>
-        <div id="pane-pass" style="display:none">
-          <div class="row"><input id="pemail" type="email" placeholder="desk mailbox" autocomplete="email" />
-          <input id="ppass" type="password" placeholder="password" autocomplete="current-password" />
-          <button id="pgo">Sign in</button></div>
-          <p class="mut mono" style="font-size:10px;margin-top:8px">First time with a password? Sign in with the magic link once, then use "Set a password" below the queue. Forgotten it? <a href="#" id="recover">Email me a reset link</a>.</p>
-          <p id="pmsg" class="mut mono" style="font-size:10px;margin-top:6px"></p>
-        </div>
-      </div>\` : '');
-    const go = document.getElementById('dgo');
-    if (go) go.addEventListener('click', async () => {
-      const em = (document.getElementById('demail').value || '').trim();
-      if (!em.includes('@')) return;
-      go.disabled = true; go.textContent = 'Sending…';
-      const ok = await signIn(em);
-      go.disabled = false; go.textContent = 'Send link';
-      document.getElementById('state').innerHTML = ok
-        ? 'Link sent to <b>' + esc(em) + '</b> — open it on this device and the queue loads here.'
-        : 'Could not send the link. Try again in a minute.';
+    $('pshow').addEventListener('click', function () {
+      var f = $('ppass'); f.type = f.type === 'password' ? 'text' : 'password';
+      this.textContent = f.type === 'password' ? 'Show' : 'Hide';
     });
 
-    const tabL = document.getElementById('tab-link');
-    const tabP = document.getElementById('tab-pass');
-    if (tabL && tabP) {
-      const paneL = document.getElementById('pane-link');
-      const paneP = document.getElementById('pane-pass');
-      const setTab = (usePass) => {
-        paneL.style.display = usePass ? 'none' : '';
-        paneP.style.display = usePass ? '' : 'none';
-        tabL.classList.toggle('on', !usePass);
-        tabP.classList.toggle('on', usePass);
-      };
-      tabL.addEventListener('click', () => setTab(false));
-      tabP.addEventListener('click', () => setTab(true));
-    }
-
-    const pgo = document.getElementById('pgo');
-    if (pgo) pgo.addEventListener('click', async () => {
-      const em = (document.getElementById('pemail').value || '').trim();
-      const pw = document.getElementById('ppass').value || '';
-      const msg = document.getElementById('pmsg');
-      if (!em.includes('@') || !pw) { msg.textContent = 'Email and password are both required.'; return; }
-      pgo.disabled = true; pgo.textContent = 'Signing in…';
-      const out = await signInPassword(em, pw);
-      pgo.disabled = false; pgo.textContent = 'Sign in';
-      if (out.ok) { loadData(out.token); return; }
-      const m = String(out.error || 'unknown error');
-      msg.textContent = 'Password sign-in failed (' + m + ').'
-        + (/invalid/i.test(m) ? ' If you have never set a password, use the Magic link tab first, then "Set a password" after the queue loads.' : '');
+    $('pgo').addEventListener('click', async function () {
+      var em = ($('pemail').value || '').trim(), pw = $('ppass').value || '';
+      var m = $('pmsg');
+      if (!em || !pw) { setMsg(m, 'Email and password are both required.', 'err'); return; }
+      this.disabled = true; setMsg(m, 'Signing in…');
+      var err = null;
+      try { var r = await sb.auth.signInWithPassword({ email: em, password: pw }); err = r.error; } catch (e) { err = e; }
+      this.disabled = false;
+      if (err) {
+        var s = errText(err);
+        setMsg(m, /invalid login credentials/i.test(s)
+          ? 'That email and password do not match. Never set a password? Use the reset link below, or the "Email me a link" tab once.'
+          : /email not confirmed/i.test(s) ? 'This address is not confirmed yet. Use "Email me a link" to sign in once.'
+          : /rate|too many/i.test(s) ? 'Too many attempts right now, wait a couple of minutes.' : 'Sign-in failed: ' + s, 'err');
+        return;
+      }
+      setMsg(m, 'Signed in.', 'ok');
+      loadDesk();
     });
 
-    const rec = document.getElementById('recover');
-    if (rec) rec.addEventListener('click', async (ev) => {
+    $('recover').addEventListener('click', async function (ev) {
       ev.preventDefault();
-      const em = (document.getElementById('pemail').value || '').trim();
-      if (!em.includes('@')) { document.getElementById('pmsg').textContent = 'Type the desk mailbox above first.'; return; }
-      const ok = await sendRecover(em);
-      document.getElementById('pmsg').textContent = ok
-        ? 'Reset link sent to ' + em + ' — open it on this device; it signs you in, then set a new password below the queue.'
-        : 'Could not send the reset link. Try again in a minute.';
+      var em = ($('pemail').value || '').trim();
+      var m = $('pmsg');
+      if (!em) { setMsg(m, 'Type the desk mailbox above first, then press this link.', 'err'); return; }
+      setMsg(m, 'Sending reset link…');
+      var err = null;
+      try { var r = await sb.auth.resetPasswordForEmail(em, { redirectTo: location.origin + '/desk/reset' }); err = r.error; } catch (e) { err = e; }
+      // Same message either way: never reveal whether the mailbox has an account.
+      setMsg(m, err ? 'Could not send the reset email (' + errText(err) + ').' : 'If that address has an account, a password-reset link is on its way. Open it on this device; it lands on /desk/reset.', err ? 'err' : 'ok');
+    });
+
+    $('dgo').addEventListener('click', async function () {
+      var em = ($('demail').value || '').trim();
+      var m = $('dmsg');
+      if (!em) { setMsg(m, 'Type the desk mailbox first.', 'err'); return; }
+      this.disabled = true; setMsg(m, 'Sending…');
+      var err = null;
+      try { var r = await sb.auth.signInWithOtp({ email: em, options: { emailRedirectTo: location.origin + '/desk' } }); err = r.error; } catch (e) { err = e; }
+      this.disabled = false;
+      setMsg(m, err ? 'Could not send the link (' + errText(err) + '). Try again in a minute.' : 'Link sent to ' + em + ' — open it on this device and the queue loads here.', err ? 'err' : 'ok');
     });
   }
 
-  async function loadData(tok) {
-    const r = await fetch('/desk/data', { headers: { Authorization: 'Bearer ' + tok } });
-    if (r.status === 404) { shell('Signed in, but this mailbox is not the desk mailbox. Sign in with the desk account.', true); return; }
-    if (!r.ok) { shell('Queue unavailable (' + r.status + ') — try again shortly.', true); return; }
-    const d = await r.json();
-    render(d);
+  /* ---------------- reset screen (/desk/reset) ---------------- */
+  async function showReset() {
+    var st = $('state');
+    var sess = null;
+    try { var r = await sb.auth.getSession(); sess = r.data && r.data.session; } catch (e) { sess = null; }
+    if (!sess) {
+      st.innerHTML = '<p class="msg err">This reset link is invalid, was already used, or has expired (links last about an hour).</p>' +
+        '<div class="authbox"><label class="mlab" for="remail" style="margin-top:0">Request a fresh reset email</label>' +
+        '<div class="row" style="margin-top:4px"><input id="remail" type="email" autocomplete="email" placeholder="desk mailbox" style="max-width:280px" /><button id="rego">Send reset link</button></div>' +
+        '<p id="rmsg" class="msg"></p></div>';
+      $('rego').addEventListener('click', async function () {
+        var em = ($('remail').value || '').trim(); var m = $('rmsg');
+        if (!em) { setMsg(m, 'Type the desk mailbox first.', 'err'); return; }
+        setMsg(m, 'Sending…');
+        var err = null;
+        try { var r2 = await sb.auth.resetPasswordForEmail(em, { redirectTo: location.origin + '/desk/reset' }); err = r2.error; } catch (e) { err = e; }
+        setMsg(m, err ? 'Could not send (' + errText(err) + ').' : 'If that address has an account, a fresh reset link is on its way.', err ? 'err' : 'ok');
+      });
+      return;
+    }
+    st.innerHTML = '<p class="msg ok">Reset link accepted — signed in for the next few minutes. Set the new password:</p>' +
+      '<div class="authbox">' +
+      '<label class="mlab" for="np1" style="margin-top:0">New password</label>' +
+      '<div class="row" style="margin-top:4px"><input id="np1" type="password" autocomplete="new-password" placeholder="min 8 characters" /><button type="button" id="nshow" class="ghost" style="height:40px">Show</button></div>' +
+      '<label class="mlab" for="np2" style="margin-top:10px">Repeat</label>' +
+      '<div class="row" style="margin-top:4px"><input id="np2" type="password" autocomplete="new-password" placeholder="repeat password" /></div>' +
+      '<div class="row"><button id="ngo">Save password</button></div><p id="nmsg" class="msg"></p></div>';
+    $('nshow').addEventListener('click', function () {
+      var f = $('np1'); f.type = f.type === 'password' ? 'text' : 'password';
+      this.textContent = f.type === 'password' ? 'Show' : 'Hide';
+    });
+    $('ngo').addEventListener('click', async function () {
+      var p1 = $('np1').value || '', p2 = $('np2').value || ''; var m = $('nmsg');
+      if (p1.length < 8) { setMsg(m, 'Use at least 8 characters.', 'err'); return; }
+      if (p1 !== p2) { setMsg(m, 'The two passwords do not match.', 'err'); return; }
+      this.disabled = true; setMsg(m, 'Saving…');
+      var err = null;
+      try { var r = await sb.auth.updateUser({ password: p1 }); err = r.error; } catch (e) { err = e; }
+      this.disabled = false;
+      if (err) { setMsg(m, 'Could not save (' + errText(err) + '). If the link has expired, request a fresh one.', 'err'); return; }
+      setMsg(m, 'Password saved. Sign in with it at /desk.', 'ok');
+      try { await sb.auth.signOut(); } catch (e) {}
+    });
   }
 
-  // Moderation actions: POST, then refresh the view.
-  document.addEventListener('click', async (e) => {
-    const b = e.target.closest ? e.target.closest('[data-act]') : null;
+  /* ---------------- queue + brief ---------------- */
+  async function loadDesk() {
+    var st = $('state');
+    var sess = null;
+    try { var r = await sb.auth.getSession(); sess = r.data && r.data.session; } catch (e) { sess = null; }
+    if (!sess) { showSignIn('Session expired — sign in again.'); return; }
+    var res = await fetch('/desk/data', { headers: { Authorization: 'Bearer ' + sess.access_token } }).catch(function () { return null; });
+    if (res && res.status === 404) { showSignIn('Signed in, but this mailbox is not the desk mailbox.'); return; }
+    if (!res || !res.ok) { showSignIn('Queue unavailable (' + (res ? res.status : 'network') + ') — try again shortly.'); return; }
+    var d = await res.json();
+    render(d, sess);
+  }
+
+  document.addEventListener('click', async function (e) {
+    var b = e.target.closest ? e.target.closest('[data-act]') : null;
     if (!b) return;
-    const tok = tokenFromHash() || tokenFromStorage();
-    if (!tok) return;
-    const label = b.textContent;
+    var sess = null;
+    try { var r = await sb.auth.getSession(); sess = r.data && r.data.session; } catch (err) { sess = null; }
+    if (!sess) return;
+    var label = b.textContent;
     b.disabled = true; b.textContent = '…';
     try {
-      const r = await fetch('/desk/data', {
+      var act = await fetch('/desk/data', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + sess.access_token },
         body: JSON.stringify({ action: b.dataset.act, slug: b.dataset.slug || undefined, id: b.dataset.id || undefined }),
       });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const fresh = await fetch('/desk/data', { headers: { Authorization: 'Bearer ' + tok } });
-      if (fresh.ok) render(await fresh.json());
+      if (!act.ok) throw new Error('HTTP ' + act.status);
+      loadDesk();
     } catch (err) {
       b.disabled = false; b.textContent = label;
-      alert('Action failed (' + String(err.message || err) + ') — try again.');
+      alert('Action failed (' + errText(err) + ') — try again.');
     }
   });
 
-  function render(d) {
-    const st = document.getElementById('state');
+  function render(d, sess) {
+    var st = $('state');
     if (st) st.remove();
-    document.querySelectorAll('#app .card, #app .stats, #app h1:not(:first-of-type), #app .empty').forEach((n) => n.remove());
-    const qNew = d.queue.filter((r) => r.status === 'new').length;
-    const pub = d.listings.filter((r) => r.status === 'published').length;
-    let html = '<div class="stats">' +
+    document.querySelectorAll('#app .card, #app .stats, #app h2, #app .empty').forEach(function (n) { n.remove(); });
+    var qNew = d.queue.filter(function (r) { return r.status === 'new'; }).length;
+    var pub = d.listings.filter(function (r) { return r.status === 'published'; }).length;
+    var html = '<div class="stats">' +
       '<span class="stat">Queue: ' + d.queue.length + ' (' + qNew + ' new)</span>' +
       '<span class="stat">Listings: ' + pub + ' live / ' + d.listings.length + ' total</span>' +
-      '<span class="stat">Newsletter: ' + d.subscribers + '</span></div>';
+      '<span class="stat">Newsletter: ' + d.subscribers + '</span>' +
+      '<button id="signout" class="act ghost">Sign out</button></div>';
     if (!d.queue.length) html += '<div class="empty">Queue is empty — new submissions appear here the moment they happen.</div>';
-    for (const r of d.queue) {
-      const lines = Object.entries(r.payload || {}).filter(([, v]) => String(v ?? '').trim() !== '')
-        .map(([k, v]) => '<b>' + esc(k) + ':</b> ' + esc(typeof v === 'string' ? v : JSON.stringify(v))).join('<br>');
-      const done = r.status === 'new'
-        ? '<button class="act ghost" data-act="done" data-id="' + esc(r.id) + '">Mark done</button>' : '';
+    d.queue.forEach(function (r) {
+      var lines = Object.entries(r.payload || {}).filter(function (e) { return String(e[1] == null ? '' : e[1]).trim() !== ''; })
+        .map(function (e) { return '<b>' + esc(e[0]) + ':</b> ' + esc(typeof e[1] === 'string' ? e[1] : JSON.stringify(e[1])); }).join('<br>');
+      var done = r.status === 'new' ? '<button class="act ghost" data-act="done" data-id="' + esc(r.id) + '">Mark done</button>' : '';
       html += '<div class="card"><div class="card-h"><span class="kind">' + esc(r.label || r.kind) +
         (r.email ? ' · ' + esc(r.email) : '') + '</span><span><span class="tag ' + (r.status === 'new' ? 'new' : '') + '">' +
         esc(r.status || 'new') + '</span> <span class="mut mono" style="font-size:10px">' + esc(String(r.createdAt || '').slice(0, 16).replace('T', ' ')) + ' UTC</span>' + done + '</span></div>' +
         '<div class="card-b">' + (lines || '<span class="mut">(no details)</span>') + '</div></div>';
-    }
-    html += '<h1 style="margin-top:30px;font-size:20px">Founder listings</h1>';
+    });
+    html += '<h2>Founder listings</h2>';
     if (!d.listings.length) html += '<div class="empty">No community listings yet.</div>';
-    for (const l of d.listings) {
-      const acts = l.slug ? '<span>' + (l.status === 'published'
+    d.listings.forEach(function (l) {
+      var acts = l.slug ? '<span>' + (l.status === 'published'
         ? '<button class="act ghost" data-act="unlist" data-slug="' + esc(l.slug) + '">Unlist</button>'
         : '<button class="act ghost" data-act="restore" data-slug="' + esc(l.slug) + '">Restore</button>') +
         '<button class="act danger" data-act="delete" data-slug="' + esc(l.slug) + '">Delete</button></span>' : '';
@@ -440,88 +501,142 @@ export function deskHtml(env) {
         esc(l.tagline || '') + '<br><span class="mut">' + esc(l.sector || '') + ' · ' + esc(l.stage || '') + ' · ' + esc(l.county || '') +
         ' · ' + esc(l.website || '') + (l.founderName ? ' · founder ' + esc(l.founderName) : '') + '</span>' +
         (l.slug ? '<br><a href="/startups/community/' + esc(l.slug) + '">open page →</a>' : '') + '</div></div>';
-    }
-    // Desk account: set a password so the next sign-in skips the one-time link.
-    html += '<h1 style="margin-top:30px;font-size:20px">Desk account</h1>' +
-      '<div class="card"><div class="card-h"><span class="kind">Set a password</span></div>' +
-      '<div class="card-b"><p class="mut" style="margin:0 0 4px">Skip the one-time link next time. After saving, sign in with the Password tab on this page.</p>' +
-      '<div class="row"><input id="npass" type="password" placeholder="new password (min 8 characters)" autocomplete="new-password" />' +
-      '<input id="npass2" type="password" placeholder="repeat password" autocomplete="new-password" />' +
-      '<button id="npassGo" class="ghost">Save password</button></div>' +
-      '<p id="npassMsg" class="mut mono" style="font-size:10px;margin-top:8px"></p></div></div>';
-
-    // The Ecosystem Brief: write + send an edition without leaving the desk.
-    html += '<h1 style="margin-top:30px;font-size:20px">The Ecosystem Brief</h1>' +
-      '<div class="card"><div class="card-h"><span class="kind">Send an edition</span>' +
-      '<span class="mut mono" style="font-size:10px">' + esc(String(d.subscribers)) + ' subscriber(s)</span></div>' +
-      '<div class="card-b">' +
-      '<div class="row" style="max-width:660px;margin-top:0"><input id="bSubject" placeholder="Subject, e.g. The Ecosystem Brief · 20 Oct 2026" /></div>' +
-      '<textarea id="bBody" placeholder="Plain-text edition. What happened last week, who raised, from whom, and the named sources. No hype, no invented numbers."></textarea>' +
-      '<div class="row" style="max-width:660px"><input id="bTestTo" placeholder="Test send to one address (optional)" />' +
-      '<button id="bGo" class="ghost">Send</button></div>' +
-      '<p class="mut mono" style="font-size:10px;margin-top:8px">Leave the test field empty to send to the full list. Sent from notices@startups.co.ke.</p>' +
-      '<p id="bMsg" class="mut mono" style="font-size:10px;margin-top:6px"></p></div></div>';
-
-    document.getElementById('app').insertAdjacentHTML('beforeend', html);
-
-    // --- wiring for the two cards above ---
-    const tok = tokenFromHash() || tokenFromStorage();
-    const npassGo = document.getElementById('npassGo');
-    if (npassGo && tok) npassGo.addEventListener('click', async () => {
-      const p1 = document.getElementById('npass').value || '';
-      const p2 = document.getElementById('npass2').value || '';
-      const msg = document.getElementById('npassMsg');
-      if (p1.length < 8) { msg.textContent = 'Password too short. Use at least 8 characters.'; return; }
-      if (p1 !== p2) { msg.textContent = 'The two passwords do not match.'; return; }
-      npassGo.disabled = true; msg.textContent = 'Saving…';
-      try {
-        const r = await fetch(SB + '/auth/v1/user', {
-          method: 'POST',
-          headers: { apikey: KEY, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: p1 }),
-        });
-        if (r.ok) {
-          msg.textContent = 'Password saved. From now on, use the Password tab when signing in.';
-          document.getElementById('npass').value = '';
-          document.getElementById('npass2').value = '';
-        } else {
-          const d = await r.json().catch(() => ({}));
-          msg.textContent = 'Could not save the password (' + (d.message || d.error_description || ('HTTP ' + r.status)) + '). Try again.';
-        }
-      } catch (e) { msg.textContent = 'Could not save the password (' + String(e.message || e) + ').'; }
-      npassGo.disabled = false;
     });
 
-    const bGo = document.getElementById('bGo');
-    if (bGo && tok) bGo.addEventListener('click', async () => {
-      const subject = (document.getElementById('bSubject').value || '').trim();
-      const text = document.getElementById('bBody').value || '';
-      const to = (document.getElementById('bTestTo').value || '').trim();
-      const msg = document.getElementById('bMsg');
-      if (subject.length < 6 || text.trim().length < 40) { msg.textContent = 'Give the edition a subject and a body of at least 40 characters.'; return; }
-      bGo.disabled = true; msg.textContent = 'Sending…';
+    html += '<h2>Desk account</h2>' +
+      '<div class="card"><div class="card-h"><span class="kind">Change password</span></div>' +
+      '<div class="card-b"><p class="mut" style="margin:0 0 4px">Applies immediately; the new password works on the Password tab at /desk.</p>' +
+      '<div class="row"><input id="cpass" type="password" placeholder="new password (min 8 characters)" autocomplete="new-password" />' +
+      '<input id="cpass2" type="password" placeholder="repeat password" autocomplete="new-password" />' +
+      '<button id="cpassGo" class="ghost">Save password</button></div>' +
+      '<p id="cpassMsg" class="msg"></p></div></div>';
+
+    html += '<h2>The Ecosystem Brief</h2>' +
+      '<div class="card"><div class="card-h"><span class="kind">Edition draft — fact-checked, lives in git (worker/brief.mjs)</span>' +
+      '<span class="mut mono" style="font-size:10px" id="bMeta"></span></div>' +
+      '<div class="card-b">' +
+      '<p class="mut" style="margin:6px 0 0">Sender: <b id="bFrom"></b></p>' +
+      '<p class="mut" style="margin:4px 0 0">Recipients: <b id="bCount"></b> <span id="bDedupe" class="mono" style="font-size:10px"></span></p>' +
+      '<details id="bListWrap"><summary>Show the recipient list</summary><div id="bList" class="mono" style="font-size:11px;padding:6px 0;word-break:break-all"></div></details>' +
+      '<label class="mlab" for="bSubject" style="margin-top:12px">Subject</label>' +
+      '<div class="row wide" style="margin-top:4px"><input id="bSubject" /></div>' +
+      '<label class="mlab" for="bBody" style="margin-top:12px">Body (plain text; the unsubscribe footer is appended per recipient at send time)</label>' +
+      '<textarea id="bBody"></textarea>' +
+      '<div class="row wide"><button id="bPreview" class="ghost">Preview</button></div>' +
+      '<div id="bPrev" class="prev" style="display:none"></div>' +
+      '<div class="row wide"><input id="bTestTo" placeholder="test send to one address" /><button id="bTest">Send test</button></div>' +
+      '<p id="bTestMsg" class="msg"></p>' +
+      '<div class="checkline"><input type="checkbox" id="bApprove" style="height:18px;width:18px;flex:0 0 auto;margin-top:2px" />' +
+      '<label for="bApprove">I have reviewed the fact-checked preview and approve sending this edition to every subscriber listed above.</label></div>' +
+      '<div class="row wide"><button id="bSend" disabled>Send to subscribers</button></div>' +
+      '<p id="bMsg" class="msg"></p>' +
+      '</div></div>';
+
+    $('app').insertAdjacentHTML('beforeend', html);
+    $('signout').addEventListener('click', async function () {
+      try { await sb.auth.signOut(); } catch (e) {}
+      location.href = '/desk';
+    });
+
+    $('cpassGo').addEventListener('click', async function () {
+      var p1 = $('cpass').value || '', p2 = $('cpass2').value || ''; var m = $('cpassMsg');
+      if (p1.length < 8) { setMsg(m, 'Use at least 8 characters.', 'err'); return; }
+      if (p1 !== p2) { setMsg(m, 'The two passwords do not match.', 'err'); return; }
+      this.disabled = true; setMsg(m, 'Saving…');
+      var err = null;
+      try { var r = await sb.auth.updateUser({ password: p1 }); err = r.error; } catch (e) { err = e; }
+      this.disabled = false;
+      setMsg(m, err ? 'Could not save (' + errText(err) + ').' : 'Password saved. Use it next time on the Password tab.', err ? 'err' : 'ok');
+      if (!err) { $('cpass').value = ''; $('cpass2').value = ''; }
+    });
+
+    loadBrief(sess);
+  }
+
+  async function loadBrief(sess) {
+    var r = await fetch('/desk/brief', { headers: { Authorization: 'Bearer ' + sess.access_token } }).catch(function () { return null; });
+    if (!r || !r.ok) return;
+    var b = await r.json();
+    if (!b || !b.ok) return;
+    $('bMeta').textContent = 'Edition #' + b.edition.id + ' · draft updated ' + b.edition.updatedAt;
+    $('bFrom').textContent = b.edition.from;
+    $('bCount').textContent = b.recipients.count + ' subscriber' + (b.recipients.count === 1 ? '' : 's');
+    $('bDedupe').textContent = b.recipients.duplicates ? '(' + b.recipients.raw + ' raw, ' + b.recipients.duplicates + ' duplicate' + (b.recipients.duplicates === 1 ? '' : 's') + ' removed)' : '(no duplicates)';
+    $('bList').textContent = b.recipients.list.join(' · ');
+    $('bSubject').value = b.edition.subject;
+    $('bBody').value = b.edition.body;
+    $('bTestTo').value = b.testAddress;
+
+    var prev = $('bPrev');
+    $('bPreview').addEventListener('click', function () {
+      if (prev.style.display !== 'none') { prev.style.display = 'none'; return; }
+      var subject = ($('bSubject').value || '').trim();
+      var body = $('bBody').value || '';
+      var toList = ($('bTestTo').value || '').trim()
+        ? 'test send → ' + ($('bTestTo').value || '').trim()
+        : b.recipients.count + ' subscriber(s)';
+      var links = (body.match(/https:\\/\\/[^\\s]+/g) || []);
+      var sampleFooter = '————————————————\\nYou are receiving this because you subscribed at startups.co.ke.\\nUnsubscribe in one click, no questions asked:\\n' + (b.sampleFooterLink || '[per-recipient unsubscribe link]');
+      prev.innerHTML =
+        '<div class="ph">From: ' + esc(b.edition.from) + '</div>' +
+        '<div class="ph">To: ' + esc(toList) + '</div>' +
+        '<div class="ph">Subject: ' + esc(subject) + '</div>' +
+        '<pre>' + esc(body) + '\\n\\n' + esc(sampleFooter) + '</pre>' +
+        '<div class="ph">Links in this edition: ' + (links.length ? '' : 'none in body') + '</div>' +
+        (links.length ? links.map(function (u) { return '<div class="ph" style="background:#fff;text-transform:none;letter-spacing:0"><a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u) + '</a></div>'; }).join('') : '');
+      prev.style.display = '';
+    });
+
+    var sendBtn = $('bSend'), appr = $('bApprove');
+    appr.addEventListener('change', function () { sendBtn.disabled = !appr.checked; });
+    sendBtn.addEventListener('click', async function () {
+      var m = $('bMsg');
+      if (!appr.checked) return;
+      if (!confirm('Send to all ' + b.recipients.count + ' subscriber(s)? This is the real broadcast.')) return;
+      this.disabled = true; setMsg(m, 'Sending to the list…');
+      var out = null, net = null;
       try {
-        const r = await fetch('/desk/brief-send', {
+        var r2 = await fetch('/desk/brief-send', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
-          body: JSON.stringify({ subject, text, to: to || undefined }),
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + sess.access_token },
+          body: JSON.stringify({ subject: ($('bSubject').value || '').trim(), text: $('bBody').value, approve: true }),
         });
-        const d = await r.json().catch(() => ({}));
-        msg.textContent = r.ok
-          ? 'Sent to ' + d.sent + ' recipient(s)' + (d.failed ? ', ' + d.failed + ' failed' : '') + '.'
-          : 'Not sent: ' + (d.error || ('HTTP ' + r.status));
-      } catch (e) { msg.textContent = 'Not sent (' + String(e.message || e) + ').'; }
-      bGo.disabled = false;
+        out = await r2.json().catch(function () { return null; });
+        if (!r2.ok) net = out && out.error ? out.error : 'HTTP ' + r2.status;
+      } catch (e) { net = errText(e); }
+      this.disabled = false;
+      if (net) { setMsg(m, 'Not sent: ' + net, 'err'); return; }
+      setMsg(m, 'Sent to ' + out.sent + ' recipient(s)' + (out.failed ? ', ' + out.failed + ' failed' : '') + '. A record is in the queue above.', 'ok');
+    });
+
+    $('bTest').addEventListener('click', async function () {
+      var m = $('bTestMsg');
+      var to = ($('bTestTo').value || '').trim();
+      if (!to) { setMsg(m, 'Type a test address first.', 'err'); return; }
+      this.disabled = true; setMsg(m, 'Sending test…');
+      var out = null, net = null;
+      try {
+        var r2 = await fetch('/desk/brief-send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + sess.access_token },
+          body: JSON.stringify({ subject: ($('bSubject').value || '').trim(), text: $('bBody').value, to: to }),
+        });
+        out = await r2.json().catch(function () { return null; });
+        if (!r2.ok) net = out && out.error ? out.error : 'HTTP ' + r2.status;
+      } catch (e) { net = errText(e); }
+      this.disabled = false;
+      if (net) { setMsg(m, 'Test not sent: ' + net, 'err'); return; }
+      setMsg(m, 'Test sent to ' + to + ' (' + out.sent + ' sent' + (out.failed ? ', ' + out.failed + ' failed' : '') + '). Check delivery, formatting and the unsubscribe link.', 'ok');
     });
   }
 
-  (async () => {
-    const tok = tokenFromHash() || tokenFromStorage();
-    if (!tok) { shell('Desk access — sign in with the desk mailbox.', true); return; }
-    // The token might be stale: probe; on 404 (auth fails, stealth 404) fall back to the sign-in shell.
-    const probe = await fetch('/desk/data', { headers: { Authorization: 'Bearer ' + tok } }).catch(() => null);
-    if (probe && probe.ok) { render(await probe.json()); return; }
-    shell('Session expired or this is not the desk mailbox. Sign in again.', true);
+  (async function () {
+    // detectSessionInUrl consumes magic-link / recovery hashes automatically.
+    var sess = null;
+    try { var r = await sb.auth.getSession(); sess = r.data && r.data.session; } catch (e) { sess = null; }
+    if (RESET_MODE) { await showReset(); return; }
+    if (!sess) { showSignIn(); return; }
+    loadDesk();
   })();
 </script>
 </body>
