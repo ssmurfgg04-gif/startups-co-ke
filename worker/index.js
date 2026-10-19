@@ -11,7 +11,6 @@
  *   POST /api/startup-create                    instant founder listing
  *   POST /api/review-submit                     review-queue forms
  *   POST /api/newsletter                        The Ecosystem Brief signup
- *   POST /api/notify                            desk email ping (legacy path)
  * Legacy /​.netlify/functions/* POST paths map to the same handlers so old
  * cached bundles never break.
  *
@@ -365,31 +364,6 @@ async function handleNewsletter(req, env, ctx) {
   return json(200, { ok: true, stored: 'queue', duplicate: res.duplicate }, { ...CORS, ...NO_STORE });
 }
 
-async function handleNotify(req, env) {
-  if (!env.RESEND_API_KEY) return json(202, { ok: true, skipped: 'RESEND_API_KEY not configured' });
-  let body;
-  try { body = await req.json(); } catch { return json(400, { ok: false, error: 'bad json' }); }
-  const { kind, payload = {}, email } = body ?? {};
-  if (!kind || typeof payload !== 'object') return json(400, { ok: false, error: 'missing kind/payload' });
-
-  const label = LABELS[kind] || 'New submission';
-  const sent = await attemptEmail(env, {
-    subject: `[review queue] ${label}${email ? ` — ${email}` : ''}`,
-    text: [
-      `${label}`,
-      `From: ${email || 'no email given'}`,
-      '',
-      digestLines(payload),
-      '',
-      '--',
-      'Review it: Supabase dashboard, Table Editor, review_queue + submissions (project eezqpsbhmnhuhnmiwnsz)',
-      'This is an automated ping from startups.co.ke — the record is already saved.',
-    ].join('\n'),
-    replyTo: email || undefined,
-  });
-  return json(sent.sent ? 200 : 200, sent.sent ? { ok: true, id: sent.id } : { ok: false, error: sent.reason || 'not sent' });
-}
-
 /* ------------------------------------------------------------------ */
 /* Desk (owner-only)                                                   */
 /* ------------------------------------------------------------------ */
@@ -613,7 +587,10 @@ export default {
       if (path === '/api/startup-create' || path === '/.netlify/functions/startup-create') return handleCreate(req, env, ctx);
       if (path === '/api/review-submit' || path === '/.netlify/functions/review-submit') return handleReview(req, env, ctx);
       if (path === '/api/newsletter' || path === '/.netlify/functions/newsletter') return handleNewsletter(req, env, ctx);
-      if (path === '/api/notify' || path === '/.netlify/functions/notify') return handleNotify(req, env);
+      // NOTE: /api/notify was DELETED — an unauthenticated, unlimited endpoint
+      // that emailed the desk with attacker-controlled content and reply-to
+      // (spam + phishing + Resend-quota vector). The database records are the
+      // source of truth; the desk is the review surface.
       if (path === '/desk/data') return handleDeskData(req, env);
       if (path === '/desk/brief-send') return handleBriefSend(req, env, ctx);
       if (path === '/api/unsubscribe') return handleUnsubscribe(req, env);

@@ -57,13 +57,12 @@ const json = (status, obj, extraHeaders = {}) =>
   });
 export { json };
 
-/** Best-effort client IP (Cloudflare injects cf-connecting-ip). */
+/** Best-effort client IP. ONLY cf-connecting-ip: Cloudflare strips/overwrites
+ *  x-forwarded-for for direct requests, so trusting XFF would let callers
+ *  spoof fresh rate-limit buckets with a header. Workers always see
+ *  cf-connecting-ip; the 'unknown' bucket only exists for local dev. */
 export function clientIp(req) {
-  return (
-    req.headers.get('cf-connecting-ip') ||
-    (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() ||
-    'unknown'
-  );
+  return req.headers.get('cf-connecting-ip') || 'unknown';
 }
 
 /* ------------------------------------------------------------------ */
@@ -101,9 +100,14 @@ export async function sb(env, path, { method = 'GET', body, prefer } = {}) {
 }
 
 /**
- * Verify a Supabase magic-link session server-side. The anon key is public by
+ * Verify a Supabase session server-side. The anon key is public by
  * design; Auth validates the user JWT itself, so no service key is needed to
  * confirm "this person controls this mailbox".
+ *
+ * Unconfirmed sign-ups are REJECTED: with "Confirm email" on, Supabase issues
+ * no session for them anyway, but if confirmation is ever switched off this
+ * check is what stops an unverified address from reaching the desk by
+ * registering as the desk email. Fail closed.
  */
 export async function verifyUser(env, req) {
   const auth = req.headers.get('authorization') || '';
@@ -117,6 +121,8 @@ export async function verifyUser(env, req) {
     if (!r.ok) return null;
     const u = await r.json();
     if (!u?.email) return null;
+    const confirmed = Boolean(u.email_confirmed_at || u.confirmed_at);
+    if (!confirmed) return null;
     return { id: u.id || null, email: String(u.email).slice(0, 160) };
   } catch {
     return null;
@@ -147,9 +153,12 @@ export async function checkRateLimit(env, ip, cap) {
 /* Desk identity + best-effort email                                   */
 /* ------------------------------------------------------------------ */
 
-/** The desk mailbox: the site owner. Overridable via NOTIFY_EMAIL. */
+/** The desk mailbox: the site owner, set as NOTIFY_EMAIL in the Worker's
+ *  environment (wrangler vars / Cloudflare dashboard). NO hardcoded fallback:
+ *  a personal address in source code both leaks it and silently grants the
+ *  desk to whoever controls that mailbox. Missing config fails closed. */
 export const deskEmail = (env) =>
-  String(env.NOTIFY_EMAIL || 'jackblessed191@gmail.com').trim().toLowerCase();
+  String(env.NOTIFY_EMAIL || '').trim().toLowerCase();
 
 /**
  * Best-effort email via Resend. NEVER throws; email is an enhancement, the
@@ -192,12 +201,19 @@ export async function attemptEmail(env, { to, subject, text, replyTo, headers })
  * Per-address HMAC token. Keyed by the service-role key, which only the
  * Worker ever holds: nobody can forge an unsubscribe for someone else
  * without the secret. Not printed, not logged.
+ *
+ * The old `|| sbAnon(env)` fallback is gone: the anon key is public, so it
+ * made unsubscribe tokens forgeable by anyone when the service key was
+ * missing. Without a service key there is no token — unsub links simply
+ * fail validation (fail closed).
  */
 export async function unsubToken(env, email) {
+  const secret = svcKey(env);
+  if (!secret) return '';
   const data = new TextEncoder().encode(`brief-unsub:${String(email).toLowerCase()}`);
   const key = await crypto.subtle.importKey(
     'raw',
-    new TextEncoder().encode(svcKey(env) || sbAnon(env)),
+    new TextEncoder().encode(secret),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign'],
@@ -209,6 +225,7 @@ export async function unsubToken(env, email) {
 export async function unsubValid(env, email, token) {
   if (!email || !token) return false;
   const want = await unsubToken(env, email);
+  if (!want) return false; // no service key -> no valid tokens exist
   // Constant-time-ish compare; length is fixed (64 hex) so early exit is safe.
   if (String(token).length !== want.length) return false;
   let diff = 0;
