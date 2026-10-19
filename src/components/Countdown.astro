@@ -26,6 +26,9 @@ if (targetISO) {
   init.s = String(s % 60).padStart(2, '0');
 }
 const passed = targetISO ? Date.parse(targetISO) < Date.now() : false;
+// hms mode: server-render a real clock too (dashes were flagged in the audit);
+// total hours = days*24 + remainder hours, corrected by JS one second later.
+const hmsInit = `${String(Number(init.d) * 24 + Number(init.h)).padStart(2, '0')}:${init.m}:${init.s}`;
 ---
 {passed ? (
   <div id={id} class="flex gap-2" data-iso={targetISO} data-mode={mode}>
@@ -45,7 +48,7 @@ const passed = targetISO ? Date.parse(targetISO) < Date.now() : false;
     </>
   ) : (
     <div class={cell + ' w-full flex-row items-baseline justify-center gap-2 py-2'}>
-      <span class="cd-val statnum text-xl" data-u="hms">--:--:--</span>
+      <span class="cd-val statnum text-xl" data-u="hms">{hmsInit}</span>
       <span class="mono-label">to submissions close</span>
     </div>
   )}

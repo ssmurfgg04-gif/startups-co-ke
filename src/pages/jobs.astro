@@ -45,7 +45,7 @@ function shortDays(pd: number): string {
           datePosted: live
             ? (j.postedDays ? new Date(Date.now() - j.postedDays * 86400000).toISOString().slice(0, 10) : LIVE.fetchedAt)
             : new Date(Date.now() - j.postedDays * 86400000).toISOString().slice(0, 10),
-          ...(!live ? { baseSalary: { '@type': 'MonetaryAmount', currency: 'KES', value: { '@type': 'QuantitativeValue', minValue: j.salaryMin * 1000, maxValue: j.salaryMax * 1000, unitText: 'MONTH' } } } : {}),
+          ...(!live && j.salaryMin != null && j.salaryMax != null ? { baseSalary: { '@type': 'MonetaryAmount', currency: 'KES', value: { '@type': 'QuantitativeValue', minValue: j.salaryMin * 1000, maxValue: j.salaryMax * 1000, unitText: 'MONTH' } } } : {}),
           description: live ? `${j.title}, ${j.location} · ${j.mode} (live from ${c.name}'s ${j.board} board)` : j.description + (j.source ? ` (Source: ${j.source})` : ''),
           url: live ? j.applyUrl : `${SITE.url}/jobs`,
         },
@@ -119,7 +119,7 @@ function shortDays(pd: number): string {
                     </span>
                     <span class="mono-label mt-0.5 block">
                       {!c.boardOnly && <a class="text-green hover:underline" href={`/startups/${c.id}`}>{c.name}</a>}
-                      {c.boardOnly && <span class="text-ink2">{c.name} <span class="text-mut">· board-only employer</span></span>}
+                      {c.boardOnly && <span class="text-ink2">{c.name} <span class="text-mut">· {c.submitted ? 'employer-submitted, desk reviewed' : 'board-only employer'}</span></span>}
                       {' '}· {j.location}
                       {j.mode && j.mode !== '—' && ` · ${j.mode}`}
                       {c.verified ? <span class="ml-1.5 font-semibold text-green">✓ Verified employer</span> : ''}
@@ -131,7 +131,7 @@ function shortDays(pd: number): string {
                     ) : (
                       <span class="statnum block whitespace-nowrap text-[13px]">{payBand}</span>
                     )}
-                    <span class="mono-label block whitespace-nowrap">{live ? 'not disclosed' : 'market band · mo'}</span>
+                    <span class="mono-label block whitespace-nowrap">{live ? 'not disclosed' : j.salaryMin != null ? 'market band · mo' : 'employer stated'}</span>
                   </span>
                   <span class="hidden text-right md:block"><span class="mono-label">{when}</span></span>
                   <button class="bookmark-btn btn btn-ghost hidden h-9 w-9 !min-h-0 !px-0 md:inline-flex" data-bm={j.id} aria-label={`Bookmark ${j.title}`} aria-pressed="false">
@@ -143,7 +143,7 @@ function shortDays(pd: number): string {
                       {live ? (
                         <span class="whitespace-nowrap font-mono text-[12.5px] italic text-mut" title="Pay not disclosed, see market bands in the rail">pay: n/d</span>
                       ) : (
-                        <span class="statnum whitespace-nowrap text-[13.5px]">{payBand}<span class="ml-1 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-mut">/ mo · band</span></span>
+                        <span class="statnum whitespace-nowrap text-[13.5px]">{payBand}{j.salaryMin != null && <span class="ml-1 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-mut">/ mo · band</span>}</span>
                       )}
                     </span>
                     <span class="flex shrink-0 items-center gap-1.5">
@@ -166,14 +166,14 @@ function shortDays(pd: number): string {
                       )}
                       <div class="mt-3 flex flex-wrap gap-1.5">{j.tags.map((t) => <span class="chip chip-dashed">{t}</span>)}</div>
                       <div class="mt-4 flex flex-wrap gap-2">
-                        <a class="btn btn-amber h-9" href={live ? j.applyUrl : (j.applyUrl || '#')} target="_blank" rel="noopener noreferrer">Apply on {live ? `${c.name}'s ${j.board} board` : 'employer board'} ↗</a>
+                        <a class="btn btn-amber h-9" href={live ? j.applyUrl : (j.applyUrl || '#')} target={live || !j.applyUrl?.startsWith('mailto:') ? '_blank' : undefined} rel={live || !j.applyUrl?.startsWith('mailto:') ? 'noopener noreferrer' : undefined}>{live ? `Apply on ${c.name}'s ${j.board} board` : j.applyUrl?.startsWith('mailto:') ? 'Email your CV' : 'Apply on employer board'} &nearr;</a>
                         {!live && !j.applyUrl && <button class="btn btn-amber h-9" data-modal="apply">Apply now</button>}
                         <button class="btn btn-ghost h-9" data-modal="report">Report listing</button>
                       </div>
                       {live ? (
                         <p class="mono-label mt-3">Source: {c.name} {j.board} board · fetched {LIVE.fetchedAt} · Kenya-based roles only</p>
                       ) : (
-                        j.source && <p class="mono-label mt-3">Source: {j.source} · salary shown is a market band, not the offer</p>
+                        j.source && <p class="mono-label mt-3">Source: {j.source}{j.salaryMin != null ? ' · salary shown is a market band, not the offer' : ' · pay as stated by the employer'}</p>
                       )}
                     </div>
                   </div>

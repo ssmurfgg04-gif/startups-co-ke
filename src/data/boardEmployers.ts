@@ -1,11 +1,13 @@
 import type { Company } from './types';
 
 /**
- * BOARD-ONLY EMPLOYERS, companies with verified live ATS boards that hire in
- * Kenya but are not (yet) tracked as full startup profiles. Rendered on the
- * jobs board with an honest "board-only" chip, never presented as profiles.
+ * BOARD-ONLY EMPLOYERS: companies that hire in Kenya but are not (yet) tracked
+ * as full startup profiles. Two kinds live here:
+ *  - verified live ATS boards (rendered with an honest "board-only" chip), and
+ *  - employer-submitted listings ("submitted: true"), reviewed by a person,
+ *    never presented as profiles and never marked verified.
  */
-export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sector' | 'hq' | 'domain' | 'website'> & { boardOnly: true }> = {
+export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sector' | 'hq' | 'domain' | 'website'> & { boardOnly: true; submitted?: boolean }> = {
   moniepoint: {
     id: 'moniepoint',
     name: 'Moniepoint',
@@ -32,5 +34,13 @@ export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sect
     domain: 'branch.co',
     website: 'https://branch.co',
     boardOnly: true,
+  },
+  gstar: {
+    id: 'gstar',
+    name: 'Gstar',
+    sector: 'Other',
+    hq: 'Kenya · employer-submitted',
+    boardOnly: true,
+    submitted: true,
   },
 };

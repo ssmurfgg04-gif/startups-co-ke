@@ -102,10 +102,11 @@ export interface Job {
   location: string;
   mode: 'Hybrid' | 'On-site' | 'Remote';
   category: 'Engineering' | 'Data' | 'Product' | 'Design' | 'Growth' | 'Operations' | 'Executive';
-  /** display string; market bands are labelled as bands, not offers */
+  /** display string; market bands are labelled as bands, not offers.
+   *  Employer-submitted rows may state "Negotiable" and carry null min/max. */
   salary: string;
-  salaryMin: number; // KSh / month, for benchmark bars
-  salaryMax: number;
+  salaryMin: number | null; // KSh / month, for benchmark bars (null = no band)
+  salaryMax: number | null;
   postedDays: number;
   featured: boolean;
   tags: string[];

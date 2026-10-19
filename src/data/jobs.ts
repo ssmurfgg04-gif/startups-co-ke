@@ -7,6 +7,24 @@ import type { Job } from './types';
  */
 export const JOBS: Job[] = [
   {
+    id: 'j-gstar-packaging',
+    title: 'Packaging Assistant, Manufacturing',
+    companyId: 'gstar',
+    location: 'Kenya',
+    mode: 'On-site',
+    category: 'Operations',
+    salary: 'Negotiable (employer stated)',
+    salaryMin: null,
+    salaryMax: null,
+    postedDays: 0,
+    featured: false,
+    tags: ['No experience required', 'Form four leavers welcome', 'Full time'],
+    description:
+      'Employer-submitted listing, reviewed by a person before publishing. Gstar (manufacturing) is hiring packaging staff for production-line work. No experience required; form four certificates accepted. Full time, pay negotiable. Send your CV to the apply email by 25 Oct 2026. The employer has not yet been cross-checked against public sources, so judge as usual: a real employer never asks you for money to get hired.',
+    applyUrl: 'mailto:haronronok002@gmail.com?subject=Application%3A%20Packaging%20Assistant%20%28Gstar%29',
+    source: 'Employer submission (Oct 19, 2026), reviewed by the desk',
+  },
+  {
     id: 'j-mkopa-backend',
     title: 'Senior Backend Engineer, Asset Finance',
     companyId: 'm-kopa',
@@ -142,6 +160,7 @@ export interface EmployerRef extends Pick<Company, 'id' | 'name' | 'sector' | 'h
   verified?: 0 | 1;
   status?: Company['status'];
   boardOnly?: boolean;
+  submitted?: boolean;
 }
 
 /** Resolve a jobs-board employer: tracked profile first, board-only record second. */
