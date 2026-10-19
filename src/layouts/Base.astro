@@ -17,6 +17,8 @@ export interface BaseProps {
   publishedTime?: string;
   author?: string;
   jsonld?: Record<string, unknown> | Record<string, unknown>[];
+  /** Utility screens (password reset, etc.) must stay out of search indexes. */
+  noindex?: boolean;
 }
 const props = Astro.props as BaseProps;
 ---
@@ -29,6 +31,7 @@ const props = Astro.props as BaseProps;
       type={props.ogType}
       publishedTime={props.publishedTime}
       author={props.author}
+      noindex={props.noindex}
     />
     {props.jsonld && <JsonLd data={props.jsonld} />}
     <meta name="generator" content={Astro.generator} />
