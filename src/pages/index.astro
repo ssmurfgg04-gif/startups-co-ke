@@ -20,9 +20,11 @@ import { SITE } from '@/config/site';
 
 const featured = FEATURED_IDS.map((id) => COMPANIES.find((c) => c.id === id)!).filter(Boolean);
 const featuredHack = HACKATHONS.find((h) => h.featured)!;
-const daysTo = featuredHack.startISO
-  ? Math.max(0, Math.round((Date.parse(featuredHack.startISO) - Date.now()) / 86400000))
-  : Math.round((featuredHack.startOffsetMs ?? 0) / 86400000);
+const fmtDayFull = (iso: string) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }).format(new Date(iso));
+const fmtTime = (iso: string) =>
+  new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Nairobi', hour12: false }).format(new Date(iso));
+const featuredStart = featuredHack.startISO ? fmtDayFull(featuredHack.startISO) : featuredHack.dateLabel ?? 'dates TBA';
 const nextUp = HACKATHONS.filter((h) => h.status === 'upcoming' && !h.featured && h.startISO)
   .sort((a, b) => Date.parse(a.startISO!) - Date.parse(b.startISO!))
   .slice(0, 3);
@@ -369,13 +371,13 @@ const jsonld = [
             <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Next: {featuredHack.title}</p>
             {featuredHack.verifiedOrganizer && <span class="chip border-dpaper/40 font-mono text-[10px] uppercase tracking-[0.08em] text-dpaper/90">Organizer verified</span>}
           </div>
-          <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-dmut">{featuredHack.focus} · starts Nov 13, 2026 · 08:00 EAT</p>
+          <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.1em] text-dmut">{featuredHack.focus} · starts {featuredStart}{featuredHack.startISO ? ` · ${fmtTime(featuredHack.startISO)} EAT` : ''}</p>
           <div class="mt-4">
             <Countdown id="home-countdown" targetISO={featuredHack.startISO} dark />
           </div>
           <div class="mt-4 flex flex-wrap gap-1.5">
             {nextUp.map((h) => (
-              <a class="chip border-dpaper/40 text-dpaper/90 hover:bg-dpaper/10" href="/hackathons">{h.title} · +{Math.max(0, Math.round((Date.parse(h.startISO!) - Date.now()) / 86400000))}d</a>
+              <a class="chip border-dpaper/40 text-dpaper/90 hover:bg-dpaper/10" href="/hackathons">{h.title} · {h.startISO ? fmtDayFull(h.startISO) : h.dateLabel}</a>
             ))}
           </div>
         </div>

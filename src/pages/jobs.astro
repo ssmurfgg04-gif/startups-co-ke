@@ -363,7 +363,7 @@ function shortDays(pd: number): string {
     try {
       await subscribeNewsletter(email, 'job-alerts');
       const toast = (window as unknown as { sckToast: (t: { title: string; body?: string; kind?: string }) => void }).sckToast;
-      toast({ title: 'Alert created', body: 'Weekly digest, Mondays 06:30 EAT. (Sample flow)' });
+      toast({ title: 'Alert created', body: 'You are on the list. The digest goes out Mondays 06:30 EAT.' });
       form.reset();
     } catch {
       const toast = (window as unknown as { sckToast: (t: { title: string; body?: string; kind?: string }) => void }).sckToast;
