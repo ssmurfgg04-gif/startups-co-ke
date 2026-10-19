@@ -366,3 +366,10 @@ export async function subscriberCount(env) {
   const r = await sb(env, '/rest/v1/newsletter_subscribers?select=email&limit=10000');
   return Array.isArray(r.data) ? r.data.length : 0;
 }
+
+/** Addresses currently on the Brief list (desk-only, used by /desk/brief-send). */
+export async function listSubscribers(env) {
+  const r = await sb(env, '/rest/v1/newsletter_subscribers?select=email&order=created_at.asc&limit=10000');
+  if (!Array.isArray(r.data)) return null;
+  return r.data.map((row) => String(row.email || '').toLowerCase()).filter((e) => e.includes('@'));
+}

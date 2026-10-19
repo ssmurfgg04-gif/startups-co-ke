@@ -22,7 +22,7 @@
 
 import {
   attemptEmail, checkRateLimit, clientIp, deleteListing, deskEmail, digestLines, findByClientRef,
-  getListing, json, listListings, newsletterSubscribe, putListing, queueInsert,
+  getListing, json, listListings, listSubscribers, newsletterSubscribe, putListing, queueInsert,
   queueMarkDone, queueList, sb, setListingStatus, slugify, subscriberCount,
   uniqueSlug, validateListing, verifyUser,
 } from './lib.mjs';
@@ -421,6 +421,44 @@ async function handleDeskData(req, env) {
   return json(422, { ok: false, error: 'unknown action' }, NO_STORE);
 }
 
+/**
+ * POST /desk/brief-send — desk-gated. Emails The Ecosystem Brief to the
+ * subscriber list (or a single test address). Body: { subject, text,
+ * to? } — `to` overrides the list (used for the verified test send).
+ * Text only, one Resend call per recipient, result count returned.
+ */
+async function handleBriefSend(req, env) {
+  const user = await deskGuard(env, req);
+  if (!user) return json(404, { ok: false, error: 'not found' }, NO_STORE);
+  let body;
+  try { body = await req.json(); } catch { return json(400, { ok: false, error: 'invalid JSON' }, NO_STORE); }
+
+  const subject = String(body?.subject ?? '').replace(/[\u0000-\u001f<>]/g, ' ').trim().slice(0, 140);
+  const text = String(body?.text ?? '').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').slice(0, 20000);
+  if (!subject || text.trim().length < 40) {
+    return json(422, { ok: false, error: 'A subject and a body of at least 40 characters are required.' }, NO_STORE);
+  }
+
+  const toOverride = String(body?.to ?? '').trim().toLowerCase();
+  let recipients;
+  if (toOverride) {
+    if (!/^[^\s@"'<>]+@[^\s@"'<>]+\.[a-z]{2,}$/i.test(toOverride)) {
+      return json(422, { ok: false, error: 'invalid recipient' }, NO_STORE);
+    }
+    recipients = [toOverride];
+  } else {
+    recipients = (await listSubscribers(env)) || [];
+  }
+  if (!recipients.length) return json(200, { ok: true, sent: 0, failed: 0 }, NO_STORE);
+
+  let sent = 0, failed = 0;
+  for (const rcpt of recipients.slice(0, 2000)) {
+    const out = await attemptEmail(env, { to: rcpt, subject, text });
+    if (out.sent) sent += 1; else failed += 1;
+  }
+  return json(200, { ok: sent > 0, sent, failed }, NO_STORE);
+}
+
 /* ------------------------------------------------------------------ */
 /* Router                                                              */
 /* ------------------------------------------------------------------ */
@@ -455,6 +493,16 @@ export default {
         });
       }
       if (path === '/desk/data') return handleDeskData(req, env);
+      // Health probe: boolean configuration checks ONLY. No versions, no URLs,
+      // no values — safe to poll from anywhere.
+      if (path === '/api/health') {
+        return json(200, {
+          ok: true,
+          storage: Boolean(env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY),
+          email: Boolean(env.RESEND_API_KEY),
+          anon: Boolean(env.PUBLIC_SUPABASE_ANON_KEY),
+        }, { ...CORS, ...NO_STORE });
+      }
       return asset404(req, env);
     }
 
@@ -465,6 +513,7 @@ export default {
       if (path === '/api/newsletter' || path === '/.netlify/functions/newsletter') return handleNewsletter(req, env);
       if (path === '/api/notify' || path === '/.netlify/functions/notify') return handleNotify(req, env);
       if (path === '/desk/data') return handleDeskData(req, env);
+      if (path === '/desk/brief-send') return handleBriefSend(req, env);
       return json(404, { ok: false, error: 'not found' }, { ...CORS, ...NO_STORE });
     }
 

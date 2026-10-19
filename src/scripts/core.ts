@@ -57,11 +57,12 @@ if (reduce) {
       sb.auth.onAuthStateChange((_e, session) => setSession(session?.user.email));
       btn.addEventListener('click', async (ev) => {
         if (btn.dataset.signedIn === '1') {
+          // Open the account panel (set a password / sign out) instead of
+          // signing out on an unguarded click.
           ev.stopPropagation();
-          await sb.auth.signOut();
-          setSession(null);
-          localStorage.setItem('sck-auth-none', '1');
-          document.dispatchEvent(new CustomEvent('sck:toast', { detail: { title: 'Signed out', body: 'See you soon.' } }));
+          const dlg = document.getElementById('modal-auth') as HTMLDialogElement | null;
+          if (dlg && !dlg.open) dlg.showModal();
+          window.dispatchEvent(new Event('sck:auth-opened'));
         }
       });
     } catch {

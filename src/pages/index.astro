@@ -105,11 +105,18 @@ const jsonld = [
         <button class="btn border-0 border-l-2 border-ink px-5" type="submit">Search</button>
       </form>
 
-      <form class="brief-form mt-3 flex max-w-xl items-stretch border-2 border-ink bg-ink text-paper" data-kind="newsletter" aria-label="Subscribe to The Ecosystem Brief">
-        <span class="hidden items-center pl-4 pr-1 font-mono text-[10px] uppercase tracking-[0.12em] text-dmut sm:flex">The Ecosystem Brief · Mon 06:30 EAT</span>
-        <input class="min-h-11 flex-1 bg-transparent px-4 text-[15px] text-paper placeholder:text-dmut" type="email" name="email" required placeholder="Email for the Monday brief" aria-label="Email for The Ecosystem Brief" />
-        <button class="btn btn-amber border-0 border-l-2 border-ink px-5" type="submit">Get the brief</button>
-      </form>
+      <!-- The Ecosystem Brief capture. Standard newsletter-block anatomy
+           (label, one-line promise, single field + button, microcopy) so it
+           reads as "sign up here" at a glance, never as a second search box. -->
+      <div class="mt-7 max-w-xl border-2 border-ink bg-paper2 p-4 sm:p-5">
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em]">The Ecosystem Brief · free</p>
+        <p class="mt-1.5 text-[15px] text-ink2">Kenya's startup week in one email: verified rounds with named sources, new founder listings, live jobs. Mondays 06:30 EAT.</p>
+        <form class="brief-form mt-3 flex flex-col border-2 border-ink bg-paper sm:flex-row" data-kind="newsletter" aria-label="Subscribe to The Ecosystem Brief">
+          <input class="min-h-11 flex-1 bg-transparent px-4 text-[15px] outline-none placeholder:text-mut" type="email" name="email" required placeholder="you@company.co.ke" aria-label="Your email address" />
+          <button class="btn btn-amber min-h-11 shrink-0 border-0 border-t-2 border-ink px-5 sm:border-t-0 sm:border-l-2" type="submit">Get the brief</button>
+        </form>
+        <p class="mt-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">One email a week · no spam · unsubscribe anytime</p>
+      </div>
 
       <div class="mt-3.5 flex flex-wrap gap-2">
         <a class="chip hover:bg-paper2" href="/climate-tech">Climate &amp; Energy</a>

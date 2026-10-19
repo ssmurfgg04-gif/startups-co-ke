@@ -221,6 +221,10 @@ export function deskHtml(env) {
   .row { display:flex; gap:8px; margin-top:12px; max-width:440px; flex-wrap:wrap; }
   .empty { border:1px dashed #96610a; padding:18px; color:#5d5949; }
   a { color:#96610a; }
+  textarea { width:100%; min-height:180px; border:1px solid #181712; padding:10px; font:14px Archivo, sans-serif; margin-top:12px; resize:vertical; }
+  .authbox { border:1px dashed #181712; background:#fff; padding:14px; margin-top:12px; max-width:480px; }
+  .tabrow { margin-top:0; }
+  .tab.on { background:#181712; color:#f6f3ea; }
 </style>
 </head>
 <body>
@@ -271,11 +275,52 @@ export function deskHtml(env) {
     return r.ok;
   }
 
+  /** Email + password sign-in (Supabase /token?grant_type=password). */
+  async function signInPassword(email, pw) {
+    const r = await fetch(SB + '/auth/v1/token?grant_type=password', {
+      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pw, gotrue_meta_security: {} }),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.access_token) {
+      return { ok: false, error: d.error_description || d.error || ('HTTP ' + r.status) };
+    }
+    localStorage.setItem(LS, JSON.stringify({
+      access_token: d.access_token, refresh_token: d.refresh_token, token_type: 'bearer',
+      expires_in: d.expires_in || 3600, expires_at: Date.now() + (d.expires_in || 3600) * 1000,
+      user: d.user || null,
+    }));
+    return { ok: true, token: d.access_token };
+  }
+
+  /** Forgot password: emails a reset link that signs the desk in, then a new
+   *  password can be set with the "Set a password" card below the queue. */
+  async function sendRecover(email) {
+    const r = await fetch(SB + '/auth/v1/recover', {
+      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    return r.ok;
+  }
+
   function shell(msg, withForm) {
     document.getElementById('state').innerHTML = msg + (withForm ? \`
-      <div class="row"><input id="demail" type="email" placeholder="desk mailbox" autocomplete="email" />
-      <button id="dgo">Send link</button></div>
-      <p class="mut mono" style="font-size:10px;margin-top:8px">One link per address. Check spam. The link works once and expires in 60 minutes.</p>\` : '');
+      <div class="authbox">
+        <div class="row tabrow"><button type="button" id="tab-link" class="ghost tab on">Magic link</button>
+        <button type="button" id="tab-pass" class="ghost tab">Password</button></div>
+        <div id="pane-link">
+          <div class="row"><input id="demail" type="email" placeholder="desk mailbox" autocomplete="email" />
+          <button id="dgo">Send link</button></div>
+          <p class="mut mono" style="font-size:10px;margin-top:8px">One link per address. Check spam. The link works once and expires in 60 minutes.</p>
+        </div>
+        <div id="pane-pass" style="display:none">
+          <div class="row"><input id="pemail" type="email" placeholder="desk mailbox" autocomplete="email" />
+          <input id="ppass" type="password" placeholder="password" autocomplete="current-password" />
+          <button id="pgo">Sign in</button></div>
+          <p class="mut mono" style="font-size:10px;margin-top:8px">First time with a password? Sign in with the magic link once, then use "Set a password" below the queue. Forgotten it? <a href="#" id="recover">Email me a reset link</a>.</p>
+          <p id="pmsg" class="mut mono" style="font-size:10px;margin-top:6px"></p>
+        </div>
+      </div>\` : '');
     const go = document.getElementById('dgo');
     if (go) go.addEventListener('click', async () => {
       const em = (document.getElementById('demail').value || '').trim();
@@ -286,6 +331,47 @@ export function deskHtml(env) {
       document.getElementById('state').innerHTML = ok
         ? 'Link sent to <b>' + esc(em) + '</b> — open it on this device and the queue loads here.'
         : 'Could not send the link. Try again in a minute.';
+    });
+
+    const tabL = document.getElementById('tab-link');
+    const tabP = document.getElementById('tab-pass');
+    if (tabL && tabP) {
+      const paneL = document.getElementById('pane-link');
+      const paneP = document.getElementById('pane-pass');
+      const setTab = (usePass) => {
+        paneL.style.display = usePass ? 'none' : '';
+        paneP.style.display = usePass ? '' : 'none';
+        tabL.classList.toggle('on', !usePass);
+        tabP.classList.toggle('on', usePass);
+      };
+      tabL.addEventListener('click', () => setTab(false));
+      tabP.addEventListener('click', () => setTab(true));
+    }
+
+    const pgo = document.getElementById('pgo');
+    if (pgo) pgo.addEventListener('click', async () => {
+      const em = (document.getElementById('pemail').value || '').trim();
+      const pw = document.getElementById('ppass').value || '';
+      const msg = document.getElementById('pmsg');
+      if (!em.includes('@') || !pw) { msg.textContent = 'Email and password are both required.'; return; }
+      pgo.disabled = true; pgo.textContent = 'Signing in…';
+      const out = await signInPassword(em, pw);
+      pgo.disabled = false; pgo.textContent = 'Sign in';
+      if (out.ok) { loadData(out.token); return; }
+      const m = String(out.error || 'unknown error');
+      msg.textContent = 'Password sign-in failed (' + m + ').'
+        + (/invalid/i.test(m) ? ' If you have never set a password, use the Magic link tab first, then "Set a password" after the queue loads.' : '');
+    });
+
+    const rec = document.getElementById('recover');
+    if (rec) rec.addEventListener('click', async (ev) => {
+      ev.preventDefault();
+      const em = (document.getElementById('pemail').value || '').trim();
+      if (!em.includes('@')) { document.getElementById('pmsg').textContent = 'Type the desk mailbox above first.'; return; }
+      const ok = await sendRecover(em);
+      document.getElementById('pmsg').textContent = ok
+        ? 'Reset link sent to ' + em + ' — open it on this device; it signs you in, then set a new password below the queue.'
+        : 'Could not send the reset link. Try again in a minute.';
     });
   }
 
@@ -355,7 +441,78 @@ export function deskHtml(env) {
         ' · ' + esc(l.website || '') + (l.founderName ? ' · founder ' + esc(l.founderName) : '') + '</span>' +
         (l.slug ? '<br><a href="/startups/community/' + esc(l.slug) + '">open page →</a>' : '') + '</div></div>';
     }
+    // Desk account: set a password so the next sign-in skips the one-time link.
+    html += '<h1 style="margin-top:30px;font-size:20px">Desk account</h1>' +
+      '<div class="card"><div class="card-h"><span class="kind">Set a password</span></div>' +
+      '<div class="card-b"><p class="mut" style="margin:0 0 4px">Skip the one-time link next time. After saving, sign in with the Password tab on this page.</p>' +
+      '<div class="row"><input id="npass" type="password" placeholder="new password (min 8 characters)" autocomplete="new-password" />' +
+      '<input id="npass2" type="password" placeholder="repeat password" autocomplete="new-password" />' +
+      '<button id="npassGo" class="ghost">Save password</button></div>' +
+      '<p id="npassMsg" class="mut mono" style="font-size:10px;margin-top:8px"></p></div></div>';
+
+    // The Ecosystem Brief: write + send an edition without leaving the desk.
+    html += '<h1 style="margin-top:30px;font-size:20px">The Ecosystem Brief</h1>' +
+      '<div class="card"><div class="card-h"><span class="kind">Send an edition</span>' +
+      '<span class="mut mono" style="font-size:10px">' + esc(String(d.subscribers)) + ' subscriber(s)</span></div>' +
+      '<div class="card-b">' +
+      '<div class="row" style="max-width:660px;margin-top:0"><input id="bSubject" placeholder="Subject, e.g. The Ecosystem Brief · 20 Oct 2026" /></div>' +
+      '<textarea id="bBody" placeholder="Plain-text edition. What happened last week, who raised, from whom, and the named sources. No hype, no invented numbers."></textarea>' +
+      '<div class="row" style="max-width:660px"><input id="bTestTo" placeholder="Test send to one address (optional)" />' +
+      '<button id="bGo" class="ghost">Send</button></div>' +
+      '<p class="mut mono" style="font-size:10px;margin-top:8px">Leave the test field empty to send to the full list. Sent from notices@startups.co.ke.</p>' +
+      '<p id="bMsg" class="mut mono" style="font-size:10px;margin-top:6px"></p></div></div>';
+
     document.getElementById('app').insertAdjacentHTML('beforeend', html);
+
+    // --- wiring for the two cards above ---
+    const tok = tokenFromHash() || tokenFromStorage();
+    const npassGo = document.getElementById('npassGo');
+    if (npassGo && tok) npassGo.addEventListener('click', async () => {
+      const p1 = document.getElementById('npass').value || '';
+      const p2 = document.getElementById('npass2').value || '';
+      const msg = document.getElementById('npassMsg');
+      if (p1.length < 8) { msg.textContent = 'Password too short. Use at least 8 characters.'; return; }
+      if (p1 !== p2) { msg.textContent = 'The two passwords do not match.'; return; }
+      npassGo.disabled = true; msg.textContent = 'Saving…';
+      try {
+        const r = await fetch(SB + '/auth/v1/user', {
+          method: 'POST',
+          headers: { apikey: KEY, Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: p1 }),
+        });
+        if (r.ok) {
+          msg.textContent = 'Password saved. From now on, use the Password tab when signing in.';
+          document.getElementById('npass').value = '';
+          document.getElementById('npass2').value = '';
+        } else {
+          const d = await r.json().catch(() => ({}));
+          msg.textContent = 'Could not save the password (' + (d.message || d.error_description || ('HTTP ' + r.status)) + '). Try again.';
+        }
+      } catch (e) { msg.textContent = 'Could not save the password (' + String(e.message || e) + ').'; }
+      npassGo.disabled = false;
+    });
+
+    const bGo = document.getElementById('bGo');
+    if (bGo && tok) bGo.addEventListener('click', async () => {
+      const subject = (document.getElementById('bSubject').value || '').trim();
+      const text = document.getElementById('bBody').value || '';
+      const to = (document.getElementById('bTestTo').value || '').trim();
+      const msg = document.getElementById('bMsg');
+      if (subject.length < 6 || text.trim().length < 40) { msg.textContent = 'Give the edition a subject and a body of at least 40 characters.'; return; }
+      bGo.disabled = true; msg.textContent = 'Sending…';
+      try {
+        const r = await fetch('/desk/brief-send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+          body: JSON.stringify({ subject, text, to: to || undefined }),
+        });
+        const d = await r.json().catch(() => ({}));
+        msg.textContent = r.ok
+          ? 'Sent to ' + d.sent + ' recipient(s)' + (d.failed ? ', ' + d.failed + ' failed' : '') + '.'
+          : 'Not sent: ' + (d.error || ('HTTP ' + r.status));
+      } catch (e) { msg.textContent = 'Not sent (' + String(e.message || e) + ').'; }
+      bGo.disabled = false;
+    });
   }
 
   (async () => {

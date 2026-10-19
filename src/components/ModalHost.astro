@@ -11,20 +11,48 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
 ---
 <!-- AUTH (magic link) -->
 <dialog id="modal-auth" class="dialog-card" aria-labelledby="auth-title">
-  <div class="border-b border-ink px-5 py-3.5"><p id="auth-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Sign in, magic link</p></div>
+  <div class="border-b border-ink px-5 py-3.5"><p id="auth-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Sign in</p></div>
+  <div class="flex gap-1.5 px-5 pt-4" role="tablist" aria-label="Sign-in method" id="auth-tabs">
+    <button type="button" id="auth-tab-link" class="chip border-2 border-ink bg-ink text-paper" aria-pressed="true">Email link</button>
+    <button type="button" id="auth-tab-pass" class="chip border-2 border-ink" aria-pressed="false">Password</button>
+  </div>
   <form id="auth-form" class="px-5 py-4" data-kind="auth">
-    <p class="text-[14px] text-mut">We email you a one-time sign-in link (no password. Powered by Supabase Auth{supabaseConfigured ? '' : ') not connected in this preview'}.</p>
-    <label class="mono-label mt-4 block" for="auth-email">Email</label>
-    <input id="auth-email" name="email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" />
-    <p class="mt-2.5 text-[12.5px] leading-relaxed text-mut">
-      <strong class="text-ink">How the link behaves:</strong> one email per address, valid for 60 minutes, works <em>once</em>. If it doesn't arrive in ~2 minutes, check spam/promotions, then resend from here. Any email address works the first time, an account is created the moment the link is sent.
-    </p>
+    <div id="auth-pane-link">
+      <p class="text-[14px] text-mut">We email you a one-time sign-in link. Powered by Supabase Auth{supabaseConfigured ? '' : ' (not connected in this preview)'}.</p>
+      <label class="mono-label mt-4 block" for="auth-email">Email</label>
+      <input id="auth-email" name="email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" />
+      <p class="mt-2.5 text-[12.5px] leading-relaxed text-mut">
+        <strong class="text-ink">How the link behaves:</strong> one email per address, valid for 60 minutes, works <em>once</em>. If it doesn't arrive in ~2 minutes, check spam/promotions, then resend from here. Any email address works the first time, an account is created the moment the link is sent.
+      </p>
+    </div>
+    <div id="auth-pane-pass" class="hidden">
+      <p class="text-[14px] text-mut">Sign in with your email and password. First time using a password? Take the email link once, then use “Set a password” while signed in.</p>
+      <label class="mono-label mt-4 block" for="auth-pass-email">Email</label>
+      <input id="auth-pass-email" name="email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" autocomplete="email" />
+      <label class="mono-label mt-3 block" for="auth-pass-pw">Password</label>
+      <input id="auth-pass-pw" name="password" type="password" required class="input mt-1.5" placeholder="Your password" autocomplete="current-password" />
+      <p id="auth-pass-msg" class="mt-2.5 hidden text-[12.5px] leading-relaxed text-mut" role="alert"></p>
+    </div>
     <p class="mono-label mt-3">Your data: protected queues. See <a class="text-amber underline" href="/privacy">privacy policy</a>.</p>
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
-      <button type="submit" class="btn btn-amber h-9" data-auth-send>Send link</button>
+      <button type="submit" class="btn btn-amber h-9" data-auth-send id="auth-send-btn">Send link</button>
     </div>
   </form>
+  <div id="auth-signedin" class="hidden border-t border-ink px-5 py-4">
+    <p class="text-[14px]">Signed in as <strong id="auth-who" class="text-ink"></strong>.</p>
+    <p class="mono-label mt-4">Set a password (optional)</p>
+    <p class="mt-1 text-[12.5px] text-mut">Skip the emailed link next time: sign in with this address and a password.</p>
+    <div class="mt-2 grid gap-2 sm:grid-cols-2">
+      <input id="auth-newpw" type="password" class="input" placeholder="New password (min 8)" autocomplete="new-password" />
+      <input id="auth-newpw2" type="password" class="input" placeholder="Repeat password" autocomplete="new-password" />
+    </div>
+    <p id="auth-setpw-msg" class="mt-2 text-[12.5px] text-mut" role="status"></p>
+    <div class="mt-4 flex justify-end gap-2">
+      <button type="button" class="btn btn-ghost h-9" id="auth-signout">Sign out</button>
+      <button type="button" class="btn btn-amber h-9" id="auth-setpw">Save password</button>
+    </div>
+  </div>
 </dialog>
 
 <!-- SUBMIT / CLAIM STARTUP (shared form) -->
@@ -328,6 +356,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       if (dlg) {
         if (!dlg.open) dlg.showModal();
         syncModalOpen();
+        if (dlg.id === 'modal-auth') window.dispatchEvent(new Event('sck:auth-opened'));
         return;
       }
     }
@@ -540,6 +569,33 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           const sbMod = await import('@/lib/supabase');
           const sb = sbMod.supabase();
           if (!sb) throw new Error('not-configured');
+          const usingPass = !document.getElementById('auth-pane-pass')?.classList.contains('hidden');
+          if (usingPass) {
+            // Password sign-in: failures surface inline (honest), success closes.
+            const email = String((document.getElementById('auth-pass-email') as HTMLInputElement | null)?.value || data.email || '');
+            const pw = String((document.getElementById('auth-pass-pw') as HTMLInputElement | null)?.value || '');
+            const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+            if (error) {
+              const m = String((error as { message?: string }).message || error);
+              const hint = /invalid login credentials/i.test(m)
+                ? 'That email and password do not match. Never set a password? Use the Email link tab once, then "Set a password" while signed in.'
+                : /email not confirmed/i.test(m)
+                  ? 'This address is not confirmed yet. Use the Email link tab to sign in first.'
+                  : /rate|too many/i.test(m)
+                    ? 'Too many attempts right now, wait a couple of minutes and try again.'
+                    : `Sign-in failed (${m}). Check the details and try again.`;
+              const msg = document.getElementById('auth-pass-msg');
+              if (msg) { msg.textContent = hint; msg.classList.remove('hidden'); }
+              else throw new Error(hint);
+              if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Sign in'; }
+              return;
+            }
+            if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Sign in'; }
+            form.closest('dialog')?.close();
+            form.reset();
+            window.sckToast({ title: 'Signed in', body: 'Welcome back. You are signed in with email and password.' });
+            return;
+          }
           const { error } = await sb.auth.signInWithOtp({
             email: String(data.email),
             options: { emailRedirectTo: window.location.origin },
@@ -646,5 +702,84 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
         if (btn && kind !== 'auth') { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Send'; }
       }
     });
+  });
+
+  // --- auth dialog: method tabs + signed-in panel (set password / sign out) ---
+  const tabLink = document.getElementById('auth-tab-link');
+  const tabPass = document.getElementById('auth-tab-pass');
+  const paneLink = document.getElementById('auth-pane-link');
+  const panePass = document.getElementById('auth-pane-pass');
+  const sendBtn = document.getElementById('auth-send-btn');
+  const setAuthPane = (usePass: boolean) => {
+    paneLink?.classList.toggle('hidden', usePass);
+    panePass?.classList.toggle('hidden', !usePass);
+    tabLink?.classList.toggle('bg-ink', !usePass);
+    tabLink?.classList.toggle('text-paper', !usePass);
+    tabPass?.classList.toggle('bg-ink', usePass);
+    tabPass?.classList.toggle('text-paper', usePass);
+    tabLink?.setAttribute('aria-pressed', String(!usePass));
+    tabPass?.setAttribute('aria-pressed', String(usePass));
+    if (sendBtn) sendBtn.textContent = usePass ? 'Sign in' : 'Send link';
+  };
+  tabLink?.addEventListener('click', () => setAuthPane(false));
+  tabPass?.addEventListener('click', () => setAuthPane(true));
+
+  const authTabs = document.getElementById('auth-tabs');
+  const authForm = document.getElementById('auth-form');
+  const signedPanel = document.getElementById('auth-signedin');
+  const syncAuthPanel = async () => {
+    try {
+      const sbMod = await import('@/lib/supabase');
+      const sb = sbMod.supabase();
+      if (!sb) return;
+      const { data } = await sb.auth.getSession();
+      const email = data.session?.user?.email;
+      if (email) {
+        signedPanel?.classList.remove('hidden');
+        authTabs?.classList.add('hidden');
+        authForm?.classList.add('hidden');
+        const who = document.getElementById('auth-who');
+        if (who) who.textContent = email;
+      } else {
+        signedPanel?.classList.add('hidden');
+        authTabs?.classList.remove('hidden');
+        authForm?.classList.remove('hidden');
+      }
+    } catch { /* not configured: keep the form visible */ }
+  };
+  window.addEventListener('sck:auth-opened', syncAuthPanel);
+
+  document.getElementById('auth-signout')?.addEventListener('click', async () => {
+    try {
+      const sbMod = await import('@/lib/supabase');
+      const sb = sbMod.supabase();
+      await sb?.auth.signOut();
+    } catch { /* already out */ }
+    (document.getElementById('modal-auth') as HTMLDialogElement | null)?.close();
+    window.sckToast({ title: 'Signed out', body: 'See you soon.' });
+  });
+
+  document.getElementById('auth-setpw')?.addEventListener('click', async () => {
+    const p1 = (document.getElementById('auth-newpw') as HTMLInputElement | null)?.value || '';
+    const p2 = (document.getElementById('auth-newpw2') as HTMLInputElement | null)?.value || '';
+    const msg = document.getElementById('auth-setpw-msg');
+    if (!msg) return;
+    if (p1.length < 8) { msg.textContent = 'Use at least 8 characters.'; return; }
+    if (p1 !== p2) { msg.textContent = 'The two passwords do not match.'; return; }
+    msg.textContent = 'Saving…';
+    try {
+      const sbMod = await import('@/lib/supabase');
+      const sb = sbMod.supabase();
+      if (!sb) throw new Error('not configured');
+      const { error } = await sb.auth.updateUser({ password: p1 });
+      if (error) { msg.textContent = `Could not save (${error.message}). Try again.`; return; }
+      msg.textContent = 'Password saved. Next time, use the Password tab to sign in.';
+      const a = document.getElementById('auth-newpw') as HTMLInputElement | null;
+      const b = document.getElementById('auth-newpw2') as HTMLInputElement | null;
+      if (a) a.value = '';
+      if (b) b.value = '';
+    } catch (err) {
+      msg.textContent = `Could not save (${String((err as Error).message || err)}). Try again.`;
+    }
   });
 </script>
