@@ -40,8 +40,8 @@ export type SubmissionKind =
 /**
  * Insert a review-queue submission.
  *
- * The queue lives in Netlify Blobs via /.netlify/functions/review-submit (see
- * netlify/functions/review-submit.mjs). The previous Supabase `submissions`
+ * The queue lives in Supabase via /api/review-submit (worker/index.js). The
+ * previous Supabase `submissions`
  * path is DEAD in production — its insert RLS policy never covered the anon
  * role, so every review form failed with 42501 and submissions vanished. The
  * function also emails the desk (best-effort) — the client no longer fires a
@@ -53,7 +53,7 @@ export type SubmissionKind =
  */
 export async function submitForm(kind: SubmissionKind, payload: Record<string, unknown>, email?: string) {
   try {
-    const res = await fetch('/.netlify/functions/review-submit', {
+    const res = await fetch('/api/review-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ kind, payload, email: email ?? undefined }),
@@ -84,7 +84,7 @@ async function syncLocalQueue() {
     const remaining: unknown[] = [];
     for (const item of q) {
       try {
-        const res = await fetch('/.netlify/functions/review-submit', {
+        const res = await fetch('/api/review-submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item),
@@ -102,12 +102,12 @@ async function syncLocalQueue() {
 /**
  * Subscribe to The Ecosystem Brief.
  *
- * Writes through /.netlify/functions/newsletter (Netlify Blobs). The previous
+ * Writes through /api/newsletter (Cloudflare Worker, Supabase storage). The previous
  * Supabase path silently failed with 42501 (insert policy never covered the
  * anon role) — subscribers saw "Subscribed" while the table stayed empty.
  */
 export async function subscribeNewsletter(email: string, source = 'site') {
-  const res = await fetch('/.netlify/functions/newsletter', {
+  const res = await fetch('/api/newsletter', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, source }),

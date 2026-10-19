@@ -446,7 +446,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
    * published" with the same slug.
    */
   async function publishListing(body: Record<string, unknown>, token?: string): Promise<{ slug: string; url: string }> {
-    const doFetch = () => fetch('/.netlify/functions/startup-create', {
+    const doFetch = () => fetch('/api/startup-create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify(body),

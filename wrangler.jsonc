@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "startups-co-ke",
+  "compatibility_date": "2026-10-01",
+  "main": "worker/index.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "none"
+  },
+  "build": {
+    "command": "bun run build"
+  },
+  "vars": {
+    "PUBLIC_SUPABASE_URL": "https://eezqpsbhmnhuhnmiwnsz.supabase.co",
+    "NOTIFY_EMAIL": "jackblessed191@gmail.com"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

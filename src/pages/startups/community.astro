@@ -3,10 +3,9 @@
  * FOUNDER-LISTED STARTUPS (community directory) — /startups/community
  *
  * The index shell is prerendered; the listings themselves are fetched at
- * runtime from /.netlify/functions/startup-list (Netlify Blobs-backed),
+ * runtime from /startups/community/list.json (Cloudflare Worker over Supabase),
  * because founders publish INSTANTLY — no rebuild, no approval. Individual
- * profile pages are server-rendered by netlify/functions/startup-page.mjs
- * at /startups/community/:slug.
+ * profile pages are server-rendered by worker/index.js at /startups/community/:slug.
  */
 import Base from '@/layouts/Base.astro';
 import { SITE } from '@/config/site';
