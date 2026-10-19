@@ -18,10 +18,15 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     <button type="button" id="auth-tab-pass" class="chip border-2 border-ink bg-ink text-paper" aria-pressed="true">Password</button>
     <button type="button" id="auth-tab-link" class="chip border-2 border-ink" aria-pressed="false">Email link</button>
   </div>
-  <form id="auth-form" class="px-5 py-4" data-kind="auth" data-auth-mode="pass">
+  <!-- novalidate is REQUIRED: this form holds all three auth panes, and
+       hidden required inputs silently cancel native submission (the browser
+       cannot focus them, so the submit event never fires). Validation is done
+       per-mode in the handler below; hidden-pane inputs are also disabled by
+       showAuthPane() as a second guard. -->
+  <form id="auth-form" class="px-5 py-4" data-kind="auth" data-auth-mode="pass" novalidate>
     <div id="auth-pane-pass">
       <label class="mono-label block" for="auth-pass-email">Email</label>
-      <input id="auth-pass-email" name="email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" autocomplete="email" />
+      <input id="auth-pass-email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" autocomplete="email" />
       <label class="mono-label mt-3 block" for="auth-pass-pw">Password</label>
       <div class="relative mt-1.5">
         <input id="auth-pass-pw" name="password" type="password" required class="input pr-16" placeholder="Your password" autocomplete="current-password" />
@@ -48,7 +53,8 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     <div id="auth-pane-link" class="hidden">
       <p class="text-[14px] text-mut">No password? We email you a one-time sign-in link{supabaseConfigured ? '' : ' (not connected in this preview)'}.</p>
       <label class="mono-label mt-4 block" for="auth-email">Email</label>
-      <input id="auth-email" name="email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" autocomplete="email" />
+      <input id="auth-email" type="email" required class="input mt-1.5" placeholder="you@startup.co.ke" autocomplete="email" />
+      <p id="auth-link-msg" class="mt-2.5 hidden text-[12.5px] leading-relaxed text-mut" role="alert"></p>
       <p class="mt-2.5 text-[12.5px] leading-relaxed text-mut">
         One email per address, valid for 60 minutes, works <em>once</em>. If it doesn't arrive in ~2 minutes, check spam/promotions, then resend.
       </p>
@@ -585,6 +591,9 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       // success + error UX: the dialog stays open and shows the live URL).
       const instantPublish = kind === 'startup' && form.dataset.mode === 'instant';
       if (instantPublish) hidePublishError();
+      // Auth email-link success starts a 45s resend cooldown that owns the
+      // button; `authKeepBtn` tells the finally block to leave it alone.
+      let authKeepBtn = false;
       try {
         if (kind === 'auth') {
           const sbMod = await import('@/lib/supabase');
@@ -593,12 +602,19 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           const mode = form.dataset.authMode || 'pass';
           const msgEl = document.getElementById(mode === 'link' ? 'auth-link-msg' : mode === 'signup' ? 'auth-su-msg' : 'auth-pass-msg');
           const showMsg = (t: string) => { if (msgEl) { msgEl.textContent = t; msgEl.classList.remove('hidden'); } else throw new Error(t); };
+          // Explicit per-mode validation: the form carries novalidate (hidden
+          // required inputs used to cancel native submission silently), so the
+          // handler owns the checks and surfaces them inline.
+          const val = (id: string) => String((document.getElementById(id) as HTMLInputElement | null)?.value || '').trim();
+          const okEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
           if (mode === 'pass') {
             // Password sign-in: failures surface inline (honest), success closes.
-            const email = String((document.getElementById('auth-pass-email') as HTMLInputElement | null)?.value || data.email || '');
+            const email = val('auth-pass-email');
             const pw = String((document.getElementById('auth-pass-pw') as HTMLInputElement | null)?.value || '');
-            const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+            if (!okEmail(email)) { showMsg('Enter your email address above, then press Sign in.'); if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Sign in'; } return; }
+            if (!pw) { showMsg('Enter your password. First time here? Create an account below, or use the Email link tab.'); if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Sign in'; } return; }
+            const { data: pd, error } = await sb.auth.signInWithPassword({ email, password: pw });
             if (error) {
               const m = String((error as { message?: string }).message || error);
               const hint = /invalid login credentials/i.test(m)
@@ -615,6 +631,13 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
             if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Sign in'; }
             form.closest('dialog')?.close();
             form.reset();
+            // Kill the signed-out marker + flip the masthead chip NOW — a
+            // signed-in user whose header still says "Sign in" on every page
+            // was the most-reported symptom of the broken sign-in.
+            try {
+              localStorage.removeItem('sck-auth-none');
+              window.dispatchEvent(new CustomEvent('sck:auth-changed', { detail: { email: pd?.user?.email || email } }));
+            } catch { /* storage blocked, idle check self-corrects later */ }
             window.sckToast({ title: 'Signed in', body: 'Welcome back. You are signed in with email and password.' });
             return;
           }
@@ -622,9 +645,11 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           if (mode === 'signup') {
             // Documented email+password signup. If the project requires email
             // verification there is no session yet — say so plainly.
-            const email = String((document.getElementById('auth-su-email') as HTMLInputElement | null)?.value || '');
+            const email = val('auth-su-email');
             const pw = String((document.getElementById('auth-su-pw') as HTMLInputElement | null)?.value || '');
-            const { data: sd, error } = await sb.auth.signUp({ email, password: pw });
+            if (!okEmail(email)) { showMsg('Enter a valid email address to create your account.'); if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Create account'; } return; }
+            if (pw.length < 8) { showMsg('Choose a password of at least 8 characters.'); if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Create account'; } return; }
+            const { data: sd, error } = await sb.auth.signUp({ email, password: pw, options: { emailRedirectTo: window.location.origin } });
             if (error) {
               const m = String((error as { message?: string }).message || error);
               showMsg(/already registered/i.test(m)
@@ -639,17 +664,23 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
             if (sd?.session) {
               form.closest('dialog')?.close();
               form.reset();
+              try {
+                localStorage.removeItem('sck-auth-none');
+                window.dispatchEvent(new CustomEvent('sck:auth-changed', { detail: { email: sd.user?.email || email } }));
+              } catch { /* storage blocked */ }
               window.sckToast({ title: 'Account created', body: 'You are signed in. Welcome.' });
             } else {
               form.reset();
-              showMsg('Account created. Check your email for the verification link, then sign in with your password.');
+              showMsg('Account created. Check your email for the verification link, then sign in with your password. No email? Use the Email link tab once to get in.');
             }
             return;
           }
 
           // Email-link sign-in (labelled alternative, never a hidden fallback).
+          const linkEmail = val('auth-email');
+          if (!okEmail(linkEmail)) { showMsg('Enter your email address, then press Send link.'); if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Send link'; } return; }
           const { error } = await sb.auth.signInWithOtp({
-            email: String(data.email),
+            email: linkEmail,
             options: { emailRedirectTo: window.location.origin },
           });
           if (error) {
@@ -662,6 +693,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           // 45s resend cooldown, rapid re-sends hit Supabase's hourly cap
           // ("email ya pili ilikata kuingia").
           if (btn) {
+            authKeepBtn = true;
             let left = 45;
             btn.disabled = true;
             const tick = () => {
@@ -751,7 +783,13 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           toast({ title: 'Not sent', body: `${String(err && (err as Error).message || err)}, your entries are still in the form, please try again.`, kind: 'warn' });
         }
       } finally {
-        if (btn && kind !== 'auth') { btn.disabled = false; btn.textContent = btn.dataset.origLabel || 'Send'; }
+        // Reset for every kind on every path. Auth is exempt ONLY while the
+        // email-link resend cooldown owns the button — previously any auth
+        // error left the button stuck on "Sending…" until a full reload.
+        if (btn && !(kind === 'auth' && authKeepBtn)) {
+          btn.disabled = false;
+          btn.textContent = btn.dataset.origLabel || (kind === 'auth' ? 'Sign in' : 'Send');
+        }
       }
     });
   });
@@ -766,9 +804,19 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
   const sendBtn = document.getElementById('auth-send-btn');
 
   const showAuthPane = (mode: 'pass' | 'signup' | 'link') => {
-    panePass?.classList.toggle('hidden', mode !== 'pass');
-    paneSignup?.classList.toggle('hidden', mode !== 'signup');
-    paneLink?.classList.toggle('hidden', mode !== 'link');
+    // Hidden panes get their inputs DISABLED, not just hidden: hidden required
+    // inputs pass constraint validation (the browser cannot focus them, so it
+    // cancels the submit event outright — all three modes were dead). Disabled
+    // inputs are skipped by validation AND excluded from FormData, which also
+    // fixes the duplicate email field collision.
+    const setPane = (el: HTMLElement | null, on: boolean) => {
+      if (!el) return;
+      el.classList.toggle('hidden', !on);
+      el.querySelectorAll('input').forEach((i) => { (i as HTMLInputElement).disabled = !on; });
+    };
+    setPane(panePass, mode === 'pass');
+    setPane(paneSignup, mode === 'signup');
+    setPane(paneLink, mode === 'link');
     tabPass?.classList.toggle('bg-ink', mode === 'pass');
     tabPass?.classList.toggle('text-paper', mode === 'pass');
     tabLink?.classList.toggle('bg-ink', mode === 'link');
@@ -778,6 +826,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     if (authForm) authForm.dataset.authMode = mode;
     if (sendBtn) sendBtn.textContent = mode === 'link' ? 'Send link' : mode === 'signup' ? 'Create account' : 'Sign in';
   };
+  showAuthPane('pass'); // arm the initial disabled state before any interaction
   tabPass?.addEventListener('click', () => showAuthPane('pass'));
   tabLink?.addEventListener('click', () => showAuthPane('link'));
   document.getElementById('auth-to-signup')?.addEventListener('click', () => showAuthPane('signup'));
@@ -859,6 +908,12 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       const sb = sbMod.supabase();
       await sb?.auth.signOut();
     } catch { /* already out */ }
+    // Flag the device signed out + flip the chip immediately (the idle check
+    // that owns this state may never run again on this device).
+    try {
+      localStorage.setItem('sck-auth-none', '1');
+      window.dispatchEvent(new CustomEvent('sck:auth-changed', { detail: { email: null } }));
+    } catch { /* storage blocked */ }
     (document.getElementById('modal-auth') as HTMLDialogElement | null)?.close();
     window.sckToast({ title: 'Signed out', body: 'See you soon.' });
   });

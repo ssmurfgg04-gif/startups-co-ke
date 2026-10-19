@@ -43,42 +43,61 @@ if (reduce) {
     const sb = supabase();
     if (!sb) return;
     const { data } = await sb.auth.getSession(); // consumes + persists the hash session
-    if (data?.session) localStorage.removeItem('sck-auth-none');
-    if (isRecovery) location.replace('/auth/reset');
+    if (data?.session) {
+      localStorage.removeItem('sck-auth-none');
+      window.dispatchEvent(new CustomEvent('sck:auth-changed', { detail: { email: data.session.user?.email || null } }));
+    }
+    if (isRecovery && !location.pathname.startsWith('/auth/reset')) location.replace('/auth/reset');
     else if (isSignup) window.sckToast?.({ title: 'Email confirmed', body: 'Your address is verified. You can sign in with your password now.' });
   } catch {
     /* leave the hash untouched; nothing else in the page depends on it */
   }
 })();
 
-// --- Auth session chip (Supabase magic-link session) ---
-// Deferred to browser idle + skipped entirely once this device is known to be
-// signed out, the 56KB Supabase bundle never competes with page load on the
-// critical path (it was the largest "unused JavaScript" finding in PSI).
+// --- Auth session chip (Supabase session) ---
+// Deferred to browser idle, and skipped entirely once this device is known to
+// be signed out WITHOUT a stored Supabase token, so the 56KB bundle never
+// competes with page load (it was the largest "unused JavaScript" finding in
+// PSI). The modal flips the chip instantly via `sck:auth-changed` on sign-in,
+// sign-up and sign-out — no bundle needed for those transitions.
 (async () => {
   const btn = document.getElementById('auth-btn');
   if (!btn) return;
-  // The modal opens the session check on demand (submit handler imports the
-  // lib anyway); a stale "Sign in" label self-corrects after the idle check.
+  const setChip = (email: string | null | undefined) => {
+    if (email) {
+      btn.textContent = email.split('@')[0] + ' · Sign out';
+      btn.dataset.signedIn = '1';
+    } else {
+      btn.textContent = 'Sign in';
+      btn.dataset.signedIn = '';
+      btn.dataset.modal = 'auth';
+      // Re-arm the signed-out marker so later page loads can skip the bundle.
+      // Safe even on first visit: the hasSbToken guard below overrides it when
+      // a session token actually exists.
+      try { localStorage.setItem('sck-auth-none', '1'); } catch { /* private mode */ }
+    }
+  };
+  // Modal-driven transitions arrive here instantly (password sign-in, sign-up,
+  // sign-out, magic-link landing). Keeps the masthead truthful on the very
+  // page where the action happened, no reload needed.
+  window.addEventListener('sck:auth-changed', (ev) => {
+    const email = (ev as CustomEvent<{ email?: string | null }>).detail?.email || null;
+    if (email) localStorage.removeItem('sck-auth-none');
+    setChip(email);
+  });
   const check = async () => {
     try {
       const { supabase } = await import('@/lib/supabase');
       const sb = supabase();
       if (!sb) return;
       const { data } = await sb.auth.getSession();
-      const setSession = (email: string | null | undefined) => {
-        if (email) {
-          btn.textContent = email.split('@')[0] + ' · Sign out';
-          btn.dataset.signedIn = '1';
-        } else {
-          btn.textContent = 'Sign in';
-          btn.dataset.signedIn = '';
-          btn.dataset.modal = 'auth';
-        }
-      };
-      setSession(data.session?.user.email);
-      if (!data.session) localStorage.setItem('sck-auth-none', '1');
-      sb.auth.onAuthStateChange((_e, session) => setSession(session?.user.email));
+      if (data.session) localStorage.removeItem('sck-auth-none');
+      setChip(data.session?.user.email || null);
+      // Keep the flag in sync from here on (SIGNED_OUT re-arms it).
+      sb.auth.onAuthStateChange((_e, session) => {
+        if (session?.user.email) localStorage.removeItem('sck-auth-none');
+        setChip(session?.user.email || null);
+      });
       btn.addEventListener('click', async (ev) => {
         if (btn.dataset.signedIn === '1') {
           // Open the account panel (set a password / sign out) instead of
@@ -93,7 +112,13 @@ if (reduce) {
       /* supabase not configured, button stays as Sign in modal trigger */
     }
   };
-  if (localStorage.getItem('sck-auth-none') === '1') return; // known signed-out device
+  // Known signed-out devices skip the bundle — but ONLY while localStorage
+  // holds no Supabase session token. The flag used to stick after password
+  // sign-ins, permanently hiding real sessions behind a "Sign in" chip.
+  const hasSbToken = Object.keys(localStorage).some(
+    (k) => k.startsWith('sb-') && k.endsWith('-auth-token')
+  );
+  if (localStorage.getItem('sck-auth-none') === '1' && !hasSbToken) return;
   const idle = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
   if (idle) idle(check, { timeout: 3500 });
   else setTimeout(check, 2500);
