@@ -1,9 +1,9 @@
 /**
- * DATA TYPES — real, sourced Kenyan ecosystem entities.
+ * DATA TYPES, real, sourced Kenyan ecosystem entities.
  * Honesty system (docs/DECISIONS.md D2): every figure carries a status
  * (Confirmed / Reported / Estimated) and, where one exists, a named source.
  * Failure states (administration / liquidation / shutdown / restructuring)
- * are tracked like funding states — never hidden.
+ * are tracked like funding states, never hidden.
  */
 
 export type Stage =
@@ -56,7 +56,7 @@ export interface Company {
   signals: string[];
   rounds: FundingRound[];
   founders: { name: string; role: string }[];
-  /** operational status — failure states are tracked, not hidden */
+  /** operational status, failure states are tracked, not hidden */
   status?: CompanyStatus;
   statusNote?: string;
   website?: string | null;
@@ -123,7 +123,7 @@ export interface Hackathon {
   city: string;
   mode: 'On-site' | 'Hybrid' | 'Online';
   prize: string;
-  /** absolute start/end in EAT — preferred for real events */
+  /** absolute start/end in EAT, preferred for real events */
   startISO?: string;
   endISO?: string;
   /** countdown target as offset from "now" at view time (fallback) */
@@ -194,7 +194,7 @@ export interface WireItem {
 }
 
 /**
- * County row — coordinates/capital are objective; `hub` appears only when a
+ * County row, coordinates/capital are objective; `hub` appears only when a
  * named public source verified the anchor (D2). Counties without a hub are
  * shown as geography, never as activity.
  */

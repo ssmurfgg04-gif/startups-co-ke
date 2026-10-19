@@ -3,6 +3,6 @@ interface Props { status: 'Confirmed' | 'Reported' | 'Estimated' }
 const { status } = Astro.props;
 const color = status === 'Confirmed' ? 'bg-green' : status === 'Reported' ? 'bg-amber' : 'bg-mut';
 ---
-<span class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-ink2" title={`Status: ${status} — see methodology`}>
+<span class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-ink2" title={`Status: ${status}, see methodology`}>
   <span class={`inline-block h-2 w-2 rounded-full ${color}`} aria-hidden="true"></span>{status}
 </span>

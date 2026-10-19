@@ -1,7 +1,7 @@
 import type { RoundItem, SalaryBand, Report } from './types';
 
 /**
- * REAL tracked rounds feed — every entry status-tagged with a named source
+ * REAL tracked rounds feed, every entry status-tagged with a named source
  * (docs/DECISIONS.md D2/D3). Compiled from public sources as of 2026-10-16.
  */
 export const ROUNDS: RoundItem[] = [
@@ -220,7 +220,7 @@ export const ROUNDS: RoundItem[] = [
 ];
 
 /**
- * Funding-market series — REAL annual figures (D3):
+ * Funding-market series, REAL annual figures (D3):
  * 2024 ≈ $647M · 2025 = $984M equity / $1.04B incl. debt · H1 2026 = $126M (−44.5% YoY).
  * Quarterly shape for 2025–26 is interpolated for the chart and labelled Estimated.
  */
@@ -245,14 +245,14 @@ export const SECTOR_COUNTS: { sector: string; count: number }[] = [
   { sector: 'Logistics', count: 1 },
 ];
 
-/** Instrument mix — real structure of recent Kenyan capital (D3 narrative). */
+/** Instrument mix, real structure of recent Kenyan capital (D3 narrative). */
 export const CAPITAL_MIX: { label: string; pct: number }[] = [
   { label: 'Equity rounds', pct: 58 },
   { label: 'Debt & facilities', pct: 30 },
   { label: 'Grants & foundations', pct: 12 },
 ];
 
-/** REAL market salary bands — CareerBuddy (Jun 2026), Mctaba (Jun 2026), WageIndicator (2026). */
+/** REAL market salary bands, CareerBuddy (Jun 2026), Mctaba (Jun 2026), WageIndicator (2026). */
 export const SALARY_BANDS: SalaryBand[] = [
   { role: 'Backend', min: 180, max: 400, source: 'CareerBuddy (Jun 2026) · Mctaba (Jun 2026)' },
   { role: 'Data / ML', min: 200, max: 450, source: 'CareerBuddy (Jun 2026) · Mctaba (Jun 2026)' },
@@ -262,14 +262,14 @@ export const SALARY_BANDS: SalaryBand[] = [
   { role: 'Growth', min: 150, max: 350, source: 'community + published surveys' },
 ];
 
-/** Tracked research library — produced by the startups.co.ke desk from public sources. */
+/** Tracked research library, produced by the startups.co.ke desk from public sources. */
 export const REPORTS: Report[] = [
   {
     id: 'funding-2026',
     title: 'Kenya Funding Landscape 2026',
     pages: 42,
     date: 'Oct 2026',
-    blurb: 'Every tracked round, sector flow and instrument shift — with a source on every figure.',
+    blurb: 'Every tracked round, sector flow and instrument shift, with a source on every figure.',
     price: 'Members',
     tags: ['Funding', 'Flagship'],
     flagship: true,
@@ -279,7 +279,7 @@ export const REPORTS: Report[] = [
     title: 'Talent & Compensation Guide 2026',
     pages: 28,
     date: 'Sep 2026',
-    blurb: 'Salary bands across engineering, data, product and design — community and published surveys, clearly labeled.',
+    blurb: 'Salary bands across engineering, data, product and design, community and published surveys, clearly labeled.',
     price: 'KSh 2,500',
     tags: ['Talent'],
   },
@@ -288,7 +288,7 @@ export const REPORTS: Report[] = [
     title: 'Payments Infrastructure: the M-PESA rails and what is built on top',
     pages: 36,
     date: 'Aug 2026',
-    blurb: 'From USSD to stablecoins — the stack, the players, the regulation.',
+    blurb: 'From USSD to stablecoins, the stack, the players, the regulation.',
     price: 'Members',
     tags: ['Fintech'],
   },

@@ -4,7 +4,7 @@ import { sectorColor } from '@/config/sectors';
 
 /**
  * Entity avatar (D5): real logo (local /logos/*.png fetched from the company's
- * domain) when available, otherwise a sector-coloured monogram tile — never a
+ * domain) when available, otherwise a sector-coloured monogram tile, never a
  * broken image. `logo` wins; `domain` lets remote logos stream in for
  * user-claimed profiles.
  */
@@ -40,7 +40,7 @@ const remote = logoUrl ?? (domain ? `https://unavatar.io/${domain}?fallback=fals
   )}
 </span>
 <script>
-  // If a logo fails to load, swap to the sector monogram — no broken images, ever (D5).
+  // If a logo fails to load, swap to the sector monogram, no broken images, ever (D5).
   document.addEventListener('error', (e) => {
     const img = e.target as HTMLImageElement;
     if (img instanceof HTMLImageElement && img.dataset.monogram) {

@@ -11,12 +11,12 @@ const countsBySector: Record<string, number> = {};
 for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] ?? 0) + 1;
 ---
 <Base
-  title="Company index — Kenyan startups list"
-  description="Browse verified and unverified Kenyan startup profiles by sector, stage, HQ city and amount raised — with funding statuses and named leads."
+  title="Company index, Kenyan startups list"
+  description="Browse verified and unverified Kenyan startup profiles by sector, stage, HQ city and amount raised, with funding statuses and named leads."
   jsonld={{
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Company index — Kenya',
+    name: 'Company index, Kenya',
     url: `${SITE.url}/startups`,
     mainEntity: {
       '@type': 'ItemList',
@@ -28,7 +28,7 @@ for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] 
     <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / Company index</p>
     <h1 class="mt-2 text-[clamp(34px,4vw,56px)]">Company index.</h1>
     <p class="mt-2 max-w-2xl text-[15px] text-mut">
-      Every tracked company in the Kenya index — Verified means cross-checked against at least two independent public sources; failure states (administration, liquidation, shutdown) are tracked like funding states.
+      Every tracked company in the Kenya index, Verified means cross-checked against at least two independent public sources; failure states (administration, liquidation, shutdown) are tracked like funding states.
     </p>
 
     <div class="mt-8 grid gap-8 lg:grid-cols-12">
@@ -99,7 +99,7 @@ for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] 
 
         <div id="empty" class="hidden border border-dashed border-line2 p-10 text-center">
           <p class="font-display text-xl">No companies match those filters.</p>
-          <p class="mt-2 text-sm text-mut">Loosen a filter — or clear all and start again.</p>
+          <p class="mt-2 text-sm text-mut">Loosen a filter, or clear all and start again.</p>
           <button class="btn btn-ghost mt-4" onclick="document.getElementById('f-clear').click()">Clear all filters</button>
         </div>
       </div>
@@ -160,7 +160,7 @@ for (const c of COMPANIES) countsBySector[c.sector] = (countsBySector[c.sector] 
       <a href="/startups/${c.id}" class="rowline group grid grid-cols-[44px_1fr] items-center gap-3 border border-ink border-t-0 first:border-t bg-paper px-4 py-3 hover:bg-paper2 md:grid-cols-[44px_2.2fr_1.2fr_90px_80px_90px_24px]">
         <span class="relative flex h-11 w-11 items-center justify-center font-mono text-[12px] font-semibold text-paper" style="background:${sectorColor(c.sector)}">${initials(c.name)}</span>
         <span class="min-w-0">
-          <span class="flex items-center gap-1.5 text-[15px] font-medium">${c.name}${c.verified ? '<span title="Verified — registry + team checks" class="text-[11px] text-green">✓</span>' : ''}</span>
+          <span class="flex items-center gap-1.5 text-[15px] font-medium">${c.name}${c.verified ? '<span title="Verified, registry + team checks" class="text-[11px] text-green">✓</span>' : ''}</span>
           <span class="block truncate text-[12.5px] text-mut">${c.tagline}</span>
         </span>
         <span class="hidden items-center gap-1.5 font-mono text-[11px] text-ink2 md:flex"><span class="inline-block h-2.5 w-2.5" style="background:${sectorColor(c.sector)}"></span>${c.sector}</span>

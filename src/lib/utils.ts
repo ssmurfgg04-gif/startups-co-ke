@@ -1,4 +1,4 @@
-/** Shared helpers — formatting, seeded pseudo-random, dates. */
+/** Shared helpers, formatting, seeded pseudo-random, dates. */
 
 export function initials(name: string): string {
   const words = name.replace(/[^a-zA-Z ]/g, '').split(/\s+/).filter(Boolean);
@@ -26,7 +26,7 @@ export function hashStr(s: string): number {
   return h >>> 0;
 }
 
-/** Mulberry32 seeded PRNG — stable sparklines/charts across reloads. */
+/** Mulberry32 seeded PRNG, stable sparklines/charts across reloads. */
 export function prng(seed: string | number): () => number {
   let a = typeof seed === 'string' ? hashStr(seed) : seed >>> 0;
   return function () {
@@ -63,13 +63,13 @@ export function relDays(days: number): string {
   return `${Math.floor(days / 30)} mo ago`;
 }
 
-/** Feed money: an unknown amount renders "Undisclosed" — never $0K (audit fix). */
+/** Feed money: an unknown amount renders "Undisclosed", never $0K (audit fix). */
 export function fmtAmount(m: number | null | undefined): string {
   if (m == null || !Number.isFinite(m) || m <= 0) return 'Undisclosed';
   return fmtUsdM(m);
 }
 
-/** Safe relative date for feed rows — blank/unparseable dates render honestly. */
+/** Safe relative date for feed rows, blank/unparseable dates render honestly. */
 export function relDate(date: string | null | undefined): string {
   if (!date || !date.trim()) return 'Date unavailable';
   const t = Date.parse(date);

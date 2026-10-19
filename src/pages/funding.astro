@@ -17,7 +17,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
 });
 ---
 <Base
-  title="Funding database — Kenya startup funding rounds"
+  title="Funding database, Kenya startup funding rounds"
   description="Track Kenyan startup funding by quarter and sector: every round with amount, lead investor, source and a Confirmed / Reported / Estimated status."
   jsonld={{
     '@context': 'https://schema.org',
@@ -34,7 +34,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
       <div>
         <h1 class="text-[clamp(34px,4vw,56px)]">The funding database.</h1>
         <p class="mt-2 max-w-2xl text-[15px] text-mut">
-          $126M tracked H1 2026 (−44.5% YoY, Business Daily) — every figure carries a source and a status. Export for research below.
+          $126M tracked H1 2026 (−44.5% YoY, Business Daily), every figure carries a source and a status. Export for research below.
         </p>
       </div>
       <button class="btn" id="export-btn">Export quarterly dataset</button>
@@ -42,7 +42,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
 
     <div class="mt-8"><FundingChart dark /></div>
 
-    <h2 class="mt-12 text-[clamp(24px,2.8vw,34px)]">Notable rounds — newest first.</h2>
+    <h2 class="mt-12 text-[clamp(24px,2.8vw,34px)]">Notable rounds, newest first.</h2>
     <div class="mt-2 mb-3 flex flex-wrap gap-4 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">
       <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-green"></span>Confirmed</span>
       <span class="flex items-center gap-1.5"><span class="inline-block h-2 w-2 rounded-full bg-amber"></span>Reported</span>
@@ -91,9 +91,9 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
       <div class="border-2 border-ink bg-paper p-5">
         <p class="font-mono text-[11px] uppercase tracking-[0.14em]">Methodology</p>
         <div class="mt-3 space-y-2.5 font-mono text-[11.5px] leading-relaxed text-ink2">
-          <p><span class="font-semibold text-green">CONFIRMED</span> — round verified by company statement or lead-investor memo.</p>
-          <p><span class="font-semibold text-amber">REPORTED</span> — credible secondary source (founder interview, syndicate note); confirmation pending.</p>
-          <p><span class="font-semibold text-mut">ESTIMATED</span> — modelled from registry filings or comparable-round data.</p>
+          <p><span class="font-semibold text-green">CONFIRMED</span>, round verified by company statement or lead-investor memo.</p>
+          <p><span class="font-semibold text-amber">REPORTED</span>, credible secondary source (founder interview, syndicate note); confirmation pending.</p>
+          <p><span class="font-semibold text-mut">ESTIMATED</span>, modelled from registry filings or comparable-round data.</p>
           <p class="border-t border-line pt-2.5 text-mut">Compiled from public sources; last index refresh 19 Oct 2026. Amounts in USD millions; rounds keyed by announcement where known. Every row carries its source.</p>
         </div>
       </div>
@@ -116,7 +116,7 @@ const sortedRounds = [...ROUNDS].sort((a, b) => {
 </script>
 <script define:vars={{ QUARTERS, SERIES }}>
   // build the CSV at runtime from the same build-time constants
-  // (SERIES keys are display names — 'All sectors', Fintech, Climate, Commerce)
+  // (SERIES keys are display names, 'All sectors', Fintech, Climate, Commerce)
   const col = (name) => (SERIES[name] ?? []).map((v) => (v ?? ''));
   window.__SCK_CSV__ = ['quarter,all,fintech,climate,commerce']
     .concat(

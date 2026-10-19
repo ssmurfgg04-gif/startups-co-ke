@@ -1,7 +1,7 @@
 import type { Company } from './types';
 
 /**
- * REAL Kenyan companies — compiled from public sources as of 2026-10-15.
+ * REAL Kenyan companies, compiled from public sources as of 2026-10-15.
  * Every total carries raisedDisplay + raisedSource. Failure states are tracked
  * (docs/DECISIONS.md D2/D3). `verified` = cross-checked against >=2 independent
  * public sources. Missing logos fall back to sector-coloured monogram tiles.
@@ -10,7 +10,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'm-kopa',
     name: 'M-KOPA',
-    tagline: 'Connected financing — smartphones, solar and digital services on daily micro-payments.',
+    tagline: 'Connected financing, smartphones, solar and digital services on daily micro-payments.',
     sector: 'Fintech',
     stage: 'Series F',
     hq: 'Nairobi',
@@ -46,7 +46,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'wasoko',
     name: 'Wasoko',
-    tagline: 'B2B e-commerce for African retailers — formerly Sokowatch, merged with MaxAB.',
+    tagline: 'B2B e-commerce for African retailers, formerly Sokowatch, merged with MaxAB.',
     sector: 'Commerce',
     stage: 'Series B',
     hq: 'Nairobi',
@@ -56,7 +56,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Retailer ordering app', 'Warehouse ops', 'Informal retail logistics'],
     longDesc:
-      'Wasoko (formerly Sokowatch) lets informal retailers order inventory for same-day delivery, scaling from Nairobi across East and West Africa. It closed a $125M Series B in March 2022 — then among Africa\u2019s largest — and merged with Egypt\u2019s MaxAB in 2024 to consolidate B2B commerce operations. Its corporate office sits in Kilimani, Nairobi.',
+      'Wasoko (formerly Sokowatch) lets informal retailers order inventory for same-day delivery, scaling from Nairobi across East and West Africa. It closed a $125M Series B in March 2022 (then among Africa\u2019s largest) and merged with Egypt\u2019s MaxAB in 2024 to consolidate B2B commerce operations. Its corporate office sits in Kilimani, Nairobi.',
     signals: [
       '$152M raised across 13 rounds (Tracxn, Sep 2026)',
       '$125M Series B closed March 2022 (TechCrunch)',
@@ -77,7 +77,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'twiga',
     name: 'Twiga Foods',
-    tagline: 'B2B food distribution — produce from farmers to urban vendors.',
+    tagline: 'B2B food distribution, produce from farmers to urban vendors.',
     sector: 'Commerce',
     stage: '—',
     hq: 'Nairobi',
@@ -87,7 +87,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Vendor app network', 'Cold chain logistics'],
     longDesc:
-      'Twiga Foods built a B2B distribution network linking Kenyan farmers to urban food vendors, attracting over $185M from local and international investors. After years of financial pressure it entered administration in August 2026 — the ecosystem\u2019s most consequential collapse to date, and a case study in unit economics that never closed.',
+      'Twiga Foods built a B2B distribution network linking Kenyan farmers to urban food vendors, attracting over $185M from local and international investors. After years of financial pressure it entered administration in August 2026, the ecosystem\u2019s most consequential collapse to date, and a case study in unit economics that never closed.',
     signals: [
       '$185.4M raised before administration (Techpoint Africa, Sep 2026)',
       'Administrator appointed by the court Aug 17 2026',
@@ -109,7 +109,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'copia',
     name: 'Copia Global',
-    tagline: 'E-commerce for rural consumers — agent-network ordering and delivery.',
+    tagline: 'E-commerce for rural consumers, agent-network ordering and delivery.',
     sector: 'Commerce',
     stage: '—',
     hq: 'Nairobi',
@@ -119,7 +119,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Agent network app', 'Rural last-mile routing'],
     longDesc:
-      'Copia Global built a network of village agents who ordered household goods for rural consumers, backed by over $100M in venture funding. It headed into liquidation in September 2026, with Business Daily reporting investors are unlikely to recover their capital — the sharpest illustration yet of rural density economics failing to fund agent networks.',
+      'Copia Global built a network of village agents who ordered household goods for rural consumers, backed by over $100M in venture funding. It headed into liquidation in September 2026, with Business Daily reporting investors are unlikely to recover their capital, the sharpest illustration yet of rural density economics failing to fund agent networks.',
     signals: [
       'Over $100M raised across consumer-goods e-commerce',
       'Liquidation reported Sep 29 2026 (Business Daily)',
@@ -141,7 +141,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'apollo',
     name: 'Apollo Agriculture',
-    tagline: 'Bundled farm financing, inputs and advice — from seed to sale.',
+    tagline: 'Bundled farm financing, inputs and advice, from seed to sale.',
     sector: 'Agritech',
     stage: 'Series B',
     hq: 'Nairobi',
@@ -183,7 +183,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Single payments API', 'Mobile money integrations', 'Multi-currency settlement'],
     longDesc:
-      'Cellulant builds payment infrastructure across Africa — a single API connecting merchants, banks and mobile money operators in 18 markets. Founded in 2004, it is one of Kenya\u2019s oldest fintech scale-ups and a reference point for the continent\u2019s payments stack. TLcom Capital was an early backer (reported).',
+      'Cellulant builds payment infrastructure across Africa, a single API connecting merchants, banks and mobile money operators in 18 markets. Founded in 2004, it is one of Kenya\u2019s oldest fintech scale-ups and a reference point for the continent\u2019s payments stack. TLcom Capital was an early backer (reported).',
     signals: [
       '$47.5M Series C led by The Rise Fund/TPG (reported, 2018)',
       'Operates in 18 African markets',
@@ -207,7 +207,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'sunculture',
     name: 'SunCulture',
-    tagline: 'Solar-powered irrigation for smallholders — pumps on PAYG.',
+    tagline: 'Solar-powered irrigation for smallholders, pumps on PAYG.',
     sector: 'Energy',
     stage: 'Series B',
     hq: 'Nairobi',
@@ -217,7 +217,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['IoT pump controllers', 'M-PESA billing', 'Remote monitoring'],
     longDesc:
-      'SunCulture sells solar-powered water pumps to smallholder farmers on pay-as-you-go terms, replacing diesel or rain-fed irrigation. In September 2026 it closed a $10M securitisation of customer receivables — a financing instrument increasingly used by Kenyan climate companies to unlock working capital without dilution.',
+      'SunCulture sells solar-powered water pumps to smallholder farmers on pay-as-you-go terms, replacing diesel or rain-fed irrigation. In September 2026 it closed a $10M securitisation of customer receivables, a financing instrument increasingly used by Kenyan climate companies to unlock working capital without dilution.',
     signals: [
       '$10M receivables securitisation closed Sep 24 2026 (Dealroom)',
       '$5M growth round led by WaterEquity (Sep 2025)',
@@ -240,7 +240,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'basigo',
     name: 'BasiGo',
-    tagline: 'Electric buses designed and assembled in Nairobi — pay-as-you-drive financing.',
+    tagline: 'Electric buses designed and assembled in Nairobi, pay-as-you-drive financing.',
     sector: 'Mobility',
     stage: 'Series A',
     hq: 'Nairobi',
@@ -284,7 +284,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Weather-index modelling', 'Area-yield data', 'Reinsurance partnerships'],
     longDesc:
-      'Pula designs and distributes agricultural insurance — weather-index and area-yield policies — reaching millions of smallholder farmers through banks, agribusinesses and governments. Its $20M Series B (April 2024) was led by BlueOrchard\u2019s InsuResilience strategy. Kenya\u2019s insurtech sector has drawn roughly Sh8.54 billion in venture funding over five years, and Pula is its flagship export.',
+      'Pula designs and distributes agricultural insurance (weather-index and area-yield policies) reaching millions of smallholder farmers through banks, agribusinesses and governments. Its $20M Series B (April 2024) was led by BlueOrchard\u2019s InsuResilience strategy. Kenya\u2019s insurtech sector has drawn roughly Sh8.54 billion in venture funding over five years, and Pula is its flagship export.',
     signals: [
       '$20M Series B led by BlueOrchard InsuResilience (TechCrunch, Apr 2024)',
       'Operating across Africa, Asia and Latin America',
@@ -308,7 +308,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'marketforce',
     name: 'MarketForce',
-    tagline: 'Retail distribution and social-commerce infrastructure — RejaReja and Chapa.',
+    tagline: 'Retail distribution and social-commerce infrastructure, RejaReja and Chapa.',
     sector: 'Commerce',
     stage: 'Series A',
     hq: 'Nairobi',
@@ -318,9 +318,9 @@ export const COMPANIES: Company[] = [
     verified: 0,
     techStack: ['RejaReja B2B marketplace', 'Chapa social commerce', 'Agent networks'],
     longDesc:
-      'MarketForce digitises informal retail distribution — its RejaReja marketplace moves FMCG goods to dukas, and Chapa powers social-commerce resellers. It raised a $40M Series A in February 2022, then a record haul for Central and East Africa, and has since sharpened focus on insurance distribution through RejaBima.',
+      'MarketForce digitises informal retail distribution, its RejaReja marketplace moves FMCG goods to dukas, and Chapa powers social-commerce resellers. It raised a $40M Series A in February 2022, then a record haul for Central and East Africa, and has since sharpened focus on insurance distribution through RejaBima.',
     signals: [
-      '$40M Series A closed Feb 2022 — record for Central & East Africa at the time (TechCrunch)',
+      '$40M Series A closed Feb 2022, record for Central & East Africa at the time (TechCrunch)',
       '$2M pre-Series A (Jul 2021)',
       'Pivot toward insurance distribution via RejaBima',
     ],
@@ -350,7 +350,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Point-of-care devices', 'Clinic management SaaS'],
     longDesc:
-      'Ilara Health equips clinics across Kenya with affordable diagnostics and practice software, financed on subscription. After raising $11.7M it announced restructuring in September 2025 as follow-on financing slowed — a case study in the seed-to-Series-A squeeze now squeezing health startups across the continent.',
+      'Ilara Health equips clinics across Kenya with affordable diagnostics and practice software, financed on subscription. After raising $11.7M it announced restructuring in September 2025 as follow-on financing slowed, a case study in the seed-to-Series-A squeeze now squeezing health startups across the continent.',
     signals: [
       '$4.2M pre-Series A (Feb 2024, Africa Private Equity News)',
       '$3.75M Series A (Dec 2020, Disrupt Africa)',
@@ -374,7 +374,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'sendy',
     name: 'Sendy',
-    tagline: 'On-demand logistics — B2B freight and fulfilment.',
+    tagline: 'On-demand logistics, B2B freight and fulfilment.',
     sector: 'Logistics',
     stage: '—',
     hq: 'Nairobi',
@@ -384,7 +384,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Fleet routing', 'Warehouse ops'],
     longDesc:
-      'Sendy built an on-demand platform for B2B freight and last-mile fulfilment in Kenya and Nigeria, raising $20M in 2020. It shut down in August 2023 — an early signal of the correction that later claimed Twiga and Copia. Its alumni network seeds much of Nairobi\u2019s current logistics talent pool.',
+      'Sendy built an on-demand platform for B2B freight and last-mile fulfilment in Kenya and Nigeria, raising $20M in 2020. It shut down in August 2023, an early signal of the correction that later claimed Twiga and Copia. Its alumni network seeds much of Nairobi\u2019s current logistics talent pool.',
     signals: [
       '$20M raised in 2020 (ImpactAlpha)',
       'Shut down August 2023',
@@ -416,7 +416,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Distributor network', 'Inventory intelligence'],
     longDesc:
-      'iProcure built a data-driven agricultural supply chain, connecting manufacturers to rural agro-dealers across Kenya. It raised a $10.2M Series B in August 2022 (total $17.2M) but was placed under administration in April 2025 — one of the quieter casualties of the post-2022 funding winter, tracked here so the failure register stays honest.',
+      'iProcure built a data-driven agricultural supply chain, connecting manufacturers to rural agro-dealers across Kenya. It raised a $10.2M Series B in August 2022 (total $17.2M) but was placed under administration in April 2025, one of the quieter casualties of the post-2022 funding winter, tracked here so the failure register stays honest.',
     signals: [
       '$10.2M Series B incl. debt (Aug 2022)',
       '$2.7M earlier seed with Samurai Incubate (reported)',
@@ -439,7 +439,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'turaco',
     name: 'Turaco',
-    tagline: 'Embedded insurance — health and life cover distributed through partners.',
+    tagline: 'Embedded insurance, health and life cover distributed through partners.',
     sector: 'Health',
     stage: 'Series A',
     hq: 'Nairobi',
@@ -449,7 +449,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Embedded insurance API', 'Partner distribution', 'Claims automation'],
     longDesc:
-      'Turaco provides affordable health and life insurance embedded in partner platforms — including M-KOPA customers — so cover arrives with the products people already buy. It raised a $10M Series A led by AfricInvest in 2022 and has since pushed toward its one-billion-covered-people ambition from Nairobi.',
+      'Turaco provides affordable health and life insurance embedded in partner platforms (including M-KOPA customers) so cover arrives with the products people already buy. It raised a $10M Series A led by AfricInvest in 2022 and has since pushed toward its one-billion-covered-people ambition from Nairobi.',
     signals: [
       '$10M Series A led by AfricInvest (Sep 2022)',
       '$13.2M raised across 3 rounds (Tracxn, Jul 2026)',
@@ -470,7 +470,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'honeycoin',
     name: 'HoneyCoin',
-    tagline: 'Stablecoin-powered payment rails — social payments and business treasury.',
+    tagline: 'Stablecoin-powered payment rails, social payments and business treasury.',
     sector: 'Fintech',
     stage: 'Seed',
     hq: 'Nairobi',
@@ -480,7 +480,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Stablecoin rails', 'KYC/AML stack', 'React Native'],
     longDesc:
-      'HoneyCoin builds hybrid fiat-stablecoin payment infrastructure from Riverside Drive, Nairobi, letting users move, save and spend across borders. It closed a $4.9M seed in August 2025 with participation from Flourish Ventures, after starting in Antler\u2019s Nairobi residency — the archetype of the new seed-gap syndicate round.',
+      'HoneyCoin builds hybrid fiat-stablecoin payment infrastructure from Riverside Drive, Nairobi, letting users move, save and spend across borders. It closed a $4.9M seed in August 2025 with participation from Flourish Ventures, after starting in Antler\u2019s Nairobi residency, the archetype of the new seed-gap syndicate round.',
     signals: [
       '$4.9M seed closed Aug 12 2025 (TechCabal)',
       'Flourish Ventures participated',
@@ -501,7 +501,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'carepay',
     name: 'CarePay',
-    tagline: 'Health-finance platform behind M-TIBA — medical wallets on mobile.',
+    tagline: 'Health-finance platform behind M-TIBA, medical wallets on mobile.',
     sector: 'Health',
     stage: 'Mature',
     hq: 'Nairobi',
@@ -511,7 +511,7 @@ export const COMPANIES: Company[] = [
     verified: 0,
     techStack: ['M-TIBA health wallet', 'Claims rails', 'Insurer integrations'],
     longDesc:
-      'CarePay runs M-TIBA, the mobile health wallet built with PharmAccess Foundation and Safaricom that lets Kenyans save, receive and spend funds strictly for healthcare. Per-round funding is not tracked here; in 2026 the platform began sunsetting its My Health Funds wallet in its current form — a live test of whether health wallets can hold their niche as Kenya\u2019s insurance landscape shifts.',
+      'CarePay runs M-TIBA, the mobile health wallet built with PharmAccess Foundation and Safaricom that lets Kenyans save, receive and spend funds strictly for healthcare. Per-round funding is not tracked here; in 2026 the platform began sunsetting its My Health Funds wallet in its current form, a live test of whether health wallets can hold their niche as Kenya\u2019s insurance landscape shifts.',
     signals: [
       'M-TIBA platform built with PharmAccess and Safaricom',
       'My Health Funds wallet wind-down reported 2026',
@@ -540,7 +540,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Payment gateway APIs', 'POS hardware', 'Settlement rails'],
     longDesc:
-      'Pesapal, founded by Agosta Liko in 2012, provides online payment and financial services to more than 30,000 businesses across East Africa — largely without venture capital, processing millions of transactions valued at Sh20.5B+ (company-disclosed). It is the standing rebuttal to the idea that Kenyan fintech requires Silicon Valley cheques to scale.',
+      'Pesapal, founded by Agosta Liko in 2012, provides online payment and financial services to more than 30,000 businesses across East Africa, largely without venture capital, processing millions of transactions valued at Sh20.5B+ (company-disclosed). It is the standing rebuttal to the idea that Kenyan fintech requires Silicon Valley cheques to scale.',
     signals: [
       '30,000+ businesses served (company disclosures, 2026)',
       'Sh20.5B+ transaction value (self-reported)',
@@ -569,10 +569,10 @@ export const COMPANIES: Company[] = [
     verified: 0,
     techStack: ['EV powertrains', 'In-house assembly line'],
     longDesc:
-      'Roam (formerly Opibus) designs and assembles electric buses and motorbikes in Nairobi — its Move and Rapid bus lines serve urban and inter-city routes. Per-round funding data is not tracked on this platform; see the company\u2019s careers pages for open roles and its press room for raises.',
+      'Roam (formerly Opibus) designs and assembles electric buses and motorbikes in Nairobi, its Move and Rapid bus lines serve urban and inter-city routes. Per-round funding data is not tracked on this platform; see the company\u2019s careers pages for open roles and its press room for raises.',
     signals: [
       'Move and Rapid bus lines in commercial service',
-      'Formerly Opibus — converted automotive business to EV',
+      'Formerly Opibus, converted automotive business to EV',
       'Per-round funding not tracked on this platform',
     ],
     rounds: [],
@@ -598,7 +598,7 @@ export const COMPANIES: Company[] = [
     verified: 0,
     techStack: ['Document AI', 'Cashflow underwriting models'],
     longDesc:
-      'Flowt, founded by Elana Laichena, uses AI to convert informal financial records into lender-ready data, opening working-capital financing to small businesses — with a pre-qualified lending pipeline its team sizes at $1\u20132M. It closed the first tranche of its pre-seed in August 2026 with Delta40, Impacc and the Argidius Foundation.',
+      'Flowt, founded by Elana Laichena, uses AI to convert informal financial records into lender-ready data, opening working-capital financing to small businesses, with a pre-qualified lending pipeline its team sizes at $1\u20132M. It closed the first tranche of its pre-seed in August 2026 with Delta40, Impacc and the Argidius Foundation.',
     signals: [
       'Pre-seed first close Aug 26 2026 (Disrupt Africa)',
       'Backed by Delta40 Fund I, Impacc, Argidius Foundation',
@@ -619,7 +619,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'flexpay',
     name: 'FlexPay',
-    tagline: 'Save-now-buy-later — flexible payments for shoppers and merchants.',
+    tagline: 'Save-now-buy-later, flexible payments for shoppers and merchants.',
     sector: 'Fintech',
     stage: 'Seed',
     hq: 'Nairobi',
@@ -629,7 +629,7 @@ export const COMPANIES: Company[] = [
     verified: 1,
     techStack: ['Merchant checkout SDK', 'M-PESA integration'],
     longDesc:
-      'FlexPay lets shoppers save towards purchases and pay flexibly — a save-now-buy-later model adopted by Kenyan merchants. It has raised $785K from investors including Renew Capital and the Acacia Group, and partners with banks on goal-based savings products.',
+      'FlexPay lets shoppers save towards purchases and pay flexibly, a save-now-buy-later model adopted by Kenyan merchants. It has raised $785K from investors including Renew Capital and the Acacia Group, and partners with banks on goal-based savings products.',
     signals: [
       '$785K cumulative seed (TechCrunch, Sep 2023)',
       'Backers include Renew Capital and the Acacia Group',
@@ -650,7 +650,7 @@ export const COMPANIES: Company[] = [
   {
     id: 'tanda',
     name: 'Tanda',
-    tagline: 'Merchant infrastructure — inventory financing and digital services for dukas.',
+    tagline: 'Merchant infrastructure, inventory financing and digital services for dukas.',
     sector: 'Fintech',
     stage: 'Seed',
     hq: 'Nairobi',
@@ -660,11 +660,11 @@ export const COMPANIES: Company[] = [
     verified: 0,
     techStack: ['Agent app network', 'Inventory credit scoring'],
     longDesc:
-      'Tanda provides merchant infrastructure — inventory financing, bill payments and digital services — through a network of agents and dukas. Its 2021 round included HAVAÍC, Zedcrest Capital, DFS Lab and angel investor Victor Asemota. Amount undisclosed; profile thin-data, honestly labelled.',
+      'Tanda provides merchant infrastructure (inventory financing, bill payments and digital services) through a network of agents and dukas. Its 2021 round included HAVAÍC, Zedcrest Capital, DFS Lab and angel investor Victor Asemota. Amount undisclosed; profile thin-data, honestly labelled.',
     signals: [
       '2021 seed with HAVAÍC, Zedcrest Capital, DFS Lab',
       'Angel participation incl. Victor Asemota',
-      'Amount undisclosed — coverage gap, not market gap',
+      'Amount undisclosed, coverage gap, not market gap',
     ],
     rounds: [
       { date: '2021-03', round: 'Seed', amount: null, lead: 'HAVAÍC + Zedcrest Capital + DFS Lab', status: 'Reported', source: 'International Finance (Mar 2021)' },
@@ -682,5 +682,5 @@ export const COMPANIES: Company[] = [
 
 export const companyById = (id: string) => COMPANIES.find((c) => c.id === id);
 
-/** Featured on the home page — real companies with confirmed, sourced rounds. */
+/** Featured on the home page, real companies with confirmed, sourced rounds. */
 export const FEATURED_IDS = ['m-kopa', 'basigo', 'sunculture', 'honeycoin', 'pula', 'wasoko', 'cellulant', 'turaco'];

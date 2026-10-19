@@ -1,7 +1,7 @@
 import type { Company } from './types';
 
 /**
- * BOARD-ONLY EMPLOYERS — companies with verified live ATS boards that hire in
+ * BOARD-ONLY EMPLOYERS, companies with verified live ATS boards that hire in
  * Kenya but are not (yet) tracked as full startup profiles. Rendered on the
  * jobs board with an honest "board-only" chip, never presented as profiles.
  */

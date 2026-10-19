@@ -29,7 +29,7 @@ if (reduce) {
 
 // --- Auth session chip (Supabase magic-link session) ---
 // Deferred to browser idle + skipped entirely once this device is known to be
-// signed out — the 56KB Supabase bundle never competes with page load on the
+// signed out, the 56KB Supabase bundle never competes with page load on the
 // critical path (it was the largest "unused JavaScript" finding in PSI).
 (async () => {
   const btn = document.getElementById('auth-btn');
@@ -65,7 +65,7 @@ if (reduce) {
         }
       });
     } catch {
-      /* supabase not configured — button stays as Sign in modal trigger */
+      /* supabase not configured, button stays as Sign in modal trigger */
     }
   };
   if (localStorage.getItem('sck-auth-none') === '1') return; // known signed-out device
@@ -94,5 +94,5 @@ document.querySelectorAll<HTMLAnchorElement>('a[data-email]').forEach((a) => {
     if (!email.includes('@')) return;
     if (a.dataset.emailText !== 'keep') a.textContent = email;
     a.href = `mailto:${email}`;
-  } catch { /* malformed payload — fallback href stays */ }
+  } catch { /* malformed payload, fallback href stays */ }
 });

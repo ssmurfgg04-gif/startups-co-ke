@@ -32,7 +32,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
 
     <div class="ml-auto flex items-center gap-2.5">
       <div class="relative hidden md:block">
-        <input id="global-search" class="input input-mono h-9 w-52 pl-8" type="search" placeholder="Search — press /" aria-label="Search companies, investors, jobs, news" autocomplete="off" />
+        <input id="global-search" class="input input-mono h-9 w-52 pl-8" type="search" placeholder="Search, press /" aria-label="Search companies, investors, jobs, news" autocomplete="off" />
         <svg class="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mut" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
         </svg>
@@ -79,7 +79,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     }
   });
 
-  // Global search — index fetched once from build-time JSON endpoint
+  // Global search, index fetched once from build-time JSON endpoint
   type SearchItem = { t: string; k: 'Companies' | 'Investors' | 'Jobs' | 'News' | 'Hackathons' | 'Go-to'; u: string; s?: string };
   let INDEX: SearchItem[] | null = null;
   const panel = document.getElementById('search-panel');
@@ -102,7 +102,7 @@ const isActive = (href: string) => path === href || path.startsWith(href + '/');
     const ql = q.toLowerCase();
     const hits = index.filter((i) => i.t.toLowerCase().includes(ql) || (i.s ?? '').toLowerCase().includes(ql)).slice(0, 12);
     if (!hits.length) {
-      panel.innerHTML = '<p class="px-4 py-3 font-mono text-xs text-mut">No results — try “pesa”, “seed”, “Nairobi”.</p>';
+      panel.innerHTML = '<p class="px-4 py-3 font-mono text-xs text-mut">No results, try “pesa”, “seed”, “Nairobi”.</p>';
       panel.classList.remove('hidden');
       return;
     }

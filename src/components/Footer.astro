@@ -3,14 +3,14 @@
 import Logo from './Logo.astro';
 import { SITE, HONESTY } from '@/config/site';
 const year = new Date().getFullYear();
-const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup ecosystem, mapped & measured — startups.co.ke')}`;
+const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup ecosystem, mapped & measured, startups.co.ke')}`;
 ---
 <footer class="mt-auto bg-dark text-dpaper">
   <div class="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
     <div>
       <Logo variant="dark" />
       <p class="mt-4 max-w-xs text-sm text-dpaper/80">
-        Kenya's startup record — who raised, who's hiring, who failed. Verified, sourced, free to read.
+        Kenya's startup record, who raised, who's hiring, who failed. Verified, sourced, free to read.
       </p>
       <div class="mt-4 flex flex-wrap gap-2">
         <a class="btn btn-ondark h-9 px-3" href={waShare} target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
@@ -33,9 +33,9 @@ const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup 
       </ul>
     </div>
     <div>
-      <p class="kicker mb-4 text-dmut">Intelligence</p>
+      <p class="kicker mb-4 text-dmut">Insights</p>
       <ul class="space-y-2.5 text-sm">
-        {SITE.footer.intelligence.map((l) => (
+        {SITE.footer.insights.map((l) => (
           <li>
             {'href' in l && l.href ? (
               <a class="text-dpaper/85 hover:text-amber2" href={l.href}>{l.label}</a>
@@ -65,7 +65,7 @@ const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup 
   <div class="border-t border-darkline">
     <div class="wrap flex flex-col gap-3 py-5 md:flex-row md:items-center md:justify-between">
       <p class="max-w-3xl font-mono text-[10px] leading-relaxed tracking-[0.04em] text-dmut">
-        HONESTY NOTICE — {HONESTY.disclaimer}
+        HONESTY NOTICE, {HONESTY.disclaimer}
       </p>
       <p class="flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-dmut">
         <span class="inline-block h-1.5 w-1.5 rounded-full bg-amber2" aria-hidden="true"></span> Designed &amp; built in Nairobi · © {year}

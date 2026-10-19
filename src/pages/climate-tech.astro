@@ -1,6 +1,6 @@
 ---
 /**
- * CLIMATE & ENERGY HUB — /climate-tech
+ * CLIMATE & ENERGY HUB, /climate-tech
  *
  * The vertical page for Kenya's most capital-active sector: aggregates every
  * tracked profile with a climate lens (core business = climate-relevant),
@@ -17,10 +17,10 @@ import { COMPANIES } from '@/data/companies';
 import { INVESTORS } from '@/data/investors';
 import { SITE } from '@/config/site';
 
-/** Curated climate lens — core business is climate/energy relevant. Each keeps its own data + statuses. */
+/** Curated climate lens, core business is climate/energy relevant. Each keeps its own data + statuses. */
 const CLIMATE_IDS = ['basigo', 'roam', 'sunculture', 'm-kopa', 'apollo', 'pula', 'iprocure'] as const;
 const LENS: Record<string, string> = {
-  basigo: 'Electric buses designed and assembled in Nairobi — decarbonising matatu routes',
+  basigo: 'Electric buses designed and assembled in Nairobi, decarbonising matatu routes',
   roam: 'Electric motorcycles and energy systems built in Nairobi',
   sunculture: 'Solar-powered irrigation replacing diesel pumps for smallholders',
   'm-kopa': 'Pay-as-you-go solar + connected assets on daily micro-payments',
@@ -45,10 +45,10 @@ const jsonld = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Kenya climate tech — tracked startups, funding and investors',
+    name: 'Kenya climate tech, tracked startups, funding and investors',
     url: `${SITE.url}/climate-tech`,
     description:
-      'Tracked Kenyan climate and energy startups with sourced funding histories — electric mobility, solar irrigation, agri-insurance and PAYG solar. Founder listings publish instantly.',
+      'Tracked Kenyan climate and energy startups with sourced funding histories, electric mobility, solar irrigation, agri-insurance and PAYG solar. Founder listings publish instantly.',
     isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
   },
   {
@@ -79,7 +79,7 @@ const jsonld = [
         name: 'How many climate tech startups are there in Kenya?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'startups.co.ke tracks 7 Kenyan startups whose core business is climate or energy related (electric mobility, solar, agri-fintech and climate insurance) as of October 2026 — each with a sourced funding history. This is a curated verified index, not an ecosystem census; third-party rankers list hundreds more Kenyan startups across all sectors.',
+          text: 'startups.co.ke tracks 7 Kenyan startups whose core business is climate or energy related (electric mobility, solar, agri-fintech and climate insurance) as of October 2026, each with a sourced funding history. This is a curated verified index, not an ecosystem census; third-party rankers list hundreds more Kenyan startups across all sectors.',
         },
       },
       {
@@ -89,7 +89,7 @@ const jsonld = [
           '@type': 'Answer',
           text: `Among tracked climate-lens profiles, the largest disclosed totals are ${topByCapital
             .map((c) => `${c.name} (${c.raisedDisplay ?? `$${c.raised}M`})`)
-            .join(', ')}. Every figure carries a status — Confirmed, Reported or Estimated — and a named source on the profile.`,
+            .join(', ')}. Every figure carries a status (Confirmed, Reported or Estimated) and a named source on the profile.`,
         },
       },
       {
@@ -97,7 +97,7 @@ const jsonld = [
         name: 'How much funding has Kenyan climate tech raised?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `The ${climate.length} climate-lens startups tracked here have disclosed roughly ${fmtM(totalRaisedM)} combined across ${roundCount} dated rounds. That is the sum of our tracked profiles only — Kenya's climate sector is larger than this index. Kenya raised $984M in equity across all sectors in 2025 (Tech In Africa) and $126M in H1 2026 (Business Daily).`,
+          text: `The ${climate.length} climate-lens startups tracked here have disclosed roughly ${fmtM(totalRaisedM)} combined across ${roundCount} dated rounds. That is the sum of our tracked profiles only, Kenya's climate sector is larger than this index. Kenya raised $984M in equity across all sectors in 2025 (Tech In Africa) and $126M in H1 2026 (Business Daily).`,
         },
       },
       {
@@ -105,7 +105,7 @@ const jsonld = [
         name: 'How do I list my Kenyan climate startup?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Founders publish instantly and free via the founder-listing form — no approval queue. Your page goes live at startups.co.ke/startups/community/your-name with a Founder-submitted tag, and is upgraded to Verified once cross-checked against public sources.',
+          text: 'Founders publish instantly and free via the founder-listing form, no approval queue. Your page goes live at startups.co.ke/startups/community/your-name with a Founder-submitted tag, and is upgraded to Verified once cross-checked against public sources.',
         },
       },
     ],
@@ -113,8 +113,8 @@ const jsonld = [
 ];
 ---
 <Base
-  title="Kenya climate tech startups — tracked funding, verified profiles"
-  description="Tracked Kenyan climate & energy startups — electric mobility, solar irrigation, agri-insurance, PAYG solar. Sourced funding rounds, active investors, and founder listings that publish instantly."
+  title="Kenya climate tech startups, tracked funding, verified profiles"
+  description="Tracked Kenyan climate & energy startups, electric mobility, solar irrigation, agri-insurance, PAYG solar. Sourced funding rounds, active investors, and founder listings that publish instantly."
   jsonld={jsonld}
 >
   <section class="wrap py-10">
@@ -127,12 +127,12 @@ const jsonld = [
       <p class="kicker">Climate & Energy · Kenya · the capital lens</p>
       <h1 class="mt-2 max-w-3xl text-[clamp(30px,3.6vw,48px)] leading-[1.05]">Kenya's climate tech, <em class="italic">tracked</em>.</h1>
       <p class="mt-3 max-w-2xl text-[15px] text-ink2">
-        The sector where Kenya's capital actually flows — electric mobility, solar irrigation,
+        The sector where Kenya's capital actually flows, electric mobility, solar irrigation,
         PAYG energy, agri-insurance. Every profile here has a sourced funding history; every
         figure keeps its status. Building in this space? Your listing goes live in minutes, not days.
       </p>
       <div class="mt-5 flex flex-wrap gap-2">
-        <button class="btn btn-wrap btn-amber" data-modal="submit">List your climate startup — free, instant →</button>
+        <button class="btn btn-wrap btn-amber" data-modal="submit">List your climate startup, free, instant →</button>
         <a class="btn btn-ghost" href="/funding">Funding database</a>
       </div>
     </div>
@@ -142,7 +142,7 @@ const jsonld = [
       <div class="border border-ink p-4">
         <p class="statnum text-[30px] leading-none">{climate.length}</p>
         <p class="mono-label mt-2">Climate-lens profiles tracked</p>
-        <p class="mt-1 text-[11.5px] text-mut">our index — not an ecosystem census</p>
+        <p class="mt-1 text-[11.5px] text-mut">our index, not an ecosystem census</p>
       </div>
       <div class="border border-ink p-4">
         <p class="statnum text-[30px] leading-none">{fmtM(totalRaisedM)}</p>
@@ -172,7 +172,7 @@ const jsonld = [
           <div class="rv" style={`--d:${(climate.indexOf(c)) * 70}ms`}>
             <CompanyCard company={c} />
             <p class="mt-2 text-[12px] leading-snug text-mut">
-              <span class="font-mono text-[10px] uppercase tracking-[0.1em] text-amber">Lens</span> — {LENS[c.id]}
+              <span class="font-mono text-[10px] uppercase tracking-[0.1em] text-amber">Lens</span>, {LENS[c.id]}
             </p>
           </div>
         ))}
@@ -188,21 +188,21 @@ const jsonld = [
         <div class="mt-5 space-y-4 text-[15px] leading-relaxed text-ink2">
           <p>
             Climate is where Kenya's venture capital concentrates. The ecosystem raised
-            <strong class="text-ink">$984M in equity in 2025 — Africa #1 for the second year running</strong>
+            <strong class="text-ink">$984M in equity in 2025, Africa #1 for the second year running</strong>
             (Tech In Africa), and even in the slower H1 2026 the country pulled $126M
             (Business Daily). Within that, the clearest repeatable story is energy and mobility:
             PAYG solar created the playbook, and electric mobility is running it back.
           </p>
           <p>
             Mainstream media covers the announcements; almost nobody maintains the browseable record.
-            This hub is that record for Kenya's climate economy — tracked companies with dated,
+            This hub is that record for Kenya's climate economy, tracked companies with dated,
             status-tagged rounds, the investors actually writing cheques, and an instant on-ramp for
             founders the record doesn't cover yet. Investors searching Kenya climate deal flow
             should be able to land here and leave with a shortlist.
           </p>
           <p>
             The honest caveat, kept in the open: {climate.length} profiles is our verified index,
-            not the sector's full census. New climate startups appear weekly — founders can list
+            not the sector's full census. New climate startups appear weekly, founders can list
             themselves instantly below, and the desk upgrades listings to Verified once public
             sources confirm them. The index grows because the ecosystem pushes it.
           </p>
@@ -247,27 +247,27 @@ const jsonld = [
           <h3 class="font-display text-[17px]">How many climate tech startups are in Kenya?</h3>
           <p class="mt-1.5 text-[14px] text-ink2">
             This index tracks {climate.length} with a climate lens as of Oct 2026, each with a sourced funding history.
-            It's a curated verified record, not a census — ecosystem-wide lists run to hundreds across all sectors.
+            It's a curated verified record, not a census, ecosystem-wide lists run to hundreds across all sectors.
           </p>
         </div>
         <div>
           <h3 class="font-display text-[17px]">Which climate startups have raised the most?</h3>
           <p class="mt-1.5 text-[14px] text-ink2">
             {topByCapital.map((c) => `${c.name} (${c.raisedDisplay ?? `$${c.raised}M`})`).join(', ')}. Every total keeps its
-            status — Confirmed, Reported or Estimated — with the source named on the profile.
+            status (Confirmed, Reported or Estimated) with the source named on the profile.
           </p>
         </div>
         <div>
           <h3 class="font-display text-[17px]">How do I list my climate startup?</h3>
           <p class="mt-1.5 text-[14px] text-ink2">
-            Use the founder form — your page publishes instantly at
+            Use the founder form, your page publishes instantly at
             <span class="font-mono text-[12.5px]">/startups/community/your-name</span>, tagged Founder-submitted until we verify it. Free, no approval queue.
           </p>
         </div>
         <div>
           <h3 class="font-display text-[17px]">Where does the funding data come from?</h3>
           <p class="mt-1.5 text-[14px] text-ink2">
-            Public disclosures — press, filings and databases — compiled by the desk with a named source on every figure.
+            Public disclosures (press, filings and databases) compiled by the desk with a named source on every figure.
             The full method is on the <a class="text-amber underline" href="/methodology">methodology page</a>.
           </p>
         </div>

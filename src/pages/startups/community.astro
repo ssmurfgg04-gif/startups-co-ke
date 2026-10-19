@@ -1,10 +1,10 @@
 ---
 /**
- * FOUNDER-LISTED STARTUPS (community directory) — /startups/community
+ * FOUNDER-LISTED STARTUPS (community directory), /startups/community
  *
  * The index shell is prerendered; the listings themselves are fetched at
  * runtime from /startups/community/list.json (Cloudflare Worker over Supabase),
- * because founders publish INSTANTLY — no rebuild, no approval. Individual
+ * because founders publish INSTANTLY, no rebuild, no approval. Individual
  * profile pages are server-rendered by worker/index.js at /startups/community/:slug.
  */
 import Base from '@/layouts/Base.astro';
@@ -13,16 +13,16 @@ import { SITE } from '@/config/site';
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: 'Founder-listed startups — Kenya',
+  name: 'Founder-listed startups, Kenya',
   description:
-    'Kenyan startups listed directly by their founders and published instantly — no approval queue. Founder-submitted listings are tagged until verified against public sources.',
+    'Kenyan startups listed directly by their founders and published instantly, no approval queue. Founder-submitted listings are tagged until verified against public sources.',
   url: `${SITE.url}/startups/community`,
   isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
 };
 ---
 <Base
-  title="Founder-listed Kenyan startups — live instantly, no approval"
-  description="Kenyan startups listed directly by their founders and published the moment they hit publish — no approval queue, free forever. Every listing is tagged Founder-submitted until verified against public sources."
+  title="Founder-listed Kenyan startups, live instantly, no approval"
+  description="Kenyan startups listed directly by their founders and published the moment they hit publish, no approval queue, free forever. Every listing is tagged Founder-submitted until verified against public sources."
   jsonld={jsonld}
 >
   <section class="wrap py-10">
@@ -34,14 +34,14 @@ const jsonld = {
       <div class="max-w-2xl">
         <h1 class="text-[clamp(30px,3.4vw,46px)] leading-[1.05]">Founder-listed startups.</h1>
         <p class="mt-3 text-[15px] text-ink2">
-          Listed by the people building them — <strong class="text-ink">published the moment they hit publish</strong>.
+          Listed by the people building them, <strong class="text-ink">published the moment they hit publish</strong>.
           No approval queue, no waiting room, free forever. Each listing carries a
           <span class="chip chip-amber">Founder-submitted</span> tag until the desk cross-checks it
           against public sources, so investors always know what they're looking at.
         </p>
       </div>
       <div class="flex shrink-0 flex-col gap-2">
-        <button class="btn btn-amber" data-modal="submit">List your startup — free, instant →</button>
+        <button class="btn btn-amber" data-modal="submit">List your startup, free, instant →</button>
         <p class="font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Your own URL · linked to your site · ~3 minutes</p>
       </div>
     </div>
@@ -77,7 +77,7 @@ const jsonld = {
         <div class="railbox">
           <div class="railbox-head"><span>How publishing works</span><span class="text-green">✓ live</span></div>
           <ol class="list-decimal space-y-2.5 px-5 py-4 pl-8 text-[13.5px] text-ink2">
-            <li>Fill the form — name, link, one-liner, logo if you have one.</li>
+            <li>Fill the form, name, link, one-liner, logo if you have one.</li>
             <li>Hit <strong>publish</strong>. Your page goes live immediately at <span class="font-mono text-[12px]">/startups/community/your-name</span>.</li>
             <li>Drop the link in your deck, bio and email signature.</li>
             <li>We cross-check it against public sources and upgrade it to <strong>Verified</strong> when it holds up.</li>
@@ -86,17 +86,17 @@ const jsonld = {
         <div class="railbox mt-4">
           <div class="railbox-head"><span>The honesty rules</span></div>
           <ul class="space-y-2.5 px-5 py-4 text-[13.5px] text-ink2">
-            <li>· Instant listings are <strong>self-reported</strong> — always tagged, never passed off as verified.</li>
+            <li>· Instant listings are <strong>self-reported</strong>, always tagged, never passed off as verified.</li>
             <li>· Founder links are marked <span class="font-mono text-[11.5px]">nofollow ugc</span> until a listing is verified.</li>
             <li>· Spam gets rate-limited; fake listings can be reported and removed.</li>
-            <li>· Your email is never shown on your page — the website link is what's public.</li>
+            <li>· Your email is never shown on your page, the website link is what's public.</li>
           </ul>
         </div>
         <div class="railbox mt-4">
           <div class="railbox-head"><span>Verified instead?</span></div>
           <p class="px-5 py-4 text-[13.5px] text-ink2">
             Established company with public funding history? The <a class="text-amber underline" href="/startups">tracked company index</a>
-            comes with editorial verification, funding rounds and investor links — <a class="text-amber underline" href="/contact">talk to the desk</a>.
+            comes with editorial verification, funding rounds and investor links, <a class="text-amber underline" href="/contact">talk to the desk</a>.
           </p>
         </div>
       </aside>
@@ -105,7 +105,7 @@ const jsonld = {
 
   <script>
     // Render founder listings client-side (instant-publish means the data is
-    // dynamic — this page ships as a static shell and fills on load).
+    // dynamic, this page ships as a static shell and fills on load).
     // Viewability: instant search + sector chips derived from the live data,
     // live count in the header, monogrammed cards consistent with the index.
     (async () => {
@@ -151,7 +151,7 @@ const jsonld = {
           empty.className = 'border border-dashed border-line2 px-5 py-8 text-center sm:col-span-2';
           empty.innerHTML = `
             <p class="font-display text-[20px]">The first listing is still up for grabs.</p>
-            <p class="mt-2 text-[13.5px] text-mut">Three minutes, zero cost, no approval — your startup could be on this page right now.</p>
+            <p class="mt-2 text-[13.5px] text-mut">Three minutes, zero cost, no approval, your startup could be on this page right now.</p>
             <button class="btn btn-amber mt-4" data-modal="submit">Claim the first spot →</button>`;
           listEl.appendChild(empty);
           return;
@@ -219,7 +219,7 @@ const jsonld = {
         render();
       } catch {
         const el = host?.querySelector('[data-community-loading]');
-        if (el) el.textContent = 'Listings are temporarily unavailable — refresh in a moment.';
+        if (el) el.textContent = 'Listings are temporarily unavailable, refresh in a moment.';
       }
     })();
   </script>

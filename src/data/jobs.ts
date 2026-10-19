@@ -3,12 +3,12 @@ import type { Job } from './types';
 /**
  * REAL roles seen live on employer boards / vetted job boards, as of 2026-10-15.
  * Salary figures are MARKET BANDS (CareerBuddy Jun 2026 · Mctaba Jun 2026 · WageIndicator 2026),
- * labelled as bands — not the employer's offer. Each entry carries its source.
+ * labelled as bands, not the employer's offer. Each entry carries its source.
  */
 export const JOBS: Job[] = [
   {
     id: 'j-mkopa-backend',
-    title: 'Senior Backend Engineer — Asset Finance',
+    title: 'Senior Backend Engineer, Asset Finance',
     companyId: 'm-kopa',
     location: 'Nairobi',
     mode: 'Hybrid',
@@ -26,7 +26,7 @@ export const JOBS: Job[] = [
   },
   {
     id: 'j-mkopa-pm',
-    title: 'Senior Product Manager — Mobility',
+    title: 'Senior Product Manager, Mobility',
     companyId: 'm-kopa',
     location: 'Nairobi',
     mode: 'Hybrid',
@@ -38,7 +38,7 @@ export const JOBS: Job[] = [
     featured: false,
     tags: ['EV transition', 'Hardware + software', '0→1 products'],
     description:
-      'Pioneer the product side of M-KOPA\u2019s electric mobility expansion — financing structures for e-motorbikes and service networks. Listed via jobs board; confirm live status on the careers page.',
+      'Pioneer the product side of M-KOPA\u2019s electric mobility expansion, financing structures for e-motorbikes and service networks. Listed via jobs board; confirm live status on the careers page.',
     applyUrl: 'https://www.m-kopa.com/careers',
     source: 'Jobs board (Blue Haven), Oct 2026',
   },
@@ -74,13 +74,13 @@ export const JOBS: Job[] = [
     featured: false,
     tags: ['EV charging', 'Safety procedures'],
     description:
-      'Operate and monitor DC charging stations on BasiGo\u2019s Nairobi network — safety checks, uptime logs and driver support. Sourced via ClimateTechList; confirm live status on basi-go.com.',
+      'Operate and monitor DC charging stations on BasiGo\u2019s Nairobi network, safety checks, uptime logs and driver support. Sourced via ClimateTechList; confirm live status on basi-go.com.',
     applyUrl: 'https://www.basi-go.com',
     source: 'ClimateTechList (Oct 2026)',
   },
   {
     id: 'j-pula-field',
-    title: 'Field Coordinator — Kenya',
+    title: 'Field Coordinator, Kenya',
     companyId: 'pula',
     location: 'Nairobi',
     mode: 'Hybrid',
@@ -92,13 +92,13 @@ export const JOBS: Job[] = [
     featured: false,
     tags: ['Agri programmes', 'Field ops', 'Insurance'],
     description:
-      'Coordinate Pula\u2019s agricultural-insurance field programmes — farmer recruitment, data collection and partner agronomist liaison. Requires a BSc in project management, agricultural economics or agribusiness (per the listing). Confirm live status on Pula\u2019s careers page.',
+      'Coordinate Pula\u2019s agricultural-insurance field programmes, farmer recruitment, data collection and partner agronomist liaison. Requires a BSc in project management, agricultural economics or agribusiness (per the listing). Confirm live status on Pula\u2019s careers page.',
     applyUrl: 'https://pula-advisors.com/career',
     source: 'Pula careers board (Oct 2026)',
   },
   {
     id: 'j-mkopa-retail',
-    title: 'Retail Customer Experience Agent — Mobility',
+    title: 'Retail Customer Experience Agent, Mobility',
     companyId: 'm-kopa',
     location: 'Nairobi',
     mode: 'On-site',
@@ -119,7 +119,7 @@ export const JOBS: Job[] = [
 export const JOB_CATEGORIES = ['All', 'Engineering', 'Data', 'Product', 'Design', 'Growth', 'Operations', 'Executive', 'Other'];
 
 /**
- * LIVE LAYER — roles pulled from employers' own ATS boards at build time by
+ * LIVE LAYER, roles pulled from employers' own ATS boards at build time by
  * scripts/fetch_jobs.mjs. No salary is invented for live rows (market bands
  * exist only for the curated rows above). Kenya-relevance is enforced in the
  * pipeline; fetchedAt + per-source status land on the page.

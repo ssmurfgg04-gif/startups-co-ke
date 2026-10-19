@@ -1,11 +1,11 @@
 ---
-/** Brand logo — hand-set "s." mark: chalk-drawn serif s, amber full-stop dot.
+/** Brand logo, hand-set "s." mark: chalk-drawn serif s, amber full-stop dot.
  * The dot is the point: a record that ends in evidence. Tilts slightly on hover. */
 interface Props { variant?: 'dark' | 'light'; href?: string; class?: string }
 const { variant = 'light', href = '/', class: cls = '' } = Astro.props;
 const text = variant === 'light' ? 'text-ink' : 'text-dpaper';
 // ".co.ke" accent: #7a4e07 passes on paper; on the dark footer the same token
-// sits at 2.5:1 — the bright amber2 (8.9:1 on dark) takes over there.
+// sits at 2.5:1, the bright amber2 (8.9:1 on dark) takes over there.
 const accent = variant === 'light' ? 'text-amber' : 'text-amber2';
 ---
 <a href={href} class={`group inline-flex items-center gap-2.5 ${cls}`} aria-label="startups.co.ke home">

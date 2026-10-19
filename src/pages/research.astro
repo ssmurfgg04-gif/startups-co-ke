@@ -7,13 +7,13 @@ import { SITE } from '@/config/site';
 const flagship = REPORTS.find((r) => r.flagship)!;
 const library = REPORTS.filter((r) => !r.flagship);
 const ARXIV = [
-  { id: '2401.05760', title: 'Follow The Money: Key Factors Influencing Investment in African Startups', note: 'Funding drivers across African ecosystems — methodology reference for our status system.' },
-  { id: '2408.09420', title: 'GraphRAG for startup-success prediction', note: 'Graph-based retrieval over funding graphs — informs how we link rounds, investors and companies.' },
-  { id: '2410.03552', title: 'Risk ranking of AI startups in emerging markets (LATAM study)', note: 'Comparative emerging-market methodology — closest published analogue to Kenya\u2019s dataset.' },
+  { id: '2401.05760', title: 'Follow The Money: Key Factors Influencing Investment in African Startups', note: 'Funding drivers across African ecosystems, methodology reference for our status system.' },
+  { id: '2408.09420', title: 'GraphRAG for startup-success prediction', note: 'Graph-based retrieval over funding graphs, informs how we link rounds, investors and companies.' },
+  { id: '2410.03552', title: 'Risk ranking of AI startups in emerging markets (LATAM study)', note: 'Comparative emerging-market methodology, closest published analogue to Kenya\u2019s dataset.' },
 ];
 ---
 <Base
-  title="Research — Kenya startup ecosystem reports"
+  title="Research, Kenya startup ecosystem reports"
   description="Original research on Kenya's startup ecosystem: funding landscape, talent & compensation, payments infrastructure and hackathon impact."
   jsonld={[
     {
@@ -34,7 +34,7 @@ const ARXIV = [
         {
           '@type': 'Question',
           name: 'How much did Kenyan startups raise in 2025?',
-          acceptedAnswer: { '@type': 'Answer', text: '$984M in equity — the highest in Africa for a second straight year — and about $1.04B including debt (Tech In Africa; Invest Kenya).' },
+          acceptedAnswer: { '@type': 'Answer', text: '$984M in equity (the highest in Africa for a second straight year) and about $1.04B including debt (Tech In Africa; Invest Kenya).' },
         },
         {
           '@type': 'Question',
@@ -53,7 +53,7 @@ const ARXIV = [
   <section class="wrap py-10">
     <h1 class="text-[clamp(34px,4vw,56px)]">Research.</h1>
     <p class="mt-2 max-w-2xl text-[15px] text-mut">
-      Original reports built on our index and methodology — every figure carries a status tag. The full library is free while we build momentum.
+      Original reports built on our index and methodology, every figure carries a status tag. The full library is free while we build momentum.
     </p>
 
     <div class="mt-8 grid items-stretch gap-8 lg:grid-cols-12">
@@ -85,13 +85,13 @@ const ARXIV = [
           <li>✓ Methodology &amp; status definitions</li>
         </ul>
         <div class="mt-5 flex flex-wrap gap-3">
-          <button class="btn btn-amber" data-modal="buy">Get it — free</button>
+          <button class="btn btn-amber" data-modal="buy">Get it, free</button>
           <button class="btn btn-ghost" data-modal="buy">Free sample chapter</button>
         </div>
       </div>
     </div>
     <div class="mt-14">
-      <SectionHead title="Library — all reports." sub="Everything is free right now — download what's useful." />
+      <SectionHead title="Library (all reports." sub="Everything is free right now) download what's useful." />
       <div class="border border-ink bg-paper">
         {library.map((r) => (
           <div class="rowline flex flex-wrap items-center gap-4 px-5 py-4">
@@ -118,7 +118,7 @@ const ARXIV = [
               <span class="mono-label">arXiv:{a.id} · {a.note}</span>
             </a>
           ))}
-          <p class="mt-2 text-[12.5px] text-mut">Peer-reviewed and preprint work our status-tagging and graph-linking methodology draws on — cited, not buried.</p>
+          <p class="mt-2 text-[12.5px] text-mut">Peer-reviewed and preprint work our status-tagging and graph-linking methodology draws on, cited, not buried.</p>
         </div>
       </div>
       <div class="railbox">
@@ -130,7 +130,7 @@ const ARXIV = [
               <span class="statnum text-[13px]">{t.volume}</span>
             </div>
           ))}
-          <p class="mt-2 text-[12.5px] text-mut">Live consumer-search context from Google Trends (Kenya, daily RSS) — the demand-side backdrop to the funding data.</p>
+          <p class="mt-2 text-[12.5px] text-mut">Live consumer-search context from Google Trends (Kenya, daily RSS), the demand-side backdrop to the funding data.</p>
         </div>
       </div>
     </div>
@@ -138,7 +138,7 @@ const ARXIV = [
     <div class="railbox mt-8">
       <div class="railbox-head"><span>Why our counts differ from other databases</span></div>
       <div class="px-4 py-4 text-[14px] leading-relaxed text-ink2">
-        <p>Tracxn lists 13,642 Kenyan startups; StartupBlink counts 659. Neither is a lie — they measure different things, and neither tells you which listings ever raised a shilling. This platform takes the opposite trade: fewer profiles, every figure status-tagged, every failure tracked. Where our coverage is thin we say so — a coverage gap is not a market gap.</p>
+        <p>Tracxn lists 13,642 Kenyan startups; StartupBlink counts 659. Neither is a lie, they measure different things, and neither tells you which listings ever raised a shilling. This platform takes the opposite trade: fewer profiles, every figure status-tagged, every failure tracked. Where our coverage is thin we say so, a coverage gap is not a market gap.</p>
       </div>
     </div>
   </section>

@@ -1,5 +1,5 @@
 ---
-/** Seeded sparkline — stable across reloads (PRNG per id). */
+/** Seeded sparkline, stable across reloads (PRNG per id). */
 import { sparklinePoints } from '@/lib/utils';
 interface Props { id: string; w?: number; h?: number; stroke?: string; label?: string }
 const { id, w = 120, h = 36, stroke = 'var(--color-green)', label } = Astro.props;

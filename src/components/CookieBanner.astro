@@ -1,5 +1,5 @@
 ---
-/** Cookie consent banner — compact, dismissible, bottom-left. Choice stored,
+/** Cookie consent banner, compact, dismissible, bottom-left. Choice stored,
  *  analytics loads only after consent. Kept small so it never blocks page
  *  controls (audit fix): narrow card, one-line copy, quiet dismiss. */
 ---
@@ -31,7 +31,7 @@
   }
   document.getElementById('cookie-accept')?.addEventListener('click', () => choose('all'));
   document.getElementById('cookie-essential')?.addEventListener('click', () => choose('essential'));
-  // dismiss without consenting — ask again next visit, never blocks the page
+  // dismiss without consenting, ask again next visit, never blocks the page
   document.getElementById('cookie-dismiss')?.addEventListener('click', () => banner?.classList.add('hidden'));
 
   function loadAnalytics() {

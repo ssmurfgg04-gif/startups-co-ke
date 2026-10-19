@@ -1,5 +1,5 @@
 ---
-/** Live countdown (D/H/M/S or HH:MM:SS) — ticks to an absolute ISO date in EAT
+/** Live countdown (D/H/M/S or HH:MM:SS), ticks to an absolute ISO date in EAT
  *  (real events) or a client-side offset (fallback). Never dies either way.
  *  Initial D/H/M/S is computed at BUILD time and server-rendered, so users and
  *  crawlers see real numbers instead of "—" dashes before JS ticks (the
@@ -15,7 +15,7 @@ const { targetOffsetMs, targetISO, mode = 'dhms', dark = false, id } = Astro.pro
 const cell = `flex flex-col items-center justify-center border px-2 py-3 ${dark ? 'border-dpaper/30 text-dpaper' : 'border-ink text-ink'} min-w-[64px] flex-1`;
 
 // Server-side initial values (build time). If the target already passed,
-// clamp at zero — an expired countdown reads 00s, not dashes.
+// clamp at zero, an expired countdown reads 00s, not dashes.
 const init = { d: '00', h: '00', m: '00', s: '00' };
 if (targetISO) {
   const left = Math.max(0, Date.parse(targetISO) - Date.now());
@@ -57,7 +57,7 @@ const passed = targetISO ? Date.parse(targetISO) < Date.now() : false;
     const root = document.getElementById(id);
     if (!root) return;
     const target = root.dataset.iso ? new Date(root.dataset.iso).getTime() : Date.now() + Number(root.dataset.offset);
-    if (root.dataset.iso && target - Date.now() <= 0) return; // expired — static state already correct
+    if (root.dataset.iso && target - Date.now() <= 0) return; // expired, static state already correct
     const mode = root.dataset.mode;
     const pad = (n) => String(Math.floor(n)).padStart(2, '0');
     function tick() {

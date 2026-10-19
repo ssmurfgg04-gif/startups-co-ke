@@ -40,8 +40,8 @@ const cumPoints = years.map((y) => { cum += byYear.get(y) as number; return { y,
 const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
 ---
 <Base
-  title={`${c.name} — ${c.sector} startup profile`}
-  description={`${c.name}: ${c.tagline.slice(0, 120)} Funding, investors, team and signals — compiled from public sources with per-figure statuses.`}
+  title={`${c.name}, ${c.sector} startup profile`}
+  description={`${c.name}: ${c.tagline.slice(0, 120)} Funding, investors, team and signals, compiled from public sources with per-figure statuses.`}
   ogType="website"
   jsonld={{
     '@context': 'https://schema.org',
@@ -134,7 +134,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
               {c.signals.map((s) => (
                 <li class="border-l-4 border-green bg-paper2 px-4 py-2.5 text-[14px]">{s}</li>
               ))}
-              {!c.signals.length && <li class="text-[14px] text-mut">No signals tracked yet — coverage gap, not market gap.</li>}
+              {!c.signals.length && <li class="text-[14px] text-mut">No signals tracked yet, coverage gap, not market gap.</li>}
             </ul>
           </div>
         </div>
@@ -161,7 +161,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
                       <td class="px-3 py-2.5"><Chip kind={(r.status ?? 'Reported').toLowerCase() as 'confirmed' | 'reported' | 'estimated'} /></td>
                     </tr>
                   ))}
-                  {!c.rounds.length && <tr><td colspan="5" class="px-3 py-4 text-mut">Per-round data not tracked on this platform — coverage gap, not market gap.</td></tr>}
+                  {!c.rounds.length && <tr><td colspan="5" class="px-3 py-4 text-mut">Per-round data not tracked on this platform, coverage gap, not market gap.</td></tr>}
                 </tbody>
               </table>
             </div>
@@ -196,7 +196,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
                 ))}
               </div>
             ) : (
-              <p class="text-[14px] text-mut">Leadership not tracked publicly yet — <button class="text-amber underline" data-modal="claim">claim this profile</button> to add it.</p>
+              <p class="text-[14px] text-mut">Leadership not tracked publicly yet, <button class="text-amber underline" data-modal="claim">claim this profile</button> to add it.</p>
             )}
             {typeof c.employees === 'number' || typeof c.employees === 'string' ? (
               <p class="mt-4 text-[13px] text-mut">Headcount: {typeof c.employees === 'number' ? `~${c.employees}` : c.employees} (compiled from public sources). Open roles link to the jobs board.</p>
@@ -240,7 +240,7 @@ const maxCum = Math.max(...cumPoints.map((p) => p.v), 1);
             <p class="text-[13.5px] text-mut">
               {c.verified
                 ? 'Cross-checked against at least two independent public sources.'
-                : 'Thin-data profile — honestly labelled Unverified until cross-checked.'}
+                : 'Thin-data profile, honestly labelled Unverified until cross-checked.'}
             </p>
           </div>
         </div>

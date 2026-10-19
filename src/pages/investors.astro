@@ -11,19 +11,19 @@ import { fmtUsdM } from '@/lib/utils';
 const investors = INVESTORS;
 ---
 <Base
-  title="Investor directory — venture capital in Kenya"
-  description="Which funds are writing cheques in Kenya: focus sectors, stages, cheque sizes, theses and notable portfolio companies — compiled from public sources, cross-checked where marked Verified."
+  title="Investor directory, venture capital in Kenya"
+  description="Which funds are writing cheques in Kenya: focus sectors, stages, cheque sizes, theses and notable portfolio companies, compiled from public sources, cross-checked where marked Verified."
   jsonld={{
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Investor directory — Kenya',
+    name: 'Investor directory, Kenya',
     url: `${SITE.url}/investors`,
   }}
 >
   <section class="wrap py-10">
     <h1 class="text-[clamp(34px,4vw,56px)]">Who is writing cheques.</h1>
     <p class="mt-2 max-w-2xl text-[15px] text-mut">
-      {investors.length} funds, angel networks and micro-funds active across Kenya — from family offices and corporate VCs to the global growth firms behind the biggest tracked rounds. Fund theses and cheque ranges are self-reported or compiled from public sources; the Kenya track record under each fund is derived from our tracked rounds feed, so every line carries its own status.
+      {investors.length} funds, angel networks and micro-funds active across Kenya, from family offices and corporate VCs to the global growth firms behind the biggest tracked rounds. Fund theses and cheque ranges are self-reported or compiled from public sources; the Kenya track record under each fund is derived from our tracked rounds feed, so every line carries its own status.
     </p>
 
     <div class="mt-8 grid gap-8 lg:grid-cols-12">
@@ -83,7 +83,7 @@ const investors = INVESTORS;
                         const co = companyById(pid);
                         return co ? <a class="chip hover:bg-paper2" href={`/startups/${co.id}`}>{co.name}</a> : null;
                       })}
-                      {inv.portfolio.length === 0 && <span class="text-[12.5px] text-mut">No tracked portfolio overlap yet — fund is listed on the strength of its public Kenya activity.</span>}
+                      {inv.portfolio.length === 0 && <span class="text-[12.5px] text-mut">No tracked portfolio overlap yet, fund is listed on the strength of its public Kenya activity.</span>}
                     </div>
 
                     {(() => {
@@ -168,14 +168,14 @@ const investors = INVESTORS;
     <div class="mt-12 border border-ink bg-green p-6 text-dpaper md:p-8">
       <div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h2 class="text-[22px]">Investor tools — free right now</h2>
+          <h2 class="text-[22px]">Investor tools, free right now</h2>
           <ul class="mt-2 grid gap-1 text-[13.5px] text-dpaper/90 md:grid-cols-2">
             <li>✓ Deal-flow request queue</li><li>✓ Verified company data export</li>
             <li>✓ Sector &amp; stage alerts</li><li>✓ Intros without the cold email</li>
           </ul>
         </div>
         <div class="text-left md:text-right">
-          <p class="mono-label mt-1 text-dmut">No card, no trial countdown — free while we build momentum. Paid tiers return only after the research is validated with real buyers.</p>
+          <p class="mono-label mt-1 text-dmut">No card, no trial countdown, free while we build momentum. Paid tiers return only after the research is validated with real buyers.</p>
           <button class="btn btn-amber mt-3" data-modal="intro">Request access</button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-/** Sector palette + labels — global design config. */
+/** Sector palette + labels, global design config. */
 
 export const SECTOR_COLORS: Record<string, string> = {
   Fintech: '#0E4630',
@@ -18,7 +18,7 @@ export const SECTOR_COLORS: Record<string, string> = {
 
 export const SECTORS = Object.keys(SECTOR_COLORS);
 
-/** Full stage ladder — includes every stage value present in company data
+/** Full stage ladder, includes every stage value present in company data
  *  (Series F / Mature / Pre-Series A were previously unfilterable). */
 export const STAGES = ['Pre-seed', 'Seed', 'Pre-Series A', 'Series A', 'Series B', 'Series F', 'Mature'] as const;
 

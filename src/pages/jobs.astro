@@ -15,7 +15,7 @@ const liveCompanies = [...new Set(liveRows.map((j) => j.companyId))];
 const salaryMax = 500;
 const bands = SALARY_BANDS;
 
-/** Compact relative date for the mobile pay strip ('3d', '2w', '1mo') — full form lives on desktop. */
+/** Compact relative date for the mobile pay strip ('3d', '2w', '1mo'), full form lives on desktop. */
 function shortDays(pd: number): string {
   if (pd <= 0) return 'today';
   if (pd < 14) return `${pd}d`;
@@ -24,8 +24,8 @@ function shortDays(pd: number): string {
 }
 ---
 <Base
-  title="Tech jobs Nairobi — startup jobs in Kenya"
-  description={`${jobs.length} open tech roles at Kenya's most ambitious startups — ${liveRows.length} pulled live from employer ATS boards. Engineering, data, product and design, with salary context and verified employers.`}
+  title="Tech jobs Nairobi, startup jobs in Kenya"
+  description={`${jobs.length} open tech roles at Kenya's most ambitious startups, ${liveRows.length} pulled live from employer ATS boards. Engineering, data, product and design, with salary context and verified employers.`}
   jsonld={{
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -46,7 +46,7 @@ function shortDays(pd: number): string {
             ? (j.postedDays ? new Date(Date.now() - j.postedDays * 86400000).toISOString().slice(0, 10) : LIVE.fetchedAt)
             : new Date(Date.now() - j.postedDays * 86400000).toISOString().slice(0, 10),
           ...(!live ? { baseSalary: { '@type': 'MonetaryAmount', currency: 'KES', value: { '@type': 'QuantitativeValue', minValue: j.salaryMin * 1000, maxValue: j.salaryMax * 1000, unitText: 'MONTH' } } } : {}),
-          description: live ? `${j.title} — ${j.location} · ${j.mode} (live from ${c.name}'s ${j.board} board)` : j.description + (j.source ? ` (Source: ${j.source})` : ''),
+          description: live ? `${j.title}, ${j.location} · ${j.mode} (live from ${c.name}'s ${j.board} board)` : j.description + (j.source ? ` (Source: ${j.source})` : ''),
           url: live ? j.applyUrl : `${SITE.url}/jobs`,
         },
       };
@@ -59,10 +59,10 @@ function shortDays(pd: number): string {
       <p class="kicker text-dmut">{jobs.length} open roles · {liveRows.length} pulled live from {liveCompanies.length} employer ATS boards · fetched {LIVE.fetchedAt}</p>
       <h1 class="mt-3 max-w-2xl text-[clamp(34px,4.2vw,56px)] leading-[1.02]">Tech jobs at Kenya's most ambitious startups.</h1>
       <p class="mt-4 max-w-2xl text-[14px] leading-relaxed text-dmut">
-        <span class="text-dpaper">LIVE</span> rows come straight from employers' own hiring systems — Lever, Greenhouse, Workable, BambooHR and Ashby — every time this site rebuilds. You apply on the employer's own portal, never through us.
+        <span class="text-dpaper">LIVE</span> rows come straight from employers' own hiring systems (Lever, Greenhouse, Workable, BambooHR and Ashby) every time this site rebuilds. You apply on the employer's own portal, never through us.
       </p>
       <p class="mt-3 max-w-2xl border-l-2 border-amber2 pl-3 text-[13.5px] leading-relaxed text-dpaper/85">
-        Only {payRows} of {jobs.length} roles here publish pay. That's Kenya — most employers don't (Fuzu calls this market “zero salary transparency”). So where an ad hides the money, we attach a market band from published salary surveys. Bands, not offers.
+        Only {payRows} of {jobs.length} roles here publish pay. That's Kenya, most employers don't (Fuzu calls this market “zero salary transparency”). So where an ad hides the money, we attach a market band from published salary surveys. Bands, not offers.
       </p>
       <form class="mt-6 flex max-w-2xl flex-wrap gap-2" role="search" aria-label="Search jobs">
         <input class="input min-h-11 flex-1 border-dpaper/40 bg-dark2 text-dpaper placeholder:text-dmut" name="q" placeholder="Role, skill or company…" aria-label="Search jobs" />
@@ -102,7 +102,7 @@ function shortDays(pd: number): string {
             const c = employerById(j.companyId)!;
             const live = isLive(j);
             const when = live ? (j.postedDays !== null ? relDays(j.postedDays) : `via ${j.board}`) : relDays(j.postedDays);
-            // Compact strip date for 375px — full form stays on the desktop column (and in title=).
+            // Compact strip date for 375px, full form stays on the desktop column (and in title=).
             const shortWhen = live && j.postedDays === null ? `via ${j.board}` : shortDays(live ? j.postedDays ?? 0 : j.postedDays);
             // Standardized pay line (ovrion-style): every row states money in the same format, same slot.
             const payBand = live ? null : j.salaryMin != null && j.salaryMax != null ? `KSh ${j.salaryMin}–${j.salaryMax}K` : j.salary;
@@ -127,7 +127,7 @@ function shortDays(pd: number): string {
                   </span>
                   <span class="hidden text-right md:block">
                     {live ? (
-                      <span class="block whitespace-nowrap font-mono text-[12px] italic text-mut" title="Pay not disclosed — see market bands in the rail">pay: n/d</span>
+                      <span class="block whitespace-nowrap font-mono text-[12px] italic text-mut" title="Pay not disclosed, see market bands in the rail">pay: n/d</span>
                     ) : (
                       <span class="statnum block whitespace-nowrap text-[13px]">{payBand}</span>
                     )}
@@ -141,7 +141,7 @@ function shortDays(pd: number): string {
                   <span class="col-span-full mt-1.5 flex items-center justify-between gap-2 border-t border-dashed border-line2 pt-2 md:hidden">
                     <span class="flex min-w-0 items-baseline gap-1.5">
                       {live ? (
-                        <span class="whitespace-nowrap font-mono text-[12.5px] italic text-mut" title="Pay not disclosed — see market bands in the rail">pay: n/d</span>
+                        <span class="whitespace-nowrap font-mono text-[12.5px] italic text-mut" title="Pay not disclosed, see market bands in the rail">pay: n/d</span>
                       ) : (
                         <span class="statnum whitespace-nowrap text-[13.5px]">{payBand}<span class="ml-1 font-mono text-[10px] font-normal uppercase tracking-[0.1em] text-mut">/ mo · band</span></span>
                       )}
@@ -159,7 +159,7 @@ function shortDays(pd: number): string {
                     <div class="border-t border-line px-4 py-4">
                       {live ? (
                         <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">
-                          Open role indexed live from {c.name}'s own {j.board} hiring board on {LIVE.fetchedAt}. Pay isn't published for this role — that's the norm here, not an oversight. The market bands in the rail tell you what similar roles pay.
+                          Open role indexed live from {c.name}'s own {j.board} hiring board on {LIVE.fetchedAt}. Pay isn't published for this role, that's the norm here, not an oversight. The market bands in the rail tell you what similar roles pay.
                         </p>
                       ) : (
                         <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">{j.description}</p>
@@ -182,7 +182,7 @@ function shortDays(pd: number): string {
             );
           })}
         </div>
-        <p id="jobs-empty" class="hidden border border-dashed border-line2 p-8 text-center text-mut">No roles match — clear the category or remote filter.</p>
+        <p id="jobs-empty" class="hidden border border-dashed border-line2 p-8 text-center text-mut">No roles match, clear the category or remote filter.</p>
       </div>
 
       <!-- Right rail -->
@@ -198,7 +198,7 @@ function shortDays(pd: number): string {
                 </span>
               </div>
             ))}
-            <p class="mono-label mt-3">{liveSources.length} employer boards checked at build · Kenya-relevant rows kept, everything else left out{LIVE.linkCheck && LIVE.linkCheck.dropped > 0 ? ` · ${LIVE.linkCheck.dropped} dead link${LIVE.linkCheck.dropped === 1 ? '' : 's'} auto-dropped on the last pull` : ''}. Boards re-pull on every deploy — daily via GitHub Actions.</p>
+            <p class="mono-label mt-3">{liveSources.length} employer boards checked at build · Kenya-relevant rows kept, everything else left out{LIVE.linkCheck && LIVE.linkCheck.dropped > 0 ? ` · ${LIVE.linkCheck.dropped} dead link${LIVE.linkCheck.dropped === 1 ? '' : 's'} auto-dropped on the last pull` : ''}. Boards re-pull on every deploy, daily via GitHub Actions.</p>
           </div>
         </div>
 
@@ -206,12 +206,12 @@ function shortDays(pd: number): string {
           <div class="railbox-head"><span>How listings are vetted</span><Chip kind="confirmed" /></div>
           <div class="px-4 py-3">
             <ul class="space-y-2 text-[13px] leading-snug text-ink2">
-              <li><span class="mr-1.5 font-semibold text-green">✓</span>Every apply link is re-checked on each daily pull — dead ones drop automatically.</li>
+              <li><span class="mr-1.5 font-semibold text-green">✓</span>Every apply link is re-checked on each daily pull, dead ones drop automatically.</li>
               <li><span class="mr-1.5 font-semibold text-green">✓</span>Live roles come from employers' own hiring boards. Never a middleman, never scraped listings.</li>
               <li><span class="mr-1.5 font-semibold text-green">✓</span>Applying is free, always. Report anything that asks you for a fee.</li>
-              <li><span class="mr-1.5 font-semibold text-green">✓</span>Pay bands come from published surveys, labelled as bands — never invented offers.</li>
+              <li><span class="mr-1.5 font-semibold text-green">✓</span>Pay bands come from published surveys, labelled as bands, never invented offers.</li>
             </ul>
-            <p class="mono-label mt-3">Benchmark: StartupJobs Kenya tracked 54 startup roles nationwide (Oct 2026) — we're smaller, and say so. <a class="text-green hover:underline" href="/methodology">Methodology →</a></p>
+            <p class="mono-label mt-3">Benchmark: StartupJobs Kenya tracked 54 startup roles nationwide (Oct 2026), we're smaller, and say so. <a class="text-green hover:underline" href="/methodology">Methodology →</a></p>
           </div>
         </div>
 
@@ -245,7 +245,7 @@ function shortDays(pd: number): string {
                 </div>
               </div>
             ))}
-            <p class="mono-label mt-3">Source: CareerBuddy (Jun 2026) · Mctaba (Jun 2026) · WageIndicator (2026) · axis 0–500K. Most Kenyan ads hide pay — these bands are the market context the ads leave out.</p>
+            <p class="mono-label mt-3">Source: CareerBuddy (Jun 2026) · Mctaba (Jun 2026) · WageIndicator (2026) · axis 0–500K. Most Kenyan ads hide pay, these bands are the market context the ads leave out.</p>
           </div>
         </div>
 

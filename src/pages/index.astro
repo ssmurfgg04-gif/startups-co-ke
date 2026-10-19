@@ -40,13 +40,13 @@ const regionRows = REGIONS.filter((r) => r.count > 0);
 const hubCounties = ANCHORED_COUNTIES.filter((c) => c.id !== 'nairobi');
 const sectorCompanies = (sector: string) => COMPANIES.filter((c) => c.sector === sector);
 // Derived, never typed: sector counts come straight from the company index
-// (a static list drifted 19 vs 21 — see worklog Task 4).
+// (a static list drifted 19 vs 21, see worklog Task 4).
 const SECTOR_ROWS = [...new Set(COMPANIES.map((c) => c.sector))]
   .map((sector) => ({ sector, count: sectorCompanies(sector).length }))
   .sort((a, b) => b.count - a.count);
 const totalSector = SECTOR_ROWS.reduce((s, r) => s + r.count, 0);
 const sectorMax = Math.max(...SECTOR_ROWS.map((r) => r.count));
-// Derived investor activity — rounds each fund appears in (led or noted),
+// Derived investor activity, rounds each fund appears in (led or noted),
 // straight from the rounds feed. Replaces the duplicated rounds rail.
 const ACTIVE_INVESTORS = INVESTORS.map((inv) => ({
   id: inv.id,
@@ -59,7 +59,7 @@ const ACTIVE_INVESTORS = INVESTORS.map((inv) => ({
   .slice(0, 8);
 const activeMax = Math.max(...ACTIVE_INVESTORS.map((i) => i.rounds));
 // Build-time date: the index is re-verified on every deploy (jobs refresh daily,
-// data rows carry their own named sources) — so this line is always true.
+// data rows carry their own named sources), so this line is always true.
 const verifiedDate = new Date().toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' });
 const jsonld = [
   {
@@ -89,26 +89,32 @@ const jsonld = [
 <Base title={SITE.title} description={SITE.description} jsonld={jsonld}>
   <!-- 1) HERO -->
   <section class="wrap grid items-start gap-10 py-12 md:py-16 lg:grid-cols-12">
-    <!-- No .rv reveal above the fold: the hero IS the LCP — it renders instantly,
+    <!-- No .rv reveal above the fold: the hero IS the LCP, it renders instantly,
          fonts swap in, nothing waits on JS. Below-fold sections keep the reveal. -->
     <div class="lg:col-span-7">
-      <p class="kicker">Est. Nairobi — Kenya's startup record, kept in the open</p>
+      <p class="kicker">Est. Nairobi · Kenya's startup record, kept in the open</p>
       <h1 class="mt-4 text-[clamp(40px,5.2vw,72px)] leading-[0.98]">
         Kenya's startup economy, <em class="font-display italic text-green">mapped</em> &amp; measured.
       </h1>
       <p class="mt-5 max-w-xl text-[16.5px] text-ink2">
-        {COMPANIES.length} Kenyan startups with verified profiles — what they raised, from whom, and who failed. The investors actually writing cheques here. Tech jobs pulled from employer boards every build. No hype; every number names its source.
+        {COMPANIES.length} Kenyan startups with verified profiles: what they raised, from whom, and who failed. The investors actually writing cheques here. Climate and energy coverage goes deepest. Every number names its source.
       </p>
 
       <form class="mt-7 flex max-w-xl border-2 border-ink bg-paper" action="/startups" method="get" role="search" aria-label="Company search">
-        <input class="input-mono min-h-12 flex-1 bg-transparent px-4 text-[15px] outline-none placeholder:text-mut" name="q" placeholder={`Search ${COMPANIES.length} tracked companies — try “M-KOPA”, “solar”, “fintech”…`} aria-label="Search companies" />
+        <input class="input-mono min-h-12 flex-1 bg-transparent px-4 text-[15px] outline-none placeholder:text-mut" name="q" placeholder={`Search ${COMPANIES.length} tracked companies. Try “M-KOPA”, “solar”, “fintech”…`} aria-label="Search companies" />
         <button class="btn border-0 border-l-2 border-ink px-5" type="submit">Search</button>
       </form>
 
+      <form class="brief-form mt-3 flex max-w-xl items-stretch border-2 border-ink bg-ink text-paper" data-kind="newsletter" aria-label="Subscribe to The Ecosystem Brief">
+        <span class="hidden items-center pl-4 pr-1 font-mono text-[10px] uppercase tracking-[0.12em] text-dmut sm:flex">The Ecosystem Brief · Mon 06:30 EAT</span>
+        <input class="min-h-11 flex-1 bg-transparent px-4 text-[15px] text-paper placeholder:text-dmut" type="email" name="email" required placeholder="Email for the Monday brief" aria-label="Email for The Ecosystem Brief" />
+        <button class="btn btn-amber border-0 border-l-2 border-ink px-5" type="submit">Get the brief</button>
+      </form>
+
       <div class="mt-3.5 flex flex-wrap gap-2">
+        <a class="chip hover:bg-paper2" href="/climate-tech">Climate &amp; Energy</a>
         <a class="chip hover:bg-paper2" href="/startups?sector=Fintech">Fintech</a>
         <a class="chip hover:bg-paper2" href="/startups?sector=Health">Healthtech</a>
-        <a class="chip hover:bg-paper2" href="/startups?sector=Energy">Climate &amp; Energy</a>
         <a class="chip hover:bg-paper2" href="/startups?stage=Seed">Seed</a>
         <a class="chip hover:bg-paper2" href="/jobs">Tech jobs</a>
       </div>
@@ -129,7 +135,7 @@ const jsonld = [
           { v: STATS.hackathonsIndexed, l: 'Hackathons indexed' },
         ].map((cell) => (
           <div class="bg-paper p-4">
-            <!-- Static final value — no count-up animation. Numbers are the
+            <!-- Static final value, no count-up animation. Numbers are the
                  product: they render correct on first paint, no flash. -->
             <p class="statnum text-[28px] leading-none">{cell.v}{cell.s && <span class="text-amber">+</span>}</p>
             <p class="mono-label mt-1.5">{cell.l}</p>
@@ -148,24 +154,24 @@ const jsonld = [
     </aside>
   </section>
 
-  <!-- 1b) FOUNDER STRIP — the 3-second answer: visibility -->
+  <!-- 1b) FOUNDER STRIP, the 3-second answer: visibility -->
   <section class="border-y-2 border-ink bg-paper2" aria-label="For founders">
     <div class="wrap flex flex-col items-start gap-4 py-9 lg:flex-row lg:items-center lg:gap-8">
       <p class="kicker shrink-0">Founder?</p>
       <p class="max-w-2xl text-[15px] leading-relaxed text-ink2">
-        Claim a free profile and get seen: your own page — <a class="link-underline text-green" href="/startups">startups.co.ke/startups/your-name</a> — to drop in your deck, bio and email signature. Investors search this index for deal flow; your open roles ride along.
+        Claim a free profile and get seen: your own page at <a class="link-underline text-green" href="/startups">startups.co.ke/startups/your-name</a>. Drop the link in your deck, bio and email signature. Investors search this index for deal flow; your open roles ride along.
       </p>
       <div class="flex flex-wrap gap-2 lg:ml-auto lg:shrink-0">
-        <button class="btn btn-amber" data-modal="submit">Claim your profile — free</button>
+        <button class="btn btn-amber" data-modal="submit">Claim your free profile</button>
         <a class="btn btn-ghost" href="/startups/m-kopa">See a real profile</a>
       </div>
     </div>
   </section>
 
-  <!-- 1c) THE WIRE — timely intelligence, high on the page -->
+  <!-- 1c) THE WIRE, timely intelligence, high on the page -->
   <section class="border-b border-ink bg-paper2 py-14" aria-labelledby="news-h">
     <div class="wrap">
-      <SectionHead no="01" title="The Wire — what moved this week." link={{ label: 'All coverage →', href: '/news' }} />
+      <SectionHead no="01" title="The Wire: what moved this week." link={{ label: 'All coverage →', href: '/news' }} />
       <div class="grid gap-8 lg:grid-cols-12">
         <a class="rv group block border border-ink bg-paper lg:col-span-7" href={`/news/${leadArticle.slug}`}>
           <div class="overflow-hidden border-b border-ink">
@@ -196,7 +202,7 @@ const jsonld = [
     <div class="rv min-w-0"><KenyaMap /></div>
     <div class="rv min-w-0" style="--d:100ms">
       <h2 id="regions-h" class="text-[clamp(26px,3.2vw,40px)]">Explore by region.</h2>
-      <p class="mt-2 max-w-md text-[14.5px] text-mut">All 47 counties on the map. Small dots = county seats; green rings = verified anchors — a named hub, checked against a public source. Most tracked startups are still Nairobi-based; we say so, and the anchors show where the next ones come from. Click a hub row for county detail.</p>
+      <p class="mt-2 max-w-md text-[14.5px] text-mut">All 47 counties on the map. Small dots = county seats; green rings = verified anchors: a named hub, checked against a public source. Most tracked startups are still Nairobi-based; we say so, and the anchors show where the next ones come from. Click a hub row for county detail.</p>
       <div class="railbox mt-5">
         {regionRows.map((r) => (
           <a href={`/startups?city=${encodeURIComponent(r.city)}`} class="rowline group flex items-center gap-4 px-4 py-3.5 hover:bg-paper2">
@@ -211,7 +217,7 @@ const jsonld = [
         ))}
       </div>
       <div class="railbox mt-5">
-        <div class="railbox-head"><span>County anchors — verified</span><span class="mono-label">{ANCHORED_COUNTIES.length}/47 incl. Nairobi</span></div>
+        <div class="railbox-head"><span>County anchors, verified</span><span class="mono-label">{ANCHORED_COUNTIES.length}/47 incl. Nairobi</span></div>
         {hubCounties.map((c) => (
           <div class="rowline flex items-center gap-3 px-4 py-3">
             <span class="w-28 shrink-0 font-mono text-xs uppercase tracking-[0.1em]">{c.name}</span>
@@ -225,7 +231,7 @@ const jsonld = [
     </div>
   </section>
 
-  <!-- 3) STAT BAND — deduped: only figures the hero snapshot doesn't show -->
+  <!-- 3) STAT BAND, deduped: only figures the hero snapshot doesn't show -->
   <section class="border-y border-ink bg-paper2" aria-label="Ecosystem stats">
     <div class="wrap grid grid-cols-2 gap-px bg-line py-0 md:grid-cols-5">
       {[
@@ -248,7 +254,7 @@ const jsonld = [
   <!-- 4) FUNDING INTELLIGENCE (dark) -->
   <section class="bg-dark py-14" aria-labelledby="funding-h">
     <div class="wrap">
-      <SectionHead dark no="02" title="Funding intelligence, with named sources." link={{ label: 'Full database →', href: '/funding' }} />
+      <SectionHead dark no="02" title="Funding data, with named sources." link={{ label: 'Full database →', href: '/funding' }} />
       <div class="grid gap-8 lg:grid-cols-12">
         <div class="rv lg:col-span-7"><FundingChart dark /></div>
         <div class="rv lg:col-span-5" style="--d:120ms">
@@ -313,7 +319,7 @@ const jsonld = [
           <p class="border-t border-line px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">{totalSector} tracked · every profile status-tagged · counts derived from the index</p>
         </div>
         <div class="rv railbox min-w-0" style="--d:120ms">
-          <div class="railbox-head"><span>Most active investors — derived</span><a class="link-underline" href="/investors">Directory ({INVESTORS.length}) →</a></div>
+          <div class="railbox-head"><span>Most active investors, derived</span><a class="link-underline" href="/investors">Directory ({INVESTORS.length}) →</a></div>
           {ACTIVE_INVESTORS.map((inv) => (
             <a href="/investors" class="rowline flex items-center gap-3 px-4 py-3 hover:bg-paper">
               <span class="w-40 min-w-0 shrink-0 truncate text-[13.5px]">{inv.name}</span>
@@ -323,7 +329,7 @@ const jsonld = [
               <span class="statnum w-16 shrink-0 text-right text-[12px]">{inv.rounds} round{inv.rounds === 1 ? '' : 's'}</span>
             </a>
           ))}
-          <p class="border-t border-line px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Rounds each fund appears in (led or noted) — projected from the rounds feed, nothing typed twice</p>
+          <p class="border-t border-line px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.1em] text-mut">Rounds each fund appears in (led or noted), projected from the rounds feed, nothing typed twice</p>
         </div>
       </div>
     </div>
@@ -333,14 +339,14 @@ const jsonld = [
   <section class="bg-green py-14 text-dpaper" aria-labelledby="hack-h">
     <div class="wrap grid items-center gap-10 lg:grid-cols-2">
       <div class="rv">
-        <p class="kicker text-dmut">Hackathon index — East Africa builds in sprints</p>
+        <p class="kicker text-dmut">Hackathon index · East Africa builds in sprints</p>
         <h2 id="hack-h" class="mt-3 text-[clamp(30px,3.6vw,48px)] leading-[1.02]">Every build sprint, prize pool and winning team. Tracked.</h2>
         <p class="mt-4 max-w-md text-[15px] text-dpaper/85">
-          From Nairobi Build Week to Kisumu's lake hackathons — {STATS.hackathonsIndexed} events indexed with prize pools, tracks, organizers and what happened to the winners.
+          From Nairobi Build Week to Kisumu's lake hackathons: {STATS.hackathonsIndexed} events indexed with prize pools, tracks, organizers and what happened to the winners.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <a class="btn btn-amber" href="/hackathons">Browse the hackathon index</a>
-          <button class="btn btn-ondark" data-modal="listevent">List an event — free</button>
+          <button class="btn btn-ondark" data-modal="listevent">List an event, free</button>
         </div>
       </div>
       <div class="rv" style="--d:120ms">
@@ -381,10 +387,10 @@ const jsonld = [
         <p class="kicker">Research</p>
         <h2 id="research-h" class="mt-3 text-[clamp(26px,3.2vw,40px)]">{flagship.title}.</h2>
         <p class="mt-3 max-w-md text-[14.5px] text-mut">
-          {flagship.pages} pages on capital flows, sectors, talent and county-level activity — methodology and every status tag explained. Free while we build momentum; the flagship ships with a data appendix.
+          {flagship.pages} pages on capital flows, sectors, talent and county-level activity. Methodology and every status tag explained. Free while we build momentum; the flagship ships with a data appendix.
         </p>
         <div class="mt-5 flex flex-wrap gap-3">
-          <button class="btn btn-amber" data-modal="buy">Get the flagship — free</button>
+          <button class="btn btn-amber" data-modal="buy">Get the flagship, free</button>
           <a class="btn btn-ghost" href="/research">Browse the library</a>
         </div>
         <div class="railbox mt-6">
@@ -407,9 +413,9 @@ const jsonld = [
         <p class="mono-label">Founders</p>
         <h3 class="mt-2 font-display text-[22px]">Get seen. Free, takes three minutes.</h3>
         <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
-          <li>· Your own page — put the link in your deck, bio and email signature</li>
+          <li>· Your own page: put the link in your deck, bio and email signature</li>
           <li>· Show up when investors search the index for Kenya deals</li>
-          <li>· Your open roles appear on your profile — hiring rides along free</li>
+          <li>· Your open roles appear on your profile, and hiring rides along free</li>
           <li>· <a class="link-underline text-green" href="/badge.svg" download>“Listed on startups.co.ke” badge</a> for your site</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
@@ -434,8 +440,8 @@ const jsonld = [
         <p class="mono-label">Employers</p>
         <h3 class="mt-2 font-display text-[22px]">Hire where builders already read.</h3>
         <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
-          <li>· Free listing — a human checks it and it's live in ~48h</li>
-          <li>· Applicants never pay, ever — we keep the “pay to apply” scams out</li>
+          <li>· Free listing, a human checks it and it's live in ~48h</li>
+          <li>· Applicants never pay, ever, we keep the “pay to apply” scams out</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
           <span class="font-mono text-[12px] text-mut">Free · reviewed by a human</span>
@@ -444,11 +450,10 @@ const jsonld = [
       </div>
       <div class="rv railbox bg-paper2 p-6 md:col-span-7" style="--d:80ms">
         <p class="mono-label">Partners &amp; sponsors</p>
-        <h3 class="mt-2 font-display text-[22px]">Put your name on the ecosystem's record.</h3>
+        <h3 class="mt-2 font-display text-[22px]">Reach the people building and funding Kenyan startups.</h3>
         <ul class="mt-3 space-y-1.5 text-[14px] text-ink2">
           <li>· Sponsor hackathon index pages and research reports</li>
           <li>· Custom data cuts and co-branded briefs</li>
-          <li>· Brand placement read by founders, funds and policy teams</li>
         </ul>
         <div class="mt-4 flex items-center justify-between">
           <span class="font-mono text-[12px] text-mut">Custom</span>
@@ -458,18 +463,18 @@ const jsonld = [
     </div>
   </section>
 
-  <!-- 11) FREE NOTE — monetization removed while we build momentum. Paid tiers
+  <!-- 11) FREE NOTE, monetization removed while we build momentum. Paid tiers
        return only after investor research is validated with real buyers. -->
   <section class="border-t border-ink bg-paper2 py-10" aria-labelledby="free-h">
     <div class="wrap text-center">
       <p class="kicker justify-center">Simple answer on money</p>
       <h2 id="free-h" class="mt-2 text-[clamp(22px,2.6vw,32px)]">Everything here is free right now.</h2>
       <p class="mx-auto mt-3 max-w-xl text-[14.5px] text-mut">
-        No paywalls, no trials, no card. Founder listings, the funding database, job posts, research — free while we build momentum. If that ever changes, this page and the methodology say so first, and early users keep everything they already have.
+        No paywalls, no trials, no card. Founder listings, the funding database, job posts, research: all free while we build momentum. If that ever changes, this page and the methodology say so first, and early users keep everything they already have.
       </p>
       <div class="mt-5 flex flex-wrap justify-center gap-2">
         <a class="btn btn-amber" href="/startups">Explore the index</a>
-        <button class="btn btn-ghost" data-modal="submit">List your startup — free</button>
+        <button class="btn btn-ghost" data-modal="submit">List your startup, free</button>
       </div>
     </div>
   </section>
@@ -481,7 +486,7 @@ const jsonld = [
         <p class="kicker text-dmut">The Ecosystem Brief</p>
         <h2 id="brief-h" class="mt-2 text-[clamp(24px,2.8vw,36px)]">Every Monday, 06:30 EAT. What moved, what funded, what shipped.</h2>
       </div>
-      <form id="home-brief" class="flex w-full max-w-md border-2 border-dpaper/60" data-kind="newsletter">
+      <form class="brief-form flex w-full max-w-md border-2 border-dpaper/60" data-kind="newsletter" aria-label="Subscribe to The Ecosystem Brief">
         <input class="min-h-12 flex-1 bg-transparent px-4 text-[15px] text-dpaper placeholder:text-dmut" type="email" name="email" required placeholder="you@company.co.ke" aria-label="Email for The Ecosystem Brief" />
         <button class="btn btn-amber border-0 border-l-2 border-dpaper/60 px-5" type="submit">Subscribe</button>
       </form>
@@ -490,20 +495,21 @@ const jsonld = [
 </Base>
 
 <script>
-  // Home newsletter inline form
-  document.getElementById('home-brief')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.currentTarget as HTMLFormElement;
-    const email = (new FormData(form).get('email') as string) ?? '';
-    const { subscribeNewsletter } = await import('@/lib/supabase');
-    try {
-      await subscribeNewsletter(email, 'home');
-      const toast = window.sckToast;
-      toast({ title: 'Subscribed', body: 'First brief lands Monday 06:30 EAT.' });
-      form.reset();
-    } catch {
-      const toast = window.sckToast;
-      toast({ title: 'Not sent', body: 'Network hiccup — please try again, your email is still in the field.', kind: 'warn' });
-    }
+  // Newsletter forms (hero + bottom band share the handler via .brief-form)
+  document.querySelectorAll<HTMLFormElement>('.brief-form').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (new FormData(form).get('email') as string) ?? '';
+      const { subscribeNewsletter } = await import('@/lib/supabase');
+      try {
+        await subscribeNewsletter(email, 'home');
+        const toast = window.sckToast;
+        toast({ title: 'Subscribed', body: 'First brief lands Monday 06:30 EAT.' });
+        form.reset();
+      } catch {
+        const toast = window.sckToast;
+        toast({ title: 'Not sent', body: 'Network hiccup, please try again, your email is still in the field.', kind: 'warn' });
+      }
+    });
   });
 </script>

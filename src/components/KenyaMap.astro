@@ -1,6 +1,6 @@
 ---
 /**
- * THE KENYA DOT MAP — generated entirely at build time (Astro frontmatter).
+ * THE KENYA DOT MAP, generated entirely at build time (Astro frontmatter).
  * Border polygon encoded from real lon/lat anchors; base dot grid via
  * point-in-polygon; Gaussian hub clusters; dashed routes; lakes; equator.
  * Interactions (hover caption, click-filter) are wired client-side.
@@ -12,7 +12,7 @@ const K = 52.5; // px per degree
 const lonX = (lon: number) => (lon - 33.4) * K;
 const latY = (lat: number) => (5.6 - lat) * K;
 
-// Kenya border polygon (lon, lat) — stylised but faithful anchors
+// Kenya border polygon (lon, lat), stylised but faithful anchors
 const BORDER: [number, number][] = [
   [35.9, 5.0], [36.4, 4.45], [36.9, 4.42], [38.0, 3.62], [39.4, 3.5], [41.0, 3.95], [41.9, 4.0],
   [41.2, 3.5], [40.9, 2.75], [41.4, 1.9], [41.0, 1.0], [41.55, -1.65],
@@ -121,7 +121,7 @@ const equatorY = latY(0).toFixed(1);
       <circle cx={dot.x} cy={dot.y} r={dot.r} fill="#3e3b31" opacity="0.55" style={`animation: dotin .5s ease-out both; animation-delay:${dot.d}ms`}></circle>
     ))}
 
-    <!-- all 47 county seats — geography, not activity -->
+    <!-- all 47 county seats, geography, not activity -->
     {COUNTIES.filter((c) => !cityKeys.includes(c.capital)).map((c) => (
       <circle cx={lonX(c.lon).toFixed(1)} cy={latY(c.lat).toFixed(1)} r="1.6" fill="#3e3b31" opacity="0.8" class="county-dot" data-county={c.name}></circle>
     ))}
@@ -187,7 +187,7 @@ const equatorY = latY(0).toFixed(1);
   </svg>
 
   <figcaption class="border-t border-ink bg-paper px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
-    <span id="map-caption">Kenya — {total} tracked profiles · {ANCHORED_COUNTIES.length}/47 counties with verified anchors</span>
+    <span id="map-caption">Kenya, {total} tracked profiles · {ANCHORED_COUNTIES.length}/47 counties with verified anchors</span>
   </figcaption>
 </figure>
 
@@ -227,14 +227,14 @@ const equatorY = latY(0).toFixed(1);
     const caption = document.getElementById('map-caption');
     const activate = () => {
       if (caption && city && tracked)
-        caption.textContent = `${city} — ${tracked} tracked profiles (ecosystem est. ≈${est})`;
+        caption.textContent = `${city}, ${tracked} tracked profiles (ecosystem est. ≈${est})`;
       location.href = `/startups?city=${encodeURIComponent(city!)}`;
     };
     hub.addEventListener('mouseenter', () => {
-      if (caption && city && tracked) caption.textContent = `${city} — ${tracked} tracked profiles (ecosystem est. ≈${est})`;
+      if (caption && city && tracked) caption.textContent = `${city}, ${tracked} tracked profiles (ecosystem est. ≈${est})`;
     });
     hub.addEventListener('mouseleave', () => {
-      if (caption) caption.textContent = `Kenya — tracked profiles · ${totalFlat}/47 counties with verified anchors`;
+      if (caption) caption.textContent = `Kenya, tracked profiles · ${totalFlat}/47 counties with verified anchors`;
     });
     hub.addEventListener('click', activate);
     hub.addEventListener('keydown', (e) => {
@@ -242,16 +242,16 @@ const equatorY = latY(0).toFixed(1);
     });
   });
 
-  // county anchor rings — hover shows the verified hub
+  // county anchor rings, hover shows the verified hub
   document.querySelectorAll<SVGElement>('.map-county').forEach((el) => {
     const county = el.dataset.county!;
     const hub = el.dataset.hub!;
     const caption = document.getElementById('map-caption');
     el.addEventListener('mouseenter', () => {
-      if (caption) caption.textContent = `${county} — verified anchor: ${hub}`;
+      if (caption) caption.textContent = `${county}, verified anchor: ${hub}`;
     });
     el.addEventListener('mouseleave', () => {
-      if (caption) caption.textContent = `Kenya — tracked profiles · ${totalFlat}/47 counties with verified anchors`;
+      if (caption) caption.textContent = `Kenya, tracked profiles · ${totalFlat}/47 counties with verified anchors`;
     });
   });
 </script>

@@ -42,9 +42,9 @@ export type SubmissionKind =
  *
  * The queue lives in Supabase via /api/review-submit (worker/index.js). The
  * previous Supabase `submissions`
- * path is DEAD in production — its insert RLS policy never covered the anon
+ * path is DEAD in production, its insert RLS policy never covered the anon
  * role, so every review form failed with 42501 and submissions vanished. The
- * function also emails the desk (best-effort) — the client no longer fires a
+ * function also emails the desk (best-effort), the client no longer fires a
  * separate notify request.
  *
  * Offline fallback: if the network itself is unreachable the entry is queued
@@ -65,7 +65,7 @@ export async function submitForm(kind: SubmissionKind, payload: Record<string, u
     return { stored: 'queue' as const };
   } catch (err) {
     // Network-level failure only (the function reports its own errors above):
-    // queue locally with an honest flag — we do NOT pretend it saved.
+    // queue locally with an honest flag, we do NOT pretend it saved.
     if (err instanceof TypeError) {
       const q = JSON.parse(localStorage.getItem('sck-submissions') || '[]');
       q.push({ kind, payload, email, at: new Date().toISOString(), offline: true });
@@ -104,7 +104,7 @@ async function syncLocalQueue() {
  *
  * Writes through /api/newsletter (Cloudflare Worker, Supabase storage). The previous
  * Supabase path silently failed with 42501 (insert policy never covered the
- * anon role) — subscribers saw "Subscribed" while the table stayed empty.
+ * anon role), subscribers saw "Subscribed" while the table stayed empty.
  */
 export async function subscribeNewsletter(email: string, source = 'site') {
   const res = await fetch('/api/newsletter', {

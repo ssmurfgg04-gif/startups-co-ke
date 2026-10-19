@@ -1,7 +1,7 @@
 import type { Hackathon, PastWinner } from './types';
 
 /**
- * REAL Kenyan builder events — compiled from organiser pages as of 2026-10-15.
+ * REAL Kenyan builder events, compiled from organiser pages as of 2026-10-15.
  * Countdowns run to absolute ISO dates in Africa/Nairobi time (EAT = UTC+3),
  * so they tick to the real moment and never drift. TBA events carry honest
  * "dates TBA" labels instead of invented ones.
@@ -10,7 +10,7 @@ export const HACKATHONS: Hackathon[] = [
   {
     id: 'devfest26',
     title: 'DevFest Nairobi 2026',
-    focus: 'Google technologies — web, mobile, cloud, AI',
+    focus: 'Google technologies, web, mobile, cloud, AI',
     city: 'Nairobi',
     mode: 'On-site',
     prize: '—',
@@ -24,7 +24,7 @@ export const HACKATHONS: Hackathon[] = [
     verifiedOrganizer: true,
     featured: true,
     status: 'upcoming',
-    notes: 'GDG Nairobi\u2019s flagship annual developer conference. Programme times TBA — countdown targets opening day 08:00 EAT.',
+    notes: 'GDG Nairobi\u2019s flagship annual developer conference. Programme times TBA, countdown targets opening day 08:00 EAT.',
   },
   {
     id: 'sdc26',
@@ -41,7 +41,7 @@ export const HACKATHONS: Hackathon[] = [
     url: 'https://dev.events',
     ongoing: true,
     status: 'ongoing',
-    notes: 'Submissions close Nov 1, 2026 — live countdown to the real deadline.',
+    notes: 'Submissions close Nov 1, 2026, live countdown to the real deadline.',
   },
   {
     id: 'fintechfest26',
@@ -78,8 +78,8 @@ export const HACKATHONS: Hackathon[] = [
   },
   {
     id: 'itu-ai-readiness',
-    title: 'ITU AI Readiness Hackathon — Kenya',
-    focus: 'AI for Good — first of the ITU AI Readiness hackathon series',
+    title: 'ITU AI Readiness Hackathon, Kenya',
+    focus: 'AI for Good, first of the ITU AI Readiness hackathon series',
     city: 'Nairobi',
     mode: 'Hybrid',
     prize: '—',
@@ -95,7 +95,7 @@ export const HACKATHONS: Hackathon[] = [
   {
     id: 'at-hackathon-dec26',
     title: 'Africa\u2019s Talking December Hackathon',
-    focus: 'Build on Africa\u2019s communication APIs — SMS, voice, payments, chat',
+    focus: 'Build on Africa\u2019s communication APIs, SMS, voice, payments, chat',
     city: 'Nairobi',
     mode: 'Hybrid',
     prize: '—',
@@ -121,7 +121,7 @@ export const HACKATHONS: Hackathon[] = [
     organizers: 'Fintech Times / organisers',
     url: 'https://thefintechtimes.com',
     status: 'upcoming',
-    notes: 'Dates TBA — see organiser channels.',
+    notes: 'Dates TBA, see organiser channels.',
   },
   {
     id: 'interuni26',
@@ -136,7 +136,7 @@ export const HACKATHONS: Hackathon[] = [
     organizers: 'Tech Events Kenya',
     url: 'https://events.techgroupkenya.co.ke',
     status: 'upcoming',
-    notes: 'Dates TBA — see organiser channels.',
+    notes: 'Dates TBA, see organiser channels.',
   },
   {
     id: 'mcpsummit',
@@ -151,22 +151,22 @@ export const HACKATHONS: Hackathon[] = [
     organizers: 'Tech Events Kenya',
     url: 'https://events.techgroupkenya.co.ke',
     status: 'upcoming',
-    notes: 'Dates TBA — see organiser channels.',
+    notes: 'Dates TBA, see organiser channels.',
   },
   {
     id: 'aitinkerers',
     title: 'AI Tinkerers Nairobi',
-    focus: 'Hands-on AI builds — recurring meetup + hackathon editions',
+    focus: 'Hands-on AI builds, recurring meetup + hackathon editions',
     city: 'Nairobi',
     mode: 'On-site',
     prize: '—',
     kind: 'Meetup + hackathons',
-    dateLabel: 'Recurring — see chapter page',
+    dateLabel: 'Recurring, see chapter page',
     tracks: ['AI'],
     organizers: 'AI Tinkerers',
     url: 'https://nairobi.aitinkerers.org',
     status: 'upcoming',
-    notes: 'Recurring — global hackathon editions held; see chapter page.',
+    notes: 'Recurring, global hackathon editions held; see chapter page.',
   },
   {
     id: 'devfest25',

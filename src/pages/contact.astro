@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro';
 import { SITE } from '@/config/site';
 ---
-<Base title="Contact startups.co.ke — corrections, tips, listings" description="Reach the startups.co.ke desk in Nairobi: email, phone, WhatsApp. Corrections, tips, job listings, event listings and sponsorship.">
+<Base title="Contact startups.co.ke, corrections, tips, listings" description="Reach the startups.co.ke desk in Nairobi: email, phone, WhatsApp. Corrections, tips, job listings, event listings and sponsorship.">
   <article class="wrap max-w-3xl py-10">
     <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut"><a href="/" class="hover:text-ink">Home</a> / Contact</p>
     <h1 class="mt-2 text-[clamp(32px,3.8vw,50px)]">Talk to us.</h1>
@@ -17,21 +17,21 @@ import { SITE } from '@/config/site';
       <div class="border border-ink bg-paper p-5">
         <p class="mono-label">Phone / WhatsApp</p>
         <p class="mt-2"><a class="text-[16px] text-green underline" href={`tel:${SITE.contact.phone}`}>{SITE.contact.phoneDisplay}</a></p>
-        <p class="mt-2 text-[13.5px] text-mut">Weekdays 9:00–17:00 EAT. Voice notes welcome — this is Kenya.</p>
+        <p class="mt-2 text-[13.5px] text-mut">Weekdays 9:00–17:00 EAT. Voice notes welcome, this is Kenya.</p>
       </div>
       <div class="border border-ink bg-paper p-5 sm:col-span-2">
         <p class="mono-label">Office</p>
         <p class="mt-2 text-[15px]">{SITE.contact.address}</p>
-        <p class="mt-2 text-[13.5px] text-mut">Meetings by appointment — we're a small desk, tell us a day ahead.</p>
+        <p class="mt-2 text-[13.5px] text-mut">Meetings by appointment, we're a small desk, tell us a day ahead.</p>
       </div>
     </div>
 
-    <h2 class="mt-12 text-[24px]">Fast paths — most requests have a form.</h2>
+    <h2 class="mt-12 text-[24px]">Fast paths, most requests have a form.</h2>
     <div class="mt-4 grid gap-px border border-ink bg-line sm:grid-cols-2">
       {[
         { t: 'Submit or claim your startup', d: 'Free profile with your own page. Reviewed by a person, live in ~48h.', m: 'submit' },
         { t: 'Post a job', d: 'Basic listing free; applicants never pay to apply. Reviewed before it goes live.', m: 'postjob' },
-        { t: 'List a hackathon or event', d: 'Free. Prize pool, tracks, dates — we index East African build sprints.', m: 'listevent' },
+        { t: 'List a hackathon or event', d: 'Free. Prize pool, tracks, dates, we index East African build sprints.', m: 'listevent' },
         { t: 'Report a data issue', d: 'Spotted something wrong on a profile? We fix and re-source it.', m: 'report' },
         { t: 'Sponsor or advertise', d: 'Hackathon index, research reports, custom data cuts and briefs.', m: 'sponsor' },
         { t: 'Investor membership', d: 'Deal-flow requests, sector alerts, verified data export. 14-day trial.', m: 'trial' },
@@ -44,8 +44,8 @@ import { SITE } from '@/config/site';
     </div>
 
     <div class="prose-sck mt-10">
-      <p><strong>Where submissions land.</strong> Every form on this site writes into a private review queue we check daily — nothing is published automatically, and your details are never shown publicly without your approval. For the fine print on storage and retention, read the <a class="text-amber underline" href="/privacy">privacy policy</a>.</p>
-      <p><strong>Found a funding round we missed?</strong> Email the announcement link — a company statement, a lead investor's memo or credible press is enough. We add rounds with a source or not at all.</p>
+      <p><strong>Where submissions land.</strong> Every form on this site writes into a private review queue we check daily, nothing is published automatically, and your details are never shown publicly without your approval. For the fine print on storage and retention, read the <a class="text-amber underline" href="/privacy">privacy policy</a>.</p>
+      <p><strong>Found a funding round we missed?</strong> Email the announcement link, a company statement, a lead investor's memo or credible press is enough. We add rounds with a source or not at all.</p>
     </div>
   </article>
 </Base>
