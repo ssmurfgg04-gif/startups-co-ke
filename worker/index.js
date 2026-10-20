@@ -206,6 +206,14 @@ async function handleCreate(req, env, ctx) {
 
   const user = await verifyUser(env, req);
 
+  // Fail closed on the edge: a deploy that lost TURNSTILE_SECRET must not
+  // silently turn the bot check off in production. `req.cf` is only populated
+  // for real edge requests, so local `wrangler dev` keeps the documented
+  // fail-open skip (no Turnstile account needed to run the suite locally).
+  if (!env.TURNSTILE_SECRET && req.cf) {
+    return json(503, { ok: false, error: 'Publishing is temporarily unavailable. Your entries are safe in the form; please try again shortly.' }, { ...CORS, ...NO_STORE });
+  }
+
   // Bot check before any write (and before the rate-limit bucket, so a bot
   // cannot burn a founder's daily allowance). Skipped when no secret is set.
   if (!(await verifyTurnstile(env, body?.turnstile, clientIp(req)))) {
@@ -755,6 +763,7 @@ export default {
           storage: Boolean(env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY),
           email: Boolean(env.RESEND_API_KEY),
           anon: Boolean(env.PUBLIC_SUPABASE_ANON_KEY),
+          turnstile: Boolean(env.TURNSTILE_SECRET),
         }, { ...CORS, ...NO_STORE });
       }
       if (path === '/api/unsubscribe') {

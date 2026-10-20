@@ -67,7 +67,7 @@ PUBLIC_ANALYTICS_DOMAIN=startups.co.ke
 - `SUPABASE_SERVICE_ROLE_KEY` — required for writes; the Worker answers 503 without it (check `/api/health`).
 - `RESEND_API_KEY` — required to actually send email; without it email no-ops and the database stays the source of truth.
 - `DESK_EMAIL` — the desk mailbox. No hardcoded fallback: missing config fails closed (the desk simply won't unlock). `NOTIFY_EMAIL` is still accepted as a legacy alias.
-- `TURNSTILE_SECRET` — Cloudflare Turnstile secret. When set, `/api/startup-create` requires a valid, single-use token; when absent the check is skipped (local dev). The public site key is the `PUBLIC_TURNSTILE_SITE_KEY` var.
+- `TURNSTILE_SECRET` — Cloudflare Turnstile secret. When set, `/api/startup-create` requires a valid, single-use token; when absent, publishing is **refused at the edge** (503) so the gate can never silently disappear; only local `wrangler dev` (no `request.cf`) skips it. The public site key is the `PUBLIC_TURNSTILE_SITE_KEY` var.
 - `RESEND_FROM` — default `startups.co.ke <notices@startups.co.ke>` (domain verified ✓).
 
 The legacy `POST /api/notify` endpoint was deleted (unauthenticated email relay).
@@ -98,7 +98,7 @@ Auth: Supabase Auth, password first with an email-link alternative (same dialog)
 - **Auto-deploy:** the Cloudflare Workers git integration watches `main` — every push runs `bun run build` and ships. Keep `bun.lock` the ONLY lockfile (`package-lock.json` is gitignored; mixed lockfiles broke builds before).
 - **Secrets:** Cloudflare dashboard → Workers → startups-co-ke → Settings → Variables & Secrets (see the list above). `wrangler.jsonc` `vars` holds only non-secrets.
 - **Manual deploy (rare):** `bun run build && bunx wrangler deploy`.
-- **Post-deploy smoke:** `GET /api/health` → `{"ok":true,"storage":true,"email":true,"anon":true}`.
+- **Post-deploy smoke:** `GET /api/health` → `{"ok":true,"storage":true,"email":true,"anon":true,"turnstile":true}`.
 - **Supabase Auth URL config (dashboard):** Site URL `https://startups.co.ke`; redirect allow-list includes `https://startups.co.ke/**` and `https://startups.co.ke/auth/reset`.
 
 ## Founder-listed startups (instant publish, no approval) — Session 7

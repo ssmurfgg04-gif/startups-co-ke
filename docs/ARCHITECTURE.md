@@ -49,7 +49,7 @@ Two backends, one writer:
 | GET | `/desk/brief` | `handleBriefGet` :579 | desk session | `newsletter_subscribers`, `brief.mjs` | `no-store` |
 | GET/POST | `/desk/data` | `handleDeskData` :534 | desk session | queue, listings, subscribers | `no-store` |
 | POST | `/desk/brief-send` | `handleBriefSend` :603 | desk session | subscribers, Resend, queue (audit) | `no-store` |
-| GET | `/api/health` | inline :752 | none | env booleans only | `no-store` |
+| GET | `/api/health` | inline :760 | none | env booleans only | `no-store` |
 | GET | `/api/my-listings` | `handleMyListings` :289 | bearer | `community_startups` (owner only) | `no-store` |
 | GET/POST | `/api/unsubscribe` | `handleUnsubscribe` :683 | HMAC token | `newsletter_subscribers` | `no-store` |
 | POST | `/api/startup-create` | `handleCreate` :194 | optional bearer + Turnstile | `community_startups`, `rate_limits` | `no-store` |
@@ -70,7 +70,7 @@ The old `POST /api/notify` is intentionally gone (open email relay).
 2. Optional logo: `POST /api/logo-upload-url` (honeypot `company_url`, 20/day/IP, MIME + 2 MB caps) → `mintLogoUpload` (`lib.mjs:373`) returns a one-shot signed PUT + public URL. The browser PUTs the image straight to Storage.
 3. `POST /api/startup-create` with `{...fields, turnstile, clientRef, logoUrl}`.
 4. `handleCreate` order (this order is deliberate):
-   honeypot (fake 200) → service-key guard (503) → optional user (`verifyUser`) → **Turnstile** (403, single-use token) → `validateListing` (422) → `clientRef` idempotency (200 duplicate) → rate limit 5 anon / 10 signed-in (429) → insert with unique slug, up to 5 attempts.
+   honeypot (fake 200) → service-key guard (503) → optional user (`verifyUser`) → Turnstile-config guard (503 at the edge when the secret is missing, `:213`) → **Turnstile** (403, single-use token) → `validateListing` (422) → `clientRef` idempotency (200 duplicate) → rate limit 5 anon / 10 signed-in (429) → insert with unique slug, up to 5 attempts.
 5. `bg()` sends a Resend ping to `DESK_EMAIL` (never blocks success).
 6. Response gives `slug` + public URL; the client shows the success state.
 
@@ -119,11 +119,11 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 | `SUPABASE_SERVICE_ROLE_KEY` | secret | writes answer 503; `/api/health` reports `storage:false` |
 | `RESEND_API_KEY` | secret | email no-ops, DB is still written; `email:false` |
 | `DESK_EMAIL` | secret | desk **fails closed** (404 everywhere), no notification recipient |
-| `TURNSTILE_SECRET` | secret | check is **skipped** (fail-open, for local dev) |
+| `TURNSTILE_SECRET` | secret | publish answers **503 at the edge** (fail closed); skipped only under local `wrangler dev` |
 | `RESEND_FROM` | secret/var | defaults to `startups.co.ke <notices@startups.co.ke>` |
 | `PUBLIC_ANALYTICS_DOMAIN` | var | analytics script not loaded |
 
-`GET /api/health` returns booleans only: `{ok, storage, email, anon}`.
+`GET /api/health` returns booleans only: `{ok, storage, email, anon, turnstile}`.
 
 ## 6. Client map
 
@@ -142,7 +142,7 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 | --- | --- | --- |
 | Publish returns **403** “Verification failed” | `lib.mjs:409` `verifyTurnstile`; `TURNSTILE_SECRET` | token was already spent (retry reuses it), widget never rendered, or secret/site key belong to different Turnstile widgets |
 | Publish returns **429** | `lib.mjs:140` `checkRateLimit`; `rate_limits` rows | shared office NAT, or a bot burned the cap — check `ip`/`day` |
-| Publish returns **503** | `handleCreate:203` service-key guard | `SUPABASE_SERVICE_ROLE_KEY` missing in the Worker env |
+| Publish returns **503** | `handleCreate:203` service-key guard, `:213` Turnstile-config guard | `SUPABASE_SERVICE_ROLE_KEY` or `TURNSTILE_SECRET` missing in the Worker env — `/api/health` shows which |
 | Publish **422** | `validateListing` (`lib.mjs:307`) | field too short/long, non-https website, bad email; response carries per-field `errors` |
 | Duplicate listing on retry | `findByClientRef` / `clientRef` | client must send the same `clientRef` for the same form session |
 | Listing page **404** after publish | `handlePage:166` status filter | row `status != 'published'` (unlisted/soft-deleted) |
@@ -194,13 +194,12 @@ The other `scripts/e2e_*`, `shot_*`, `vlm_*`, `overflow_*` files are one-off ses
 | Secrets | `bunx wrangler secret put TURNSTILE_SECRET` (same for `RESEND_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DESK_EMAIL`, `RESEND_FROM`). Dashboard → Worker → Settings → Variables. |
 | Rollback | Dashboard → Worker → Deployments → **Rollback** to a previous version (instant, no rebuild), or `git revert` the commit and push. |
 | Data job | `.github/workflows/refresh-data.yml` runs daily at 03:00 UTC (06:00 EAT), rewrites `src/data/jobs.live.json` and pushes — that push is itself a deploy. |
-| Post-deploy check | `curl https://startups.co.ke/api/health` → `{"ok":true,"storage":true,"email":true,"anon":true}`; `curl -X POST https://startups.co.ke/api/startup-create` with an empty body → **403**; open one community page and one `?format=md`. |
+| Post-deploy check | `curl https://startups.co.ke/api/health` → `{"ok":true,"storage":true,"email":true,"anon":true,"turnstile":true}`; `curl -X POST https://startups.co.ke/api/startup-create` with an empty body → **403**; open one community page and one `?format=md`. |
 
 Production facts: Worker `startups-co-ke` (custom domain bound in the dashboard, not in `wrangler.jsonc`), Supabase project `eezqpsbhmnhuhnmiwnsz` in `eu-west-2`, Turnstile widget `0x4AAAAAAFb9FAfoXKvdJ2o4`, Resend domain `startups.co.ke` (region `eu-west-1`, sending verified, `notices@` sender).
 
 ## 11. Known gaps (accepted for now)
 
-- `TURNSTILE_SECRET` missing means the check is **skipped** (fail-open) and `/api/health` does not report it — a misconfigured prod deploy would be silently spam-open.
 - `rate_limits` is one bucket per IP/day shared by every endpoint, so heavy editing can consume the publishing allowance and vice versa.
 - The custom domain is bound in the dashboard; a fresh deploy from a new account would need that step re-done.
 - `docs/SPEC.md` is a research/notes archive, not the product spec (see `README.md`).

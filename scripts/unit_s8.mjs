@@ -62,4 +62,29 @@ await sb(sbEnv, '/rest/v1/x', { method: 'POST', body: { a: 1 } });
 ok('sb POST with body sets Content-Type + JSON body', seen.init.headers['Content-Type'] === 'application/json' && seen.init.body === '{"a":1}');
 globalThis.fetch = realFetch;
 
+// ---- Turnstile config: fail closed on the edge, skip only in local dev ----
+// A deploy that loses TURNSTILE_SECRET must not silently disable the bot
+// check; `req.cf` exists only on real edge requests, so wrangler dev still
+// runs without a Turnstile account.
+const worker = (await import('../worker/index.js')).default;
+const mkReq = (cf, body = {}) => {
+  const req = new Request('https://startups.co.ke/api/startup-create', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'cf-connecting-ip': '1.2.3.4' },
+    body: JSON.stringify(body),
+  });
+  if (cf) Object.defineProperty(req, 'cf', { value: cf });
+  return req;
+};
+const guardEnv = { SUPABASE_SERVICE_ROLE_KEY: 'svc-test' };
+const ctx = { waitUntil() {} };
+const edge = await worker.fetch(mkReq({ colo: 'NBO' }, { name: 'Acme Test' }), guardEnv, ctx);
+ok('edge + no TURNSTILE_SECRET -> 503 (fail closed)', edge.status === 503);
+const local = await worker.fetch(mkReq(null, {}), guardEnv, ctx);
+ok('local dev (no req.cf) still skips Turnstile -> 422 validation', local.status === 422);
+const hOff = await (await worker.fetch(new Request('https://startups.co.ke/api/health'), guardEnv, ctx)).json();
+ok('health reports turnstile:false when the secret is missing', hOff.turnstile === false);
+const hOn = await (await worker.fetch(new Request('https://startups.co.ke/api/health'), { ...guardEnv, TURNSTILE_SECRET: 'x' }, ctx)).json();
+ok('health reports turnstile:true when the secret is set', hOn.turnstile === true);
+
 console.log('worker security unit checks done');
