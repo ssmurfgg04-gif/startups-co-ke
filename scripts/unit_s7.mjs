@@ -1,7 +1,7 @@
 // Unit checks for the LIVE worker helpers (worker/lib.mjs + worker/render.mjs).
 // Pure functions only — no network. Run: node scripts/unit_s7.mjs
 import { esc, slugify, validateListing } from '../worker/lib.mjs';
-import { renderPage, renderMarkdown } from '../worker/render.mjs';
+import { renderPage, renderMarkdown, unsubscribeConfirmPage } from '../worker/render.mjs';
 
 const ok = (name, cond) => { console.log(`${cond ? 'PASS' : 'FAIL'} ${name}`); if (!cond) process.exitCode = 1; };
 
@@ -49,6 +49,12 @@ ok('page has JSON-LD', page.includes('application/ld+json'));
 const md = renderMarkdown(l, 'x');
 ok('md has no raw html', !md.includes('<img'));
 ok('md advertises canonical URL', md.includes('https://startups.co.ke/startups/community/x'));
+
+// Unsubscribe confirmation (GET must not mutate)
+const u = unsubscribeConfirmPage('a"b@x.co', 'ff00');
+ok('unsub confirm escapes the address', !u.includes('a"b@x.co') && u.includes('a&quot;b@x.co'));
+ok('unsub confirm is a POST form', u.includes('method="POST"') && u.includes('action="/api/unsubscribe?'));
+ok('unsub confirm carries the token in the action', u.includes('t=ff00'));
 
 // uniqueSlug's collision logic needs the live store (Supabase REST via env),
 // so it is covered by the production smoke checks, not here.

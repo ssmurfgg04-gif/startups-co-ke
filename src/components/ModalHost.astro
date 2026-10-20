@@ -5,9 +5,10 @@
  * (kind + payload), falling back to local storage + honest toasts.
  */
 import { SITE } from '@/config/site';
-import { supabaseConfigured } from '@/lib/supabase';
+import { supabaseConfigured, TURNSTILE_SITE_KEY } from '@/lib/supabase';
 import { COUNTIES } from '@/data/counties';
 const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !== 'Nairobi').sort()];
+const turnstileSiteKey = TURNSTILE_SITE_KEY;
 ---
 <!-- AUTH — conventional sign-in: email + password first, email link as a
      clearly labelled alternative, forgot-password and create-account one
@@ -68,7 +69,13 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
   </form>
   <div id="auth-signedin" class="hidden border-t border-ink px-5 py-4">
     <p class="text-[14px]">Signed in as <strong id="auth-who" class="text-ink"></strong>.</p>
-    <p class="mono-label mt-4">Set or change password</p>
+    <div class="mt-4 border-t border-line pt-4">
+      <p class="mono-label">Your listings</p>
+      <p id="my-listings-msg" class="mt-1.5 text-[12.5px] text-mut" role="status">Loading your listings&hellip;</p>
+      <ul id="my-listings" class="mt-2 space-y-2"></ul>
+      <p class="mt-2 text-[12px] text-mut">Listed without an account? Email us and we'll link it to you, then you can edit it here.</p>
+    </div>
+    <p class="mono-label mt-4 border-t border-line pt-4">Set or change password</p>
     <p class="mt-1 text-[12.5px] text-mut">Skip the emailed link next time: sign in with this address and a password.</p>
     <div class="mt-2 grid gap-2 sm:grid-cols-2">
       <input id="auth-newpw" type="password" class="input" placeholder="New password (min 8)" autocomplete="new-password" />
@@ -123,6 +130,9 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       <label for="su-company-url">Company URL</label>
       <input id="su-company-url" name="company_url" type="text" tabindex="-1" autocomplete="off" />
     </div>
+    {turnstileSiteKey && (
+      <div class="cf-turnstile mt-3" data-sitekey={turnstileSiteKey} data-theme="light" data-size="flexible"></div>
+    )}
     <p class="mt-3 flex items-start gap-1.5 text-[12.5px] leading-relaxed text-mut">
       <svg class="mt-0.5 h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M12 11v5"></path></svg>
       <span><strong class="text-ink">No waiting, no approval.</strong> Your profile goes live the moment you publish, your own page at startups.co.ke/startups/community/your-name, linked to your site. Listings carry a “Founder-submitted” tag until we verify them against public sources.</span>
@@ -164,6 +174,45 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     <div class="mt-5 flex justify-end gap-2">
       <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
       <button type="submit" class="btn btn-amber h-9">Request claim</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- EDIT MY LISTING (signed-in founder, own listings only) -->
+<dialog id="modal-edit-listing" class="dialog-card" aria-labelledby="edit-listing-title">
+  <div class="flex items-center justify-between border-b border-ink px-5 py-3.5">
+    <p id="edit-listing-title" class="font-mono text-[11px] uppercase tracking-[0.14em]">Edit your listing</p>
+    <button class="btn btn-ghost h-8 w-8 border border-ink !px-0" data-close aria-label="Close">&times;</button>
+  </div>
+  <form id="edit-listing-form" class="max-h-[70vh] overflow-y-auto px-5 py-4" novalidate>
+    <input type="hidden" id="el-slug" />
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div><label class="mono-label block" for="el-name">Company name *</label><input id="el-name" required class="input mt-1" /></div>
+      <div><label class="mono-label block" for="el-email">Contact email *</label><input id="el-email" type="email" required class="input mt-1" /></div>
+      <div><label class="mono-label block" for="el-website">Website or app link *</label><input id="el-website" type="url" required class="input mt-1" /></div>
+      <div><label class="mono-label block" for="el-county">County</label>
+        <select id="el-county" class="input input-mono mt-1">
+          {countyNames.map((n) => <option value={n}>{n}</option>)}
+        </select>
+      </div>
+      <div><label class="mono-label block" for="el-sector">Sector</label>
+        <select id="el-sector" class="input input-mono mt-1"><option>Fintech</option><option>Commerce</option><option>Logistics</option><option>Agritech</option><option>Energy</option><option>Health</option><option>Edtech</option><option>Proptech</option><option>SaaS</option><option>HR &amp; Future of Work</option><option>Media</option><option>Climate &amp; Energy</option><option>Other</option></select>
+      </div>
+      <div><label class="mono-label block" for="el-stage">Stage</label>
+        <select id="el-stage" class="input input-mono mt-1"><option>Pre-seed</option><option>Seed</option><option>Series A</option><option>Series B</option><option>Growth</option></select>
+      </div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="el-tagline">One-liner *</label><input id="el-tagline" required class="input mt-1" /></div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="el-description">About (optional)</label><textarea id="el-description" rows="3" class="input mt-1"></textarea></div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="el-founder">Founder / contact name (optional)</label><input id="el-founder" class="input mt-1" /></div>
+      <div class="sm:col-span-2"><label class="mono-label block" for="el-logo">Replace logo (optional)</label><input id="el-logo" type="file" accept="image/png, image/jpeg, image/webp, image/gif" class="input-mono input mt-1 pt-2" /></div>
+    </div>
+    <p id="edit-listing-msg" class="mt-3 hidden text-[12.5px] leading-relaxed" role="status"></p>
+    <div class="mt-5 flex flex-wrap items-center justify-between gap-2">
+      <button type="button" id="el-status-toggle" class="text-[13px] text-mut underline hover:text-ink">Hide from the index</button>
+      <div class="flex gap-2">
+        <button type="button" class="btn btn-ghost h-9" data-close>Cancel</button>
+        <button type="submit" class="btn btn-amber h-9">Save changes</button>
+      </div>
     </div>
   </form>
 </dialog>
@@ -367,6 +416,20 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
 </dialog>
 
 <script>
+  // Turnstile loads on demand: no Cloudflare script or request on the 45 pages
+  // that never open the publish dialog. Implicit render scans the DOM when the
+  // script lands, so the widget appears inside the already-open dialog.
+  let turnstileLoading = false;
+  const loadTurnstile = () => {
+    if (turnstileLoading || !document.querySelector('.cf-turnstile')) return;
+    turnstileLoading = true;
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  };
+
   // --- open/close plumbing ---
   // While any dialog is open we flag <body>, fixed chrome (cookie banner,
   // data chip) hides via CSS because iOS Safari paints fixed elements above
@@ -383,6 +446,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       if (dlg) {
         if (!dlg.open) dlg.showModal();
         syncModalOpen();
+        if (dlg.id === 'modal-submit') loadTurnstile();
         if (dlg.id === 'modal-auth') window.dispatchEvent(new Event('sck:auth-opened'));
         return;
       }
@@ -455,7 +519,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
     apply: 'Application sent',
     issue: 'Report received',
     trial: 'Trial started',
-    buy: 'Unlock request received',
+    buy: 'Request received',
     sponsor: 'Message sent',
     newsletter: 'Subscribed',
     auth: 'Magic link sent',
@@ -584,6 +648,8 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       ev.preventDefault();
       const kind = form.dataset.kind!;
       const data = Object.fromEntries(new FormData(form).entries());
+      // Turnstile token for THIS form (several widgets can share the page).
+      const tsToken = String((data as Record<string, unknown>)['cf-turnstile-response'] || '');
       const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
       if (btn) { btn.dataset.origLabel = btn.textContent ?? ''; btn.disabled = true; btn.textContent = 'Sending…'; }
       let logoPath: string | undefined;
@@ -721,7 +787,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           if (fileInput?.files?.[0] && sbMod.supabaseConfigured) {
             try {
               logoPath = await Promise.race([
-                sbMod.uploadLogo(fileInput.files[0], String(data.name || 'logo')),
+                sbMod.uploadLogo(fileInput.files[0], String(data.name || 'logo'), tsToken),
                 new Promise<never>((_, rej) => setTimeout(() => rej(new Error('logo-timeout')), 15000)),
               ]);
             } catch { /* non-fatal, listing works without a logo */ }
@@ -737,6 +803,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           const out = await publishListing({
             ...data,
             clientRef: clientRefFor(form),
+            turnstile: tsToken,
             logoUrl: logoPath ? sbMod.logoPublicUrl(logoPath) : undefined,
           }, token);
           showPublishSuccess(out.slug);
@@ -747,7 +814,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
           // logo upload if a file was picked
           const fileInput = form.querySelector<HTMLInputElement>('input[type="file"]');
           if (fileInput?.files?.[0] && sbMod.supabaseConfigured) {
-            try { logoPath = await sbMod.uploadLogo(fileInput.files[0], String(data.name || data.company || 'logo')); }
+            try { logoPath = await sbMod.uploadLogo(fileInput.files[0], String(data.name || data.company || 'logo'), tsToken); }
             catch { /* non-fatal */ }
           }
           await sbMod.submitForm(kind as never, { ...data, logoPath }, (data.email as string) || undefined);
@@ -893,6 +960,7 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
         authForm?.classList.add('hidden');
         const who = document.getElementById('auth-who');
         if (who) who.textContent = email;
+        void loadMyListings();
       } else {
         signedPanel?.classList.add('hidden');
         authTabs?.classList.remove('hidden');
@@ -939,6 +1007,198 @@ const countyNames = ['Nairobi', ...COUNTIES.map((c) => c.name).filter((n) => n !
       if (b) b.value = '';
     } catch (err) {
       msg.textContent = `Could not save (${String((err as Error).message || err)}). Try again.`;
+    }
+  });
+
+  // --- Your listings: a signed-in founder edits their OWN listing ---
+  // Replaces the old "email the desk to change anything" dead end. The Worker
+  // only ever returns / accepts rows whose data->>userId is this session's id,
+  // so there is nothing to guard client-side beyond sending the bearer token.
+  type MyListing = {
+    slug: string; name: string; tagline: string; website: string; sector: string; stage: string;
+    county: string; description: string; founderName: string; email: string; logoUrl: string | null;
+    status: string; createdAt: string | null; url: string;
+  };
+  let myListings: MyListing[] = [];
+  const myListMsg = document.getElementById('my-listings-msg');
+  const myListUl = document.getElementById('my-listings');
+
+  async function sessionToken(): Promise<string | undefined> {
+    try {
+      const sbMod = await import('@/lib/supabase');
+      const sb = sbMod.supabase();
+      const sess = sb ? await sb.auth.getSession() : null;
+      return sess?.data.session?.access_token;
+    } catch { return undefined; }
+  }
+
+  async function loadMyListings() {
+    if (!myListMsg || !myListUl) return;
+    myListMsg.classList.remove('hidden');
+    myListMsg.textContent = 'Loading your listings…';
+    myListUl.replaceChildren();
+    const token = await sessionToken();
+    if (!token) { myListMsg.textContent = 'Sign in to manage your listings.'; return; }
+    try {
+      const res = await fetch('/api/my-listings', { headers: { Authorization: `Bearer ${token}` } });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || !out.ok) throw new Error(out.error || `HTTP ${res.status}`);
+      myListings = Array.isArray(out.listings) ? out.listings : [];
+      renderMyListings();
+    } catch (err) {
+      myListMsg.textContent = `Could not load your listings (${String((err as Error).message || err)}).`;
+    }
+  }
+
+  function renderMyListings() {
+    if (!myListMsg || !myListUl) return;
+    myListUl.replaceChildren();
+    if (!myListings.length) {
+      myListMsg.classList.remove('hidden');
+      myListMsg.textContent = 'No listings under this account yet. Publish one and it appears here to edit.';
+      return;
+    }
+    myListMsg.classList.add('hidden');
+    for (const l of myListings) {
+      const li = document.createElement('li');
+      li.className = 'flex items-center justify-between gap-2 border border-line bg-paper2 px-3 py-2';
+      const info = document.createElement('div');
+      info.className = 'min-w-0';
+      const name = document.createElement('p');
+      name.className = 'truncate text-[13.5px] text-ink';
+      name.textContent = l.name;
+      const meta = document.createElement('p');
+      meta.className = 'truncate font-mono text-[10.5px] uppercase tracking-[0.1em] text-mut';
+      meta.textContent = `${l.status === 'published' ? 'Live' : 'Hidden'} · /${l.slug}`;
+      info.append(name, meta);
+      const actions = document.createElement('div');
+      actions.className = 'flex shrink-0 items-center gap-2';
+      const view = document.createElement('a');
+      view.className = 'text-[12.5px] text-mut underline hover:text-ink';
+      view.href = l.url; view.target = '_blank'; view.rel = 'noopener'; view.textContent = 'View';
+      const edit = document.createElement('button');
+      edit.type = 'button';
+      edit.className = 'btn btn-amber h-8 px-3 text-[12.5px]';
+      edit.textContent = 'Edit';
+      edit.addEventListener('click', () => openEditListing(l));
+      actions.append(view, edit);
+      li.append(info, actions);
+      myListUl.append(li);
+    }
+  }
+
+  function openEditListing(l: MyListing) {
+    const set = (id: string, v: string) => {
+      const el = document.getElementById(id) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+      if (el) el.value = v;
+    };
+    set('el-slug', l.slug);
+    set('el-name', l.name || '');
+    set('el-email', l.email || '');
+    set('el-website', l.website || '');
+    set('el-county', l.county || 'Nairobi');
+    set('el-sector', l.sector || 'Other');
+    set('el-stage', l.stage || 'Pre-seed');
+    set('el-tagline', l.tagline || '');
+    set('el-description', l.description || '');
+    set('el-founder', l.founderName || '');
+    const logo = document.getElementById('el-logo') as HTMLInputElement | null;
+    if (logo) logo.value = '';
+    const msg = document.getElementById('edit-listing-msg');
+    if (msg) { msg.classList.add('hidden'); msg.textContent = ''; }
+    const toggle = document.getElementById('el-status-toggle');
+    if (toggle) toggle.textContent = l.status === 'published' ? 'Hide from the index' : 'Republish this listing';
+    (document.getElementById('modal-edit-listing') as HTMLDialogElement | null)?.showModal();
+  }
+
+  const editForm = document.getElementById('edit-listing-form') as HTMLFormElement | null;
+  const editVal = (id: string) => String((document.getElementById(id) as HTMLInputElement | null)?.value || '').trim();
+
+  async function postListingUpdate(payload: Record<string, unknown>, token: string) {
+    const res = await fetch('/api/listing-update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(20000),
+    });
+    const out = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; errors?: Record<string, string> };
+    if (!res.ok || !out.ok) {
+      const errs = out.errors ? Object.entries(out.errors).map(([k, v]) => `${k}: ${v}`).join(' · ') : '';
+      throw new Error(errs || out.error || `HTTP ${res.status}`);
+    }
+    return out;
+  }
+
+  editForm?.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const msg = document.getElementById('edit-listing-msg');
+    const btn = editForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const slug = editVal('el-slug');
+    if (!msg || !slug) return;
+    if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+    const show = (t: string, cls: string) => { msg.className = `mt-3 text-[12.5px] leading-relaxed ${cls}`; msg.textContent = t; };
+    try {
+      const token = await sessionToken();
+      if (!token) throw new Error('Your session expired, sign out and back in, then try again.');
+      const sbMod = await import('@/lib/supabase');
+      const body: Record<string, unknown> = {
+        slug,
+        name: editVal('el-name'),
+        email: editVal('el-email'),
+        website: editVal('el-website'),
+        county: editVal('el-county'),
+        sector: editVal('el-sector'),
+        stage: editVal('el-stage'),
+        tagline: editVal('el-tagline'),
+        description: editVal('el-description'),
+        founderName: editVal('el-founder'),
+      };
+      const fileInput = document.getElementById('el-logo') as HTMLInputElement | null;
+      if (fileInput?.files?.[0] && sbMod.supabaseConfigured) {
+        const path = await sbMod.uploadLogo(fileInput.files[0], String(body.name || 'logo'));
+        body.logoUrl = sbMod.logoPublicUrl(path);
+      }
+      await postListingUpdate(body, token);
+      show('Saved, your page is updated:', 'text-green');
+      const link = document.createElement('a');
+      link.href = `https://startups.co.ke/startups/community/${slug}`;
+      link.target = '_blank'; link.rel = 'noopener';
+      link.className = 'text-amber underline';
+      link.textContent = `startups.co.ke/startups/community/${slug}`;
+      msg.append(' ', link);
+      window.sckToast({ title: 'Listing updated', body: 'Your changes are live.' });
+      void loadMyListings();
+    } catch (err) {
+      show(String((err as Error).message || err), 'text-clay');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Save changes'; }
+    }
+  });
+
+  document.getElementById('el-status-toggle')?.addEventListener('click', async () => {
+    const msg = document.getElementById('edit-listing-msg');
+    const slug = editVal('el-slug');
+    const current = myListings.find((l) => l.slug === slug);
+    if (!msg || !slug || !current) return;
+    const action = current.status === 'published' ? 'unlist' : 'republish';
+    msg.className = 'mt-3 text-[12.5px] leading-relaxed text-mut';
+    msg.textContent = 'Updating…';
+    try {
+      const token = await sessionToken();
+      if (!token) throw new Error('Your session expired, sign out and back in, then try again.');
+      await postListingUpdate({ slug, action }, token);
+      current.status = action === 'unlist' ? 'unlisted' : 'published';
+      const toggle = document.getElementById('el-status-toggle');
+      if (toggle) toggle.textContent = action === 'unlist' ? 'Republish this listing' : 'Hide from the index';
+      msg.className = 'mt-3 text-[12.5px] leading-relaxed text-green';
+      msg.textContent = action === 'unlist'
+        ? 'Hidden from the public index. Its page now returns 404 until you republish.'
+        : 'Republished, it is live again.';
+      window.sckToast({ title: action === 'unlist' ? 'Listing hidden' : 'Listing republished', body: 'You can change this anytime.' });
+      void loadMyListings();
+    } catch (err) {
+      msg.className = 'mt-3 text-[12.5px] leading-relaxed text-clay';
+      msg.textContent = String((err as Error).message || err);
     }
   });
 </script>

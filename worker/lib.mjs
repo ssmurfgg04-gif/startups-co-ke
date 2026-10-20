@@ -9,8 +9,9 @@
  *
  * Design notes carried over:
  * - Founder listings publish INSTANTLY (no approval queue). Spam controls:
- *   required fields with strict caps, a hidden honeypot field, per-IP daily
- *   rate limits, and optional Supabase magic-link identity (raises the cap).
+ *   required fields with strict caps, a hidden honeypot field, a single-use
+ *   Turnstile check on the final write, per-IP daily rate limits, and optional
+ *   Supabase identity (password or email link, raises the cap).
  * - EVERY user string is HTML-escaped at render time and length-capped at
  *   write time. Nothing user-supplied is ever trusted.
  */
@@ -80,8 +81,11 @@ export async function sb(env, path, { method = 'GET', body, prefer } = {}) {
   const headers = {
     apikey: key,
     Authorization: `Bearer ${key}`,
-    'Content-Type': 'application/json',
   };
+  // Only declare a JSON body when one exists: PostgREST rejects bodyless
+  // DELETEs that carry Content-Type: application/json (400 "Body cannot be
+  // empty"), which silently broke unsubscribe and desk deletes.
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (prefer) headers.Prefer = prefer;
   try {
     const r = await fetch(`${sbUrl(env)}${path}`, {
@@ -153,12 +157,13 @@ export async function checkRateLimit(env, ip, cap) {
 /* Desk identity + best-effort email                                   */
 /* ------------------------------------------------------------------ */
 
-/** The desk mailbox: the site owner, set as NOTIFY_EMAIL in the Worker's
- *  environment (wrangler vars / Cloudflare dashboard). NO hardcoded fallback:
- *  a personal address in source code both leaks it and silently grants the
- *  desk to whoever controls that mailbox. Missing config fails closed. */
+/** The desk mailbox: the site owner, set as DESK_EMAIL in the Worker's
+ *  environment (Cloudflare secret). NOTIFY_EMAIL is accepted as a legacy alias.
+ *  NO hardcoded fallback: a personal address in source code both leaks it and
+ *  silently grants the desk to whoever controls that mailbox. Missing config
+ *  fails closed. */
 export const deskEmail = (env) =>
-  String(env.NOTIFY_EMAIL || '').trim().toLowerCase();
+  String(env.DESK_EMAIL || env.NOTIFY_EMAIL || '').trim().toLowerCase();
 
 /**
  * Best-effort email via Resend. NEVER throws; email is an enhancement, the
@@ -190,6 +195,42 @@ export async function attemptEmail(env, { to, subject, text, replyTo, headers })
     return { sent: true, id: data.id };
   } catch (err) {
     return { sent: false, reason: String((err && err.message) || err).slice(0, 120) };
+  }
+}
+
+/**
+ * Best-effort BATCH email via Resend (max 100 messages per request).
+ * Same contract as attemptEmail: never throws, email is an enhancement.
+ * Returns { sent, failed } so a broadcast can report honest counts.
+ */
+export async function sendEmailBatch(env, messages = []) {
+  const key = env.RESEND_API_KEY;
+  if (!key) return { sent: 0, failed: messages.length, reason: 'RESEND_API_KEY not configured' };
+  if (!messages.length) return { sent: 0, failed: 0 };
+
+  const from = env.RESEND_FROM || 'startups.co.ke <notices@startups.co.ke>';
+  const payload = messages.map((m) => ({
+    from: m.from || from,
+    to: [String(m.to || '').trim()],
+    subject: m.subject,
+    text: m.text,
+    ...(m.replyTo ? { reply_to: m.replyTo } : {}),
+    ...(m.headers ? { headers: m.headers } : {}),
+  }));
+
+  try {
+    const r = await fetch('https://api.resend.com/emails/batch', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(15000),
+    });
+    const data = await r.json().catch(() => null);
+    if (!r.ok) return { sent: 0, failed: messages.length, reason: `resend ${r.status}` };
+    const sent = Array.isArray(data?.data) ? data.data.length : messages.length;
+    return { sent, failed: Math.max(0, messages.length - sent) };
+  } catch (err) {
+    return { sent: 0, failed: messages.length, reason: String((err && err.message) || err).slice(0, 120) };
   }
 }
 
@@ -307,6 +348,84 @@ export function validateListing(body = {}) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Logo uploads (Worker-brokered signed URLs)                          */
+/* ------------------------------------------------------------------ */
+
+/** Allowed logo MIME types -> canonical extension. Mirrors the `logos`
+ *  bucket's allowed_mime_types: Storage enforces the same list on the PUT, so
+ *  bypassing this check still cannot store a non-image object. */
+export const LOGO_MIME = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+};
+export const LOGO_MAX_BYTES = 2 * 1024 * 1024;
+
+/**
+ * Mint a one-shot, path-scoped Storage upload URL for a company logo.
+ *
+ * The object path is chosen HERE, never by the caller, so a request can only
+ * ever write one random object under logos/ — no overwrite, no traversal, no
+ * client-chosen names. The browser still uploads the bytes straight to
+ * Storage, so the Worker never buffers the body.
+ */
+export async function mintLogoUpload(env, { mime, size } = {}) {
+  const key = svcKey(env);
+  if (!key) return { ok: false, error: 'storage not configured' };
+
+  const ext = LOGO_MIME[String(mime || '').toLowerCase()];
+  if (!ext) return { ok: false, error: 'unsupported type' };
+  const bytes = Number(size);
+  if (Number.isFinite(bytes) && bytes > LOGO_MAX_BYTES) return { ok: false, error: 'too large' };
+
+  const name = `${crypto.randomUUID()}.${ext}`;
+  try {
+    const r = await fetch(`${sbUrl(env)}/storage/v1/object/upload/sign/logos/${name}`, {
+      method: 'POST',
+      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: '{}',
+      signal: AbortSignal.timeout(8000),
+    });
+    const data = await r.json().catch(() => null);
+    const rel = data?.url || data?.signedURL || data?.signedUrl || '';
+    if (!r.ok || !rel) return { ok: false, error: `sign ${r.status}` };
+    return {
+      ok: true,
+      path: name,
+      uploadUrl: rel.startsWith('http') ? rel : `${sbUrl(env)}/storage/v1${rel}`,
+      publicUrl: `${sbUrl(env)}/storage/v1/object/public/logos/${name}`,
+    };
+  } catch (err) {
+    return { ok: false, error: String((err && err.message) || err).slice(0, 80) };
+  }
+}
+
+/**
+ * Cloudflare Turnstile verification. No secret = not configured = skip (a
+ * deployment without Turnstile keeps working). A configured secret fails
+ * CLOSED — missing token and network errors both reject.
+ */
+export async function verifyTurnstile(env, token, ip) {
+  const secret = env.TURNSTILE_SECRET;
+  if (!secret) return true;
+  if (!token) return false;
+  try {
+    const form = new URLSearchParams({ secret: String(secret), response: String(token) });
+    if (ip && ip !== 'unknown') form.set('remoteip', ip);
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: form,
+      signal: AbortSignal.timeout(5000),
+    });
+    const data = await r.json().catch(() => null);
+    return Boolean(data?.success);
+  } catch {
+    return false;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /* Storage ops (community listings / review queue / newsletter)        */
 /* ------------------------------------------------------------------ */
 
@@ -329,7 +448,17 @@ export async function getListing(env, slug) {
   return row ? rowToRec(row) : null;
 }
 
-export async function putListing(env, record) {
+/**
+ * Insert a NEW listing without ever overwriting an existing row.
+ *
+ * A merge-upsert on `slug` silently clobbers the row another publish just
+ * wrote when two creates race (both pick "acme", one wins the read, both
+ * write). `resolution=ignore-duplicates` returns [] on a collision instead,
+ * so the caller retries with a fresh slug. Returns { ok, inserted }:
+ *   ok=false       -> storage error (do not retry in a tight loop)
+ *   ok=true, false -> slug collided (safe to retry with another candidate)
+ */
+export async function createListing(env, record) {
   const r = await sb(env, '/rest/v1/community_startups?on_conflict=slug', {
     method: 'POST',
     body: {
@@ -338,9 +467,11 @@ export async function putListing(env, record) {
       status: record.status || 'published',
       created_at: record.createdAt || new Date().toISOString(),
     },
-    prefer: 'resolution=merge-duplicates,return=minimal',
+    // ignore-duplicates (not merge): a collision must NOT replace the winner.
+    prefer: 'resolution=ignore-duplicates,return=representation',
   });
-  return r.status >= 200 && r.status < 300;
+  if (r.status < 200 || r.status >= 300) return { ok: false, inserted: false };
+  return { ok: true, inserted: Array.isArray(r.data) && r.data.length > 0 };
 }
 
 export async function listListings(env) {
@@ -364,6 +495,47 @@ export async function deleteListing(env, slug) {
     prefer: 'return=minimal',
   });
   return r.status >= 200 && r.status < 300;
+}
+
+/**
+ * Fetch the RAW row plus the mapped record. The raw `data` column is kept so a
+ * later merge-update can preserve fields the edit form never sends (clientRef,
+ * source, createdAt, a logo the founder chose to keep).
+ */
+export async function getListingRow(env, slug) {
+  const r = await sb(env, `/rest/v1/community_startups?slug=eq.${encodeURIComponent(slug)}&select=*&limit=1`);
+  const row = Array.isArray(r.data) ? r.data[0] : null;
+  return row ? { row, rec: rowToRec(row) } : null;
+}
+
+/** Every listing a signed-in founder owns (ownership lives in data->>userId). */
+export async function listListingsByUser(env, userId) {
+  const k = encodeURIComponent('data->>userId');
+  const r = await sb(env, `/rest/v1/community_startups?${k}=eq.${encodeURIComponent(userId)}&select=*&order=created_at.desc&limit=200`);
+  if (!Array.isArray(r.data)) return null; // no-key / error case
+  return r.data.map(rowToRec);
+}
+
+/**
+ * Update a listing the caller OWNS. Ownership is enforced in the QUERY itself
+ * (slug AND data->>userId), so a wrong user id can never touch another
+ * founder's row even if the handler's own check were bypassed. `patch` is the
+ * FULL new `data` object (the caller merges onto the stored one); `status` is
+ * optional (hide / republish).
+ */
+export async function updateListingByOwner(env, slug, userId, patch, status) {
+  const k = encodeURIComponent('data->>userId');
+  const r = await sb(
+    env,
+    `/rest/v1/community_startups?slug=eq.${encodeURIComponent(slug)}&${k}=eq.${encodeURIComponent(userId)}`,
+    {
+      method: 'PATCH',
+      body: { data: patch, ...(status ? { status } : {}), updated_at: new Date().toISOString() },
+      prefer: 'return=representation',
+    },
+  );
+  const row = Array.isArray(r.data) ? r.data[0] : null;
+  return { ok: r.status >= 200 && r.status < 300, row: row ? rowToRec(row) : null };
 }
 
 /** Idempotency: find a previously published listing with this clientRef. */

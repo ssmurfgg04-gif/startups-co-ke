@@ -16,11 +16,10 @@ create table if not exists public.submissions (
 
 alter table public.submissions enable row level security;
 
+-- Writes go through the Worker (service key) only: no anon/authenticated
+-- insert policy. The old "submissions_insert_anon" policy let anyone write
+-- directly with the public anon key, bypassing rate limits and validation.
 drop policy if exists "submissions_insert_anon" on public.submissions;
-create policy "submissions_insert_anon"
-  on public.submissions for insert
-  to anon, authenticated
-  with check (true);
 
 drop policy if exists "submissions_select_own" on public.submissions;
 create policy "submissions_select_own"
@@ -38,25 +37,29 @@ create table if not exists public.newsletter_subscribers (
 
 alter table public.newsletter_subscribers enable row level security;
 
+-- Writes go through the Worker (service key) only. The old
+-- "newsletter_insert_anon" policy let the public anon key insert directly,
+-- bypassing the Worker's rate limit and duplicate handling.
 drop policy if exists "newsletter_insert_anon" on public.newsletter_subscribers;
-create policy "newsletter_insert_anon"
-  on public.newsletter_subscribers for insert
-  to anon, authenticated
-  with check (true);
 
 -- 3) Storage: public bucket for user-uploaded company logos
+--    READ is public ("meant to be seen"). WRITE is service-role only: the
+--    Worker mints a one-shot, path-scoped signed upload URL after its
+--    rate-limit/honeypot/Turnstile checks. No public insert policy exists.
 insert into storage.buckets (id, name, public)
 values ('logos', 'logos', true)
 on conflict (id) do nothing;
 
-drop policy if exists "logos_public_read" on storage.objects;
-create policy "logos_public_read"
+-- Hard caps are defence in depth: Storage enforces them on the signed PUT
+-- even if the Worker is ever bypassed.
+update storage.buckets
+   set file_size_limit = 2097152,
+       allowed_mime_types = array['image/png', 'image/jpeg', 'image/webp', 'image/gif']
+ where id = 'logos';
+
+drop policy if exists "logos_public_upload" on storage.objects;
+drop policy if exists "logos public read" on storage.objects;
+create policy "logos public read"
   on storage.objects for select
   to anon, authenticated
   using (bucket_id = 'logos');
-
-drop policy if exists "logos_public_upload" on storage.objects;
-create policy "logos_public_upload"
-  on storage.objects for insert
-  to anon, authenticated
-  with check (bucket_id = 'logos');

@@ -21,11 +21,24 @@ examples/
 mini-services/
 supabase/.temp/
 
+# QA artifacts: commit the reports (.md) and VLM review data (.json) only.
+# Screenshots are local evidence — 19 MB that never belonged in git.
+qa/**/*.png
+qa/*.png
+
+# vendored skill trees / editor scratch (not part of the site)
+skills/
+.idea/
+.vscode/
+
 # misc
 .DS_Store
 *.log
 .dev.vars
 .wrangler/
+
+# Working notes are local-only (kept in ~/Documents/startups-co-ke-local).
+worklog*.md
 
 # Single lockfile policy: bun.lock only (Cloudflare builds with bun).
 package-lock.json

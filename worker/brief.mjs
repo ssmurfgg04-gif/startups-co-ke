@@ -43,7 +43,6 @@ export const BRIEF = {
   id: '001',
   updatedAt: '2026-10-19',
   from: 'startups.co.ke <notices@startups.co.ke>',
-  testAddress: 'jackblessed191@gmail.com',
   subject: 'The Ecosystem Brief #001: SunCulture banks $10M, Flowt closes, and the community board opens',
   body: `Kenya's startup week, kept short and sourced. Every figure below names where it came from. If a number has no source, it does not ship.
 

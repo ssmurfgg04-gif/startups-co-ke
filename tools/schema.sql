@@ -262,14 +262,21 @@ insert into storage.buckets (id, name, public)
 values ('logos', 'logos', true)
 on conflict (id) do nothing;
 
--- storage policies: public read, users write to own folder
+-- storage caps + policies: public READ, WRITE service-role only.
+-- The Worker mints a one-shot, path-scoped signed upload URL; the anon key
+-- has no insert policy, so it can never write to the bucket directly.
+update storage.buckets
+   set file_size_limit = 2097152,
+       allowed_mime_types = array['image/png', 'image/jpeg', 'image/webp', 'image/gif']
+ where id = 'logos';
+
 drop policy if exists "logos public read" on storage.objects;
 create policy "logos public read" on storage.objects
   for select using (bucket_id = 'logos');
 
 drop policy if exists "logos user insert own" on storage.objects;
-create policy "logos user insert own" on storage.objects
-  for insert with check (bucket_id = 'logos' and auth.role() = 'authenticated' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "logos_public_upload" on storage.objects;
+drop policy if exists "logos_authed_upload" on storage.objects;
 
 -- ---------- RLS ----------
 alter table public.companies enable row level security;
@@ -319,7 +326,8 @@ create policy "own submissions" on public.startup_submissions for all using (aut
 create policy "own intros" on public.intro_requests for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "own issues" on public.data_issues for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
--- anyone can subscribe / start trial / log analytics event (insert only)
-create policy "anon subscribe" on public.subscribers for insert with check (true);
-create policy "anon trial" on public.trials for insert with check (true);
-create policy "anon events" on public.events for insert with check (true);
+-- public writes go through the Worker (service key) only. No anon/authenticated
+-- insert policies: direct anon-key inserts bypass rate limits and validation.
+drop policy if exists "anon subscribe" on public.subscribers;
+drop policy if exists "anon trial" on public.trials;
+drop policy if exists "anon events" on public.events;

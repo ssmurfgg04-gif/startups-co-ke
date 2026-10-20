@@ -1,8 +1,11 @@
 # DECISIONS — startups.co.ke (log of spec & architecture decisions)
 
-Living document. Everything non-obvious we decided, and why. Date base: **2026-10-15 (EAT)**. Owner contact: contact@startups.co.ke · +254 700 000 000.
+Living document. Everything non-obvious we decided, and why. Date base: **2026-10-15 (EAT)**. Owner contact: see the site's `/contact` page (not duplicated in this repo).
 
 ## D1. Architecture — single self-contained HTML file + Supabase
+
+> **Superseded (2026-10-19):** the site is now **Astro 5 (static output) on Cloudflare Workers**, not a single `index.html` on GitHub Pages. Backend stays Supabase, but every write goes through the Worker with the service key; the browser never writes with the anon key. Auth is password-first with an email-link alternative. See `docs/ARCHITECTURE.md` for the current map. The bullets below are kept as history.
+
 - `index.html` at repo root, deployed via **GitHub Pages** with `CNAME` = startups.co.ke (see README for the 2 DNS records).
 - Backend: **Supabase** project `startups-co-ke` (ref `<project-ref>`), region `eu-west-2` (closest available to Nairobi; af-south-1 not offered on free plan).
 - Auth: Supabase built-in email auth. Data: Postgres + RLS. Logos: Supabase Storage bucket `logos`.
@@ -51,8 +54,8 @@ User directive overrides the original spec's fictional-sample system. Transform:
 - Google News RSS (not scrape-robots) + web-search for research; no IP-rotation runners (ToS risk) — authenticated GitHub API covered rate limits.
 - trendspyg had install friction; used Google Trends RSS endpoint directly (same data, zero deps).
 - Secrets: `.secrets/` (gitignored) + GitHub repo **Actions secrets** (SUPABASE_SERVICE_KEY, SUPABASE_DB_PASSWORD, GH_TOKEN) via API — never in files.
-- Pricing presented as real launch pricing (Explorer KSh 0 / Professional KSh 2,900 / Institution KSh 24,500 per month; jobs: Featured KSh 25,000 / Standard 12,000 / Internship 6,000). Payment on launch = invoice/M-Pesa via contact@startups.co.ke; card flows later.
-- Support: contact@startups.co.ke · +254 700 000 000 · WhatsApp wa.me/254700000000. Privacy policy at #/privacy + cookie consent (essential + first-party analytics categories; analytics events table, no third-party trackers).
+- Pricing presented as real launch pricing (Explorer KSh 0 / Professional KSh 2,900 / Institution KSh 24,500 per month; jobs: Featured KSh 25,000 / Standard 12,000 / Internship 6,000). Payment on launch = invoice/M-Pesa, arranged with the desk; card flows later.
+- Support: via the site's `/contact` page (email, phone, WhatsApp). Privacy policy at #/privacy + cookie consent (essential + first-party analytics categories; analytics events table, no third-party trackers).
 
 ## D9. Real-data migration completed (Oct 15, 2026 — session 2)
 - **Source of truth**: `src/data/*.ts` (typed, build-time) — 21 real companies incl. failure states (Twiga administration, Copia liquidation, Sendy shutdown, iProcure administration, Ilara restructuring), 13 investors, 8 real jobs, 12 real dated events, 20 tracked rounds, real salary bands, real wire. The DB seed (`tools/seed.sql`, 16 companies) remains applied to Supabase for the future API layer; TS layer is canonical and supersedes it.

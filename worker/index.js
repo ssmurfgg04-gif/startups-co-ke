@@ -11,6 +11,9 @@
  *   POST /api/startup-create                    instant founder listing
  *   POST /api/review-submit                     review-queue forms
  *   POST /api/newsletter                        The Ecosystem Brief signup
+ *   POST /api/logo-upload-url                   mint a one-shot logo upload URL
+ *   GET  /api/my-listings                       a signed-in founder's own listings
+ *   POST /api/listing-update                    founder edits/hides their OWN listing
  * Legacy /​.netlify/functions/* POST paths map to the same handlers so old
  * cached bundles never break.
  *
@@ -20,12 +23,13 @@
  */
 
 import {
-  attemptEmail, checkRateLimit, clientIp, deleteListing, deskEmail, digestLines, findByClientRef,
-  getListing, json, listListings, listSubscribers, newsletterSubscribe, putListing, queueInsert,
-  queueMarkDone, queueList, removeSubscriber, sb, setListingStatus, slugify, subscriberCount,
-  uniqueSlug, unsubToken, unsubValid, validateListing, verifyUser,
+  attemptEmail, checkRateLimit, clientIp, createListing, deleteListing, deskEmail, digestLines,
+  findByClientRef, getListing, getListingRow, json, listListings, listListingsByUser, listSubscribers,
+  mintLogoUpload, newsletterSubscribe, queueInsert, queueMarkDone, queueList, removeSubscriber, sb,
+  sendEmailBatch, setListingStatus, slugify, subscriberCount, uniqueSlug, unsubToken, unsubValid,
+  updateListingByOwner, validateListing, verifyTurnstile, verifyUser,
 } from './lib.mjs';
-import { deskHtml, notFoundPage, renderMarkdown, renderPage, unsubscribePage } from './render.mjs';
+import { deskHtml, notFoundPage, renderMarkdown, renderPage, unsubscribeConfirmPage, unsubscribePage } from './render.mjs';
 import { BRIEF, briefFooter, briefHeaders } from './brief.mjs';
 
 const CORS = {
@@ -54,6 +58,8 @@ const UNSUB_HEADERS = {
 const KINDS = new Set([
   'startup', 'claim', 'job', 'event', 'intro', 'issue', 'trial', 'buy', 'sponsor', 'register',
 ]);
+
+const EMAIL_RE = /^[^\s@"'<>]+@[^\s@"'<>]+\.[a-z]{2,}$/i;
 
 const LABELS = {
   startup: 'New startup submission (review)',
@@ -200,6 +206,12 @@ async function handleCreate(req, env, ctx) {
 
   const user = await verifyUser(env, req);
 
+  // Bot check before any write (and before the rate-limit bucket, so a bot
+  // cannot burn a founder's daily allowance). Skipped when no secret is set.
+  if (!(await verifyTurnstile(env, body?.turnstile, clientIp(req)))) {
+    return json(403, { ok: false, error: 'Verification failed. Please complete the verification check in the form and try again.' }, { ...CORS, ...NO_STORE });
+  }
+
   // Validate BEFORE the rate limit: a fixable mistake must not burn the day's attempts.
   const v = validateListing(body);
   if (!v.ok) return json(422, { ok: false, error: 'validation', errors: v.errors }, { ...CORS, ...NO_STORE });
@@ -226,31 +238,143 @@ async function handleCreate(req, env, ctx) {
   }
 
   const base = slugify(v.listing.name);
-  const slug = await uniqueSlug(env, base);
-  const record = { ...v.listing, slug, source: user ? 'signedin' : 'anon', status: 'published' };
-  if (clientRef) record.clientRef = clientRef;
-  if (user) record.userId = user.id;
+  let record = null;
+  let stored = false;
+  // Insert-only with a bounded retry: uniqueSlug() closes most gaps, and
+  // createListing() (ignore-duplicates) closes the concurrent-write race
+  // without ever overwriting the row that won.
+  for (let attempt = 0; attempt < 5 && !stored; attempt++) {
+    const slug = attempt === 0
+      ? await uniqueSlug(env, base)
+      : `${base}-${Date.now().toString(36)}${attempt}`;
+    const candidate = { ...v.listing, slug, source: user ? 'signedin' : 'anon', status: 'published' };
+    if (clientRef) candidate.clientRef = clientRef;
+    if (user) candidate.userId = user.id;
 
-  const stored = await putListing(env, record);
-  if (!stored) {
+    const res = await createListing(env, candidate);
+    if (res.ok && res.inserted) { record = candidate; stored = true; break; }
+    if (!res.ok) break; // storage error: stop, don't hammer the DB
+  }
+
+  if (!stored || !record) {
     return json(503, { ok: false, error: 'Listing storage is momentarily unavailable. Your entries are still in the form; please press Publish again.' }, { ...CORS, ...NO_STORE });
   }
 
   // Desk ping (best-effort, never blocks the founder's success).
   bg(ctx, attemptEmail(env, {
-    subject: `[instant listing] ${record.name} went live — /startups/community/${slug}`,
+    subject: `[instant listing] ${record.name} went live — /startups/community/${record.slug}`,
     text: [
       'A founder published a startup instantly (no review):',
       '',
       digestLines({ name: record.name, tagline: record.tagline, sector: record.sector, stage: record.stage, county: record.county, website: record.website, founder: record.founderName, email: record.email, source: record.source }),
       '',
-      `Live at: https://startups.co.ke/startups/community/${slug}`,
+      `Live at: https://startups.co.ke/startups/community/${record.slug}`,
       '--',
       'Automated ping from startups.co.ke.',
     ].join('\n'),
   }));
 
-  return json(200, { ok: true, slug, url: `https://startups.co.ke/startups/community/${slug}` }, { ...CORS, ...NO_STORE });
+  return json(200, { ok: true, slug: record.slug, url: `https://startups.co.ke/startups/community/${record.slug}` }, { ...CORS, ...NO_STORE });
+}
+
+/** Statuses a founder may set on their own listing (hard delete stays desk-only). */
+const OWNER_STATUS = { unlist: 'unlisted', republish: 'published' };
+
+/**
+ * GET /api/my-listings — the signed-in founder's own listings, so the account
+ * panel can offer a real "edit your listing" instead of the old "email the
+ * desk" dead end. Auth is by Supabase session; the query is filtered to
+ * data->>userId = the verified user id, so it can never leak another's rows.
+ */
+async function handleMyListings(req, env) {
+  if (!env.SUPABASE_SERVICE_ROLE_KEY && !env.SUPABASE_SERVICE_KEY) {
+    return json(503, { ok: false, error: 'Listings storage is not configured yet.' }, { ...CORS, ...NO_STORE });
+  }
+  const user = await verifyUser(env, req);
+  if (!user) return json(401, { ok: false, error: 'Sign in to see your listings.' }, { ...CORS, ...NO_STORE });
+
+  const rows = await listListingsByUser(env, user.id);
+  if (rows === null) return json(503, { ok: false, error: 'Listings storage is momentarily unavailable.' }, { ...CORS, ...NO_STORE });
+
+  const listings = rows.map((r) => ({
+    slug: r.slug,
+    name: r.name,
+    tagline: r.tagline,
+    website: r.website,
+    sector: r.sector,
+    stage: r.stage,
+    county: r.county,
+    description: r.description || '',
+    founderName: r.founderName || '',
+    email: r.email || '',
+    logoUrl: r.logoUrl || null,
+    status: r.status || 'published',
+    createdAt: r.createdAt || null,
+    url: `https://startups.co.ke/startups/community/${r.slug}`,
+  }));
+  return json(200, { ok: true, count: listings.length, listings }, { ...CORS, ...NO_STORE });
+}
+
+/**
+ * POST /api/listing-update — a signed-in founder edits (or hides / republishes)
+ * THEIR OWN listing. Ownership is proved twice: an explicit check here, and the
+ * UPDATE query itself is scoped by slug AND data->>userId. Non-owners get a 404
+ * (not 403) so the endpoint never confirms a listing exists.
+ */
+async function handleListingUpdate(req, env) {
+  if (!env.SUPABASE_SERVICE_ROLE_KEY && !env.SUPABASE_SERVICE_KEY) {
+    return json(503, { ok: false, error: 'Listings storage is not configured yet. Your changes are safe in the form; please try again shortly.' }, { ...CORS, ...NO_STORE });
+  }
+  let body;
+  try { body = await req.json(); } catch { return json(400, { ok: false, error: 'invalid JSON' }, { ...CORS, ...NO_STORE }); }
+
+  const user = await verifyUser(env, req);
+  if (!user) return json(401, { ok: false, error: 'Sign in to edit your listing.' }, { ...CORS, ...NO_STORE });
+
+  const slug = String(body?.slug ?? '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 60);
+  if (!slug) return json(422, { ok: false, error: 'missing slug' }, { ...CORS, ...NO_STORE });
+
+  const found = await getListingRow(env, slug);
+  const ownerId = String(found?.rec?.userId || '');
+  if (!found || !ownerId || ownerId !== user.id) {
+    return json(404, { ok: false, error: 'This listing is not under your account. If you submitted it without signing in, email us and we will link it to you.' }, { ...CORS, ...NO_STORE });
+  }
+
+  const ip = clientIp(req);
+  if (!(await checkRateLimit(env, ip, 30))) {
+    return json(429, { ok: false, error: 'Too many edits from this connection today. Try again tomorrow.' }, { ...CORS, ...NO_STORE });
+  }
+
+  const url = `https://startups.co.ke/startups/community/${slug}`;
+  const stored = found.row.data && typeof found.row.data === 'object' ? found.row.data : {};
+
+  // Hide / republish: a status change that leaves the content untouched.
+  const statusAction = OWNER_STATUS[String(body?.action ?? '')];
+  if (statusAction) {
+    const r = await updateListingByOwner(env, slug, user.id, stored, statusAction);
+    if (!r.ok) return json(503, { ok: false, error: 'update failed' }, { ...CORS, ...NO_STORE });
+    return json(200, { ok: true, slug, status: statusAction, url }, { ...CORS, ...NO_STORE });
+  }
+
+  const v = validateListing(body);
+  if (!v.ok) return json(422, { ok: false, error: 'validation', errors: v.errors }, { ...CORS, ...NO_STORE });
+
+  // Merge onto the stored data: identity + audit fields survive, and a logo the
+  // founder did not replace is kept (validateListing nulls an absent logo).
+  const patch = {
+    ...stored,
+    ...v.listing,
+    createdAt: stored.createdAt || found.row.created_at || new Date().toISOString(),
+    slug,
+    logoUrl: v.listing.logoUrl || stored.logoUrl || null,
+    source: stored.source || 'signedin',
+    userId: user.id,
+  };
+  if (stored.clientRef) patch.clientRef = stored.clientRef;
+
+  const r = await updateListingByOwner(env, slug, user.id, patch);
+  if (!r.ok) return json(503, { ok: false, error: 'update failed' }, { ...CORS, ...NO_STORE });
+  return json(200, { ok: true, slug, name: patch.name, url }, { ...CORS, ...NO_STORE });
 }
 
 async function handleReview(req, env, ctx) {
@@ -319,7 +443,6 @@ async function handleNewsletter(req, env, ctx) {
     return json(200, { ok: true, honeypot: true }, { ...CORS, ...NO_STORE });
   }
 
-  const EMAIL_RE = /^[^\s@"'<>]+@[^\s@"'<>]+\.[a-z]{2,}$/i;
   const email = String(body?.email ?? '').trim().slice(0, 160).toLowerCase();
   if (!EMAIL_RE.test(email)) {
     return json(422, { ok: false, error: 'Please enter a valid email address.' }, { ...CORS, ...NO_STORE });
@@ -362,6 +485,40 @@ async function handleNewsletter(req, env, ctx) {
   }
 
   return json(200, { ok: true, stored: 'queue', duplicate: res.duplicate }, { ...CORS, ...NO_STORE });
+}
+
+/**
+ * POST /api/logo-upload-url — hand the browser a one-shot, path-scoped
+ * Storage upload URL. This is the ONLY writer path to the `logos` bucket:
+ * the bucket has no public insert policy, so the anon key cannot upload.
+ * Honeypot + per-IP daily cap. Turnstile is verified on the write that follows
+ * (publish / review submit), not here: a token may only be spent once.
+ */
+async function handleLogoUploadUrl(req, env) {
+  let body;
+  try { body = await req.json(); } catch { return json(400, { ok: false, error: 'invalid JSON' }, { ...CORS, ...NO_STORE }); }
+
+  if (String(body?.company_url ?? '').trim() !== '') {
+    return json(200, { ok: true, honeypot: true }, { ...CORS, ...NO_STORE });
+  }
+
+  const allowed = await checkRateLimit(env, clientIp(req), 20);
+  if (!allowed) {
+    return json(429, { ok: false, error: 'Too many uploads today. Try again tomorrow.' }, { ...CORS, ...NO_STORE });
+  }
+
+  const out = await mintLogoUpload(env, { mime: body?.mime, size: body?.size });
+  if (!out.ok) {
+    if (out.error === 'unsupported type') {
+      return json(415, { ok: false, error: 'Please upload a PNG, JPG, WEBP or GIF image.' }, { ...CORS, ...NO_STORE });
+    }
+    if (out.error === 'too large') {
+      return json(413, { ok: false, error: 'That image is over 2 MB. Please choose a smaller one.' }, { ...CORS, ...NO_STORE });
+    }
+    return json(503, { ok: false, error: 'Upload storage is warming up. Please try again in a moment.' }, { ...CORS, ...NO_STORE });
+  }
+
+  return json(200, { ok: true, path: out.path, uploadUrl: out.uploadUrl, publicUrl: out.publicUrl }, { ...CORS, ...NO_STORE });
 }
 
 /* ------------------------------------------------------------------ */
@@ -424,12 +581,13 @@ async function handleBriefGet(req, env) {
   if (!user) return json(404, { ok: false, error: 'not found' }, NO_STORE);
   const subs = (await listSubscribers(env)) || [];
   const deduped = [...new Set(subs)];
+  const desk = deskEmail(env);
   return json(200, {
     ok: true,
     edition: { id: BRIEF.id, updatedAt: BRIEF.updatedAt, from: BRIEF.from, subject: BRIEF.subject, body: BRIEF.body },
-    testAddress: BRIEF.testAddress,
-    // The exact footer the test address would receive (real tokenised link).
-    sampleFooterLink: await unsubToken(env, BRIEF.testAddress).then((t) => briefFooter(env, BRIEF.testAddress, t)),
+    testAddress: desk,
+    // The exact footer the desk address would receive (real tokenised link).
+    sampleFooterLink: desk ? await unsubToken(env, desk).then((t) => briefFooter(env, desk, t)) : '',
     recipients: { count: deduped.length, raw: subs.length, duplicates: subs.length - deduped.length, list: deduped },
   }, NO_STORE);
 }
@@ -472,16 +630,27 @@ async function handleBriefSend(req, env, ctx) {
   }
   if (!recipients.length) return json(200, { ok: true, sent: 0, failed: 0 }, NO_STORE);
 
+  // Resend's batch endpoint takes up to 100 messages per request, so a
+  // 2,000-recipient broadcast becomes 20 calls instead of 2,000 sequential
+  // ones that can outlive the Worker request. Every address still gets its
+  // own one-click unsubscribe token/headers.
   let sent = 0, failed = 0;
-  for (const rcpt of recipients.slice(0, 2000)) {
-    const token = await unsubToken(env, rcpt);
-    const out = await attemptEmail(env, {
-      to: rcpt,
-      subject,
-      text: `${text}\n\n${briefFooter(env, rcpt, token)}`,
-      headers: briefHeaders(env, rcpt, token),
-    });
-    if (out.sent) sent += 1; else failed += 1;
+  const list = recipients.slice(0, 2000);
+  const CHUNK = 100;
+  for (let i = 0; i < list.length; i += CHUNK) {
+    const chunk = list.slice(i, i + CHUNK);
+    const messages = await Promise.all(chunk.map(async (rcpt) => {
+      const token = await unsubToken(env, rcpt);
+      return {
+        to: rcpt,
+        subject,
+        text: `${text}\n\n${briefFooter(env, rcpt, token)}`,
+        headers: briefHeaders(env, rcpt, token),
+      };
+    }));
+    const out = await sendEmailBatch(env, messages);
+    sent += out.sent;
+    failed += out.failed;
   }
 
   // Audit trail: the desk queue keeps a record of every broadcast/test.
@@ -513,11 +682,20 @@ async function handleBriefSend(req, env, ctx) {
  */
 async function handleUnsubscribe(req, env) {
   const url = new URL(req.url);
-  let email = String(url.searchParams.get('e') ?? '').trim().toLowerCase();
+  const email = String(url.searchParams.get('e') ?? '').trim().toLowerCase();
   const token = String(url.searchParams.get('t') ?? '').trim();
   if (!email || !token) return new Response(unsubscribePage('invalid'), { status: 400, headers: UNSUB_HEADERS });
-  if (!/^[^\s@"'<>]+@[^\s@"'<>]+\.[a-z]{2,}$/i.test(email)) return new Response(unsubscribePage('invalid'), { status: 400, headers: UNSUB_HEADERS });
+  if (!EMAIL_RE.test(email)) return new Response(unsubscribePage('invalid'), { status: 400, headers: UNSUB_HEADERS });
   if (!(await unsubValid(env, email, token))) return new Response(unsubscribePage('invalid'), { status: 403, headers: UNSUB_HEADERS });
+
+  // GET only renders a confirmation form. Mail scanners and link prefetchers
+  // issue GETs on every link in an email, so a mutating GET would silently
+  // unsubscribe people who never clicked. The delete happens on POST — which
+  // is also what RFC 8058 one-click (List-Unsubscribe-Post) sends.
+  if (req.method !== 'POST') {
+    return new Response(unsubscribeConfirmPage(email, token), { status: 200, headers: UNSUB_HEADERS });
+  }
+
   const n = await removeSubscriber(env, email);
   if (n === null) return new Response(unsubscribePage('error'), { status: 500, headers: UNSUB_HEADERS });
   return new Response(unsubscribePage('done'), { status: 200, headers: UNSUB_HEADERS });
@@ -547,7 +725,11 @@ export default {
         const slug = path.startsWith('/startups/community/')
           ? path.split('/').filter(Boolean).pop() || ''
           : url.searchParams.get('slug') || '';
-        const res = await cached(ctx, req, 300, () => handlePage(req, env, slug));
+        // NOT edge-cached inside the Worker: a founder can now edit, hide or
+        // republish their page, and a 300s cached copy would keep serving the
+        // old content after the change. These pages are low-traffic; rendering
+        // per request is cheap and makes every edit visible immediately.
+        const res = await handlePage(req, env, slug);
         return method === 'HEAD' ? new Response(null, { status: res.status, headers: res.headers }) : res;
       }
       if (path === '/desk') {
@@ -579,6 +761,7 @@ export default {
         const res = await handleUnsubscribe(req, env);
         return method === 'HEAD' ? new Response(null, { status: res.status, headers: res.headers }) : res;
       }
+      if (path === '/api/my-listings') return handleMyListings(req, env);
       return asset404(req, env);
     }
 
@@ -587,6 +770,8 @@ export default {
       if (path === '/api/startup-create' || path === '/.netlify/functions/startup-create') return handleCreate(req, env, ctx);
       if (path === '/api/review-submit' || path === '/.netlify/functions/review-submit') return handleReview(req, env, ctx);
       if (path === '/api/newsletter' || path === '/.netlify/functions/newsletter') return handleNewsletter(req, env, ctx);
+      if (path === '/api/logo-upload-url') return handleLogoUploadUrl(req, env);
+      if (path === '/api/listing-update') return handleListingUpdate(req, env);
       // NOTE: /api/notify was DELETED — an unauthenticated, unlimited endpoint
       // that emailed the desk with attacker-controlled content and reply-to
       // (spam + phishing + Resend-quota vector). The database records are the

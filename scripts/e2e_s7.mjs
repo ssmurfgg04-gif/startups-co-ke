@@ -44,7 +44,7 @@ try {
   const servedHome = await (await p.request.get(`${base}/`)).text();
   const noLd = servedHome.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '');
   ok('no mailto: in served HTML', !servedHome.includes('href="mailto:'));
-  ok('literal address never in served HTML (excl. ld+json)', !noLd.includes('contact@startups.co.ke'));
+  ok('literal address never in served HTML (excl. ld+json)', !/[\w.+-]+@startups\.co\.ke/.test(noLd));
   const footerLink = p.locator('footer a[data-email]').first();
   ok('footer carries data-email anchor', (await footerLink.count()) === 1);
   ok('mailto restored at runtime by core.ts', String(await footerLink.getAttribute('href')).startsWith('mailto:'));

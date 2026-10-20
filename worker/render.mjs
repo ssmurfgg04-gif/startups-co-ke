@@ -224,6 +224,46 @@ export function unsubscribePage(state) {
 </html>`;
 }
 
+/**
+ * GET /api/unsubscribe renders this confirmation shell and NEVER mutates.
+ * Link prefetchers and mail scanners issue GETs on every link in an email, so
+ * deletion only happens on a deliberate POST (also RFC 8058 one-click).
+ */
+export function unsubscribeConfirmPage(email, token) {
+  const e = esc(String(email).toLowerCase());
+  const q = `e=${encodeURIComponent(String(email).toLowerCase())}&amp;t=${encodeURIComponent(String(token))}`;
+  return `<!doctype html>
+<html lang="en-KE">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unsubscribe | startups.co.ke</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<style>
+  body { margin:0; background:#f6f3ea; color:#181712; font:16px/1.55 Archivo, system-ui, sans-serif; }
+  .wrap { max-width:560px; margin:0 auto; padding:80px 20px; }
+  h1 { font-family:Fraunces, Georgia, serif; font-size:30px; margin:0 0 10px; }
+  p { color:#3e3b31; }
+  .mono { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#5d5949; }
+  .btn { display:inline-flex; align-items:center; min-height:44px; padding:0 18px; border:1px solid #181712; background:#181712; color:#f6f3ea; font:400 11px/1 'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.12em; text-decoration:none; margin-top:16px; cursor:pointer; }
+  .btn.ghost { background:transparent; color:#181712; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="mono">startups.co.ke &middot; The Ecosystem Brief</p>
+  <h1>Unsubscribe this address?</h1>
+  <p>This removes <strong>${e}</strong> from The Ecosystem Brief. Nothing changes until you press the button.</p>
+  <form method="POST" action="/api/unsubscribe?${q}">
+    <button class="btn" type="submit">Yes, unsubscribe</button>
+    <a class="btn ghost" href="/">Keep me subscribed</a>
+  </form>
+</div>
+</body>
+</html>`;
+}
+
 export function deskHtml(env) {
   const SB = esc(String(env.PUBLIC_SUPABASE_URL || 'https://eezqpsbhmnhuhnmiwnsz.supabase.co'));
   const KEY = esc(String(env.PUBLIC_SUPABASE_ANON_KEY || ''));

@@ -1,6 +1,6 @@
 // Unit checks for worker/lib.mjs security-critical helpers.
 // Pure / stubbed — no network. Run: node scripts/unit_s8.mjs
-import { deskEmail, digestLines, attemptEmail, clientIp, unsubToken, unsubValid } from '../worker/lib.mjs';
+import { deskEmail, digestLines, attemptEmail, clientIp, sb, unsubToken, unsubValid } from '../worker/lib.mjs';
 
 const ok = (name, cond) => { console.log(`${cond ? 'PASS' : 'FAIL'} ${name}`); if (!cond) process.exitCode = 1; };
 
@@ -9,6 +9,7 @@ const env = { NOTIFY_EMAIL: 'Owner@Startups.co.ke ' };
 ok('deskEmail normalizes case+space', deskEmail(env) === 'owner@startups.co.ke');
 ok('deskEmail missing config → empty (no hardcoded fallback)', deskEmail({}) === '');
 ok('deskEmail empty string → empty', deskEmail({ NOTIFY_EMAIL: '' }) === '');
+ok('deskEmail prefers DESK_EMAIL over legacy NOTIFY_EMAIL', deskEmail({ DESK_EMAIL: 'desk@startups.co.ke', NOTIFY_EMAIL: 'old@example.com' }) === 'desk@startups.co.ke');
 
 // ---- digestLines ----
 const d = digestLines({ name: 'Acme', empty: '', dropped: undefined, dataUrl: 'data:image/png;base64,xx', n: 5 });
@@ -43,5 +44,22 @@ ok('unsubValid rejects other address', (await unsubValid(svc, 'other@b.co', t1))
 // Determinism: same key+email → same token; different key → different token.
 ok('unsubToken deterministic per key', (await unsubToken(svc, 'a@b.co')) === t1);
 ok('unsubToken bound to the key', (await unsubToken({ SUPABASE_SERVICE_ROLE_KEY: 'svc-secret-124' }, 'a@b.co')) !== t1);
+
+// ---- sb(): never send Content-Type without a body ----
+// PostgREST answers bodyless DELETEs that carry Content-Type: application/json
+// with 400 "Body cannot be empty", which silently broke unsubscribe + deletes.
+const realFetch = globalThis.fetch;
+let seen = null;
+globalThis.fetch = async (url, init) => {
+  seen = { url: String(url), init };
+  return new Response('[]', { status: 200, headers: { 'content-type': 'application/json' } });
+};
+const sbEnv = { PUBLIC_SUPABASE_URL: 'https://example.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'svc-test' };
+await sb(sbEnv, '/rest/v1/x?y=eq.1', { method: 'DELETE', prefer: 'return=minimal' });
+ok('sb DELETE omits Content-Type when there is no body', !seen.init.headers['Content-Type']);
+ok('sb DELETE keeps apikey + Prefer', seen.init.headers.apikey === 'svc-test' && seen.init.headers.Prefer === 'return=minimal');
+await sb(sbEnv, '/rest/v1/x', { method: 'POST', body: { a: 1 } });
+ok('sb POST with body sets Content-Type + JSON body', seen.init.headers['Content-Type'] === 'application/json' && seen.init.body === '{"a":1}');
+globalThis.fetch = realFetch;
 
 console.log('worker security unit checks done');

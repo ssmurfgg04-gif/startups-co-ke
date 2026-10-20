@@ -1,9 +1,8 @@
 ---
-/** Dark footer: 4 columns + full honesty disclaimer + WhatsApp share + contacts. */
+/** Dark footer: 4 columns + full honesty disclaimer + WhatsApp chat + contacts. */
 import Logo from './Logo.astro';
 import { SITE, HONESTY } from '@/config/site';
 const year = new Date().getFullYear();
-const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup ecosystem, mapped & measured, startups.co.ke')}`;
 ---
 <footer class="mt-auto bg-dark text-dpaper">
   <div class="wrap grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
@@ -13,7 +12,7 @@ const waShare = `https://wa.me/?text=${encodeURIComponent('Kenya\u2019s startup 
         Kenya's startup record, who raised, who's hiring, who failed. Verified, sourced, free to read.
       </p>
       <div class="mt-4 flex flex-wrap gap-2">
-        <a class="btn btn-ondark h-9 px-3" href={waShare} target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
+        <a class="btn btn-ondark h-9 px-3" href={SITE.contact.whatsapp} target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">WhatsApp</a>
         <a class="btn btn-ondark h-9 px-3" href="/rss.xml" aria-label="RSS feed">RSS</a>
         <a class="btn btn-ondark h-9 px-3" href="/llms.txt" aria-label="LLM-readable site index">llms.txt</a>
       </div>

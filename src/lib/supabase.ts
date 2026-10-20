@@ -17,6 +17,14 @@ const anon = (import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string | undefined) ||
 
 export const supabaseConfigured = Boolean(url && anon);
 
+/**
+ * Turnstile site key (public, like the anon key). The matching SECRET is a
+ * Worker secret only. Fallback keeps the widget working on CI builds.
+ */
+const FALLBACK_TURNSTILE = '0x4AAAAAAFb9FAfoXKvdJ2o4';
+export const TURNSTILE_SITE_KEY =
+  (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined) || FALLBACK_TURNSTILE;
+
 let client: SupabaseClient | null = null;
 
 export function supabase(): SupabaseClient | null {
@@ -123,12 +131,46 @@ export function logoPublicUrl(path: string): string {
   return `${url}/storage/v1/object/public/logos/${path}`;
 }
 
-export async function uploadLogo(file: File, slug: string): Promise<string> {
-  const sb = supabase();
-  if (!sb) throw new Error('Supabase not configured');
-  const ext = file.name.split('.').pop() || 'png';
-  const path = `${slug}-${Date.now()}.${ext}`;
-  const { error } = await sb.storage.from('logos').upload(path, file, { cacheControl: '3600', upsert: false });
-  if (error) throw error;
-  return path;
+/**
+ * Cloudflare Turnstile token for the widget inside `root` (defaults to the
+ * whole document). Scoping matters: the page can host several widgets (publish,
+ * claim, edit), and a form must send ITS token, not the first one on screen.
+ */
+export function turnstileToken(root: ParentNode = document): string | undefined {
+  const el = root.querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]');
+  return el?.value || undefined;
+}
+
+/**
+ * Upload a company logo.
+ *
+ * The browser no longer writes to Storage directly — the `logos` bucket has
+ * no public insert policy. Instead it asks the Worker for a one-shot,
+ * path-scoped signed URL, then PUTs the bytes straight to Storage. The Worker
+ * picks the path (so a caller cannot overwrite an object or choose a name)
+ * and applies the rate-limit / honeypot / Turnstile checks first.
+ *
+ * Returns the object path (not the URL) so `logoPublicUrl(path)` still works.
+ */
+export async function uploadLogo(file: File, _slug?: string, token?: string): Promise<string> {
+  const res = await fetch('/api/logo-upload-url', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mime: file.type, size: file.size, turnstile: token || turnstileToken() }),
+    signal: AbortSignal.timeout(15000),
+  });
+  const out = (await res.json().catch(() => ({}))) as {
+    ok?: boolean; uploadUrl?: string; path?: string; error?: string;
+  };
+  if (!res.ok || !out.ok || !out.uploadUrl || !out.path) {
+    throw new Error(out.error || `upload URL failed (${res.status})`);
+  }
+  const put = await fetch(out.uploadUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': file.type || 'application/octet-stream', 'x-upsert': 'false' },
+    body: file,
+    signal: AbortSignal.timeout(25000),
+  });
+  if (!put.ok) throw new Error(`logo upload failed (${put.status})`);
+  return out.path;
 }

@@ -21,6 +21,8 @@ export const SITE = {
     emailLabel: 'Email the desk',
     phone: '+254721725958',
     phoneDisplay: '+254 721 725 958',
+    /** Click-to-chat deep link (digits only, no plus). Opens a chat with the desk. */
+    whatsapp: 'https://wa.me/254721725958',
     city: 'Nairobi, Kenya',
     address: 'Riverside Drive, Westlands, Nairobi, Kenya',
   },

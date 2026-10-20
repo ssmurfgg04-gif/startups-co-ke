@@ -9,11 +9,10 @@ Built on the "standing on shoulders of giants" principle: [Astro 5](https://astr
 
 - `src/` — the Astro 5 app (pages, components, layouts, data, content collections)
 - `worker/` — the Cloudflare Worker: the single production backend (`index.js` + `lib.mjs` + `render.mjs` + `brief.mjs`)
-- `docs/` — `DECISIONS.md` (why everything is the way it is), `SPEC.md` (product spec), `TASTE-SKILL-README.md`
+- `docs/` — `DECISIONS.md` (why everything is the way it is), `SPEC.md` (product spec), `ARCHITECTURE.md` (request map + triage table)
 - `research/` — raw research captures (search results, Google News RSS, arXiv, Google Trends)
 - `tools/` — `schema.sql`, `seed.sql` (real sourced seed data), `run_sql.py` (Supabase Management API runner)
-- `skills/taste-skill/` — vendored design-taste skill (MIT, Leonxlnx) used for the visual QA loop
-- `qa/` — screenshots, VLM reviews, E2E persona reports
+- `qa/` — VLM reviews + E2E persona reports (screenshots are local only, gitignored)
 - `supabase/migrations/` — schema applied to the live project
 
 ## Stack
@@ -58,29 +57,33 @@ PUBLIC_SUPABASE_ANON_KEY=...
 # worker secrets (Cloudflare dashboard — never in source)
 RESEND_API_KEY=re_...
 SUPABASE_SERVICE_ROLE_KEY=...
-NOTIFY_EMAIL=desk@startups.co.ke   # the desk mailbox, no code fallback
+DESK_EMAIL=desk@startups.co.ke   # desk login + notification recipient (secret)
 # optional privacy-friendly analytics (loads only after cookie consent)
 PUBLIC_ANALYTICS_DOMAIN=startups.co.ke
 ```
 
-**Worker runtime config.** The Cloudflare Worker is the only backend. Non-secret vars ship in `wrangler.jsonc` (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `NOTIFY_EMAIL`); secrets live ONLY in **Cloudflare dashboard → Workers → startups-co-ke → Settings → Variables & Secrets** (never in source):
+**Worker runtime config.** The Cloudflare Worker is the only backend. Non-secret vars ship in `wrangler.jsonc` (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `PUBLIC_TURNSTILE_SITE_KEY`); secrets live ONLY in **Cloudflare dashboard → Workers → startups-co-ke → Settings → Variables & Secrets** (never in source):
 
 - `SUPABASE_SERVICE_ROLE_KEY` — required for writes; the Worker answers 503 without it (check `/api/health`).
 - `RESEND_API_KEY` — required to actually send email; without it email no-ops and the database stays the source of truth.
-- `NOTIFY_EMAIL` — the desk mailbox. No hardcoded fallback: missing config fails closed (the desk simply won't unlock).
+- `DESK_EMAIL` — the desk mailbox. No hardcoded fallback: missing config fails closed (the desk simply won't unlock). `NOTIFY_EMAIL` is still accepted as a legacy alias.
+- `TURNSTILE_SECRET` — Cloudflare Turnstile secret. When set, `/api/startup-create` requires a valid, single-use token; when absent the check is skipped (local dev). The public site key is the `PUBLIC_TURNSTILE_SITE_KEY` var.
 - `RESEND_FROM` — default `startups.co.ke <notices@startups.co.ke>` (domain verified ✓).
 
 The legacy `POST /api/notify` endpoint was deleted (unauthenticated email relay).
 
 ## Supabase
 
-Project ref: `<project-ref>` (region eu-west-2). Schema in `supabase/migrations/0001_init.sql` + `tools/schema.sql`:
+Project ref: `<project-ref>` (region eu-west-2). The tables the Worker actually reads/writes:
 
-- `submissions` — every user-submitted flow (startup, claim, job, event, intro, issue, trial, buy, sponsor, register). Public insert, owner-only read (RLS). **This table is the review queue** — browse it in the Supabase dashboard → Table Editor → submissions; every entry also lands in the desk inbox via the Resend function above.
+- `community_startups` — founder listings (slug column + `data` JSONB). Written only by the Worker with the service key; public reads go through `/startups/community/*`.
+- `review_queue` — every non-listing submission (claim, job, event, intro, issue, trial, buy, sponsor, register). **This is the review surface**; browse it in the Supabase dashboard → Table Editor → review_queue. The desk inbox also gets a Resend copy.
 - `newsletter_subscribers` — The Ecosystem Brief signups (unique email).
-- `logos` — public storage bucket for user-uploaded company logos.
+- `rate_limits` — per-IP daily counters (`ip`, `day`, `n`) used by the Worker.
 
-Auth: magic-link sign-in (Supabase Auth), site_url + redirect allow-list preconfigured.
+RLS is enabled on every app table and there are **no anon/authenticated policies** on `community_startups`, `review_queue`, `rate_limits` or `newsletter_subscribers`, so the public key can neither read nor write them; the Worker's service key is the only writer. `logos` is public-read with no insert policy — the Worker mints a one-shot, path-scoped signed upload from `/api/logo-upload-url` (honeypot + per-IP cap; no auth, because anonymous publish has to work).
+
+Auth: Supabase Auth, password first with an email-link alternative (same dialog), site_url + redirect allow-list preconfigured. Signed-in founders manage their own listings from the same dialog.
 
 ## Jobs automation (piggyback, zero manual upkeep)
 
@@ -102,19 +105,28 @@ Auth: magic-link sign-in (Supabase Auth), site_url + redirect allow-list preconf
 
 - **Flow:** founder opens *List your startup* → publishes → live immediately at
   `/startups/community/<slug>` (server-rendered by the Worker from Supabase).
-  No review queue. Optional review fallback still writes to the Supabase
-  `submissions` table.
+  No review queue. The review fallback (other forms) writes to `review_queue`.
 - **Storage:** Supabase table `community_startups` (slug-keyed) via the Worker's
   service key; rate-limit counters live in the `rate_limits` table.
-- **Spam controls:** hidden honeypot (`company_url`), strict field caps, https-only
-  website links, per-IP daily cap from `cf-connecting-ip` only (5 anon / 10 with a
-  verified session), `rel="nofollow ugc"` on founder links, Founder-submitted badge
-  until editorially verified.
+- **Self-serve edits:** a signed-in founder sees *Your listings* in the same auth
+  dialog and can edit, hide or republish their own row (`GET /api/my-listings`,
+  `POST /api/listing-update`). Ownership is enforced in the query itself
+  (`slug` AND `data->>userId`); non-owners get 404, never 403. Anonymous
+  submissions can be claimed by emailing the desk, which links `userId` once.
+- **Spam controls:** Cloudflare Turnstile on publish (single-use token; verified
+  once in `/api/startup-create`, so the rate-limit bucket is not burned),
+  hidden honeypot (`company_url`), strict field caps, https-only website links,
+  per-IP daily cap from `cf-connecting-ip` only (5 anon / 10 with a verified
+  session; 30 edits), `rel="nofollow ugc"` on founder links, Founder-submitted
+  badge until editorially verified, and `clientRef` idempotency so a retry
+  returns the same listing instead of a duplicate.
 - **Removing a bad listing:** `/desk` → Unlist or Delete (one click, session-gated;
   records are kept for audit except explicit delete). Any record whose `status` is
   not `published` is excluded from `?format=md` and the list feed.
-- **Caching:** dynamic pages answer `s-maxage=300, stale-while-revalidate=86400`;
-  static assets are immutable (`/_astro/*`, `/fonts/*`); HTML revalidates.
+- **Caching:** community pages are rendered per request so an edit is visible
+  immediately (the response still carries `s-maxage=300`; Cloudflare does not
+  cache HTML without a cache rule); `list.json` is cached in the Worker for 60 s;
+  static assets are immutable (`/_astro/*`, `/fonts/*`).
 
 ## Performance & Cloudflare notes (Session 7)
 
@@ -132,4 +144,5 @@ Auth: magic-link sign-in (Supabase Auth), site_url + redirect allow-list preconf
 
 ## Contact
 
-contact@startups.co.ke · +254 700 000 000 · WhatsApp wa.me/254700000000
+Contact details live on the site's `/contact` page. This file deliberately carries
+no personal mailbox or phone number.

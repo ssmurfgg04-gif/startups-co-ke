@@ -3,6 +3,10 @@
   "name": "startups-co-ke",
   "compatibility_date": "2026-10-01",
   "main": "worker/index.js",
+  // Public surface is the custom domain only. Leaving workers.dev on would
+  // expose a second, non-HSTS origin that bypasses any zone-level rules (M6).
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -14,8 +18,16 @@
   "vars": {
     "PUBLIC_SUPABASE_URL": "https://eezqpsbhmnhuhnmiwnsz.supabase.co",
     "PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlenFwc2JobW5odWhubWl3bnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwNjQzMjgsImV4cCI6MjEwNzY0MDMyOH0.Ks8O3JMluiPxJuozW3CvgU-lsReS7qolo6WR4wO2fXM",
-    "NOTIFY_EMAIL": "jackblessed191@gmail.com"
+    // Public Turnstile site key. The SECRET lives only in the Worker secret
+    // TURNSTILE_SECRET; without it the check is skipped (fail-open for local dev).
+    "PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAFb9FAfoXKvdJ2o4"
   },
+  // Desk identity + notification recipient is a SECRET, not a var: this repo is
+  // public and the old value leaked a personal mailbox. Before deploying run:
+  //   wrangler secret put DESK_EMAIL        (the owner's Supabase login)
+  // Without it, deskGuard() fails closed (no desk access) and notification
+  // email has no recipient.
+
   "observability": {
     "enabled": true
   }
