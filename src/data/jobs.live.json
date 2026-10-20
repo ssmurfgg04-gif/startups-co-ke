@@ -2,7 +2,7 @@
  "fetchedAt": "2026-10-20",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 23,
+  "checked": 22,
   "dropped": 2,
   "ambiguous": 0
  },
@@ -27,8 +27,8 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 159,
-   "kept": 14,
+   "count": 154,
+   "kept": 13,
    "ok": true
   },
   {
@@ -168,18 +168,6 @@
    "category": "Engineering",
    "postedDays": 40,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
-   "board": "Greenhouse",
-   "tags": []
-  },
-  {
-   "id": "moniepoint-head-of-engineering-payment-gateway-",
-   "title": "Head of Engineering, Payment Gateway ",
-   "companyId": "moniepoint",
-   "location": "Remote, Kenya",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": 41,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4971812101",
    "board": "Greenhouse",
    "tags": []
   },

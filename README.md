@@ -67,7 +67,7 @@ PUBLIC_ANALYTICS_DOMAIN=startups.co.ke
 - `SUPABASE_SERVICE_ROLE_KEY` — required for writes; the Worker answers 503 without it (check `/api/health`).
 - `RESEND_API_KEY` — required to actually send email; without it email no-ops and the database stays the source of truth.
 - `DESK_EMAIL` — the desk mailbox. No hardcoded fallback: missing config fails closed (the desk simply won't unlock). `NOTIFY_EMAIL` is still accepted as a legacy alias.
-- `TURNSTILE_SECRET` — Cloudflare Turnstile secret. When set, `/api/startup-create` requires a valid, single-use token; when absent, publishing is **refused at the edge** (503) so the gate can never silently disappear; only local `wrangler dev` (no `request.cf`) skips it. The public site key is the `PUBLIC_TURNSTILE_SITE_KEY` var.
+- `TURNSTILE_SECRET` — Cloudflare Turnstile secret. When set, `/api/startup-create` requires a valid, single-use token; when absent, publishing is **refused** (503) so the gate can never silently disappear. The only exception is the explicit `TURNSTILE_SKIP=1` switch, used for local `wrangler dev` runs and never set in production. The public site key is the `PUBLIC_TURNSTILE_SITE_KEY` var.
 - `RESEND_FROM` — default `startups.co.ke <notices@startups.co.ke>` (domain verified ✓).
 
 The legacy `POST /api/notify` endpoint was deleted (unauthenticated email relay).
@@ -123,10 +123,12 @@ Auth: Supabase Auth, password first with an email-link alternative (same dialog)
 - **Removing a bad listing:** `/desk` → Unlist or Delete (one click, session-gated;
   records are kept for audit except explicit delete). Any record whose `status` is
   not `published` is excluded from `?format=md` and the list feed.
-- **Caching:** community pages are rendered per request so an edit is visible
-  immediately (the response still carries `s-maxage=300`; Cloudflare does not
-  cache HTML without a cache rule); `list.json` is cached in the Worker for 60 s;
-  static assets are immutable (`/_astro/*`, `/fonts/*`).
+- **Caching:** community pages and the listing feed are rendered per request and sent
+  with `no-store`, so a publish is visible on the very next view and an edit shows up
+  at once. That matters here: this zone's Cloudflare Browser Cache TTL is 4 hours and
+  Cloudflare rewrites any positive `max-age` up to it, so a cached feed used to keep
+  new listings invisible for hours (and a CDN purge cannot clear a copy a visitor's
+  browser already holds). Static assets stay immutable (`/_astro/*`, `/fonts/*`).
 
 ## Performance & Cloudflare notes (Session 7)
 

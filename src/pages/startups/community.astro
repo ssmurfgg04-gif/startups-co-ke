@@ -215,7 +215,14 @@ const jsonld = {
       }
 
       try {
-        const r = await fetch('/startups/community/list.json', { headers: { Accept: 'application/json' } });
+        // `cache: 'no-store'` on the request: a founder who just published
+      // must see their listing on the next page view. Without it the
+      // browser may answer from its own copy of the feed (this zone's
+      // Browser Cache TTL is 4 hours), and the new listing stays invisible.
+      const r = await fetch('/startups/community/list.json', {
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+      });
         const out = await r.json();
         rows = out?.startups ?? [];
         host.querySelector('[data-community-loading]')?.remove();

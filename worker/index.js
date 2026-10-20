@@ -38,7 +38,33 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 const NO_STORE = { 'Cache-Control': 'no-store' };
-const HTML_CACHE = 'public, max-age=0, s-maxage=300, stale-while-revalidate=86400';
+/**
+ * Cache policy for anything a founder can change in seconds.
+ *
+ * This zone's Browser Cache TTL is 14400 (4 hours) and Cloudflare REWRITES
+ * any positive origin `max-age` up to that value: "Cloudflare respects
+ * whichever value is higher: the Browser Cache TTL in Cloudflare or the
+ * max-age header". So a `max-age=60` listing feed reached browsers as
+ * `max-age=14400` and a repeat visitor kept the pre-publish list for four
+ * hours. Purging the CDN does NOT clear a copy already in a visitor's
+ * browser, so a cache purge alone can never fix this.
+ *
+ * `no-store` is the only directive that cannot be rewritten into a stale
+ * copy: the browser never stores it and Cloudflare never serves it from
+ * cache. The edge may still cache it under `Cloudflare-CDN-Cache-Control`,
+ * which is a separate directive that only Cloudflare's cache reads.
+ */
+const FRESH = 'no-store';
+/** Edge-only TTL for the listing feed: Cloudflare's cache, never a browser's. */
+const EDGE_FRESH = { 'Cloudflare-CDN-Cache-Control': 'public, max-age=30, stale-while-revalidate=60' };
+/**
+ * Headers for the live listing feed: a browser must never store it, and
+ * Cloudflare's own edge may keep it for half a minute. `s-maxage` alone is
+ * not enough - a browser ignores it, and this zone's Browser Cache TTL
+ * rewrites any positive `max-age` to 4 hours, so the browser-facing
+ * directive has to be `no-store` to survive.
+ */
+const FRESH_HEADERS = { 'Cache-Control': FRESH, ...EDGE_FRESH };
 
 const SECURITY = {
   'X-Frame-Options': 'DENY',
@@ -74,25 +100,44 @@ const LABELS = {
   issue: 'Data issue report',
 };
 
-/** Simple edge cache for GET 200s. Best effort; never breaks a response. */
-async function cached(ctx, req, ttl, make) {
-  let cache = null;
-  try { cache = caches.default; } catch { /* no cache in this runtime */ }
-  if (cache) {
-    try {
-      const hit = await cache.match(req);
-      if (hit) return hit;
-    } catch { /* fall through */ }
+/**
+ * Live listing feed. Deliberately NOT cached anywhere.
+ *
+ * The obvious place for this is `caches.default` (the shared edge cache),
+ * but a stored entry is served by Cloudflare with the headers it was stored
+ * with, and this zone's Browser Cache TTL (14400) rewrites any positive
+ * `max-age` up to four hours before the browser sees it. `list.json` is
+ * cacheable-by-extension for Cloudflare, so the feed was being stored,
+ * served to browsers as `max-age=14400`, and a new listing stayed
+ * invisible to repeat visitors for hours. Purging the CDN does not clear a
+ * copy a visitor already holds, and a purge could not have fixed it anyway.
+ *
+ * So: no shared-cache entry, no browser cache, no in-Worker memo. Every
+ * read is one indexed Supabase query - the same cost the listing page
+ * already pays per view - and a publish is visible on the very next
+ * request, in every isolate, with no window to wait out.
+ */
+async function listJsonFresh(env) {
+  const rows = await listListings(env);
+  if (rows === null) {
+    return { ok: true, count: 0, startups: [], notice: 'Listings storage is warming up. Try again shortly.' };
   }
-  const res = await make();
-  if (cache && res.status === 200) {
-    try {
-      const store = new Response(res.clone().body, res);
-      store.headers.set('Cache-Control', `public, max-age=${ttl}`);
-      ctx.waitUntil(cache.put(req, store));
-    } catch { /* ignore */ }
-  }
-  return res;
+  const startups = rows
+    .filter((r) => r.status === 'published' && !String(r.slug || '').startsWith('__'))
+    .map((r) => ({
+      slug: r.slug,
+      name: r.name,
+      tagline: r.tagline,
+      sector: r.sector,
+      stage: r.stage,
+      county: r.county,
+      website: r.website,
+      founderName: r.founderName || null,
+      logoUrl: r.logoUrl || null,
+      createdAt: r.createdAt,
+      source: r.source,
+    }));
+  return { ok: true, count: startups.length, startups };
 }
 
 /** Serve the Astro 404 page for unmatched paths (correct status code). */
@@ -120,31 +165,10 @@ async function asset404(req, env) {
 /* ------------------------------------------------------------------ */
 
 async function handleList(req, env) {
-  const rows = await listListings(env);
-  if (rows === null) {
-    return json(200, { ok: true, count: 0, startups: [], notice: 'Listings storage is warming up. Try again shortly.' }, {
-      ...CORS,
-      'Cache-Control': 'public, max-age=30',
-    });
-  }
-  const out = rows
-    .filter((r) => r.status === 'published' && !String(r.slug || '').startsWith('__'))
-    .map((r) => ({
-      slug: r.slug,
-      name: r.name,
-      tagline: r.tagline,
-      sector: r.sector,
-      stage: r.stage,
-      county: r.county,
-      website: r.website,
-      founderName: r.founderName || null,
-      logoUrl: r.logoUrl || null,
-      createdAt: r.createdAt,
-      source: r.source,
-    }));
-  return json(200, { ok: true, count: out.length, startups: out }, {
+  const body = await listJsonFresh(env);
+  return json(200, body, {
     ...CORS,
-    'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=86400',
+    ...FRESH_HEADERS,
   });
 }
 
@@ -173,12 +197,12 @@ async function handlePage(req, env, slugRaw) {
   if (wantsMd) {
     return new Response(renderMarkdown(rec, slug), {
       status: 200,
-      headers: { 'Content-Type': 'text/markdown; charset=utf-8', 'Cache-Control': HTML_CACHE, 'X-Robots-Tag': 'noindex', ...SECURITY },
+      headers: { 'Content-Type': 'text/markdown; charset=utf-8', 'Cache-Control': FRESH, 'X-Robots-Tag': 'noindex', ...SECURITY },
     });
   }
   return new Response(renderPage(rec, slug), {
     status: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': HTML_CACHE, ...SECURITY },
+    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': FRESH, ...SECURITY },
   });
 }
 
@@ -206,11 +230,13 @@ async function handleCreate(req, env, ctx) {
 
   const user = await verifyUser(env, req);
 
-  // Fail closed on the edge: a deploy that lost TURNSTILE_SECRET must not
-  // silently turn the bot check off in production. `req.cf` is only populated
-  // for real edge requests, so local `wrangler dev` keeps the documented
-  // fail-open skip (no Turnstile account needed to run the suite locally).
-  if (!env.TURNSTILE_SECRET && req.cf) {
+  // Fail closed: a deploy that lost TURNSTILE_SECRET must not silently turn
+  // the bot check off. The only way to publish without a secret is the
+  // explicit `TURNSTILE_SKIP=1` switch, which exists for local `wrangler
+  // dev` runs and is never set in production. `req.cf` is NOT a usable
+  // discriminator here - wrangler dev populates it too.
+  const skipTurnstile = String(env.TURNSTILE_SKIP ?? '') === '1' && !env.TURNSTILE_SECRET;
+  if (!env.TURNSTILE_SECRET && !skipTurnstile) {
     return json(503, { ok: false, error: 'Publishing is temporarily unavailable. Your entries are safe in the form; please try again shortly.' }, { ...CORS, ...NO_STORE });
   }
 
@@ -282,6 +308,8 @@ async function handleCreate(req, env, ctx) {
     ].join('\n'),
   }));
 
+  // A new listing must be visible to the public NOW: the feed is read fresh
+  // on every request, so the row that was just written is already public.
   return json(200, { ok: true, slug: record.slug, url: `https://startups.co.ke/startups/community/${record.slug}` }, { ...CORS, ...NO_STORE });
 }
 
@@ -726,7 +754,12 @@ export default {
     // ---- public reads ----
     if (method === 'GET' || method === 'HEAD') {
       if (path === '/startups/community/list.json' || path === '/.netlify/functions/startup-list') {
-        const res = await cached(ctx, req, 60, () => handleList(req, env));
+        // NOT cached in the shared edge cache: Cloudflare serves `list.json`
+        // with the stored headers, and this zone's Browser Cache TTL turns
+        // any positive max-age into 4 hours in the visitor's browser. The
+        // Worker memoises the result for a few seconds instead (see
+        // listJsonFresh), and a publish invalidates it immediately.
+        const res = await handleList(req, env);
         return method === 'HEAD' ? new Response(null, { status: res.status, headers: res.headers }) : res;
       }
       if (path.startsWith('/startups/community/') || path === '/.netlify/functions/startup-page') {

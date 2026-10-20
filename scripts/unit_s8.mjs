@@ -62,29 +62,48 @@ await sb(sbEnv, '/rest/v1/x', { method: 'POST', body: { a: 1 } });
 ok('sb POST with body sets Content-Type + JSON body', seen.init.headers['Content-Type'] === 'application/json' && seen.init.body === '{"a":1}');
 globalThis.fetch = realFetch;
 
-// ---- Turnstile config: fail closed on the edge, skip only in local dev ----
+// ---- Turnstile config: fail closed unless explicitly skipped ----
 // A deploy that loses TURNSTILE_SECRET must not silently disable the bot
-// check; `req.cf` exists only on real edge requests, so wrangler dev still
-// runs without a Turnstile account.
+// check. The single escape hatch is the explicit TURNSTILE_SKIP=1 switch
+// used for local `wrangler dev` runs (never set in production).
 const worker = (await import('../worker/index.js')).default;
-const mkReq = (cf, body = {}) => {
-  const req = new Request('https://startups.co.ke/api/startup-create', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'cf-connecting-ip': '1.2.3.4' },
-    body: JSON.stringify(body),
-  });
-  if (cf) Object.defineProperty(req, 'cf', { value: cf });
-  return req;
-};
+const mkReq = (body = {}) => new Request('https://startups.co.ke/api/startup-create', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', 'cf-connecting-ip': '1.2.3.4' },
+  body: JSON.stringify(body),
+});
 const guardEnv = { SUPABASE_SERVICE_ROLE_KEY: 'svc-test' };
 const ctx = { waitUntil() {} };
-const edge = await worker.fetch(mkReq({ colo: 'NBO' }, { name: 'Acme Test' }), guardEnv, ctx);
-ok('edge + no TURNSTILE_SECRET -> 503 (fail closed)', edge.status === 503);
-const local = await worker.fetch(mkReq(null, {}), guardEnv, ctx);
-ok('local dev (no req.cf) still skips Turnstile -> 422 validation', local.status === 422);
+const edge = await worker.fetch(mkReq({ name: 'Acme Test' }), guardEnv, ctx);
+ok('no TURNSTILE_SECRET -> 503 (fail closed)', edge.status === 503);
+const skipped = await worker.fetch(mkReq({}), { ...guardEnv, TURNSTILE_SKIP: '1' }, ctx);
+ok('TURNSTILE_SKIP=1 (local dev) -> 422 validation, no 503', skipped.status === 422);
 const hOff = await (await worker.fetch(new Request('https://startups.co.ke/api/health'), guardEnv, ctx)).json();
 ok('health reports turnstile:false when the secret is missing', hOff.turnstile === false);
 const hOn = await (await worker.fetch(new Request('https://startups.co.ke/api/health'), { ...guardEnv, TURNSTILE_SECRET: 'x' }, ctx)).json();
 ok('health reports turnstile:true when the secret is set', hOn.turnstile === true);
+
+// ---- listing feed: never cached by a browser, always fresh after a publish ----
+// The zone's Browser Cache TTL is 4h and Cloudflare rewrites any positive
+// max-age up to it, so a `max-age=60` feed reached browsers as 14400s and a
+// new listing stayed invisible for hours. The feed must carry `no-store`,
+// and a publish must invalidate the Worker's memo immediately.
+globalThis.fetch = async (url) => {
+  if (String(url).includes('/rest/v1/community_startups')) {
+    return new Response(JSON.stringify([{ slug: 'alpha', name: 'Alpha', status: 'published', data: {} }]), {
+      status: 200, headers: { 'content-type': 'application/json' },
+    });
+  }
+  return new Response('[]', { status: 200, headers: { 'content-type': 'application/json' } });
+};
+const listEnv = { PUBLIC_SUPABASE_URL: 'https://example.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'svc-test' };
+const listRes = await worker.fetch(new Request('https://startups.co.ke/startups/community/list.json'), listEnv, ctx);
+const listCc = listRes.headers.get('cache-control') || '';
+ok('listing feed is no-store (a browser can never hold a stale copy)', listCc.includes('no-store'));
+ok('listing feed has no positive max-age for the browser', !/max-age\s*=\s*[1-9]/.test(listCc));
+ok('listing feed keeps an edge-only TTL header', !!listRes.headers.get('cloudflare-cdn-cache-control'));
+const first = await (await worker.fetch(new Request('https://startups.co.ke/startups/community/list.json'), listEnv, ctx)).json();
+ok('listing feed returns the published rows', first.count === 1 && first.startups[0].slug === 'alpha');
+globalThis.fetch = realFetch;
 
 console.log('worker security unit checks done');

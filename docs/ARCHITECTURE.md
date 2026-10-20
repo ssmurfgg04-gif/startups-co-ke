@@ -38,26 +38,26 @@ Two backends, one writer:
 
 ## 2. Request routing
 
-`worker/index.js:708` is the single entry point (`fetch`). Order matters: OPTIONS → GET/HEAD → POST → 405.
+`worker/index.js:743` is the single entry point (`fetch`). Order matters: OPTIONS → GET/HEAD → POST → 405.
 
 | Method | Path | Handler (index.js) | Auth | Touches | Cache |
 | --- | --- | --- | --- | --- | --- |
-| GET/HEAD | `/startups/community/list.json` | `handleList` :122 | none | `community_startups` | Worker cache 60 s (`s-maxage=60`) |
-| GET/HEAD | `/startups/community/<slug>` | `handlePage` :151 | none | `community_startups` | rendered per request, `s-maxage=300` header |
-| GET | `/startups/community/<slug>?format=md` | `handlePage` :151 | none | same | same, `text/markdown`, `noindex` |
+| GET/HEAD | `/startups/community/list.json` | `handleList` :167 | none | `community_startups` | **never cached** (`no-store`): fresh on every read, see §8 |
+| GET/HEAD | `/startups/community/<slug>` | `handlePage` :175 | none | `community_startups` | rendered per request, `no-store` |
+| GET | `/startups/community/<slug>?format=md` | `handlePage` :175 | none | same | same, `text/markdown`, `noindex`, `no-store` |
 | GET | `/desk`, `/desk/reset` | `deskHtml` (`render.mjs:267`) | none (shell only) | — | `no-store` |
-| GET | `/desk/brief` | `handleBriefGet` :579 | desk session | `newsletter_subscribers`, `brief.mjs` | `no-store` |
-| GET/POST | `/desk/data` | `handleDeskData` :534 | desk session | queue, listings, subscribers | `no-store` |
-| POST | `/desk/brief-send` | `handleBriefSend` :603 | desk session | subscribers, Resend, queue (audit) | `no-store` |
-| GET | `/api/health` | inline :760 | none | env booleans only | `no-store` |
-| GET | `/api/my-listings` | `handleMyListings` :289 | bearer | `community_startups` (owner only) | `no-store` |
-| GET/POST | `/api/unsubscribe` | `handleUnsubscribe` :683 | HMAC token | `newsletter_subscribers` | `no-store` |
-| POST | `/api/startup-create` | `handleCreate` :194 | optional bearer + Turnstile | `community_startups`, `rate_limits` | `no-store` |
-| POST | `/api/review-submit` | `handleReview` :380 | none | `review_queue`, `rate_limits` | `no-store` |
-| POST | `/api/newsletter` | `handleNewsletter` :438 | none | `newsletter_subscribers`, `rate_limits` | `no-store` |
-| POST | `/api/logo-upload-url` | `handleLogoUploadUrl` :497 | none (honeypot + cap) | Storage signed URL | `no-store` |
-| POST | `/api/listing-update` | `handleListingUpdate` :324 | bearer (owner) | `community_startups`, `rate_limits` | `no-store` |
-| * | anything else | `asset404` :99 → `ASSETS` | — | `dist/404.html` | `no-store`, `noindex` |
+| GET | `/desk/brief` | `handleBriefGet` :613 | desk session | `newsletter_subscribers`, `brief.mjs` | `no-store` |
+| GET/POST | `/desk/data` | `handleDeskData` :568 | desk session | queue, listings, subscribers | `no-store` |
+| POST | `/desk/brief-send` | `handleBriefSend` :637 | desk session | subscribers, Resend, queue (audit) | `no-store` |
+| GET | `/api/health` | inline :791 | none | env booleans only | `no-store` |
+| GET | `/api/my-listings` | `handleMyListings` :323 | bearer | `community_startups` (owner only) | `no-store` |
+| GET/POST | `/api/unsubscribe` | `handleUnsubscribe` :717 | HMAC token | `newsletter_subscribers` | `no-store` |
+| POST | `/api/startup-create` | `handleCreate` :218 | optional bearer + Turnstile | `community_startups`, `rate_limits` | `no-store` |
+| POST | `/api/review-submit` | `handleReview` :414 | none | `review_queue`, `rate_limits` | `no-store` |
+| POST | `/api/newsletter` | `handleNewsletter` :472 | none | `newsletter_subscribers`, `rate_limits` | `no-store` |
+| POST | `/api/logo-upload-url` | `handleLogoUploadUrl` :531 | none (honeypot + cap) | Storage signed URL | `no-store` |
+| POST | `/api/listing-update` | `handleListingUpdate` :358 | bearer (owner) | `community_startups`, `rate_limits` | `no-store` |
+| * | anything else | `asset404` :144 → `ASSETS` | — | `dist/404.html` | `no-store`, `noindex` |
 
 Legacy `/.netlify/functions/*` aliases still resolve for list, page, create, review and newsletter (client compatibility).
 The old `POST /api/notify` is intentionally gone (open email relay).
@@ -119,7 +119,7 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 | `SUPABASE_SERVICE_ROLE_KEY` | secret | writes answer 503; `/api/health` reports `storage:false` |
 | `RESEND_API_KEY` | secret | email no-ops, DB is still written; `email:false` |
 | `DESK_EMAIL` | secret | desk **fails closed** (404 everywhere), no notification recipient |
-| `TURNSTILE_SECRET` | secret | publish answers **503 at the edge** (fail closed); skipped only under local `wrangler dev` |
+| `TURNSTILE_SECRET` | secret | publish answers **503** (fail closed); only the explicit `TURNSTILE_SKIP=1` switch (local `wrangler dev`) skips the check |
 | `RESEND_FROM` | secret/var | defaults to `startups.co.ke <notices@startups.co.ke>` |
 | `PUBLIC_ANALYTICS_DOMAIN` | var | analytics script not loaded |
 
@@ -142,20 +142,21 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 | --- | --- | --- |
 | Publish returns **403** “Verification failed” | `lib.mjs:409` `verifyTurnstile`; `TURNSTILE_SECRET` | token was already spent (retry reuses it), widget never rendered, or secret/site key belong to different Turnstile widgets |
 | Publish returns **429** | `lib.mjs:140` `checkRateLimit`; `rate_limits` rows | shared office NAT, or a bot burned the cap — check `ip`/`day` |
-| Publish returns **503** | `handleCreate:203` service-key guard, `:213` Turnstile-config guard | `SUPABASE_SERVICE_ROLE_KEY` or `TURNSTILE_SECRET` missing in the Worker env — `/api/health` shows which |
+| Publish returns **503** | `handleCreate:227` service-key guard, `:235` Turnstile-config guard | `SUPABASE_SERVICE_ROLE_KEY` or `TURNSTILE_SECRET` missing in the Worker env — `/api/health` shows which |
 | Publish **422** | `validateListing` (`lib.mjs:307`) | field too short/long, non-https website, bad email; response carries per-field `errors` |
 | Duplicate listing on retry | `findByClientRef` / `clientRef` | client must send the same `clientRef` for the same form session |
-| Listing page **404** after publish | `handlePage:166` status filter | row `status != 'published'` (unlisted/soft-deleted) |
-| Edit says “not under your account” | `handleListingUpdate:339` | row has no `data->>userId` (anonymous publish) — desk must link it first |
+| Listing page **404** after publish | `handlePage:190` status filter | row `status != 'published'` (unlisted/soft-deleted) |
+| Edit says “not under your account” | `handleListingUpdate:373` | row has no `data->>userId` (anonymous publish) — desk must link it first |
 | Edit or hide does nothing | `updateListingByOwner` return | PATCH matched 0 rows → wrong `userId`; it fails closed by design |
 | Logo missing | `uploadLogo` (client) → `/api/logo-upload-url` → `mintLogoUpload` | oversized/unsupported file, 20/day cap, or Storage bucket policy changed |
 | Email not delivered | `attemptEmail` (`lib.mjs:173`), `RESEND_API_KEY`, `RESEND_FROM` | unverified sender domain, missing key, or Resend quota; the DB write still succeeded |
-| Desk returns 404 | `deskGuard:528` | session email ≠ `DESK_EMAIL`, or `DESK_EMAIL` unset (fails closed) |
+| Desk returns 404 | `deskGuard:562` | session email ≠ `DESK_EMAIL`, or `DESK_EMAIL` unset (fails closed) |
 | Desk shows stale queue | `queueList` | it reads live; check the row `status` (done rows stay) |
 | Brief send refused | `handleBriefSend` | list send requires `approve:true`; desk session required |
 | Unsubscribe link fails | `unsubValid` (`lib.mjs:266`) | token signed with a different secret, or email not in the table |
-| Community list empty | `handleList:122` | service key missing (returns `notice`), or every row is unlisted |
-| Old content after edit | routing comment `index.js:728` | page is rendered per request; a CDN cache rule on HTML is the only way this can still happen |
+| Community list empty | `handleList:167` | service key missing (returns `notice`), or every row is unlisted |
+| **A new listing does not appear on the directory** | §8 invariant 8; `handleList:167` | the feed is read fresh and sent `no-store`; if a listing is missing, the row is not `published` (or the slug is not in the feed). If it appears in `list.json` but not on the page, the browser is showing a cached page — hard-reload; the page is `no-store`, so a reload must show it |
+| Old content after edit | routing comment `index.js:763` | the page is rendered per request and sent `no-store`; the only way to still see old content is a Cloudflare cache rule that caches HTML above the origin headers |
 | Build fails / mixed lockfiles | repo root | `bun.lock` must be the only lockfile (Cloudflare builds with bun) |
 | Wrong fonts / OG images | `Seo.astro`, `public/fonts/`, `public/og/` | assets are immutable-cached: bump the filename |
 
@@ -168,12 +169,13 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 5. **404 vs 403.** Non-owners and non-desk users get 404 so endpoints never confirm a record exists.
 6. **No secrets or personal contact details in the repo.** They live in Cloudflare secrets and `/contact`.
 7. **Rate limits run after validation**, so a fixable typo never burns the day’s allowance; the bot check runs before the counter.
+8. **Never let a browser cache a founder-visible response.** This zone’s Cloudflare **Browser Cache TTL is 14400 (4 h)** and Cloudflare rewrites any positive origin `max-age` up to it ("Cloudflare respects whichever value is higher: the Browser Cache TTL in Cloudflare or the `max-age` header"). A `max-age=60` feed therefore reached browsers as `max-age=14400`, and a newly published listing stayed invisible to repeat visitors for hours. Purging the CDN does **not** clear a copy a visitor’s browser already holds, so a purge can never fix it. The listing feed, the listing pages and the `?format=md` variant therefore send `Cache-Control: no-store`, the feed is read fresh from Supabase on every request, and the client fetches it with `cache: 'no-store'`. If you add caching back, use `Cloudflare-CDN-Cache-Control` (edge-only) and keep the browser-facing directive at `no-store`.
 
 ## 9. Verify before you push
 
 ```powershell
 bun run check   # astro check: TS + .astro types
-bun run test    # 62 assertions, no network: unit_s7 (routing/render/desk), unit_s8 (validation/limits), unit_logo
+bun run test    # 70 assertions, no network: unit_s7 (routing/render/desk), unit_s8 (validation/limits/edge config), unit_logo
 bun run build   # fetch_jobs.mjs + astro build (rewrites src/data/jobs.live.json)
 ```
 
@@ -181,7 +183,7 @@ End-to-end against real storage (writes QA rows; clean them up afterwards):
 
 1. Put `SUPABASE_SERVICE_ROLE_KEY` and `DESK_EMAIL` in `.dev.vars` (gitignored).
 2. Run `wrangler dev` with a config that has **no `build.command`**: the build step rewrites `src/data/jobs.live.json`, which re-triggers the rebuild and loops forever.
-3. Proof-of-human gate: use the always-pass Turnstile test pair — site `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`. Never put a test key in `wrangler.jsonc`.
+3. Proof-of-human gate: put `TURNSTILE_SKIP=1` in `.dev.vars` to skip the check locally (production never sets it), or use the always-pass Turnstile test pair — site `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`. Never put a test key in `wrangler.jsonc`.
 4. `node scripts/e2e_launch.mjs` — 17 checks: anon publish → page renders → signed-in publish → edit is live → hide → republish → 422 shape → 403 without token.
 
 The other `scripts/e2e_*`, `shot_*`, `vlm_*`, `overflow_*` files are one-off session scripts kept for provenance; `e2e_auth`, `e2e_listing_edit`, `e2e_logo` and the `unit_*` trio are the ones still maintained.
@@ -197,6 +199,8 @@ The other `scripts/e2e_*`, `shot_*`, `vlm_*`, `overflow_*` files are one-off ses
 | Post-deploy check | `curl https://startups.co.ke/api/health` → `{"ok":true,"storage":true,"email":true,"anon":true,"turnstile":true}`; `curl -X POST https://startups.co.ke/api/startup-create` with an empty body → **403**; open one community page and one `?format=md`. |
 
 Production facts: Worker `startups-co-ke` (custom domain bound in the dashboard, not in `wrangler.jsonc`), Supabase project `eezqpsbhmnhuhnmiwnsz` in `eu-west-2`, Turnstile widget `0x4AAAAAAFb9FAfoXKvdJ2o4`, Resend domain `startups.co.ke` (region `eu-west-1`, sending verified, `notices@` sender).
+
+Zone cache settings (Cloudflare dashboard → Caching → Configuration): **Browser Cache TTL = 14400 (4 h)**. That is why every founder-visible response carries `no-store` (§8, invariant 8). Keep the `no-store` even if the zone is later set to "Respect existing headers" — a copy already sitting in a visitor's browser is what strands a stale listing, and no purge can reach it. Note: the API token in `.secrets.env` can read the zone but cannot write cache settings or purge (`browser_cache_ttl` → 400, `purge_cache` → 401), so changing it is a dashboard action.
 
 ## 11. Known gaps (accepted for now)
 
