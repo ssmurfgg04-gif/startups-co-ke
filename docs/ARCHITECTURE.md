@@ -67,7 +67,7 @@ The old `POST /api/notify` is intentionally gone (open email relay).
 ### Publish a listing (anonymous or signed in)
 
 1. Client opens the publish dialog → `ModalHost.astro` runs `loadTurnstile()` on first open (lazy, `challenges.cloudflare.com` is fetched only here).
-2. Optional logo: `POST /api/logo-upload-url` (honeypot `company_url`, 20/day/IP, MIME + 2 MB caps) → `mintLogoUpload` (`lib.mjs:371`) returns a one-shot signed PUT + public URL. The browser PUTs the image straight to Storage.
+2. Optional logo: `POST /api/logo-upload-url` (honeypot `company_url`, 20/day/IP, MIME + 2 MB caps) → `mintLogoUpload` (`lib.mjs:373`) returns a one-shot signed PUT + public URL. The browser PUTs the image straight to Storage.
 3. `POST /api/startup-create` with `{...fields, turnstile, clientRef, logoUrl}`.
 4. `handleCreate` order (this order is deliberate):
    honeypot (fake 200) → service-key guard (503) → optional user (`verifyUser`) → **Turnstile** (403, single-use token) → `validateListing` (422) → `clientRef` idempotency (200 duplicate) → rate limit 5 anon / 10 signed-in (429) → insert with unique slug, up to 5 attempts.
@@ -77,10 +77,10 @@ The old `POST /api/notify` is intentionally gone (open email relay).
 ### Edit / hide / republish (signed-in founder)
 
 1. Auth dialog calls `GET /api/my-listings` with the Supabase access token.
-2. `verifyUser` (`lib.mjs:115`) validates the token against `/auth/v1/user` **and requires a confirmed email**.
+2. `verifyUser` (`lib.mjs:116`) validates the token against `/auth/v1/user` **and requires a confirmed email**.
 3. “Edit” opens `#modal-edit-listing`; submit → `POST /api/listing-update`.
 4. `handleListingUpdate`: bearer (401) → slug (422) → ownership check (404, deliberately not 403) → 30 edits/day/IP (429) → action `unlist`/`republish` (status only) or `validateListing` + merge onto stored `data` (logo kept when not replaced).
-5. `updateListingByOwner` (`lib.mjs:524`) scopes the PATCH by `slug` **and** `data->>userId`, so the query itself enforces ownership.
+5. `updateListingByOwner` (`lib.mjs:526`) scopes the PATCH by `slug` **and** `data->>userId`, so the query itself enforces ownership.
 6. Pages are rendered per request, so the edit is visible on the next load.
 
 ### Other forms (claim, job, event, intro, issue, trial, buy, sponsor, register)
@@ -140,20 +140,20 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 
 | Symptom | Look first | Usual cause |
 | --- | --- | --- |
-| Publish returns **403** “Verification failed” | `lib.mjs:407` `verifyTurnstile`; `TURNSTILE_SECRET` | token was already spent (retry reuses it), widget never rendered, or secret/site key belong to different Turnstile widgets |
-| Publish returns **429** | `lib.mjs:139` `checkRateLimit`; `rate_limits` rows | shared office NAT, or a bot burned the cap — check `ip`/`day` |
+| Publish returns **403** “Verification failed” | `lib.mjs:409` `verifyTurnstile`; `TURNSTILE_SECRET` | token was already spent (retry reuses it), widget never rendered, or secret/site key belong to different Turnstile widgets |
+| Publish returns **429** | `lib.mjs:140` `checkRateLimit`; `rate_limits` rows | shared office NAT, or a bot burned the cap — check `ip`/`day` |
 | Publish returns **503** | `handleCreate:203` service-key guard | `SUPABASE_SERVICE_ROLE_KEY` missing in the Worker env |
-| Publish **422** | `validateListing` (`lib.mjs:305`) | field too short/long, non-https website, bad email; response carries per-field `errors` |
+| Publish **422** | `validateListing` (`lib.mjs:307`) | field too short/long, non-https website, bad email; response carries per-field `errors` |
 | Duplicate listing on retry | `findByClientRef` / `clientRef` | client must send the same `clientRef` for the same form session |
 | Listing page **404** after publish | `handlePage:166` status filter | row `status != 'published'` (unlisted/soft-deleted) |
 | Edit says “not under your account” | `handleListingUpdate:339` | row has no `data->>userId` (anonymous publish) — desk must link it first |
 | Edit or hide does nothing | `updateListingByOwner` return | PATCH matched 0 rows → wrong `userId`; it fails closed by design |
 | Logo missing | `uploadLogo` (client) → `/api/logo-upload-url` → `mintLogoUpload` | oversized/unsupported file, 20/day cap, or Storage bucket policy changed |
-| Email not delivered | `attemptEmail` (`lib.mjs:171`), `RESEND_API_KEY`, `RESEND_FROM` | unverified sender domain, missing key, or Resend quota; the DB write still succeeded |
+| Email not delivered | `attemptEmail` (`lib.mjs:173`), `RESEND_API_KEY`, `RESEND_FROM` | unverified sender domain, missing key, or Resend quota; the DB write still succeeded |
 | Desk returns 404 | `deskGuard:528` | session email ≠ `DESK_EMAIL`, or `DESK_EMAIL` unset (fails closed) |
 | Desk shows stale queue | `queueList` | it reads live; check the row `status` (done rows stay) |
 | Brief send refused | `handleBriefSend` | list send requires `approve:true`; desk session required |
-| Unsubscribe link fails | `unsubValid` (`lib.mjs:264`) | token signed with a different secret, or email not in the table |
+| Unsubscribe link fails | `unsubValid` (`lib.mjs:266`) | token signed with a different secret, or email not in the table |
 | Community list empty | `handleList:122` | service key missing (returns `notice`), or every row is unlisted |
 | Old content after edit | routing comment `index.js:728` | page is rendered per request; a CDN cache rule on HTML is the only way this can still happen |
 | Build fails / mixed lockfiles | repo root | `bun.lock` must be the only lockfile (Cloudflare builds with bun) |
@@ -163,8 +163,45 @@ Non-secret vars ship in `wrangler.jsonc`; secrets live only in the Cloudflare da
 
 1. **Service key never reaches the browser.** Only the Worker uses it; `worker/lib.mjs` is the only place it is read.
 2. **Ownership is enforced in SQL, not just in JS.** Any new listing mutation must scope by `slug` AND `data->>userId`.
-3. **Turnstile tokens are single-use.** Verify once, on the final write (`/api/startup-create`). Do not add a second verify for the same token (e.g. logo mint + create).
+3. **Turnstile tokens are single-use.** Verify once, on the final write (`/api/startup-create`). Do not add a second verify for the same token (e.g. logo mint + create). The client must reset the widget after a failed attempt (`resetTurnstile` in `ModalHost.astro`) — the widget keeps showing green on a spent token, so a retry without a reset fails with 403.
 4. **Forms degrade honestly.** Without Supabase config they queue locally and say so; email failures never block a stored record.
 5. **404 vs 403.** Non-owners and non-desk users get 404 so endpoints never confirm a record exists.
 6. **No secrets or personal contact details in the repo.** They live in Cloudflare secrets and `/contact`.
 7. **Rate limits run after validation**, so a fixable typo never burns the day’s allowance; the bot check runs before the counter.
+
+## 9. Verify before you push
+
+```powershell
+bun run check   # astro check: TS + .astro types
+bun run test    # 62 assertions, no network: unit_s7 (routing/render/desk), unit_s8 (validation/limits), unit_logo
+bun run build   # fetch_jobs.mjs + astro build (rewrites src/data/jobs.live.json)
+```
+
+End-to-end against real storage (writes QA rows; clean them up afterwards):
+
+1. Put `SUPABASE_SERVICE_ROLE_KEY` and `DESK_EMAIL` in `.dev.vars` (gitignored).
+2. Run `wrangler dev` with a config that has **no `build.command`**: the build step rewrites `src/data/jobs.live.json`, which re-triggers the rebuild and loops forever.
+3. Proof-of-human gate: use the always-pass Turnstile test pair — site `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`. Never put a test key in `wrangler.jsonc`.
+4. `node scripts/e2e_launch.mjs` — 17 checks: anon publish → page renders → signed-in publish → edit is live → hide → republish → 422 shape → 403 without token.
+
+The other `scripts/e2e_*`, `shot_*`, `vlm_*`, `overflow_*` files are one-off session scripts kept for provenance; `e2e_auth`, `e2e_listing_edit`, `e2e_logo` and the `unit_*` trio are the ones still maintained.
+
+## 10. Deploy and rollback
+
+| What | How |
+| --- | --- |
+| Deploy | `git push origin main` → Cloudflare Workers git integration builds with bun and releases Worker `startups-co-ke` (~2 min). Manual: `bunx wrangler deploy` with `CLOUDFLARE_API_TOKEN`. |
+| Secrets | `bunx wrangler secret put TURNSTILE_SECRET` (same for `RESEND_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DESK_EMAIL`, `RESEND_FROM`). Dashboard → Worker → Settings → Variables. |
+| Rollback | Dashboard → Worker → Deployments → **Rollback** to a previous version (instant, no rebuild), or `git revert` the commit and push. |
+| Data job | `.github/workflows/refresh-data.yml` runs daily at 03:00 UTC (06:00 EAT), rewrites `src/data/jobs.live.json` and pushes — that push is itself a deploy. |
+| Post-deploy check | `curl https://startups.co.ke/api/health` → `{"ok":true,"storage":true,"email":true,"anon":true}`; `curl -X POST https://startups.co.ke/api/startup-create` with an empty body → **403**; open one community page and one `?format=md`. |
+
+Production facts: Worker `startups-co-ke` (custom domain bound in the dashboard, not in `wrangler.jsonc`), Supabase project `eezqpsbhmnhuhnmiwnsz` in `eu-west-2`, Turnstile widget `0x4AAAAAAFb9FAfoXKvdJ2o4`, Resend domain `startups.co.ke` (region `eu-west-1`, sending verified, `notices@` sender).
+
+## 11. Known gaps (accepted for now)
+
+- `TURNSTILE_SECRET` missing means the check is **skipped** (fail-open) and `/api/health` does not report it — a misconfigured prod deploy would be silently spam-open.
+- `rate_limits` is one bucket per IP/day shared by every endpoint, so heavy editing can consume the publishing allowance and vice versa.
+- The custom domain is bound in the dashboard; a fresh deploy from a new account would need that step re-done.
+- `docs/SPEC.md` is a research/notes archive, not the product spec (see `README.md`).
+

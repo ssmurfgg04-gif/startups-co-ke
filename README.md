@@ -9,7 +9,7 @@ Built on the "standing on shoulders of giants" principle: [Astro 5](https://astr
 
 - `src/` — the Astro 5 app (pages, components, layouts, data, content collections)
 - `worker/` — the Cloudflare Worker: the single production backend (`index.js` + `lib.mjs` + `render.mjs` + `brief.mjs`)
-- `docs/` — `DECISIONS.md` (why everything is the way it is), `SPEC.md` (product spec), `ARCHITECTURE.md` (request map + triage table)
+- `docs/` — `DECISIONS.md` (why everything is the way it is), `SPEC.md` (research + brief archive, **not** the product spec), `ARCHITECTURE.md` (request map + triage table)
 - `research/` — raw research captures (search results, Google News RSS, arXiv, Google Trends)
 - `tools/` — `schema.sql`, `seed.sql` (real sourced seed data), `run_sql.py` (Supabase Management API runner)
 - `qa/` — VLM reviews + E2E persona reports (screenshots are local only, gitignored)
@@ -74,7 +74,7 @@ The legacy `POST /api/notify` endpoint was deleted (unauthenticated email relay)
 
 ## Supabase
 
-Project ref: `<project-ref>` (region eu-west-2). The tables the Worker actually reads/writes:
+Project ref: `eezqpsbhmnhuhnmiwnsz` (region eu-west-2). The tables the Worker actually reads/writes:
 
 - `community_startups` — founder listings (slug column + `data` JSONB). Written only by the Worker with the service key; public reads go through `/startups/community/*`.
 - `review_queue` — every non-listing submission (claim, job, event, intro, issue, trial, buy, sponsor, register). **This is the review surface**; browse it in the Supabase dashboard → Table Editor → review_queue. The desk inbox also gets a Resend copy.
@@ -93,7 +93,7 @@ Auth: Supabase Auth, password first with an email-link alternative (same dialog)
 
 ## Deployment
 
-**Cloudflare Workers (the only deploy target).** `wrangler.jsonc` serves the Astro `dist/` as static assets from the Worker (`worker/index.js` handles `/api/*`, `/startups/community/*`, `/desk`, `/auth/*`).
+**Cloudflare Workers (the only deploy target).** `wrangler.jsonc` serves the Astro `dist/` as static assets from the Worker (`worker/index.js` handles `/api/*`, `/startups/community/*` and `/desk`; everything else — including the `/auth` pages — is a static file from `dist/`).
 
 - **Auto-deploy:** the Cloudflare Workers git integration watches `main` — every push runs `bun run build` and ships. Keep `bun.lock` the ONLY lockfile (`package-lock.json` is gitignored; mixed lockfiles broke builds before).
 - **Secrets:** Cloudflare dashboard → Workers → startups-co-ke → Settings → Variables & Secrets (see the list above). `wrangler.jsonc` `vars` holds only non-secrets.
@@ -139,7 +139,7 @@ Auth: Supabase Auth, password first with an email-link alternative (same dialog)
   The literal address appears only inside JSON-LD `contactPoint` (inert data, not scrambled).
 - **SVG dash/pulse animations are hover-gated** and all animations respect
   `prefers-reduced-motion` at the CSS level (no-JS included).
-- Verified: `scripts/unit_s7.mjs` + `scripts/unit_s8.mjs` (43 checks, run against
+- Verified: `bun run test` (62 assertions across `scripts/unit_s7.mjs`, `unit_s8.mjs` and `unit_logo.mjs`, run against
   `worker/lib.mjs` + `worker/render.mjs` — the code that actually ships).
 
 ## Contact

@@ -9,7 +9,8 @@
     "build": "node scripts/fetch_jobs.mjs && astro build",
     "preview": "astro preview --host 0.0.0.0 --port 3000 2>&1 | tee dev.log",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "node scripts/unit_s7.mjs && node scripts/unit_s8.mjs && node scripts/unit_logo.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

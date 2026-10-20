@@ -46,7 +46,8 @@ User directive overrides the original spec's fictional-sample system. Transform:
 - JSON-LD: Organization, WebSite+SearchAction, ItemList, Article, JobPosting, Event, Dataset (funding DB). og:locale en_KE, OG image 1200×630 designed in-house. WhatsApp share buttons (`wa.me`) on articles/companies + `navigator.share`.
 - E-E-A-T: methodology page, named author (desk), per-figure sources, "report an issue" flows — explained in an HTML comment block.
 
-## D7. Taste layer (leonlix/taste-skill, MIT — vendored in `skills/taste-skill/`)
+## D7. Taste layer (leonlix/taste-skill, MIT — consulted, not vendored)
+> **Note (2026-10-20):** the vendored `skills/taste-skill/` copy was removed from the repo (it is a third-party skill tree, not app code). The protocol it established is now simply the house style — tokens in `src/styles/`, copy rules in this section.
 - Applied `minimalist-ui` protocol + `full-output-enforcement` onto the user's exact brand spec (paper/ink/green tokens, Fraunces/Archivo/IBM Plex Mono). Banned-clichés list enforced in all copy (no "Elevate/Seamless/Unleash/Next-Gen/Delve", no lorem, no emoji in UI).
 - Self-review loop = taste-skill's "check your own work in a browser": agent-browser screenshots at 3 widths + VLM critique rounds + fix top issues.
 
@@ -77,6 +78,7 @@ User directive overrides the original spec's fictional-sample system. Transform:
 - Snapshot committed at `src/data/jobs.live.json` (27 roles from 11 boards, fetched 2026-10-15). Dedup vs curated rows on company+normalized title.
 
 ## D11. Netlify deployment (Oct 16, 2026 — session 3)
+> **Superseded (2026-10-19/20):** the site deploys on **Cloudflare Workers** only. `netlify.toml`, the `netlify/` functions and the Netlify workflow were deleted; the Worker aliases the old `/.netlify/functions/*` paths for compatibility. Kept as history.
 - `netlify.toml`: Node 22, `npm run build` → `dist/`, immutable caching for `/_astro/*`, cache for `/logos/*` + feeds, X-Frame-Options/nosniff/Referrer-Policy site-wide. `.nvmrc` 22. Repo keeps `bun.lock` for local dev; Netlify forces npm (`NETLIFY_USE_BUN=false`) for a deterministic install.
 - **Build never breaks on a flaky board**: fetcher exits 0 and keeps the committed snapshot if sources fail; `astro build` does not depend on network.
 - **Env fallbacks**: `src/lib/supabase.ts` falls back to the public project URL + anon key (publishable by design, RLS-guarded) — a fresh Netlify build without env vars still ships a fully working site. `.env` untracked from git (was accidentally committed in early session); `.env.example` is the reference.

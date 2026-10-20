@@ -429,6 +429,14 @@ const turnstileSiteKey = TURNSTILE_SITE_KEY;
     s.defer = true;
     document.head.appendChild(s);
   };
+  // Turnstile tokens are single-use: after a verify (whatever the endpoint
+  // answered) or an expiry the widget still shows green but the token is dead,
+  // so the next Publish would fail with "Verification failed". Reset it after
+  // a failed attempt and after "List another" so every retry gets a fresh one.
+  const resetTurnstile = () => {
+    const ts = (window as unknown as { turnstile?: { reset?: () => void } }).turnstile;
+    try { ts?.reset?.(); } catch { /* widget not rendered yet */ }
+  };
 
   // --- open/close plumbing ---
   // While any dialog is open we flag <body>, fixed chrome (cookie banner,
@@ -558,6 +566,23 @@ const turnstileSiteKey = TURNSTILE_SITE_KEY;
   function hidePublishError() {
     submitForm?.querySelector('#publish-error')?.classList.add('hidden');
   }
+  /**
+   * Back to a clean form after a publish finished (success panel closed or
+   * "List another"). The clientRef MUST go: it is the server's idempotency
+   * key, and keeping it would make the next listing resolve to the previous
+   * slug as a "duplicate" instead of publishing.
+   */
+  function resetPublishForm() {
+    if (!submitForm) return;
+    submitForm.reset();
+    delete submitForm.dataset.clientRef;
+    submitForm.querySelector('#publish-success')?.classList.add('hidden');
+    submitForm.querySelector('#publish-error')?.classList.add('hidden');
+    submitForm.querySelector('[data-publish-actions]')?.classList.remove('hidden');
+    submitForm.querySelector('[data-toggle-mode]')?.closest('p')?.classList.remove('hidden');
+    submitForm.querySelectorAll<HTMLInputElement>('input[type="file"]').forEach((fi) => fi.dispatchEvent(new Event('change')));
+    resetTurnstile();
+  }
 
   /**
    * POST the listing with one automatic retry on network-level failure
@@ -625,6 +650,8 @@ const turnstileSiteKey = TURNSTILE_SITE_KEY;
       };
       setTimeout(poll, 1500);
     }
+    // Closing the success panel ends this listing: next open is a clean form.
+    submitForm?.closest('dialog')?.addEventListener('close', resetPublishForm, { once: true });
   }
   submitForm?.querySelector('[data-copy-live]')?.addEventListener('click', async (ev) => {
     const btn = ev.currentTarget as HTMLButtonElement | null;
@@ -636,11 +663,7 @@ const turnstileSiteKey = TURNSTILE_SITE_KEY;
     } catch { /* clipboard blocked, the URL is selectable text anyway */ }
   });
   submitForm?.querySelector('[data-list-another]')?.addEventListener('click', () => {
-    submitForm!.querySelector('#publish-success')?.classList.add('hidden');
-    submitForm!.querySelector('[data-publish-actions]')?.classList.remove('hidden');
-    submitForm!.querySelector('[data-toggle-mode]')?.closest('p')?.classList.remove('hidden');
-    submitForm!.reset();
-    submitForm!.querySelectorAll('input[type="file"]').forEach((fi) => fi.dispatchEvent(new Event('change')));
+    resetPublishForm();
   });
 
   document.querySelectorAll<HTMLFormElement>('dialog form[data-kind]').forEach((form) => {
@@ -841,6 +864,8 @@ const turnstileSiteKey = TURNSTILE_SITE_KEY;
           // Safari can paint toasts off-screen when the page overflows).
           const msg = String(err && (err as Error).message || err).replace(/^Error:\s*/, '') || 'Something went wrong, please try again.';
           showPublishError(msg);
+          // The failed attempt already spent the token server-side.
+          resetTurnstile();
         } else if (String(err).includes('offline-queued')) {
           form.closest('dialog')?.close();
           toast({ title: 'Saved on this device', body: 'You seem to be offline, your entry is stored on this phone and will send automatically next time the site loads.', kind: 'warn' });
