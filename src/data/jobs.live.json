@@ -2,7 +2,7 @@
  "fetchedAt": "2026-10-21",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 47,
+  "checked": 46,
   "dropped": 2,
   "ambiguous": 0
  },
@@ -29,7 +29,7 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 154,
+   "count": 151,
    "kept": 13,
    "ok": true,
    "scope": "kenya"
@@ -101,17 +101,17 @@
    "id": "mkopa",
    "company": "M-KOPA",
    "board": "Ashby",
-   "count": 40,
+   "count": 0,
    "kept": 7,
    "ok": true,
    "error": "HTTP 401",
-   "note": "via committed browser snapshot (API blocked from build IP)"
+   "note": "kept the last snapshot, the board was unreachable"
   },
   {
    "id": "chaingpt",
    "company": "ChainGPT",
    "board": "Workable",
-   "count": 30,
+   "count": 18,
    "kept": 1,
    "ok": true,
    "scope": "kenya"
@@ -156,8 +156,8 @@
    "id": "microsoft",
    "company": "Microsoft",
    "board": "Microsoft Careers",
-   "count": 11,
-   "kept": 11,
+   "count": 10,
+   "kept": 10,
    "ok": true,
    "scope": "africa"
   },
@@ -176,24 +176,24 @@
    "id": "moniepoint-engineering-manager",
    "title": "Engineering Manager",
    "companyId": "moniepoint",
-   "location": "Remote, Kenya",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": 5,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
-   "board": "Greenhouse",
-   "scope": "kenya",
-   "tags": []
-  },
-  {
-   "id": "moniepoint-engineering-manager",
-   "title": "Engineering Manager",
-   "companyId": "moniepoint",
    "location": "Remote, Kenya + 4 more",
    "mode": "—",
    "category": "Engineering",
    "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
+   "board": "Greenhouse",
+   "scope": "kenya",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-engineering-manager-tlkzuj",
+   "title": "Engineering Manager",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 5,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
    "board": "Greenhouse",
    "scope": "kenya",
    "tags": []
@@ -340,6 +340,104 @@
    "board": "Greenhouse",
    "scope": "kenya",
    "tags": []
+  },
+  {
+   "id": "mkopa-finance-manager-kenya",
+   "title": "Finance Manager - Kenya",
+   "companyId": "m-kopa",
+   "location": "Kenya",
+   "mode": "On-site",
+   "category": "Operations",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c8342dd1-b538-413c-a475-18acdcc0d7f9",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-internal-audit-senior",
+   "title": "Internal Audit Senior",
+   "companyId": "m-kopa",
+   "location": "Kenya",
+   "mode": "Hybrid",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/b06b454f-413a-4620-816b-aad12e08b1ad",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-lead-people-partner",
+   "title": "Lead People Partner",
+   "companyId": "m-kopa",
+   "location": "Nairobi",
+   "mode": "Hybrid",
+   "category": "Executive",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/ad3d6ae1-178f-4a96-9ebe-cac4fe196af6",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-people-partner",
+   "title": "Senior People Partner",
+   "companyId": "m-kopa",
+   "location": "Nairobi",
+   "mode": "Hybrid",
+   "category": "Operations",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c6a95c67-af08-4ac0-a081-9d8123ed9146",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-head-of-workplace-it",
+   "title": "Head of Workplace IT",
+   "companyId": "m-kopa",
+   "location": "Nairobi + 5 more",
+   "mode": "Hybrid",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fffe4725-86ca-4014-9a2d-e3004a9ce21e",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-backend-engineer-asset-sales",
+   "title": "Senior Backend Engineer - Asset Sales",
+   "companyId": "m-kopa",
+   "location": "Nairobi + 5 more",
+   "mode": "Remote",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/0c0fdef0-61b7-4f7d-bd56-c09d66471396",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
+  },
+  {
+   "id": "mkopa-senior-backend-engineer-mobility-12-month-ftc-",
+   "title": "Senior Backend Engineer - Mobility (12 month FTC)",
+   "companyId": "m-kopa",
+   "location": "Nairobi + 5 more",
+   "mode": "Remote",
+   "category": "Engineering",
+   "postedDays": null,
+   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/121d269d-f893-4e4c-9a88-eae3f6c5c917",
+   "board": "Ashby",
+   "tags": [
+    "Ashby snapshot"
+   ]
   },
   {
    "id": "chaingpt-senior-ai-engineer-apac-africa",
@@ -526,18 +624,18 @@
    ]
   },
   {
-   "id": "microsoft-snr-data-applied-scientist-shopping-",
-   "title": "Snr Data & Applied Scientist (Shopping)",
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
    "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
+   "location": "Nigeria, Niger, Abuja",
    "mode": "—",
-   "category": "Data",
-   "postedDays": 19,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "category": "Executive",
+   "postedDays": 1,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Applied Sciences"
+    "Government Affairs"
    ]
   },
   {
@@ -556,21 +654,6 @@
    ]
   },
   {
-   "id": "microsoft-principal-applied-scientist-shopping-",
-   "title": "Principal Applied Scientist (Shopping)",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Data",
-   "postedDays": 13,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557018870",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Applied Sciences"
-   ]
-  },
-  {
    "id": "microsoft-senior-applied-science-lead",
    "title": "Senior Applied Science Lead",
    "companyId": "microsoft",
@@ -586,18 +669,33 @@
    ]
   },
   {
-   "id": "microsoft-government-affairs-director-west-africa",
-   "title": "Government Affairs Director, West Africa",
+   "id": "microsoft-principal-applied-scientist-shopping-",
+   "title": "Principal Applied Scientist (Shopping)",
    "companyId": "microsoft",
-   "location": "Nigeria, Niger, Abuja",
+   "location": "Egypt, Cairo, Cairo",
    "mode": "—",
-   "category": "Executive",
-   "postedDays": 1,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "category": "Data",
+   "postedDays": 13,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557018870",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Government Affairs"
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-snr-data-applied-scientist-shopping-",
+   "title": "Snr Data & Applied Scientist (Shopping)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 19,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
    ]
   },
   {
@@ -616,21 +714,6 @@
    ]
   },
   {
-   "id": "microsoft-sales-operations-manager",
-   "title": "Sales Operations Manager",
-   "companyId": "microsoft",
-   "location": "South Africa, Multiple Locations, Multiple Locations + 4 more",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": 6,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557040724",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Sales Operations"
-   ]
-  },
-  {
    "id": "microsoft-intelligent-optimization-lead",
    "title": "Intelligent Optimization Lead",
    "companyId": "microsoft",
@@ -646,33 +729,18 @@
    ]
   },
   {
-   "id": "microsoft-senior-customer-success-account-manager",
-   "title": "Senior Customer Success Account Manager",
+   "id": "microsoft-sales-operations-manager",
+   "title": "Sales Operations Manager",
    "companyId": "microsoft",
-   "location": "South Africa",
+   "location": "South Africa, Multiple Locations, Multiple Locations + 4 more",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 2,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
+   "postedDays": 6,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557040724",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Customer Success Account Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-customer-success-account-manager",
-   "title": "Customer Success Account Manager",
-   "companyId": "microsoft",
-   "location": "South Africa, Gauteng, Johannesburg",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": 7,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025427",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Customer Success Account Mgmt"
+    "Sales Operations"
    ]
   },
   {
@@ -691,101 +759,18 @@
    ]
   },
   {
-   "id": "mkopa-finance-manager-kenya",
-   "title": "Finance Manager - Kenya",
-   "companyId": "m-kopa",
-   "location": "Kenya",
-   "mode": "On-site",
-   "category": "Operations",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c8342dd1-b538-413c-a475-18acdcc0d7f9",
-   "board": "Ashby",
+   "id": "microsoft-customer-success-account-manager",
+   "title": "Customer Success Account Manager",
+   "companyId": "microsoft",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 7,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025427",
+   "board": "Microsoft Careers",
+   "scope": "africa",
    "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-internal-audit-senior",
-   "title": "Internal Audit Senior",
-   "companyId": "m-kopa",
-   "location": "Kenya",
-   "mode": "Hybrid",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/b06b454f-413a-4620-816b-aad12e08b1ad",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-lead-people-partner",
-   "title": "Lead People Partner",
-   "companyId": "m-kopa",
-   "location": "Nairobi",
-   "mode": "Hybrid",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/ad3d6ae1-178f-4a96-9ebe-cac4fe196af6",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-senior-people-partner",
-   "title": "Senior People Partner",
-   "companyId": "m-kopa",
-   "location": "Nairobi",
-   "mode": "Hybrid",
-   "category": "Operations",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c6a95c67-af08-4ac0-a081-9d8123ed9146",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-head-of-workplace-it",
-   "title": "Head of Workplace IT",
-   "companyId": "m-kopa",
-   "location": "Nairobi + 5 more",
-   "mode": "Hybrid",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fffe4725-86ca-4014-9a2d-e3004a9ce21e",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-senior-backend-engineer-asset-sales",
-   "title": "Senior Backend Engineer - Asset Sales",
-   "companyId": "m-kopa",
-   "location": "Nairobi + 5 more",
-   "mode": "Remote",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/0c0fdef0-61b7-4f7d-bd56-c09d66471396",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-senior-backend-engineer-mobility-12-month-ftc-",
-   "title": "Senior Backend Engineer - Mobility (12 month FTC)",
-   "companyId": "m-kopa",
-   "location": "Nairobi + 5 more",
-   "mode": "Remote",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/121d269d-f893-4e4c-9a88-eae3f6c5c917",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
+    "Customer Success Account Mgmt"
    ]
   }
  ]

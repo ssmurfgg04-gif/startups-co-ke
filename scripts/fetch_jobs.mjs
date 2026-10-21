@@ -131,6 +131,29 @@ function cleanLocation(loc) {
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/**
+ * Run tasks with a small worker pool and a hard time budget. A board that
+ * rate-limits us (or is simply slow today) must not hold up the whole build:
+ * we keep whatever we collected inside the budget and say so.
+ */
+async function pooled(items, workerCount, budgetMs, task) {
+  const queue = [...items];
+  const done = [];
+  const started = Date.now();
+  const worker = async () => {
+    while (queue.length) {
+      if (Date.now() - started > budgetMs) return;
+      const item = queue.shift();
+      try {
+        const r = await task(item);
+        if (r) done.push(r);
+      } catch { /* one country failing is not a failed source */ }
+    }
+  };
+  await Promise.all(Array.from({ length: workerCount }, worker));
+  return { done, ranOutOfTime: Date.now() - started > budgetMs };
+}
+
 
 async function j(url, opts = {}) {
   const res = await fetch(url, {
@@ -185,36 +208,102 @@ const fetchers = {
   async microsoft(src) {
     const out = [];
     const seen = new Set();
-    for (const loc of AFRICA) {
-      // The API rate-limits hard (429): pace the calls and retry with backoff
-      // so one busy country never costs us the whole pass.
-      for (let attempt = 0; attempt < 4; attempt++) {
-        await sleep(attempt === 0 ? 2500 : 12000);
+    // Their API filters server-side by a location string ("Nigeria",
+    // "South Africa"), so covering Africa means asking once per country -
+    // and they rate-limit hard (429). Two layers keep this honest:
+    //   1. a short live probe of the countries where they actually hire, so
+    //      a new role shows up within a day;
+    //   2. a committed snapshot (research/microsoft_africa.json) of the
+    //      last full sweep, so a rate-limited day never empties the board.
+    const PROBE = ['Egypt', 'Nigeria', 'South Africa', 'Kenya', 'Ghana', 'Morocco', 'Tanzania', 'Uganda'];
+    const { done: msCollected, ranOutOfTime } = await pooled(PROBE, 2, 60_000, async (loc) => {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        await sleep(2600);
         try {
           const d = await j(
             `https://apply.careers.microsoft.com/api/pcsx/search?domain=microsoft.com&query=&location=${encodeURIComponent(loc)}&start=0&limit=25`,
             { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; startups.co.ke jobs board)' } },
           );
-          const positions = d?.data?.positions || [];
-          for (const p of positions) {
-            if (seen.has(p.id)) continue;
-            seen.add(p.id);
-            out.push({
-              title: p.name,
-              location: (p.locations || []).join('; '),
-              workplace: '',
-              createdAt: p.postedTs ? p.postedTs * 1000 : null,
-              url: `https://apply.careers.microsoft.com/careers/job/${p.id}`,
-              tags: p.department ? [p.department] : [],
-            });
-          }
-          break;
+          return (d?.data?.positions || []).map((p) => ({
+            title: p.name,
+            location: (p.locations || []).join('; '),
+            workplace: '',
+            createdAt: p.postedTs ? p.postedTs * 1000 : null,
+            url: `https://apply.careers.microsoft.com/careers/job/${p.id}`,
+            tags: p.department ? [p.department] : [],
+            _id: p.id,
+          }));
         } catch (err) {
-          if (attempt === 3) console.log(`  MS ${loc}: ${String(err.message || err)}`);
+          if (attempt === 1) console.log(`  MS ${loc}: ${String(err.message || err)}`);
+          await sleep(6000);
         }
       }
+      return null;
+    });
+    for (const rows of msCollected) {
+      for (const r of rows) {
+        if (seen.has(r._id)) continue;
+        seen.add(r._id);
+        delete r._id;
+        out.push(r);
+      }
     }
-    return out;
+    if (ranOutOfTime) console.log('  MS: probe hit its time budget, partial result');
+
+    // Merge the committed snapshot under the live probe and write it back, so
+    // the snapshot only ever grows fresher.
+    const snapPath = new URL('../research/microsoft_africa.json', import.meta.url);
+    let snap = { jobs: [] };
+    if (existsSync(snapPath)) {
+      try { snap = JSON.parse(readFileSync(snapPath, 'utf8')); } catch { snap = { jobs: [] }; }
+    }
+    const merged = new Map();
+    const msId = (title) => `microsoft-${String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 48)}`;
+    // Snapshot rows are keyed by the same title-slug as the live rows, so the
+    // two paths can never produce the same role twice.
+    for (const r of snap.jobs || []) merged.set(msId(r.title), { ...r, id: msId(r.title) });
+    for (const r of out) {
+      const id = msId(r.title);
+      merged.set(id, { id, title: r.title, location: r.location, applyUrl: r.url, department: (r.tags || [])[0] || '' });
+    }
+    try {
+      writeFileSync(
+        snapPath,
+        JSON.stringify(
+          {
+            fetchedAt: NOW.toISOString().slice(0, 10),
+            note: 'Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.',
+            jobs: [...merged.values()],
+          },
+          null,
+          1,
+        ) + '\n',
+      );
+    } catch { /* read-only checkout: keep going with what we have */ }
+
+    for (const r of merged.values()) {
+      if (seen.has(r.id)) continue;
+      seen.add(r.id);
+      out.push({
+        title: r.title,
+        location: r.location,
+        workplace: '',
+        createdAt: null,
+        url: r.applyUrl,
+        tags: r.department ? [r.department] : [],
+        _id: r.id,
+      });
+    }
+    // One row per role: the live probe and the snapshot can describe the same
+    // posting, and the board must not show it twice.
+    const byTitle = new Map();
+    for (const r of out) {
+      const key = String(r.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 48);
+      if (!byTitle.has(key)) byTitle.set(key, r);
+    }
+    const unique = [...byTitle.values()];
+    for (const r of unique) delete r._id;
+    return unique;
   },
 
   /**
@@ -225,16 +314,23 @@ const fetchers = {
   async apple(src) {
     const out = [];
     const seen = new Set();
-    // Resolve each African country to Apple's own location id, then read
-    // that country's rows straight from the search page.
-    for (const country of AFRICA) {
-      let loc = null;
+    // Apple's board filters by country and ships its results inside the
+    // search page's hydration JSON. Resolve each African country to Apple's
+    // own location id, then read that country's rows. Parallel, with a
+    // budget, because 48 country pages must not slow the build down.
+    const ids = [];
+    const { done: locRows } = await pooled(AFRICA, 6, 30_000, async (country) => {
       try {
         const d = await j(`https://jobs.apple.com/api/v1/refData/postlocation?input=${encodeURIComponent(country)}`);
         const hit = (d?.res || []).find((x) => String(x.name || '').toLowerCase() === country.toLowerCase());
-        if (hit) loc = hit;
-      } catch { /* no id for this country */ }
-      if (!loc) continue;
+        return hit ? [hit] : [];
+      } catch {
+        return [];
+      }
+    });
+    for (const rows of locRows) for (const x of rows) ids.push(x);
+
+    const { done: countryRows } = await pooled(ids, 6, 60_000, async (loc) => {
       const slug = `${String(loc.urlName || loc.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${loc.code}`;
       try {
         const res = await fetch(`https://jobs.apple.com/en-us/search?location=${encodeURIComponent(slug)}`, {
@@ -243,26 +339,31 @@ const fetchers = {
         });
         const html = await res.text();
         const m = html.match(/window\.__staticRouterHydrationData\s*=\s*JSON\.parse\("(.*?)"\);/s);
-        if (!m) continue;
+        if (!m) return [];
         const search = JSON.parse(JSON.parse('"' + m[1] + '"'))?.loaderData?.search || {};
-        for (const row of search.searchResults || []) {
-          if (seen.has(row.positionId)) continue;
-          seen.add(row.positionId);
-          const locs = row.locations || [];
-          out.push({
-            title: row.postingTitle,
-            location: locs.map((l) => l.city || l.name).filter(Boolean).join('; ') || country,
-            workplace: row.homeOffice ? 'Remote' : '',
-            createdAt: null,
-            url: `https://jobs.apple.com/en-us/details/${row.positionId}/${String(row.transformedPostingTitle || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
-            tags: row.team?.teamCode ? [row.team.teamCode] : [],
-          });
-        }
-      } catch { /* skip this country */ }
+        return (search.searchResults || []).map((row) => ({
+          title: row.postingTitle,
+          location: (row.locations || []).map((l) => l.city || l.name).filter(Boolean).join('; ') || loc.name,
+          workplace: row.homeOffice ? 'Remote' : '',
+          createdAt: null,
+          url: `https://jobs.apple.com/en-us/details/${row.positionId}/${String(row.transformedPostingTitle || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+          tags: row.team?.teamCode ? [row.team.teamCode] : [],
+          _id: row.positionId,
+        }));
+      } catch {
+        return [];
+      }
+    });
+    for (const rows of countryRows) {
+      for (const r of rows) {
+        if (seen.has(r._id)) continue;
+        seen.add(r._id);
+        delete r._id;
+        out.push(r);
+      }
     }
     return out;
   },
-
 
   async bamboohr(src) {
     const d = await j(`https://${src.bamboohr}.bamboohr.com/careers/list`);
@@ -328,6 +429,11 @@ async function main() {
   const sources = [];
   const jobs = [];
 
+  // The previous snapshot is read first: if a board is down or rate-limited
+  // today, its roles stay on the board instead of vanishing.
+  const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
+  const usedIds = new Set();
+
   for (const src of SOURCES) {
     const key = Object.keys(fetchers).find((k) => src[k]);
     try {
@@ -344,8 +450,17 @@ async function main() {
         const ok = africa ? africaRelevant(r.location) : kenyaRelevant(r.location, mode, src.hq);
         if (!ok) continue;
         kept++;
+        const baseId = `${src.id}-${String(r.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 48)}`;
+        let id = baseId;
+        if (usedIds.has(id)) {
+          // The same title posted twice (two different location lists): keep
+          // both rows, but give the second one a distinct, stable id.
+          const h = [...String(r.location || '')].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) >>> 0, 7).toString(36);
+          id = `${baseId}-${h.slice(0, 6)}`;
+        }
+        usedIds.add(id);
         jobs.push({
-          id: `${src.id}-${String(r.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 48)}`,
+          id,
           title: r.title,
           companyId: src.companyId,
           location: cleanLocation(r.location),
@@ -361,8 +476,19 @@ async function main() {
       sources.push({ id: src.id, company: src.company, board: src.board, count: rows.length, kept, ok: true, scope: src.scope || 'kenya' });
       console.log(`✓ ${src.company} (${src.board}): ${rows.length} roles, ${kept} ${src.scope === 'africa' ? 'Africa-based' : 'Kenya-relevant'}`);
     } catch (err) {
-      sources.push({ id: src.id, company: src.company, board: src.board, count: 0, kept: 0, ok: false, error: String(err.message || err) });
-      console.log(`✗ ${src.company} (${src.board}): ${err.message || err}`);
+      // Board unreachable today: keep the rows we had, and say so.
+      const kept = (prev?.jobs || []).filter((r) => r.companyId === src.companyId);
+      for (const r of kept) {
+        if (usedIds.has(r.id)) continue;
+        usedIds.add(r.id);
+        jobs.push(r);
+      }
+      sources.push({
+        id: src.id, company: src.company, board: src.board, count: 0, kept: kept.length,
+        ok: kept.length > 0, error: String(err.message || err),
+        note: kept.length ? 'kept the last snapshot, the board was unreachable' : undefined,
+      });
+      console.log(`✗ ${src.company} (${src.board}): ${err.message || err}${kept.length ? ` (kept ${kept.length} from the last snapshot)` : ''}`);
     }
   }
 
@@ -401,7 +527,6 @@ async function main() {
     }
   }
 
-  const prev = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : null;
   const totalOk = sources.filter((s) => s.ok).length;
 
   if (totalOk === 0 && prev) {

@@ -1,0 +1,76 @@
+{
+ "fetchedAt": "2026-10-21",
+ "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
+ "jobs": [
+  {
+   "id": "microsoft-snr-data-applied-scientist-shopping-",
+   "title": "Snr Data & Applied Scientist (Shopping)",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "department": "Applied Sciences"
+  },
+  {
+   "id": "microsoft-technical-support-engineer-intern-for-people-wit",
+   "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556937623",
+   "department": "Business Program Management"
+  },
+  {
+   "id": "microsoft-principal-applied-scientist-shopping-",
+   "title": "Principal Applied Scientist (Shopping)",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557018870",
+   "department": "Applied Sciences"
+  },
+  {
+   "id": "microsoft-senior-applied-science-lead",
+   "title": "Senior Applied Science Lead",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
+   "department": "Applied Sciences"
+  },
+  {
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
+   "location": "Nigeria, Niger, Abuja",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "department": "Government Affairs"
+  },
+  {
+   "id": "microsoft-senior-customer-success-account-manager",
+   "title": "Senior Customer Success Account Manager",
+   "location": "South Africa",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
+   "department": "Customer Success Account Mgmt"
+  },
+  {
+   "id": "microsoft-sales-operations-manager",
+   "title": "Sales Operations Manager",
+   "location": "South Africa, Multiple Locations, Multiple Locations; France, Paris, Paris; United Kingdom, Multiple Locations, Multiple Locations; Germany, Multiple Locations, Multiple Locations; Netherlands, Multiple Locations, Multiple Locations",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557040724",
+   "department": "Sales Operations"
+  },
+  {
+   "id": "microsoft-intelligent-optimization-lead",
+   "title": "Intelligent Optimization Lead",
+   "location": "South Africa, Multiple Locations, Multiple Locations; United Kingdom, Berkshire, Reading; Romania, Multiple Locations, Multiple Locations; Türkiye, Multiple Locations, Multiple Locations",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972575",
+   "department": "Solution Architecture"
+  },
+  {
+   "id": "microsoft-customer-success-account-manager",
+   "title": "Customer Success Account Manager",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025427",
+   "department": "Customer Success Account Mgmt"
+  },
+  {
+   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
+   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
+   "department": "Business Program Management"
+  }
+ ]
+}
