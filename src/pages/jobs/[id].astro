@@ -34,12 +34,17 @@ if (!employer) throw new Error(`Unknown employer for job ${job.id}`);
 const companyName = employer.name;
 const url = `${SITE.url}/jobs/${job.id}`;
 const title = `${job.title} at ${companyName}`;
+/** Kenya role, or a role based in another African country (Microsoft, Apple). */
+const africa = live && (job.scope || 'kenya') === 'africa';
+const region = africa ? 'Africa' : 'Kenya';
 
 /** Honest description: curated rows carry the desk's own summary, live rows
  *  state plainly what we know (posted on the employer's own board, pay not
  *  published) and point at the employer's posting. */
 const description = live
-  ? `Open role on ${companyName}'s own ${job.board} hiring board, pulled live on ${LIVE.fetchedAt}. Pay is not published for this role, which is the norm here rather than an oversight. Apply on the employer's own portal.`
+  ? africa
+    ? `Open role at ${companyName}, based in ${job.location} (an African country, not Kenya). Pulled live from ${companyName}'s own ${job.board} hiring board on ${LIVE.fetchedAt}. Pay is not published for this role. Kenyan candidates can apply on the employer's own portal.`
+    : `Open role on ${companyName}'s own ${job.board} hiring board, pulled live on ${LIVE.fetchedAt}. Pay is not published for this role, which is the norm here rather than an oversight. Apply on the employer's own portal.`
   : job.description;
 
 /** Share targets (plain links, no third-party script). */
@@ -74,16 +79,16 @@ const jsonld = {
   },
   jobLocation: {
     '@type': 'Place',
-    address: { '@type': 'PostalAddress', addressLocality: job.location, addressCountry: 'KE' },
+    address: { '@type': 'PostalAddress', addressLocality: job.location, addressCountry: africa ? 'Africa' : 'KE' },
   },
-  applicantLocationRequirements: { '@type': 'Country', name: 'Kenya' },
+  ...(africa ? {} : { applicantLocationRequirements: { '@type': 'Country', name: 'Kenya' } }),
   url,
   directApply: false,
   ...(live ? { industry: employer.sector } : {}),
 };
 ---
 
-<Base title={`${title} - job in Kenya`} description={description} ogType="website" jsonld={jsonld}>
+<Base title={`${title} - ${region} job`} description={description} ogType="website" jsonld={jsonld}>
   <section class="wrap py-10">
     <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
       <a href="/" class="hover:text-ink">Home</a> / <a href="/jobs" class="hover:text-ink">Jobs</a> / <span class="text-ink">{companyName}</span>
@@ -110,7 +115,7 @@ const jsonld = {
               <span class="chip chip-amber">{job.category}</span>
               {job.mode && job.mode !== '—' && <span class="chip chip-dashed">{job.mode}</span>}
               {live && <span class="chip chip-green font-semibold">● Live</span>}
-              {live && (job.scope || 'kenya') === 'africa' && <span class="chip chip-amber" title="Based in another African country, not Kenya">Africa-wide</span>}
+              {africa && <span class="chip chip-amber" title="Based in another African country, not Kenya">Africa-wide</span>}
               <span class="chip chip-dashed">{postedLabel}</span>
               {employer.verified ? <span class="chip chip-green">✓ Verified employer</span> : null}
             </div>
@@ -126,7 +131,7 @@ const jsonld = {
       <div class="lg:col-span-8">
         <h2 class="font-display text-[22px]">About this role</h2>
         <p class="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-ink2">{description}</p>
-        {live && (job.scope || 'kenya') === 'africa' && (
+        {africa && (
           <p class="mt-3 max-w-2xl border-l-2 border-amber2 pl-3 text-[13.5px] leading-relaxed text-mut">
             This role is based in another African country, not Kenya. It is on the board because Kenyan candidates can apply to it - not because it is a Kenya job.
           </p>
@@ -166,7 +171,7 @@ const jsonld = {
               <dt class="text-mut">Location</dt>
               <dd class="text-right font-medium">{job.location}</dd>
             </div>
-            {live && (job.scope || 'kenya') === 'africa' && (
+            {africa && (
               <div class="flex justify-between gap-3">
                 <dt class="text-mut">Scope</dt>
                 <dd class="text-right font-medium">Africa-wide (not Kenya)</dd>
