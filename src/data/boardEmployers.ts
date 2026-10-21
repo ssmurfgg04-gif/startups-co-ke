@@ -46,7 +46,7 @@ export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sect
   chaingpt: {
     id: 'chaingpt',
     name: 'ChainGPT',
-    sector: 'Other',
+    sector: 'SaaS',
     hq: 'Remote · Kenya hiring',
     domain: 'chaingpt.org',
     website: 'https://www.chaingpt.org',
@@ -55,7 +55,7 @@ export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sect
   openfn: {
     id: 'openfn',
     name: 'OpenFn',
-    sector: 'Other',
+    sector: 'SaaS',
     hq: 'Remote · Kenya hiring',
     domain: 'openfn.org',
     website: 'https://www.openfn.org',
@@ -73,7 +73,7 @@ export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sect
   ajaia: {
     id: 'ajaia',
     name: 'AJAIA',
-    sector: 'Other',
+    sector: 'SaaS',
     hq: 'Kenya',
     domain: 'ajaia.co',
     website: 'https://ajaia.co',
@@ -82,7 +82,7 @@ export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sect
   distro: {
     id: 'distro',
     name: 'Distro',
-    sector: 'Other',
+    sector: 'SaaS',
     hq: 'Kenya · Nairobi office',
     domain: 'distro.com',
     website: 'https://www.distro.com',
