@@ -31,7 +31,7 @@ You signed up for job alerts on 19 October, so here is where the board stands.
 
 The board reads employers' own hiring systems - 18 of them - every time the
 site rebuilds, and it keeps only roles you can actually apply to. There are
-**45 live roles** right now, up from 22 when you signed up.
+**44 live roles** right now, up from 22 when you signed up.
 
 New since you joined: **FairMoney, ChainGPT, OpenFn, AJAIA and Distro**, plus
 **Microsoft**, whose board carries 11 roles based in Egypt, Nigeria and South
@@ -87,7 +87,7 @@ You are on the list for The Ecosystem Brief, which goes out on Monday at 06:30
 EAT: the week's funding rounds, hires, shutdowns and failures, every figure
 sourced, nothing invented. The next edition is the first one you will get.
 
-The jobs board grew while you were away - 45 live roles now from 18 employer
+The jobs board grew while you were away - 44 live roles now from 18 employer
 boards, each with its own shareable page. If you are hiring, post the role on
 your own board and it appears the next day. No fee, no approval queue.
 
