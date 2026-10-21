@@ -2,7 +2,7 @@
  "fetchedAt": "2026-10-21",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 40,
+  "checked": 47,
   "dropped": 2,
   "ambiguous": 0
  },
@@ -13,7 +13,8 @@
    "board": "Lever",
    "count": 3,
    "kept": 2,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "tala",
@@ -21,7 +22,8 @@
    "board": "Lever",
    "count": 9,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "moniepoint",
@@ -29,7 +31,8 @@
    "board": "Greenhouse",
    "count": 154,
    "kept": 13,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "branch",
@@ -37,7 +40,8 @@
    "board": "Greenhouse",
    "count": 2,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "cellulant",
@@ -45,7 +49,8 @@
    "board": "Workable",
    "count": 0,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "pula",
@@ -53,7 +58,8 @@
    "board": "Workable",
    "count": 0,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "marketforce",
@@ -61,7 +67,8 @@
    "board": "Workable",
    "count": 0,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "roam",
@@ -69,7 +76,8 @@
    "board": "Workable",
    "count": 0,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "tanda",
@@ -77,7 +85,8 @@
    "board": "Workable",
    "count": 0,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "basigo",
@@ -85,7 +94,8 @@
    "board": "BambooHR",
    "count": 0,
    "kept": 0,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "mkopa",
@@ -101,9 +111,10 @@
    "id": "chaingpt",
    "company": "ChainGPT",
    "board": "Workable",
-   "count": 114,
-   "kept": 5,
-   "ok": true
+   "count": 30,
+   "kept": 1,
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "openfn",
@@ -111,7 +122,8 @@
    "board": "Workable",
    "count": 42,
    "kept": 5,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "fairmoney",
@@ -119,7 +131,8 @@
    "board": "Workable",
    "count": 49,
    "kept": 1,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "ajaia",
@@ -127,7 +140,8 @@
    "board": "Workable",
    "count": 99,
    "kept": 6,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "distro",
@@ -135,7 +149,26 @@
    "board": "Lever",
    "count": 221,
    "kept": 1,
-   "ok": true
+   "ok": true,
+   "scope": "kenya"
+  },
+  {
+   "id": "microsoft",
+   "company": "Microsoft",
+   "board": "Microsoft Careers",
+   "count": 11,
+   "kept": 11,
+   "ok": true,
+   "scope": "africa"
+  },
+  {
+   "id": "apple",
+   "company": "Apple",
+   "board": "Apple Careers",
+   "count": 0,
+   "kept": 0,
+   "ok": true,
+   "scope": "africa"
   }
  ],
  "jobs": [
@@ -149,6 +182,7 @@
    "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -161,6 +195,7 @@
    "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -173,6 +208,7 @@
    "postedDays": 13,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -185,6 +221,7 @@
    "postedDays": 29,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -197,6 +234,7 @@
    "postedDays": 27,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -209,6 +247,7 @@
    "postedDays": 41,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -221,6 +260,7 @@
    "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4974187101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -233,6 +273,7 @@
    "postedDays": 13,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -245,6 +286,7 @@
    "postedDays": 42,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972195101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -257,6 +299,7 @@
    "postedDays": 22,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -269,6 +312,7 @@
    "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5009081101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -281,6 +325,7 @@
    "postedDays": 6,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -293,54 +338,7 @@
    "postedDays": 12,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
-   "tags": []
-  },
-  {
-   "id": "chaingpt-ai-native-content-marketer-early-career-africa",
-   "title": "AI-Native Content Marketer - Early Career - Africa",
-   "companyId": "chaingpt",
-   "location": "Kenya",
-   "mode": "—",
-   "category": "Data",
-   "postedDays": 117,
-   "applyUrl": "https://apply.workable.com/j/A50FF1150F",
-   "board": "Workable",
-   "tags": []
-  },
-  {
-   "id": "chaingpt-ai-native-software-engineer-early-career-africa",
-   "title": "AI-Native Software Engineer - Early Career - Africa",
-   "companyId": "chaingpt",
-   "location": "Kenya",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": 117,
-   "applyUrl": "https://apply.workable.com/j/B97342EDDA",
-   "board": "Workable",
-   "tags": []
-  },
-  {
-   "id": "chaingpt-lead-generation-representative-lgr-launchpad-sal",
-   "title": "Lead Generation Representative (LGR) - Launchpad & Saleium - Africa",
-   "companyId": "chaingpt",
-   "location": "Kenya",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": 216,
-   "applyUrl": "https://apply.workable.com/j/B648AE3578",
-   "board": "Workable",
-   "tags": []
-  },
-  {
-   "id": "chaingpt-marketing-lead-africa",
-   "title": "Marketing Lead - Africa",
-   "companyId": "chaingpt",
-   "location": "Kenya",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": 90,
-   "applyUrl": "https://apply.workable.com/j/05D202AD93",
-   "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -353,6 +351,7 @@
    "postedDays": 117,
    "applyUrl": "https://apply.workable.com/j/454A921D4B",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -365,6 +364,7 @@
    "postedDays": 10,
    "applyUrl": "https://apply.workable.com/j/584476AF04",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -377,6 +377,7 @@
    "postedDays": 33,
    "applyUrl": "https://apply.workable.com/j/E63D20F427",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -389,6 +390,7 @@
    "postedDays": 41,
    "applyUrl": "https://apply.workable.com/j/125368C404",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -401,6 +403,7 @@
    "postedDays": 41,
    "applyUrl": "https://apply.workable.com/j/B891AB4811",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -413,6 +416,7 @@
    "postedDays": 41,
    "applyUrl": "https://apply.workable.com/j/EEE70403B1",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -425,6 +429,7 @@
    "postedDays": 15,
    "applyUrl": "https://apply.workable.com/j/00007C69D0",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -437,6 +442,7 @@
    "postedDays": 120,
    "applyUrl": "https://apply.workable.com/j/E7AA1D58FD",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -449,6 +455,7 @@
    "postedDays": 120,
    "applyUrl": "https://apply.workable.com/j/A62B548E95",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -461,6 +468,7 @@
    "postedDays": 120,
    "applyUrl": "https://apply.workable.com/j/8F2BB57537",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -473,6 +481,7 @@
    "postedDays": 41,
    "applyUrl": "https://apply.workable.com/j/28C10B9CD7",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -485,6 +494,7 @@
    "postedDays": 51,
    "applyUrl": "https://apply.workable.com/j/EC24F51CB9",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -497,6 +507,7 @@
    "postedDays": 41,
    "applyUrl": "https://apply.workable.com/j/55439F8E81",
    "board": "Workable",
+   "scope": "kenya",
    "tags": []
   },
   {
@@ -506,11 +517,177 @@
    "location": "Nairobi, Nairobi City",
    "mode": "Hybrid",
    "category": "Data",
-   "postedDays": 28,
+   "postedDays": 29,
    "applyUrl": "https://jobs.lever.co/distro/b18befd2-e8b9-448b-a2cf-9de16b015c76",
    "board": "Lever",
+   "scope": "kenya",
    "tags": [
     "Open Roles"
+   ]
+  },
+  {
+   "id": "microsoft-snr-data-applied-scientist-shopping-",
+   "title": "Snr Data & Applied Scientist (Shopping)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 19,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-technical-support-engineer-intern-for-people-wit",
+   "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 26,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556937623",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-principal-applied-scientist-shopping-",
+   "title": "Principal Applied Scientist (Shopping)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 13,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557018870",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-senior-applied-science-lead",
+   "title": "Senior Applied Science Lead",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 5,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
+   "companyId": "microsoft",
+   "location": "Nigeria, Niger, Abuja",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 1,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
+   ]
+  },
+  {
+   "id": "microsoft-senior-customer-success-account-manager",
+   "title": "Senior Customer Success Account Manager",
+   "companyId": "microsoft",
+   "location": "South Africa",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 5,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025542",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Customer Success Account Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-intelligent-optimization-lead",
+   "title": "Intelligent Optimization Lead",
+   "companyId": "microsoft",
+   "location": "South Africa, Multiple Locations, Multiple Locations + 3 more",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 34,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972575",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Solution Architecture"
+   ]
+  },
+  {
+   "id": "microsoft-sales-operations-manager",
+   "title": "Sales Operations Manager",
+   "companyId": "microsoft",
+   "location": "South Africa, Multiple Locations, Multiple Locations + 4 more",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 6,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557040724",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Sales Operations"
+   ]
+  },
+  {
+   "id": "microsoft-senior-customer-success-account-manager",
+   "title": "Senior Customer Success Account Manager",
+   "companyId": "microsoft",
+   "location": "South Africa",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 2,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Customer Success Account Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-customer-success-account-manager",
+   "title": "Customer Success Account Manager",
+   "companyId": "microsoft",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 7,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025427",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Customer Success Account Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
+   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
+   "companyId": "microsoft",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 2,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
    ]
   },
   {

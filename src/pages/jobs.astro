@@ -89,6 +89,9 @@ function shortDays(pd: number): string {
           <label class="ml-auto flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut" title="Show only roles that publish a salary or band">
             Pay disclosed <input id="pay-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
           </label>
+          <label class="flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut" title="Roles based in another African country - not Kenya roles">
+            Africa-wide <input id="africa-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
+          </label>
           <label class="flex cursor-pointer items-center gap-2 font-mono text-[11px] uppercase tracking-[0.1em] text-mut">
             Remote only <input id="remote-only" type="checkbox" class="h-4 w-4 accent-[#0E4630]" />
           </label>
@@ -107,13 +110,14 @@ function shortDays(pd: number): string {
             // Standardized pay line (ovrion-style): every row states money in the same format, same slot.
             const payBand = live ? null : j.salaryMin != null && j.salaryMax != null ? `KSh ${j.salaryMin}–${j.salaryMax}K` : j.salary;
             return (
-              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-pay={live ? '0' : '1'} data-v={c.verified ? '1' : '0'} data-loc={`${j.location}`.toLowerCase()} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
+              <div class="job-row rowline border border-ink border-t-0 first:border-t bg-paper" data-cat={j.category} data-mode={j.mode} data-pay={live ? '0' : '1'} data-v={c.verified ? '1' : '0'} data-scope={isLive(j) ? (j.scope || 'kenya') : 'kenya'} data-loc={`${j.location}`.toLowerCase()} data-title={`${j.title} ${c.name} ${j.tags.join(' ')}`.toLowerCase()}>
                 <div class="grid w-full cursor-pointer grid-cols-[2.75rem_minmax(0,1fr)_auto] items-start gap-x-3 px-4 pb-3 pt-4 text-left hover:bg-paper2 md:grid-cols-[2.75rem_minmax(0,1fr)_9.5rem_5.5rem_auto_auto] md:items-center md:gap-y-0 md:pb-4" data-expand role="button" tabindex="0" aria-expanded="false">
                   <Monogram name={c.name} sector={c.sector} size="md" logo={c.logo ?? undefined} domain={c.domain ?? undefined} />
                   <span class="min-w-0">
                     <span class="flex flex-wrap items-center gap-2">
                       <a class="text-[15px] font-medium hover:underline" href={`/jobs/${j.id}`}>{j.title}</a>
                       {live && <span class="chip chip-green font-semibold">● Live</span>}
+                      {live && (j.scope || 'kenya') === 'africa' && <span class="chip chip-amber" title="Based in another African country, not Kenya">Africa-wide</span>}
                       {!live && j.featured && <span class="chip chip-amber">Featured</span>}
                       {c.status && <span class="chip chip-dashed">{c.status}</span>}
                     </span>                    <span class="mono-label mt-0.5 block">
@@ -159,6 +163,11 @@ function shortDays(pd: number): string {
                       {live ? (
                         <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">
                           Open role indexed live from {c.name}'s own {j.board} hiring board on {LIVE.fetchedAt}. Pay isn't published for this role, that's the norm here, not an oversight. The market bands in the rail tell you what similar roles pay.
+                          {(j.scope || 'kenya') === 'africa' && (
+                            <span class="mt-2 block border-l-2 border-amber2 pl-3 text-[13px] text-mut">
+                              This role is based in another African country, not Kenya. It's on the board because Kenyan candidates can apply to it - not because it's a Kenya job.
+                            </span>
+                          )}
                         </p>
                       ) : (
                         <p class="max-w-2xl text-[14px] leading-relaxed text-ink2">{j.description}</p>
@@ -265,7 +274,7 @@ function shortDays(pd: number): string {
 
 <script>
   // Job filters
-  const state = { cat: 'All', remote: false, pay: false, v: false, q: '', loc: '' };
+  const state = { cat: 'All', remote: false, pay: false, v: false, africa: false, q: '', loc: '' };
   const rows = document.querySelectorAll<HTMLElement>('.job-row');
   function apply() {
     let n = 0;
@@ -275,6 +284,7 @@ function shortDays(pd: number): string {
         (!state.remote || r.dataset.mode === 'Remote') &&
         (!state.pay || r.dataset.pay === '1') &&
         (!state.v || r.dataset.v === '1') &&
+    (!state.africa || r.dataset.scope === 'africa') &&
         (!state.loc || (state.loc === 'remote' ? /remote/i.test(r.dataset.mode ?? '') : (r.dataset.loc || '').includes(state.loc))) &&
         (!state.q || r.dataset.title!.includes(state.q));
       r.classList.toggle('hidden', !ok);
@@ -299,6 +309,7 @@ function shortDays(pd: number): string {
   document.getElementById('remote-only')?.addEventListener('change', (e) => { state.remote = (e.target as HTMLInputElement).checked; apply(); });
   document.getElementById('pay-only')?.addEventListener('change', (e) => { state.pay = (e.target as HTMLInputElement).checked; apply(); });
   document.getElementById('verified-only')?.addEventListener('change', (e) => { state.v = (e.target as HTMLInputElement).checked; apply(); });
+  document.getElementById('africa-only')?.addEventListener('change', (e) => { state.africa = (e.target as HTMLInputElement).checked; apply(); });
   document.getElementById('job-loc')?.addEventListener('change', (e) => { state.loc = (e.target as HTMLSelectElement).value; apply(); });
   document.getElementById('job-search-btn')?.addEventListener('click', () => {
     const q = (document.querySelector('input[name="q"]') as HTMLInputElement).value.trim().toLowerCase();

@@ -88,4 +88,22 @@ export const BOARD_EMPLOYERS: Record<string, Pick<Company, 'id' | 'name' | 'sect
     website: 'https://www.distro.com',
     boardOnly: true,
   },
+  microsoft: {
+    id: 'microsoft',
+    name: 'Microsoft',
+    sector: 'SaaS',
+    hq: 'Redmond, US · hires across Africa',
+    domain: 'microsoft.com',
+    website: 'https://careers.microsoft.com',
+    boardOnly: true,
+  },
+  apple: {
+    id: 'apple',
+    name: 'Apple',
+    sector: 'Other',
+    hq: 'Cupertino, US · hires across Africa',
+    domain: 'apple.com',
+    website: 'https://jobs.apple.com',
+    boardOnly: true,
+  },
 };

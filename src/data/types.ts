@@ -223,5 +223,11 @@ export interface LiveJob {
   applyUrl: string;
   /** board name, e.g. "Lever" / "Ashby" */
   board: string;
+  /**
+   * Where the role is based. "kenya" = Kenya-based or open to Kenyan
+   * candidates. "africa" = based in another African country (Microsoft,
+   * Apple): shown, but labelled Africa-wide so it is never read as a Kenya job.
+   */
+  scope?: 'kenya' | 'africa';
   tags: string[];
 }

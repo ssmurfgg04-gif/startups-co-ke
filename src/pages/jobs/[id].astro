@@ -110,6 +110,7 @@ const jsonld = {
               <span class="chip chip-amber">{job.category}</span>
               {job.mode && job.mode !== '—' && <span class="chip chip-dashed">{job.mode}</span>}
               {live && <span class="chip chip-green font-semibold">● Live</span>}
+              {live && (job.scope || 'kenya') === 'africa' && <span class="chip chip-amber" title="Based in another African country, not Kenya">Africa-wide</span>}
               <span class="chip chip-dashed">{postedLabel}</span>
               {employer.verified ? <span class="chip chip-green">✓ Verified employer</span> : null}
             </div>
@@ -125,6 +126,11 @@ const jsonld = {
       <div class="lg:col-span-8">
         <h2 class="font-display text-[22px]">About this role</h2>
         <p class="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-ink2">{description}</p>
+        {live && (job.scope || 'kenya') === 'africa' && (
+          <p class="mt-3 max-w-2xl border-l-2 border-amber2 pl-3 text-[13.5px] leading-relaxed text-mut">
+            This role is based in another African country, not Kenya. It is on the board because Kenyan candidates can apply to it - not because it is a Kenya job.
+          </p>
+        )}
         {job.tags.length > 0 && (
           <div class="mt-4 flex flex-wrap gap-1.5">{job.tags.map((t) => <span class="chip chip-dashed">{t}</span>)}</div>
         )}
@@ -160,6 +166,12 @@ const jsonld = {
               <dt class="text-mut">Location</dt>
               <dd class="text-right font-medium">{job.location}</dd>
             </div>
+            {live && (job.scope || 'kenya') === 'africa' && (
+              <div class="flex justify-between gap-3">
+                <dt class="text-mut">Scope</dt>
+                <dd class="text-right font-medium">Africa-wide (not Kenya)</dd>
+              </div>
+            )}
             {job.mode && job.mode !== '—' && (
               <div class="flex justify-between gap-3">
                 <dt class="text-mut">Setup</dt>

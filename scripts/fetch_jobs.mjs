@@ -56,6 +56,11 @@ const SOURCES = [
   { id: 'fairmoney', board: 'Workable', company: 'FairMoney', companyId: 'fairmoney', hq: 'kenya', workable: 'fairmoney' },
   { id: 'ajaia', board: 'Workable', company: 'AJAIA', companyId: 'ajaia', hq: 'kenya', workable: 'ajaia' },
   { id: 'distro', board: 'Lever', company: 'Distro', companyId: 'distro', hq: 'kenya', lever: 'distro' },
+  // Global employers: their boards carry no Kenya-based roles, but they do
+  // hire in Africa, so they are tracked with the "africa" scope and labelled
+  // as Africa-wide on the board instead of being dropped.
+  { id: 'microsoft', board: 'Microsoft Careers', company: 'Microsoft', companyId: 'microsoft', hq: 'us', scope: 'africa', microsoft: true },
+  { id: 'apple', board: 'Apple Careers', company: 'Apple', companyId: 'apple', hq: 'us', scope: 'africa', apple: true },
 ];
 
 const CATEGORY_RULES = [
@@ -71,6 +76,26 @@ const CATEGORY_RULES = [
 function classify(title) {
   for (const [cat, re] of CATEGORY_RULES) if (re.test(title)) return cat;
   return 'Other';
+}
+
+/** African countries we accept for the "Africa-wide" scope: a role based in
+ *  one of these is relevant to Kenyan candidates even when it is not a
+ *  Kenya-based role. Kept as a name list, not a package, so the rule is
+ *  readable in one place. */
+const AFRICA = [
+  'Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso', 'Burundi', 'Cameroon', 'Cape Verde',
+  'Central African Republic', 'Chad', 'Comoros', 'Congo', 'Democratic Republic of the Congo', "Cote d'Ivoire",
+  "Cote d'Ivoire", 'Djibouti', 'Egypt', 'Equatorial Guinea', 'Eritrea', 'Eswatini', 'Ethiopia', 'Gabon',
+  'Gambia', 'Ghana', 'Guinea', 'Guinea-Bissau', 'Kenya', 'Lesotho', 'Liberia', 'Libya', 'Madagascar',
+  'Malawi', 'Mali', 'Mauritania', 'Mauritius', 'Morocco', 'Mozambique', 'Namibia', 'Niger', 'Nigeria',
+  'Rwanda', 'Sao Tome and Principe', 'Senegal', 'Seychelles', 'Sierra Leone', 'Somalia', 'South Africa',
+  'South Sudan', 'Sudan', 'Tanzania', 'Togo', 'Tunisia', 'Uganda', 'Zambia', 'Zimbabwe',
+];
+
+/** Is this role anchored in Africa? Used by the Africa-wide scope. */
+function africaRelevant(location) {
+  const l = String(location || '').toLowerCase();
+  return AFRICA.some((c) => l.includes(c.toLowerCase()));
 }
 
 function modeOf(location, workplace) {
@@ -104,6 +129,8 @@ function cleanLocation(loc) {
   }
   return s;
 }
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function j(url, opts = {}) {
   const res = await fetch(url, {
@@ -149,6 +176,94 @@ const fetchers = {
       tags: [],
     }));
   },
+/**
+   * Microsoft (apply.careers.microsoft.com). Their board is a client-rendered
+   * app; the JSON behind it is api/pcsx/search, which filters server-side by
+   * a location string ("Nigeria", "South Africa", "Remote"). Africa-wide
+   * scope: the roles are based in an African country.
+   */
+  async microsoft(src) {
+    const out = [];
+    const seen = new Set();
+    for (const loc of AFRICA) {
+      // The API rate-limits hard (429): pace the calls and retry with backoff
+      // so one busy country never costs us the whole pass.
+      for (let attempt = 0; attempt < 4; attempt++) {
+        await sleep(attempt === 0 ? 2500 : 12000);
+        try {
+          const d = await j(
+            `https://apply.careers.microsoft.com/api/pcsx/search?domain=microsoft.com&query=&location=${encodeURIComponent(loc)}&start=0&limit=25`,
+            { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; startups.co.ke jobs board)' } },
+          );
+          const positions = d?.data?.positions || [];
+          for (const p of positions) {
+            if (seen.has(p.id)) continue;
+            seen.add(p.id);
+            out.push({
+              title: p.name,
+              location: (p.locations || []).join('; '),
+              workplace: '',
+              createdAt: p.postedTs ? p.postedTs * 1000 : null,
+              url: `https://apply.careers.microsoft.com/careers/job/${p.id}`,
+              tags: p.department ? [p.department] : [],
+            });
+          }
+          break;
+        } catch (err) {
+          if (attempt === 3) console.log(`  MS ${loc}: ${String(err.message || err)}`);
+        }
+      }
+    }
+    return out;
+  },
+
+  /**
+   * Apple (jobs.apple.com). Their search page ships its results inside a
+   * hydration JSON blob, and the board filters by country. Africa-wide
+   * scope: a role whose posting location is an African country.
+   */
+  async apple(src) {
+    const out = [];
+    const seen = new Set();
+    // Resolve each African country to Apple's own location id, then read
+    // that country's rows straight from the search page.
+    for (const country of AFRICA) {
+      let loc = null;
+      try {
+        const d = await j(`https://jobs.apple.com/api/v1/refData/postlocation?input=${encodeURIComponent(country)}`);
+        const hit = (d?.res || []).find((x) => String(x.name || '').toLowerCase() === country.toLowerCase());
+        if (hit) loc = hit;
+      } catch { /* no id for this country */ }
+      if (!loc) continue;
+      const slug = `${String(loc.urlName || loc.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${loc.code}`;
+      try {
+        const res = await fetch(`https://jobs.apple.com/en-us/search?location=${encodeURIComponent(slug)}`, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; startups.co.ke jobs board)' },
+          signal: AbortSignal.timeout(20000),
+        });
+        const html = await res.text();
+        const m = html.match(/window\.__staticRouterHydrationData\s*=\s*JSON\.parse\("(.*?)"\);/s);
+        if (!m) continue;
+        const search = JSON.parse(JSON.parse('"' + m[1] + '"'))?.loaderData?.search || {};
+        for (const row of search.searchResults || []) {
+          if (seen.has(row.positionId)) continue;
+          seen.add(row.positionId);
+          const locs = row.locations || [];
+          out.push({
+            title: row.postingTitle,
+            location: locs.map((l) => l.city || l.name).filter(Boolean).join('; ') || country,
+            workplace: row.homeOffice ? 'Remote' : '',
+            createdAt: null,
+            url: `https://jobs.apple.com/en-us/details/${row.positionId}/${String(row.transformedPostingTitle || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+            tags: row.team?.teamCode ? [row.team.teamCode] : [],
+          });
+        }
+      } catch { /* skip this country */ }
+    }
+    return out;
+  },
+
+
   async bamboohr(src) {
     const d = await j(`https://${src.bamboohr}.bamboohr.com/careers/list`);
     return (d.result || []).map((p) => ({
@@ -221,7 +336,13 @@ async function main() {
       let kept = 0;
       for (const r of rows) {
         const mode = modeOf(r.location, r.workplace);
-        if (!kenyaRelevant(r.location, mode, src.hq)) continue;
+        // Scope decides what counts. "kenya" (default) = a role based in
+        // Kenya or open to Kenyan candidates. "africa" = a role based in an
+        // African country (Microsoft, Apple): kept, but labelled Africa-wide
+        // on the board so nobody mistakes it for a Kenya job.
+        const africa = src.scope === 'africa';
+        const ok = africa ? africaRelevant(r.location) : kenyaRelevant(r.location, mode, src.hq);
+        if (!ok) continue;
         kept++;
         jobs.push({
           id: `${src.id}-${String(r.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 48)}`,
@@ -233,11 +354,12 @@ async function main() {
           postedDays: daysSince(r.createdAt),
           applyUrl: r.url,
           board: src.board,
+          scope: africa ? 'africa' : 'kenya',
           tags: r.tags,
         });
       }
-      sources.push({ id: src.id, company: src.company, board: src.board, count: rows.length, kept, ok: true });
-      console.log(`✓ ${src.company} (${src.board}): ${rows.length} roles, ${kept} Kenya-relevant`);
+      sources.push({ id: src.id, company: src.company, board: src.board, count: rows.length, kept, ok: true, scope: src.scope || 'kenya' });
+      console.log(`✓ ${src.company} (${src.board}): ${rows.length} roles, ${kept} ${src.scope === 'africa' ? 'Africa-based' : 'Kenya-relevant'}`);
     } catch (err) {
       sources.push({ id: src.id, company: src.company, board: src.board, count: 0, kept: 0, ok: false, error: String(err.message || err) });
       console.log(`✗ ${src.company} (${src.board}): ${err.message || err}`);
