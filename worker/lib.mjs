@@ -256,8 +256,8 @@ export async function recordSends(env, rows = []) {
 }
 
 /**
- * Subscribers who have never received a list edition (test sends do not
- * count). This is the list the desk should work from.
+ * Subscribers who have never received a list edition. Only a "list" send
+ * counts as an issue: a test send or a one-to-one reply does not.
  */
 export async function neverSentSubscribers(env) {
   const subs = await listSubscribers(env);
@@ -266,7 +266,7 @@ export async function neverSentSubscribers(env) {
   const sends = Array.isArray(r.data) ? r.data : [];
   const got = new Set(
     sends
-      .filter((s) => s.status === 'sent' && s.mode !== 'test')
+      .filter((s) => s.status === 'sent' && s.mode === 'list')
       .map((s) => String(s.email || '').trim().toLowerCase()),
   );
   return subs.map((e) => String(e).trim().toLowerCase()).filter((e) => e && !got.has(e));

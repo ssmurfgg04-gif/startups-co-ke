@@ -86,7 +86,7 @@ startups.co.ke - Kenya's startup record, kept in the open`,
 export function briefFooter(env, email, token) {
   const link = `https://startups.co.ke/api/unsubscribe?e=${encodeURIComponent(String(email).toLowerCase())}&t=${token}`;
   return [
-    '————————————————',
+    '---',
     `You are receiving this because you subscribed at startups.co.ke.`,
     `Unsubscribe in one click, no questions asked:`,
     link,

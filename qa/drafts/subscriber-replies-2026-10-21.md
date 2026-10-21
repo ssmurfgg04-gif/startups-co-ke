@@ -1,99 +1,127 @@
-# Subscriber replies - drafted 21 Oct 2026
+# Subscriber replies - 21 Oct 2026
 
-Three subscribers signed up and have **not** received an issue yet (the first
-edition went out on 19 Oct to the desk's own address only). These are the
-drafts. Everything stated in them is true as of the dates written, and every
-number comes from the live board, not from memory.
+## Sent (job-alert replies, delivered 21 Oct 2026 12:29 UTC)
 
-| To | Signed up | Why they are on the list | Draft |
-| --- | --- | --- | --- |
-| `smlkirubi@gmail.com` | 19 Oct, "job alerts" | wanted new roles | A |
-| `wanguiadele50@gmail.com` | 19 Oct, "job alerts" | wanted new roles | A |
-| `senebiclabs@gmail.com` | 18 Oct, "home" | published the Senebiclabs profile | B |
+| To | Signed up | Subject | Resend id | Status |
+| --- | --- | --- | --- | --- |
+| `wanguiadele50@gmail.com` | 19 Oct, "job alerts" | Job alerts: 3 marketing roles and a product role live now | `01a15e6f-e14c-74b4-a9c0-ebc75f189f06` | delivered |
+| `smlkirubi@gmail.com` | 19 Oct, "job alerts" | Job alerts: 44 Kenya tech roles, each with its own link | `01a15e6f-e28e-74bd-a43b-88478519e69d` | delivered |
+
+Both were logged in `newsletter_sends` with `mode: 'reply'`, so they do **not**
+count as a Brief issue: these two people still have not received one.
+
+---
+
+## Draft A - to `smlkirubi@gmail.com` (sent)
+
+**Subject:** Job alerts: 44 Kenya tech roles, each with its own link
+
+Hi,
+
+You asked for job alerts on 19 October. Here is what is on the board now.
+
+Engineering, Kenya based or remote:
+
+Staff Software Engineer (Back-End) at OpenFn
+https://startups.co.ke/jobs/openfn-staff-software-engineer-back-end-
+
+Senior Backend Engineer - Asset Sales at M-KOPA
+https://startups.co.ke/jobs/mkopa-senior-backend-engineer-asset-sales
+
+Engineering Manager at Moniepoint, remote Kenya
+https://startups.co.ke/jobs/moniepoint-engineering-manager
+
+Senior AI Engineer - APAC + Africa at ChainGPT
+https://startups.co.ke/jobs/chaingpt-senior-ai-engineer-apac-africa
+
+Product, marketing and operations:
+
+Product Manager at AJAIA
+https://startups.co.ke/jobs/ajaia-product-manager
+
+Performance Marketing Manager at AJAIA
+https://startups.co.ke/jobs/ajaia-performance-marketing-manager
+
+Head of Collections - Strategy & Analytics at FairMoney, Nairobi
+https://startups.co.ke/jobs/fairmoney-head-of-collections-strategy-analytics
+
+Marketing Director at OpenFn
+https://startups.co.ke/jobs/openfn-marketing-director
+
+The board now carries 44 live roles from 18 employer hiring boards, up from 22
+when you signed up on 19 October. Every role has its own page with a WhatsApp,
+X, LinkedIn and copy link button, so you can forward one role instead of a
+list:
+https://startups.co.ke/jobs
+
+Two things worth knowing. You apply on the employer's own board, never through
+us, and there is never a fee to apply. And Microsoft has 10 roles in Egypt,
+Nigeria and South Africa, labelled "Africa-wide" so you can filter them out in
+one click.
+
+You are also on the list for The Ecosystem Brief, which goes out on Monday at
+06:30 EAT. Reply to this and we will switch you to job only, or narrow the
+list to what you actually want.
+
+If you know of a role we have not listed, send it over and we will check the
+employer's board.
+
+Thanks,
+The startups.co.ke team
+
+---
+
+## Draft B - to `wanguiadele50@gmail.com` (sent)
+
+**Subject:** Job alerts: 3 marketing roles and a product role live now
+
+Hi Adele,
+
+You asked for job alerts, so here are the ones worth your time right now.
+
+Digital Marketing Specialist at AJAIA
+https://startups.co.ke/jobs/ajaia-digital-marketing-specialist
+
+Google Ads Specialist at AJAIA
+https://startups.co.ke/jobs/ajaia-google-ads-specialist
+
+Performance Marketing Manager at AJAIA
+https://startups.co.ke/jobs/ajaia-performance-marketing-manager
+
+Product Manager at AJAIA
+https://startups.co.ke/jobs/ajaia-product-manager
+
+Marketing Director at OpenFn
+https://startups.co.ke/jobs/openfn-marketing-director
+
+The board now carries 44 live roles from 18 employer hiring boards, up from 22
+when you signed up on 19 October. Every role has its own page with a WhatsApp,
+X, LinkedIn and copy link button, so you can forward one role instead of a
+list:
+https://startups.co.ke/jobs
+
+Two things worth knowing. You apply on the employer's own board, never through
+us, and there is never a fee to apply. And Microsoft has 10 roles in Egypt,
+Nigeria and South Africa, labelled "Africa-wide" so you can filter them out in
+one click.
+
+You are also on the list for The Ecosystem Brief, which goes out on Monday at
+06:30 EAT. Reply to this and we will switch you to job only, or narrow the
+list to what you actually want.
+
+If you know of a role we have not listed, send it over and we will check the
+employer's board.
+
+Thanks,
+The startups.co.ke team
+
+---
+
+## Still to write: `senebiclabs@gmail.com`
+
+Signed up 18 Oct ("home"), and owns the Senebiclabs profile (confirmed
+account, so they can edit and hide it themselves). It has not been sent.
 
 `jackblessed191@gmail.com` is the desk's own address (source "desk-test"), so
-no reply is drafted for it. A stale e2e subscriber
-(`e2e-prod@startups.co.ke`) was deleted.
-
-Send them from the desk (`/desk` -> The Ecosystem Brief -> "test send to one
-address" accepts any address) or straight through Resend. Each one must be a
-separate send: they are personal replies, not a broadcast.
-
----
-
-## Draft A - to `smlkirubi@gmail.com` and `wanguiadele50@gmail.com`
-
-**Subject:** Your job alerts: 45 live Kenya tech roles, and each one has a link you can share
-
-Hi,
-
-You signed up for job alerts on 19 October, so here is where the board stands.
-
-The board reads employers' own hiring systems - 18 of them - every time the
-site rebuilds, and it keeps only roles you can actually apply to. There are
-**44 live roles** right now, up from 22 when you signed up.
-
-New since you joined: **FairMoney, ChainGPT, OpenFn, AJAIA and Distro**, plus
-**Microsoft**, whose board carries 11 roles based in Egypt, Nigeria and South
-Africa. Those are on the board because Kenyan candidates can apply to them,
-but they are not Kenya jobs, so every one of them is labelled "Africa-wide"
-and you can filter them out with a single click.
-
-Each role also has its own page now - `startups.co.ke/jobs/your-role` - with
-WhatsApp, X, LinkedIn and copy-link buttons, so you can send one role to a
-friend instead of a screenshot of a list.
-
-Two things worth knowing:
-
-- You apply on the employer's own board, never through us. There is no fee to
-  apply, ever.
-- Only some employers publish pay. Where they do not, we attach a market band
-  from published salary surveys, labelled as a band and not as an offer.
-
-You are on the list for The Ecosystem Brief, which goes out on Monday at 06:30
-EAT. If you would rather only hear about new roles and not the weekly
-round-up, reply to this and we will switch you to job-only.
-
-If you know of a role we have not listed, forward it. If that employer posts
-on a board we can read, it will be on the board within a day.
-
-Thanks,
-The startups.co.ke team
-startups.co.ke/jobs
-
----
-
-## Draft B - to `senebiclabs@gmail.com`
-
-**Subject:** Your startups.co.ke profile is live, and you can edit it yourself now
-
-Hi,
-
-Two things since you signed up on 18 October.
-
-**Your profile is live and public:** `startups.co.ke/startups/community/senebiclabs`.
-It carries the "Founder-submitted" tag until we cross-check it against at least
-two independent public sources. That tag is the point of the site, not a
-warning sign about you.
-
-**You can now edit it yourself.** Sign in at startups.co.ke, and your listing
-appears under "Your listings" with an Edit button, plus a way to hide or
-republish it. Changes are live the moment you save - no email, no waiting for
-us. (That works because you published while signed in to this address. A
-listing published while signed out can be linked to an account the moment you
-write to us.)
-
-You are on the list for The Ecosystem Brief, which goes out on Monday at 06:30
-EAT: the week's funding rounds, hires, shutdowns and failures, every figure
-sourced, nothing invented. The next edition is the first one you will get.
-
-The jobs board grew while you were away - 44 live roles now from 18 employer
-boards, each with its own shareable page. If you are hiring, post the role on
-your own board and it appears the next day. No fee, no approval queue.
-
-If anything above is wrong - the profile, the email, or the fact that you are on
-a list at all - reply to this and a human fixes it.
-
-Thanks,
-The startups.co.ke team
-startups.co.ke
+no reply goes there. A stale e2e subscriber (`e2e-prod@startups.co.ke`) was
+deleted.

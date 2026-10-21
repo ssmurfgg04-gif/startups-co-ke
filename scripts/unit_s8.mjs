@@ -121,11 +121,13 @@ globalThis.fetch = async (url, init) => {
     return new Response(JSON.stringify([
       { email: 'got@example.com', mode: 'list', status: 'sent' },
       { email: 'tested@example.com', mode: 'test', status: 'sent' },
+      { email: 'replied@example.com', mode: 'reply', status: 'sent' },
     ]), { status: 200, headers: { 'content-type': 'application/json' } });
   }
   if (u.includes('/rest/v1/newsletter_subscribers')) {
     return new Response(JSON.stringify([
       { email: 'got@example.com' }, { email: 'tested@example.com' }, { email: 'waiting@example.com' },
+      { email: 'replied@example.com' },
     ]), { status: 200, headers: { 'content-type': 'application/json' } });
   }
   return new Response('[]', { status: 200, headers: { 'content-type': 'application/json' } });
@@ -137,6 +139,7 @@ ok('recordSends lowercases the address', inserted[0].email === 'waiting@example.
 const never = await neverSentSubscribers(logEnv);
 ok('neverSent excludes subscribers who received a list issue', !never.includes('got@example.com'));
 ok('neverSent keeps a test-send subscriber on the list', never.includes('tested@example.com'));
+ok('neverSent keeps a replied-to subscriber on the list (a reply is not an issue)', never.includes('replied@example.com'));
 ok('neverSent keeps a subscriber with no issue on the list', never.includes('waiting@example.com'));
 globalThis.fetch = realFetch;
 
