@@ -518,6 +518,19 @@ export function deskHtml(env) {
       '<span class="stat">Listings: ' + pub + ' live / ' + d.listings.length + ' total</span>' +
       '<span class="stat">Newsletter: ' + d.subscribers + '</span>' +
       '<button id="signout" class="act ghost">Sign out</button></div>';
+
+    // Who signed up but has never received an edition: the honest work list.
+    var never = d.neverSent || [];
+    html += '<h2>Never received an issue</h2>';
+    if (!never.length) {
+      html += '<div class="empty">Every subscriber has received at least one edition.</div>';
+    } else {
+      html += '<div class="card"><div class="card-h"><span class="kind">' + never.length +
+        ' subscriber' + (never.length === 1 ? '' : 's') + ' waiting for a first edition</span></div>' +
+        '<div class="card-b"><div class="mono" style="font-size:12px;word-break:break-all">' +
+        never.map(function (e) { return esc(e); }).join('<br>') +
+        '</div><p class="mut" style="margin:8px 0 0">Test sends do not count as an issue. A full-list send records every recipient here.</p></div></div>';
+    }
     if (!d.queue.length) html += '<div class="empty">Queue is empty — new submissions appear here the moment they happen.</div>';
     d.queue.forEach(function (r) {
       var lines = Object.entries(r.payload || {}).filter(function (e) { return String(e[1] == null ? '' : e[1]).trim() !== ''; })

@@ -112,12 +112,11 @@ function shortDays(pd: number): string {
                   <Monogram name={c.name} sector={c.sector} size="md" logo={c.logo ?? undefined} domain={c.domain ?? undefined} />
                   <span class="min-w-0">
                     <span class="flex flex-wrap items-center gap-2">
-                      <span class="text-[15px] font-medium">{j.title}</span>
+                      <a class="text-[15px] font-medium hover:underline" href={`/jobs/${j.id}`}>{j.title}</a>
                       {live && <span class="chip chip-green font-semibold">● Live</span>}
                       {!live && j.featured && <span class="chip chip-amber">Featured</span>}
                       {c.status && <span class="chip chip-dashed">{c.status}</span>}
-                    </span>
-                    <span class="mono-label mt-0.5 block">
+                    </span>                    <span class="mono-label mt-0.5 block">
                       {!c.boardOnly && <a class="text-green hover:underline" href={`/startups/${c.id}`}>{c.name}</a>}
                       {c.boardOnly && <span class="text-ink2">{c.name} <span class="text-mut">· {c.submitted ? 'employer-submitted, desk reviewed' : 'board-only employer'}</span></span>}
                       {' '}· {j.location}
@@ -168,6 +167,7 @@ function shortDays(pd: number): string {
                       <div class="mt-4 flex flex-wrap gap-2">
                         <a class="btn btn-amber h-9" href={live ? j.applyUrl : (j.applyUrl || '#')} target={live || !j.applyUrl?.startsWith('mailto:') ? '_blank' : undefined} rel={live || !j.applyUrl?.startsWith('mailto:') ? 'noopener noreferrer' : undefined}>{live ? `Apply on ${c.name}'s ${j.board} board` : j.applyUrl?.startsWith('mailto:') ? 'Email your CV' : 'Apply on employer board'} &nearr;</a>
                         {!live && !j.applyUrl && <button class="btn btn-amber h-9" data-modal="apply">Apply now</button>}
+                        <a class="btn btn-ghost h-9" href={`/jobs/${j.id}`}>Share this role</a>
                         <button class="btn btn-ghost h-9" data-modal="report">Report listing</button>
                       </div>
                       {live ? (

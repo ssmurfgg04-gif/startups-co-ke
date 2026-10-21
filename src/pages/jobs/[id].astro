@@ -1,0 +1,211 @@
+---
+/**
+ * SHAREABLE JOB PAGE - /jobs/<id>
+ *
+ * Every posting on /jobs gets its own URL so a founder, a recruiter or a
+ * journalist can share one specific role instead of the whole board. The
+ * page states only what is known: title, employer, location, mode, category,
+ * how old the posting is, and where to apply. Nothing is invented.
+ */
+import Base from '@/layouts/Base.astro';
+import Monogram from '@/components/Monogram.astro';
+import { allJobs, isLive, employerById, LIVE } from '@/data/jobs';
+import type { Job, LiveJob } from '@/data/types';
+import { SITE } from '@/config/site';
+
+export function getStaticPaths() {
+  const seen = new Set<string>();
+  const paths = [];
+  for (const job of allJobs()) {
+    if (seen.has(job.id)) continue;
+    seen.add(job.id);
+    paths.push({ params: { id: job.id }, props: { job } });
+  }
+  return paths;
+}
+
+const job = Astro.props.job as Job | LiveJob;
+const applyUrl = job.applyUrl || '#';
+const isMailto = applyUrl.startsWith('mailto:');
+const live = isLive(job);
+const employer = employerById(job.companyId);
+if (!employer) throw new Error(`Unknown employer for job ${job.id}`);
+
+const companyName = employer.name;
+const url = `${SITE.url}/jobs/${job.id}`;
+const title = `${job.title} at ${companyName}`;
+
+/** Honest description: curated rows carry the desk's own summary, live rows
+ *  state plainly what we know (posted on the employer's own board, pay not
+ *  published) and point at the employer's posting. */
+const description = live
+  ? `Open role on ${companyName}'s own ${job.board} hiring board, pulled live on ${LIVE.fetchedAt}. Pay is not published for this role, which is the norm here rather than an oversight. Apply on the employer's own portal.`
+  : job.description;
+
+/** Share targets (plain links, no third-party script). */
+const shareText = `${job.title} at ${companyName} - ${job.location}`;
+const wa = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${url}`)}`;
+const x = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`;
+const li = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+
+const postedLabel = live
+  ? job.postedDays !== null
+    ? `posted ${job.postedDays}d ago`
+    : `via ${job.board}`
+  : `posted ${job.postedDays}d ago`;
+
+const salaryLine = live
+  ? 'Not disclosed by the employer'
+  : job.salaryMin != null && job.salaryMax != null
+    ? `KSh ${job.salaryMin}–${job.salaryMax}K per month (market band, not an offer)`
+    : job.salary;
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'JobPosting',
+  title: job.title,
+  description,
+  datePosted: live ? LIVE.fetchedAt : undefined,
+  employmentType: live ? 'FULL_TIME' : undefined,
+  hiringOrganization: {
+    '@type': 'Organization',
+    name: companyName,
+    sameAs: employer.website ?? undefined,
+  },
+  jobLocation: {
+    '@type': 'Place',
+    address: { '@type': 'PostalAddress', addressLocality: job.location, addressCountry: 'KE' },
+  },
+  applicantLocationRequirements: { '@type': 'Country', name: 'Kenya' },
+  url,
+  directApply: false,
+  ...(live ? { industry: employer.sector } : {}),
+};
+---
+
+<Base title={`${title} - job in Kenya`} description={description} ogType="website" jsonld={jsonld}>
+  <section class="wrap py-10">
+    <p class="font-mono text-[10px] uppercase tracking-[0.12em] text-mut">
+      <a href="/" class="hover:text-ink">Home</a> / <a href="/jobs" class="hover:text-ink">Jobs</a> / <span class="text-ink">{companyName}</span>
+    </p>
+
+    <div class="mt-4 border-b border-ink pb-8">
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+        <div class="flex items-start gap-4">
+          <Monogram name={companyName} sector={employer.sector} size="lg" logo={employer.logo ?? undefined} domain={employer.domain ?? undefined} />
+          <div class="min-w-0">
+            <h1 class="font-display text-[clamp(26px,3.4vw,40px)] leading-[1.08]">{job.title}</h1>
+            <p class="mt-2 text-[15px] text-ink2">
+              {
+                !employer.boardOnly ? (
+                  <a class="text-green hover:underline" href={`/startups/${employer.id}`}>{companyName}</a>
+                ) : (
+                  <span class="text-ink">{companyName} <span class="text-mut">· board-only employer</span></span>
+                )
+              }
+              {' · '}{job.location}
+              {job.mode && job.mode !== '—' && ` · ${job.mode}`}
+            </p>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              <span class="chip chip-amber">{job.category}</span>
+              {job.mode && job.mode !== '—' && <span class="chip chip-dashed">{job.mode}</span>}
+              {live && <span class="chip chip-green font-semibold">● Live</span>}
+              <span class="chip chip-dashed">{postedLabel}</span>
+              {employer.verified ? <span class="chip chip-green">✓ Verified employer</span> : null}
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-amber shrink-0" href={applyUrl} target={isMailto ? undefined : '_blank'} rel={isMailto ? undefined : 'noopener noreferrer'}>
+          {live ? `Apply on ${companyName}'s board` : 'Apply'} →
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-8">
+        <h2 class="font-display text-[22px]">About this role</h2>
+        <p class="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-ink2">{description}</p>
+        {job.tags.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-1.5">{job.tags.map((t) => <span class="chip chip-dashed">{t}</span>)}</div>
+        )}
+
+        <div class="mt-8 border border-line bg-paper2 p-5">
+          <h2 class="font-display text-[18px]">Share this role</h2>
+          <p class="mt-1.5 text-[13px] leading-relaxed text-mut">
+            A link to this page, not a screenshot. The posting is on {companyName}'s own board, so the link stays honest if they close it.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <a class="btn btn-ghost h-9" href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a class="btn btn-ghost h-9" href={x} target="_blank" rel="noopener noreferrer">X / Twitter</a>
+            <a class="btn btn-ghost h-9" href={li} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <button class="btn btn-ghost h-9" data-copy={url} type="button" id="copy-link">Copy link</button>
+          </div>
+          <p class="mt-3 break-all font-mono text-[11px] text-mut">{url}</p>
+        </div>
+      </div>
+
+      <aside class="lg:col-span-4">
+        <div class="border border-ink bg-paper p-5">
+          <h2 class="font-mono text-[11px] uppercase tracking-[0.12em] text-mut">At a glance</h2>
+          <dl class="mt-3 space-y-2.5 text-[13.5px]">
+            <div class="flex justify-between gap-3">
+              <dt class="text-mut">Employer</dt>
+              <dd class="text-right font-medium">{companyName}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-mut">Sector</dt>
+              <dd class="text-right font-medium">{employer.sector}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-mut">Location</dt>
+              <dd class="text-right font-medium">{job.location}</dd>
+            </div>
+            {job.mode && job.mode !== '—' && (
+              <div class="flex justify-between gap-3">
+                <dt class="text-mut">Setup</dt>
+                <dd class="text-right font-medium">{job.mode}</dd>
+              </div>
+            )}
+            <div class="flex justify-between gap-3">
+              <dt class="text-mut">Pay</dt>
+              <dd class="text-right font-medium">{salaryLine}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-mut">Posted</dt>
+              <dd class="text-right font-medium">{postedLabel}</dd>
+            </div>
+            <div class="flex justify-between gap-3">
+              <dt class="text-mut">Source</dt>
+              <dd class="text-right font-medium">{live ? `${companyName}'s ${job.board} board` : job.source}</dd>
+            </div>
+          </dl>
+          <a class="btn btn-ghost mt-5 h-9 w-full" href="/jobs">← All jobs</a>
+        </div>
+
+        <div class="mt-4 border border-dashed border-line2 p-5">
+          <p class="text-[13px] leading-relaxed text-mut">
+            {live
+              ? 'You apply on the employer\'s own board - never through us, and never with a fee. The link above is the employer\'s posting.'
+              : 'This listing was reviewed by the desk. A real employer never asks you for money to get hired.'}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script>
+    // Copy the share link without a third-party script.
+    const btn = document.getElementById('copy-link');
+    btn?.addEventListener('click', async () => {
+      const value = btn.getAttribute('data-copy') || window.location.href;
+      try {
+        await navigator.clipboard.writeText(value);
+        const label = btn.textContent;
+        btn.textContent = 'Copied ✓';
+        setTimeout(() => { btn.textContent = label; }, 1600);
+      } catch {
+        window.sckToast?.({ title: 'Copy failed', body: 'Select the link and copy it by hand.', kind: 'warn' });
+      }
+    });
+  </script>
+</Base>

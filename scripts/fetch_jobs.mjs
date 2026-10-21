@@ -49,6 +49,13 @@ const SOURCES = [
   { id: 'tanda', board: 'Workable', company: 'Tanda', companyId: 'tanda', hq: 'kenya', workable: 'tanda' },
   { id: 'basigo', board: 'BambooHR', company: 'BasiGo', companyId: 'basigo', hq: 'kenya', bamboohr: 'basigo' },
   { id: 'mkopa', board: 'Ashby', company: 'M-KOPA', companyId: 'm-kopa', hq: 'kenya', ashby: 'M-KOPA' },
+  // Added Oct 2026 after a board-by-board sweep of every ATS Kenya employers
+  // publish on. Each slug below was verified to return live Kenya roles.
+  { id: 'chaingpt', board: 'Workable', company: 'ChainGPT', companyId: 'chaingpt', hq: 'kenya', workable: 'chaingpt' },
+  { id: 'openfn', board: 'Workable', company: 'OpenFn', companyId: 'openfn', hq: 'kenya', workable: 'openfn' },
+  { id: 'fairmoney', board: 'Workable', company: 'FairMoney', companyId: 'fairmoney', hq: 'kenya', workable: 'fairmoney' },
+  { id: 'ajaia', board: 'Workable', company: 'AJAIA', companyId: 'ajaia', hq: 'kenya', workable: 'ajaia' },
+  { id: 'distro', board: 'Lever', company: 'Distro', companyId: 'distro', hq: 'kenya', lever: 'distro' },
 ];
 
 const CATEGORY_RULES = [

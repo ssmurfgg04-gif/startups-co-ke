@@ -106,4 +106,38 @@ const first = await (await worker.fetch(new Request('https://startups.co.ke/star
 ok('listing feed returns the published rows', first.count === 1 && first.startups[0].slug === 'alpha');
 globalThis.fetch = realFetch;
 
+// ---- newsletter send log: who has actually received an issue ----
+// Without a send log there is no way to answer "who has not been emailed
+// yet", so the desk keeps one and the brief sender writes to it.
+const { recordSends, neverSentSubscribers } = await import('../worker/lib.mjs');
+let inserted = [];
+globalThis.fetch = async (url, init) => {
+  const u = String(url);
+  if (u.includes('/rest/v1/newsletter_sends') && init?.method === 'POST') {
+    inserted = JSON.parse(init.body);
+    return new Response('[]', { status: 201, headers: { 'content-type': 'application/json' } });
+  }
+  if (u.includes('/rest/v1/newsletter_sends')) {
+    return new Response(JSON.stringify([
+      { email: 'got@example.com', mode: 'list', status: 'sent' },
+      { email: 'tested@example.com', mode: 'test', status: 'sent' },
+    ]), { status: 200, headers: { 'content-type': 'application/json' } });
+  }
+  if (u.includes('/rest/v1/newsletter_subscribers')) {
+    return new Response(JSON.stringify([
+      { email: 'got@example.com' }, { email: 'tested@example.com' }, { email: 'waiting@example.com' },
+    ]), { status: 200, headers: { 'content-type': 'application/json' } });
+  }
+  return new Response('[]', { status: 200, headers: { 'content-type': 'application/json' } });
+};
+const logEnv = { PUBLIC_SUPABASE_URL: 'https://example.supabase.co', SUPABASE_SERVICE_ROLE_KEY: 'svc-test' };
+const n = await recordSends(logEnv, [{ email: 'Waiting@Example.com', issue: '2026-10-21-001', mode: 'list', status: 'sent' }]);
+ok('recordSends writes one row per recipient', n === 1 && inserted.length === 1);
+ok('recordSends lowercases the address', inserted[0].email === 'waiting@example.com');
+const never = await neverSentSubscribers(logEnv);
+ok('neverSent excludes subscribers who received a list issue', !never.includes('got@example.com'));
+ok('neverSent keeps a test-send subscriber on the list', never.includes('tested@example.com'));
+ok('neverSent keeps a subscriber with no issue on the list', never.includes('waiting@example.com'));
+globalThis.fetch = realFetch;
+
 console.log('worker security unit checks done');

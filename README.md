@@ -90,6 +90,8 @@ Auth: Supabase Auth, password first with an email-link alternative (same dialog)
 - **Build-time pull:** `scripts/fetch_jobs.mjs` reads employers' own ATS boards (Lever / Greenhouse / Workable / BambooHR / Ashby), keeps Kenya-relevant roles only, **link-checks every application URL** (confirmed 404/410 → dropped; ambiguous bot-wall → kept, never silently empties the board) and writes `src/data/jobs.live.json`.
 - **Daily refresh:** `.github/workflows/refresh-data.yml` runs 06:00 EAT daily — re-pulls boards, commits the changed snapshot with `GITHUB_TOKEN` (no secrets needed), and the push triggers the Cloudflare Workers git integration rebuild. Run on demand via *Run workflow*.
 - **Add an employer:** append one line to `SOURCES` in `scripts/fetch_jobs.mjs` (board slug + display name). That's it.
+- **Shareable role pages:** every posting has its own page at `/jobs/<id>` (43 live URLs, in the sitemap) with WhatsApp / X / LinkedIn / copy-link buttons, a `JobPosting` JSON-LD block and the employer's own apply link. On `/jobs`, the role title links to it and the expanded row has a "Share this role" button.
+- **Who is on the list:** the desk shows **"Never received an issue"** — subscribers who signed up but have not received a list edition (test sends do not count). Every broadcast writes one row per recipient into `newsletter_sends`.
 
 ## Deployment
 

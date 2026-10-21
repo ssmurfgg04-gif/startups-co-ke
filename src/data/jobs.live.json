@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-10-20",
+ "fetchedAt": "2026-10-21",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 22,
+  "checked": 40,
   "dropped": 2,
   "ambiguous": 0
  },
@@ -96,6 +96,46 @@
    "ok": true,
    "error": "HTTP 401",
    "note": "via committed browser snapshot (API blocked from build IP)"
+  },
+  {
+   "id": "chaingpt",
+   "company": "ChainGPT",
+   "board": "Workable",
+   "count": 114,
+   "kept": 5,
+   "ok": true
+  },
+  {
+   "id": "openfn",
+   "company": "OpenFn",
+   "board": "Workable",
+   "count": 42,
+   "kept": 5,
+   "ok": true
+  },
+  {
+   "id": "fairmoney",
+   "company": "FairMoney",
+   "board": "Workable",
+   "count": 51,
+   "kept": 1,
+   "ok": true
+  },
+  {
+   "id": "ajaia",
+   "company": "AJAIA",
+   "board": "Workable",
+   "count": 99,
+   "kept": 6,
+   "ok": true
+  },
+  {
+   "id": "distro",
+   "company": "Distro",
+   "board": "Lever",
+   "count": 221,
+   "kept": 1,
+   "ok": true
   }
  ],
  "jobs": [
@@ -106,7 +146,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 4,
+   "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
    "board": "Greenhouse",
    "tags": []
@@ -118,7 +158,7 @@
    "location": "Remote, Kenya + 4 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 4,
+   "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
    "board": "Greenhouse",
    "tags": []
@@ -130,7 +170,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 12,
+   "postedDays": 13,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "tags": []
@@ -142,7 +182,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 28,
+   "postedDays": 29,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "tags": []
@@ -154,7 +194,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 26,
+   "postedDays": 27,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "tags": []
@@ -166,7 +206,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 40,
+   "postedDays": 41,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
    "tags": []
@@ -178,7 +218,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 4,
+   "postedDays": 5,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4974187101",
    "board": "Greenhouse",
    "tags": []
@@ -190,7 +230,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 12,
+   "postedDays": 13,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
    "board": "Greenhouse",
    "tags": []
@@ -202,7 +242,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 41,
+   "postedDays": 42,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972195101",
    "board": "Greenhouse",
    "tags": []
@@ -214,7 +254,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 21,
+   "postedDays": 22,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
    "board": "Greenhouse",
    "tags": []
@@ -238,7 +278,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Design",
-   "postedDays": 5,
+   "postedDays": 6,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
    "tags": []
@@ -250,10 +290,228 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Operations",
-   "postedDays": 11,
+   "postedDays": 12,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
    "tags": []
+  },
+  {
+   "id": "chaingpt-ai-native-content-marketer-early-career-africa",
+   "title": "AI-Native Content Marketer - Early Career - Africa",
+   "companyId": "chaingpt",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 117,
+   "applyUrl": "https://apply.workable.com/j/A50FF1150F",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "chaingpt-ai-native-software-engineer-early-career-africa",
+   "title": "AI-Native Software Engineer - Early Career - Africa",
+   "companyId": "chaingpt",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 117,
+   "applyUrl": "https://apply.workable.com/j/B97342EDDA",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "chaingpt-lead-generation-representative-lgr-launchpad-sal",
+   "title": "Lead Generation Representative (LGR) - Launchpad & Saleium - Africa",
+   "companyId": "chaingpt",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 216,
+   "applyUrl": "https://apply.workable.com/j/B648AE3578",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "chaingpt-marketing-lead-africa",
+   "title": "Marketing Lead - Africa",
+   "companyId": "chaingpt",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 90,
+   "applyUrl": "https://apply.workable.com/j/05D202AD93",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "chaingpt-senior-ai-engineer-apac-africa",
+   "title": "Senior AI Engineer - APAC + Africa",
+   "companyId": "chaingpt",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 117,
+   "applyUrl": "https://apply.workable.com/j/454A921D4B",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "openfn-account-manager-french-speaking-",
+   "title": "Account Manager (French speaking)",
+   "companyId": "openfn",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 10,
+   "applyUrl": "https://apply.workable.com/j/584476AF04",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "openfn-managing-director-services",
+   "title": "Managing Director, Services",
+   "companyId": "openfn",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 33,
+   "applyUrl": "https://apply.workable.com/j/E63D20F427",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "openfn-marketing-director",
+   "title": "Marketing Director",
+   "companyId": "openfn",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 41,
+   "applyUrl": "https://apply.workable.com/j/125368C404",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "openfn-partner-program-director",
+   "title": "Partner Program Director",
+   "companyId": "openfn",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 41,
+   "applyUrl": "https://apply.workable.com/j/B891AB4811",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "openfn-staff-software-engineer-back-end-",
+   "title": "Staff Software Engineer (Back-End)",
+   "companyId": "openfn",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 41,
+   "applyUrl": "https://apply.workable.com/j/EEE70403B1",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "fairmoney-head-of-collections-strategy-analytics",
+   "title": "Head of Collections - Strategy & Analytics",
+   "companyId": "fairmoney",
+   "location": "Nairobi, Kenya",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 15,
+   "applyUrl": "https://apply.workable.com/j/00007C69D0",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "ajaia-digital-marketing-specialist",
+   "title": "Digital Marketing Specialist",
+   "companyId": "ajaia",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 120,
+   "applyUrl": "https://apply.workable.com/j/E7AA1D58FD",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "ajaia-google-ads-specialist",
+   "title": "Google Ads Specialist",
+   "companyId": "ajaia",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 120,
+   "applyUrl": "https://apply.workable.com/j/A62B548E95",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "ajaia-performance-marketing-manager",
+   "title": "Performance Marketing Manager",
+   "companyId": "ajaia",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 120,
+   "applyUrl": "https://apply.workable.com/j/8F2BB57537",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "ajaia-product-manager",
+   "title": "Product Manager",
+   "companyId": "ajaia",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Product",
+   "postedDays": 41,
+   "applyUrl": "https://apply.workable.com/j/28C10B9CD7",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "ajaia-recruiter",
+   "title": "Recruiter",
+   "companyId": "ajaia",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 51,
+   "applyUrl": "https://apply.workable.com/j/EC24F51CB9",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "ajaia-technical-project-manager",
+   "title": "Technical Project Manager",
+   "companyId": "ajaia",
+   "location": "Kenya",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 41,
+   "applyUrl": "https://apply.workable.com/j/55439F8E81",
+   "board": "Workable",
+   "tags": []
+  },
+  {
+   "id": "distro-sr-cybersecurity-analyst",
+   "title": "Sr Cybersecurity Analyst",
+   "companyId": "distro",
+   "location": "Nairobi, Nairobi City",
+   "mode": "Hybrid",
+   "category": "Data",
+   "postedDays": 28,
+   "applyUrl": "https://jobs.lever.co/distro/b18befd2-e8b9-448b-a2cf-9de16b015c76",
+   "board": "Lever",
+   "tags": [
+    "Open Roles"
+   ]
   },
   {
    "id": "mkopa-finance-manager-kenya",

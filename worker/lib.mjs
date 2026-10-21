@@ -235,6 +235,44 @@ export async function sendEmailBatch(env, messages = []) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Newsletter send log (who has actually received an issue)           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Record who received which edition. Without this there is no way to
+ * answer "who has still not heard from us" - the subscriber table only
+ * says who signed up, not who got a brief.
+ */
+export async function recordSends(env, rows = []) {
+  if (!rows.length) return 0;
+  const body = rows.map((x) => ({
+    email: String(x.email || '').trim().toLowerCase(),
+    issue: String(x.issue || '').slice(0, 80),
+    mode: x.mode === 'test' ? 'test' : 'list',
+    status: x.status === 'failed' ? 'failed' : 'sent',
+  }));
+  const r = await sb(env, '/rest/v1/newsletter_sends', { method: 'POST', body });
+  return r.status >= 200 && r.status < 300 ? body.length : 0;
+}
+
+/**
+ * Subscribers who have never received a list edition (test sends do not
+ * count). This is the list the desk should work from.
+ */
+export async function neverSentSubscribers(env) {
+  const subs = await listSubscribers(env);
+  if (!subs) return null;
+  const r = await sb(env, '/rest/v1/newsletter_sends?select=email,mode,status&limit=5000');
+  const sends = Array.isArray(r.data) ? r.data : [];
+  const got = new Set(
+    sends
+      .filter((s) => s.status === 'sent' && s.mode !== 'test')
+      .map((s) => String(s.email || '').trim().toLowerCase()),
+  );
+  return subs.map((e) => String(e).trim().toLowerCase()).filter((e) => e && !got.has(e));
+}
+
+/* ------------------------------------------------------------------ */
 /* Unsubscribe tokens (The Ecosystem Brief)                            */
 /* ------------------------------------------------------------------ */
 

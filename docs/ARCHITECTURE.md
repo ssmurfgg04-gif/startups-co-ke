@@ -47,7 +47,7 @@ Two backends, one writer:
 | GET | `/startups/community/<slug>?format=md` | `handlePage` :175 | none | same | same, `text/markdown`, `noindex`, `no-store` |
 | GET | `/desk`, `/desk/reset` | `deskHtml` (`render.mjs:267`) | none (shell only) | — | `no-store` |
 | GET | `/desk/brief` | `handleBriefGet` :613 | desk session | `newsletter_subscribers`, `brief.mjs` | `no-store` |
-| GET/POST | `/desk/data` | `handleDeskData` :568 | desk session | queue, listings, subscribers | `no-store` |
+| GET/POST | `/desk/data` | `handleDeskData` :571 | desk session | queue, listings, subscribers, send log | `no-store` |
 | POST | `/desk/brief-send` | `handleBriefSend` :637 | desk session | subscribers, Resend, queue (audit) | `no-store` |
 | GET | `/api/health` | inline :791 | none | env booleans only | `no-store` |
 | GET | `/api/my-listings` | `handleMyListings` :323 | bearer | `community_startups` (owner only) | `no-store` |
@@ -103,6 +103,7 @@ Unsubscribe: HMAC token (`unsubToken`), one-click via `/api/unsubscribe`, plus `
 | `community_startups` | founder listings; `slug` column is the source of truth, the record lives in `data` JSONB (`userId`, `clientRef`, content) | Worker service key only (public reads via the Worker) |
 | `review_queue` | every non-listing submission (`kind`, `label`, `payload`, `email`, `status`) | Worker service key only |
 | `newsletter_subscribers` | one row per email | Worker service key only |
+| `newsletter_sends` | one row per (email, edition, mode, status) — the send log that answers "who has not been emailed yet" | Worker service key only |
 | `rate_limits` | `(ip, day, n)` counters; single bucket per IP/day, caps differ per endpoint | Worker service key only |
 | Storage `logos` | uploaded images, public read | public read; **no insert policy** — signed PUT minted by the Worker |
 

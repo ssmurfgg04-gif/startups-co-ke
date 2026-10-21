@@ -25,7 +25,8 @@
 import {
   attemptEmail, checkRateLimit, clientIp, createListing, deleteListing, deskEmail, digestLines,
   findByClientRef, getListing, getListingRow, json, listListings, listListingsByUser, listSubscribers,
-  mintLogoUpload, newsletterSubscribe, queueInsert, queueMarkDone, queueList, removeSubscriber, sb,
+  mintLogoUpload, neverSentSubscribers, newsletterSubscribe, queueInsert, queueMarkDone, queueList,
+  recordSends, removeSubscriber, sb,
   sendEmailBatch, setListingStatus, slugify, subscriberCount, uniqueSlug, unsubToken, unsubValid,
   updateListingByOwner, validateListing, verifyTurnstile, verifyUser,
 } from './lib.mjs';
@@ -573,13 +574,17 @@ async function handleDeskData(req, env) {
   if (!user) return json(404, { ok: false, error: 'not found' }, NO_STORE);
 
   if (req.method === 'GET') {
-    const [queue, listings, subs] = await Promise.all([queueList(env), listListings(env), subscriberCount(env)]);
+    const [queue, listings, subs, neverSent] = await Promise.all([
+      queueList(env), listListings(env), subscriberCount(env), neverSentSubscribers(env),
+    ]);
     return json(200, {
       ok: true,
       desk: deskEmail(env),
       queue,
       listings: (listings || []).filter((r) => !String(r.slug || '').startsWith('__')),
       subscribers: subs,
+      // Signed up but never received a list edition: the desk's work list.
+      neverSent: neverSent || [],
     }, NO_STORE);
   }
 
@@ -671,6 +676,7 @@ async function handleBriefSend(req, env, ctx) {
   // ones that can outlive the Worker request. Every address still gets its
   // own one-click unsubscribe token/headers.
   let sent = 0, failed = 0;
+  const sendLog = [];
   const list = recipients.slice(0, 2000);
   const CHUNK = 100;
   for (let i = 0; i < list.length; i += CHUNK) {
@@ -687,6 +693,17 @@ async function handleBriefSend(req, env, ctx) {
     const out = await sendEmailBatch(env, messages);
     sent += out.sent;
     failed += out.failed;
+    // Only a fully successful chunk is recorded as "sent": a partial batch
+    // is not proof that any single address got the mail.
+    const ok = out.sent === chunk.length && !out.reason;
+    for (const rcpt of chunk) {
+      sendLog.push({ email: rcpt, issue: BRIEF.id, mode, status: ok ? 'sent' : 'failed' });
+    }
+  }
+
+  // Who received this issue, so "who has not been emailed yet" is answerable.
+  if (sendLog.length) {
+    bg(ctx, recordSends(env, sendLog));
   }
 
   // Audit trail: the desk queue keeps a record of every broadcast/test.
