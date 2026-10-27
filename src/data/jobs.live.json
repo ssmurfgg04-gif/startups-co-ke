@@ -1,9 +1,9 @@
 {
- "fetchedAt": "2026-10-26",
+ "fetchedAt": "2026-10-27",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
   "checked": 48,
-  "dropped": 2,
+  "dropped": 4,
   "ambiguous": 0
  },
  "sources": [
@@ -29,8 +29,8 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 146,
-   "kept": 12,
+   "count": 141,
+   "kept": 11,
    "ok": true,
    "scope": "kenya"
   },
@@ -38,7 +38,7 @@
    "id": "branch",
    "company": "Branch",
    "board": "Greenhouse",
-   "count": 1,
+   "count": 2,
    "kept": 0,
    "ok": true,
    "scope": "kenya"
@@ -129,7 +129,7 @@
    "id": "fairmoney",
    "company": "FairMoney",
    "board": "Workable",
-   "count": 58,
+   "count": 59,
    "kept": 1,
    "ok": true,
    "scope": "kenya"
@@ -147,8 +147,8 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 225,
-   "kept": 2,
+   "count": 234,
+   "kept": 3,
    "ok": true,
    "scope": "kenya"
   },
@@ -179,7 +179,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 10,
+   "postedDays": 11,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -192,7 +192,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 18,
+   "postedDays": 19,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -205,7 +205,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 34,
+   "postedDays": 35,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -218,7 +218,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 32,
+   "postedDays": 33,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -231,7 +231,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -244,7 +244,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 10,
+   "postedDays": 11,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4974187101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -257,21 +257,8 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 18,
+   "postedDays": 19,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
-   "board": "Greenhouse",
-   "scope": "kenya",
-   "tags": []
-  },
-  {
-   "id": "moniepoint-head-of-engineering-supply-chain",
-   "title": "Head of Engineering, Supply Chain",
-   "companyId": "moniepoint",
-   "location": "Remote, Kenya",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": 47,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972195101",
    "board": "Greenhouse",
    "scope": "kenya",
    "tags": []
@@ -283,7 +270,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 27,
+   "postedDays": 28,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -296,7 +283,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 10,
+   "postedDays": 11,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5009081101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -309,7 +296,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Design",
-   "postedDays": 11,
+   "postedDays": 12,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -322,7 +309,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Operations",
-   "postedDays": 17,
+   "postedDays": 18,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -357,20 +344,6 @@
    ]
   },
   {
-   "id": "mkopa-lead-people-partner",
-   "title": "Lead People Partner",
-   "companyId": "m-kopa",
-   "location": "Nairobi",
-   "mode": "Hybrid",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/ad3d6ae1-178f-4a96-9ebe-cac4fe196af6",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
    "id": "mkopa-senior-people-partner",
    "title": "Senior People Partner",
    "companyId": "m-kopa",
@@ -379,20 +352,6 @@
    "category": "Operations",
    "postedDays": null,
    "applyUrl": "https://jobs.ashbyhq.com/m-kopa/c6a95c67-af08-4ac0-a081-9d8123ed9146",
-   "board": "Ashby",
-   "tags": [
-    "Ashby snapshot"
-   ]
-  },
-  {
-   "id": "mkopa-head-of-workplace-it",
-   "title": "Head of Workplace IT",
-   "companyId": "m-kopa",
-   "location": "Nairobi + 5 more",
-   "mode": "Hybrid",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://jobs.ashbyhq.com/m-kopa/fffe4725-86ca-4014-9a2d-e3004a9ce21e",
    "board": "Ashby",
    "tags": [
     "Ashby snapshot"
@@ -433,7 +392,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 15,
+   "postedDays": 16,
    "applyUrl": "https://apply.workable.com/j/584476AF04",
    "board": "Workable",
    "scope": "kenya",
@@ -446,7 +405,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 38,
+   "postedDays": 39,
    "applyUrl": "https://apply.workable.com/j/E63D20F427",
    "board": "Workable",
    "scope": "kenya",
@@ -459,7 +418,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://apply.workable.com/j/125368C404",
    "board": "Workable",
    "scope": "kenya",
@@ -472,7 +431,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://apply.workable.com/j/B891AB4811",
    "board": "Workable",
    "scope": "kenya",
@@ -485,7 +444,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://apply.workable.com/j/EEE70403B1",
    "board": "Workable",
    "scope": "kenya",
@@ -498,7 +457,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 20,
+   "postedDays": 21,
    "applyUrl": "https://apply.workable.com/j/00007C69D0",
    "board": "Workable",
    "scope": "kenya",
@@ -511,7 +470,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 125,
+   "postedDays": 126,
    "applyUrl": "https://apply.workable.com/j/E7AA1D58FD",
    "board": "Workable",
    "scope": "kenya",
@@ -524,7 +483,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 125,
+   "postedDays": 126,
    "applyUrl": "https://apply.workable.com/j/A62B548E95",
    "board": "Workable",
    "scope": "kenya",
@@ -537,7 +496,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 125,
+   "postedDays": 126,
    "applyUrl": "https://apply.workable.com/j/8F2BB57537",
    "board": "Workable",
    "scope": "kenya",
@@ -550,7 +509,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Product",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://apply.workable.com/j/28C10B9CD7",
    "board": "Workable",
    "scope": "kenya",
@@ -563,7 +522,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 56,
+   "postedDays": 57,
    "applyUrl": "https://apply.workable.com/j/EC24F51CB9",
    "board": "Workable",
    "scope": "kenya",
@@ -576,11 +535,26 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://apply.workable.com/j/55439F8E81",
    "board": "Workable",
    "scope": "kenya",
    "tags": []
+  },
+  {
+   "id": "distro-business-development-manager-facilities-hvac-pro",
+   "title": "Business Development Manager - Facilities, HVAC & Property Services",
+   "companyId": "distro",
+   "location": "Multiple Locations",
+   "mode": "Remote",
+   "category": "Other",
+   "postedDays": 1,
+   "applyUrl": "https://jobs.lever.co/distro/ad8cb222-dd3c-41ba-a128-0dff316ec0d1",
+   "board": "Lever",
+   "scope": "kenya",
+   "tags": [
+    "Open Roles"
+   ]
   },
   {
    "id": "distro-sr-cybersecurity-analyst",
@@ -589,7 +563,7 @@
    "location": "Nairobi, Nairobi City",
    "mode": "Hybrid",
    "category": "Data",
-   "postedDays": 33,
+   "postedDays": 34,
    "applyUrl": "https://jobs.lever.co/distro/b18befd2-e8b9-448b-a2cf-9de16b015c76",
    "board": "Lever",
    "scope": "kenya",
@@ -604,7 +578,7 @@
    "location": "Multiple Locations",
    "mode": "Remote",
    "category": "Growth",
-   "postedDays": 2,
+   "postedDays": 3,
    "applyUrl": "https://jobs.lever.co/distro/16729147-8439-4912-9d12-d8d42aa8b6a0",
    "board": "Lever",
    "scope": "kenya",
@@ -613,18 +587,48 @@
    ]
   },
   {
-   "id": "microsoft-government-affairs-director-west-africa",
-   "title": "Government Affairs Director, West Africa",
+   "id": "microsoft-sales-operations-manager",
+   "title": "Sales Operations Manager",
    "companyId": "microsoft",
-   "location": "Nigeria, Niger, Abuja",
+   "location": "South Africa, Multiple Locations, Multiple Locations + 4 more",
    "mode": "—",
-   "category": "Executive",
-   "postedDays": 6,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "category": "Growth",
+   "postedDays": 12,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557040724",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Government Affairs"
+    "Sales Operations"
+   ]
+  },
+  {
+   "id": "microsoft-critical-environment-program-manager-",
+   "title": "Critical Environment Program Manager.",
+   "companyId": "microsoft",
+   "location": "South Africa, Western Cape, Cape Town",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 5,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556984723",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Data Center Operations Management"
+   ]
+  },
+  {
+   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
+   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
+   "companyId": "microsoft",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 8,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
    ]
   },
   {
@@ -634,7 +638,7 @@
    "location": "Kenya, Multiple Locations, Multiple Locations",
    "mode": "—",
    "category": "Other",
-   "postedDays": 1,
+   "postedDays": 2,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -703,6 +707,21 @@
    ]
   },
   {
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
+   "companyId": "microsoft",
+   "location": "Nigeria, Niger, Abuja",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": null,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
+   ]
+  },
+  {
    "id": "microsoft-senior-customer-success-account-manager",
    "title": "Senior Customer Success Account Manager",
    "companyId": "microsoft",
@@ -715,21 +734,6 @@
    "scope": "africa",
    "tags": [
     "Customer Success Account Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-sales-operations-manager",
-   "title": "Sales Operations Manager",
-   "companyId": "microsoft",
-   "location": "South Africa, Multiple Locations, Multiple Locations + 4 more",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557040724",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Sales Operations"
    ]
   },
   {
@@ -760,36 +764,6 @@
    "scope": "africa",
    "tags": [
     "Customer Success Account Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
-   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
-   "companyId": "microsoft",
-   "location": "South Africa, Gauteng, Johannesburg",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Business Program Management"
-   ]
-  },
-  {
-   "id": "microsoft-critical-environment-program-manager-",
-   "title": "Critical Environment Program Manager.",
-   "companyId": "microsoft",
-   "location": "South Africa, Western Cape, Cape Town",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556984723",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Data Center Operations Management"
    ]
   },
   {
