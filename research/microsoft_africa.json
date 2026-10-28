@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-10-27",
+ "fetchedAt": "2026-10-28",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -82,8 +82,8 @@
   {
    "id": "microsoft-fasttrack-full-stack-engineer",
    "title": "FastTrack Full Stack Engineer",
-   "location": "Egypt, Multiple Locations, Multiple Locations; Spain, Multiple Locations, Multiple Locations; Ireland, Multiple Locations, Multiple Locations; Portugal, Multiple Locations, Multiple Locations; Romania, Bucharest, Bucharest",
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557039023",
+   "location": "Egypt, Multiple Locations, Multiple Locations; Romania, Multiple Locations, Multiple Locations; Portugal, Multiple Locations, Multiple Locations; Spain, Barcelona, Barcelona; Ireland, Multiple Locations, Multiple Locations",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557043367",
    "department": "Onboarding Mgmt"
   },
   {
