@@ -305,14 +305,14 @@ export const REPORTS: Report[] = [
 
 /** Real consumer-interest snapshot (Google Trends KE RSS, Oct 15 2026). */
 export const TRENDS: { keyword: string; volume: string }[] = [
-  { keyword: 'antonio conte manchester united rumors', volume: '100+' },
-  { keyword: 'blackpool f.c.', volume: '200+' },
-  { keyword: 'jayesh saini abc bank acquisition', volume: '100+' },
-  { keyword: 'lakers vs trail blazers', volume: '500+' },
-  { keyword: 'leicester city vs wigan athletic standings', volume: '500+' },
-  { keyword: 'flood', volume: '200+' },
-  { keyword: 'arsenal results', volume: '100+' },
-  { keyword: 'mpesa', volume: '200+' },
-  { keyword: 'as roma vs cagliari calcio standings', volume: '500+' },
-  { keyword: 'torino fc vs como 1907 standings', volume: '2000+' },
+  { keyword: 'estêvão willian', volume: '100+' },
+  { keyword: 'vehicle', volume: '500+' },
+  { keyword: 'kra rental income tax crackdown', volume: '500+' },
+  { keyword: 'business daily africa', volume: '1000+' },
+  { keyword: 'mavericks vs thunder', volume: '100+' },
+  { keyword: 'jadon sancho', volume: '100+' },
+  { keyword: 'clippers vs lakers', volume: '200+' },
+  { keyword: 'timberwolves vs warriors', volume: '500+' },
+  { keyword: 'inter miami vs cincinnati', volume: '2000+' },
+  { keyword: 'arsenal w.f.c. vs s.l. benfica (women) standings', volume: '1000+' },
 ];
