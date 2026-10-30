@@ -147,6 +147,7 @@ export function renderPage(l, slug) {
   <div class="wrap">
     <p><strong style="color:#3e3b31">Honesty note:</strong> this page is founder-submitted and was published immediately, without editorial review. It stays tagged &ldquo;Founder-submitted&rdquo; until the desk cross-checks it against at least two independent public sources. Figures are self-reported. Fake or misleading listings can be reported via <a href="https://startups.co.ke/contact">the contact page</a>.</p>
     <p><a href="https://startups.co.ke/">startups.co.ke</a>: Kenya's startup record, kept in the open. <a href="https://startups.co.ke/llms.txt">llms.txt</a></p>
+    <p style="margin-top:8px"><a href="https://goodsaas.xyz/saas/startupscoke" target="_blank" rel="noopener" aria-label="startups.co.ke on goodSaaS"><img src="https://goodsaas.xyz/badge/startupscoke.svg?theme=dark" alt="startups.co.ke on goodSaaS" width="120" height="36" loading="lazy" decoding="async" style="vertical-align:middle" /></a></p>
   </div>
 </footer>
 </body>
