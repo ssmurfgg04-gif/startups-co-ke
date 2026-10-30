@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  compressHTML: false, // keep void-element trailing slashes so third-party badge verifiers match the exact snippet
   site: 'https://startups.co.ke',
   integrations: [sitemap()],
   build: {
