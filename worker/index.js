@@ -770,6 +770,11 @@ export default {
 
     // ---- public reads ----
     if (method === 'GET' || method === 'HEAD') {
+      // Some crawlers hardcode /sitemap.xml even though we publish the index
+      // at /sitemap-index.xml. Redirect permanently so they still find it.
+      if (path === '/sitemap.xml') {
+        return Response.redirect(new URL('/sitemap-index.xml', req.url), 301);
+      }
       if (path === '/startups/community/list.json' || path === '/.netlify/functions/startup-list') {
         // NOT cached in the shared edge cache: Cloudflare serves `list.json`
         // with the stored headers, and this zone's Browser Cache TTL turns

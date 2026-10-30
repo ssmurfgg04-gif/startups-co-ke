@@ -147,11 +147,10 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 0,
+   "count": 234,
    "kept": 1,
    "ok": true,
-   "error": "The operation was aborted due to timeout",
-   "note": "kept the last snapshot, the board was unreachable"
+   "scope": "kenya"
   },
   {
    "id": "microsoft",
@@ -555,21 +554,6 @@
    ]
   },
   {
-   "id": "microsoft-partner-development-manager",
-   "title": "Partner Development Manager",
-   "companyId": "microsoft",
-   "location": "Kenya, Multiple Locations, Multiple Locations",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": 5,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Partner Development Management"
-   ]
-  },
-  {
    "id": "microsoft-senior-customer-success-account-manager",
    "title": "Senior Customer Success Account Manager",
    "companyId": "microsoft",
@@ -612,6 +596,21 @@
    "scope": "africa",
    "tags": [
     "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-partner-development-manager",
+   "title": "Partner Development Manager",
+   "companyId": "microsoft",
+   "location": "Kenya, Multiple Locations, Multiple Locations",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 5,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Partner Development Management"
    ]
   },
   {
