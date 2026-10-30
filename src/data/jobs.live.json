@@ -4,7 +4,7 @@
  "linkCheck": {
   "checked": 44,
   "dropped": 2,
-  "ambiguous": 0
+  "ambiguous": 1
  },
  "sources": [
   {
@@ -29,7 +29,7 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 156,
+   "count": 155,
    "kept": 13,
    "ok": true,
    "scope": "kenya"
@@ -147,10 +147,11 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 234,
+   "count": 0,
    "kept": 1,
    "ok": true,
-   "scope": "kenya"
+   "error": "The operation was aborted due to timeout",
+   "note": "kept the last snapshot, the board was unreachable"
   },
   {
    "id": "microsoft",
@@ -614,66 +615,6 @@
    ]
   },
   {
-   "id": "microsoft-senior-customer-success-account-manager",
-   "title": "Senior Customer Success Account Manager",
-   "companyId": "microsoft",
-   "location": "South Africa",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": 2,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Customer Success Account Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-critical-environment-program-manager-",
-   "title": "Critical Environment Program Manager.",
-   "companyId": "microsoft",
-   "location": "South Africa, Western Cape, Cape Town",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": 8,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556984723",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Data Center Operations Management"
-   ]
-  },
-  {
-   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
-   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
-   "companyId": "microsoft",
-   "location": "South Africa, Gauteng, Johannesburg",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": 11,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Business Program Management"
-   ]
-  },
-  {
-   "id": "microsoft-partner-development-manager",
-   "title": "Partner Development Manager",
-   "companyId": "microsoft",
-   "location": "Kenya, Multiple Locations, Multiple Locations",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": 5,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Partner Development Management"
-   ]
-  },
-  {
    "id": "microsoft-technical-support-engineer-intern-for-people-wit",
    "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
    "companyId": "microsoft",
@@ -686,6 +627,21 @@
    "scope": "africa",
    "tags": [
     "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-senior-customer-success-account-manager",
+   "title": "Senior Customer Success Account Manager",
+   "companyId": "microsoft",
+   "location": "South Africa",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": null,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Customer Success Account Mgmt"
    ]
   },
   {
@@ -734,6 +690,36 @@
    ]
   },
   {
+   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
+   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
+   "companyId": "microsoft",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": null,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-critical-environment-program-manager-",
+   "title": "Critical Environment Program Manager.",
+   "companyId": "microsoft",
+   "location": "South Africa, Western Cape, Cape Town",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": null,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556984723",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Data Center Operations Management"
+   ]
+  },
+  {
    "id": "microsoft-fasttrack-full-stack-engineer",
    "title": "FastTrack Full Stack Engineer",
    "companyId": "microsoft",
@@ -746,6 +732,21 @@
    "scope": "africa",
    "tags": [
     "Onboarding Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-partner-development-manager",
+   "title": "Partner Development Manager",
+   "companyId": "microsoft",
+   "location": "Kenya, Multiple Locations, Multiple Locations",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": null,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Partner Development Management"
    ]
   }
  ]

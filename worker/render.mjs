@@ -57,6 +57,7 @@ export function renderPage(l, slug) {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="goodsaas" content="goodsaas" />
 <title>${title}</title>
 <meta name="description" content="${desc}" />
 <link rel="canonical" href="https://startups.co.ke/startups/community/${esc(slug)}" />
