@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-10-30",
+ "fetchedAt": "2026-10-31",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {

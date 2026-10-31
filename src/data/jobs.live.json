@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-10-30",
+ "fetchedAt": "2026-10-31",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 44,
+  "checked": 45,
   "dropped": 2,
   "ambiguous": 1
  },
@@ -29,7 +29,7 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 155,
+   "count": 154,
    "kept": 13,
    "ok": true,
    "scope": "kenya"
@@ -147,11 +147,10 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 0,
-   "kept": 1,
+   "count": 237,
+   "kept": 2,
    "ok": true,
-   "error": "The operation was aborted due to timeout",
-   "note": "kept the last snapshot, the board was unreachable"
+   "scope": "kenya"
   },
   {
    "id": "microsoft",
@@ -180,7 +179,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 0,
+   "postedDays": 1,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4941104101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -193,7 +192,7 @@
    "location": "Remote, Kenya + 4 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 0,
+   "postedDays": 1,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -206,7 +205,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 0,
+   "postedDays": 1,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -219,7 +218,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 22,
+   "postedDays": 23,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -232,7 +231,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 38,
+   "postedDays": 39,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -245,7 +244,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 36,
+   "postedDays": 37,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -258,7 +257,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 50,
+   "postedDays": 51,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -271,7 +270,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 14,
+   "postedDays": 15,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4974187101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -284,7 +283,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 22,
+   "postedDays": 23,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -297,7 +296,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 31,
+   "postedDays": 32,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4989514101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -310,7 +309,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 14,
+   "postedDays": 15,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5009081101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -323,7 +322,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Design",
-   "postedDays": 15,
+   "postedDays": 16,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -336,7 +335,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Operations",
-   "postedDays": 21,
+   "postedDays": 22,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -540,14 +539,14 @@
    "tags": []
   },
   {
-   "id": "distro-program-coordinator-sub-saharan-african-regional",
-   "title": "Program Coordinator - Sub-Saharan African Regional Hub",
+   "id": "distro-field-marketing-specialist",
+   "title": "Field Marketing Specialist",
    "companyId": "distro",
    "location": "Multiple Locations",
    "mode": "Remote",
-   "category": "Other",
-   "postedDays": 2,
-   "applyUrl": "https://jobs.lever.co/distro/7be7b626-b875-4812-8469-cc6f534bc4b6",
+   "category": "Growth",
+   "postedDays": 1,
+   "applyUrl": "https://jobs.lever.co/distro/b1a64704-22c3-40b1-a454-41bd72628c63",
    "board": "Lever",
    "scope": "kenya",
    "tags": [
@@ -555,18 +554,18 @@
    ]
   },
   {
-   "id": "microsoft-senior-applied-science-lead",
-   "title": "Senior Applied Science Lead",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
+   "id": "distro-program-coordinator-sub-saharan-african-regional",
+   "title": "Program Coordinator - Sub-Saharan African Regional Hub",
+   "companyId": "distro",
+   "location": "Multiple Locations",
+   "mode": "Remote",
    "category": "Other",
-   "postedDays": 14,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
-   "board": "Microsoft Careers",
-   "scope": "africa",
+   "postedDays": 3,
+   "applyUrl": "https://jobs.lever.co/distro/7be7b626-b875-4812-8469-cc6f534bc4b6",
+   "board": "Lever",
+   "scope": "kenya",
    "tags": [
-    "Applied Sciences"
+    "Open Roles"
    ]
   },
   {
@@ -576,8 +575,23 @@
    "location": "Egypt, Cairo, Cairo",
    "mode": "—",
    "category": "Data",
-   "postedDays": 22,
+   "postedDays": 23,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557018870",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-senior-applied-science-lead",
+   "title": "Senior Applied Science Lead",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 15,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
@@ -591,7 +605,7 @@
    "location": "Egypt, Cairo, Cairo",
    "mode": "—",
    "category": "Data",
-   "postedDays": 28,
+   "postedDays": 29,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -606,12 +620,57 @@
    "location": "Nigeria, Niger, Abuja",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 10,
+   "postedDays": 11,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
     "Government Affairs"
+   ]
+  },
+  {
+   "id": "microsoft-critical-environment-program-manager-",
+   "title": "Critical Environment Program Manager.",
+   "companyId": "microsoft",
+   "location": "South Africa, Western Cape, Cape Town",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 9,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556984723",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Data Center Operations Management"
+   ]
+  },
+  {
+   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
+   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
+   "companyId": "microsoft",
+   "location": "South Africa, Gauteng, Johannesburg",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 12,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-partner-development-manager",
+   "title": "Partner Development Manager",
+   "companyId": "microsoft",
+   "location": "Kenya, Multiple Locations, Multiple Locations",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 6,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Partner Development Management"
    ]
   },
   {
@@ -690,36 +749,6 @@
    ]
   },
   {
-   "id": "microsoft-business-program-mgr-bbbee-internship-pwd-opport",
-   "title": "Business Program Mgr - BBBEE Internship (PwD Opportunities)",
-   "companyId": "microsoft",
-   "location": "South Africa, Gauteng, Johannesburg",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Business Program Management"
-   ]
-  },
-  {
-   "id": "microsoft-critical-environment-program-manager-",
-   "title": "Critical Environment Program Manager.",
-   "companyId": "microsoft",
-   "location": "South Africa, Western Cape, Cape Town",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556984723",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Data Center Operations Management"
-   ]
-  },
-  {
    "id": "microsoft-fasttrack-full-stack-engineer",
    "title": "FastTrack Full Stack Engineer",
    "companyId": "microsoft",
@@ -732,21 +761,6 @@
    "scope": "africa",
    "tags": [
     "Onboarding Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-partner-development-manager",
-   "title": "Partner Development Manager",
-   "companyId": "microsoft",
-   "location": "Kenya, Multiple Locations, Multiple Locations",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Partner Development Management"
    ]
   }
  ]

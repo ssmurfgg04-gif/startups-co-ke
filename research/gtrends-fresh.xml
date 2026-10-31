@@ -6,71 +6,131 @@
 		<link>https://trends.google.com/trending/rss?geo=KE</link>
 		<atom:link href="https://trends.google.com/trending/rss?geo=KE" rel="self" type="application/rss+xml"/>
 		<item>
-			<title>ntsa warning fake traffic notices</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
+			<title>kenya defence forces</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Fri, 30 Oct 2026 02:00:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQzNpIYJX5_xLAz9gSoqIgRYRQUq0n7kQOXLP3kHXc8JJREoVPbaCU-X7_Y9go</ht:picture>
-			<ht:picture_source>Kenyans.co.ke</ht:picture_source>
+			<pubDate>Sat, 31 Oct 2026 01:30:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWXlC9c99HyEzS_JFYQfxnJcJhaOtuEv5giPBT8Es6cGs08KJjYl4WpgEnvtk</ht:picture>
+			<ht:picture_source>Daily Nation</ht:picture_source>
 			<ht:news_item>
-				<ht:news_item_title>NTSA Exposes New Scam Targeting Drivers Amid Ongoing Crackdown</ht:news_item_title>
+				<ht:news_item_title>Why KDF was blocked from Supreme Court appeal over Sh25m award</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.kenyans.co.ke/news/128998-ntsa-issues-warning-motorists-over-fake-traffic-offence-notices</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQzNpIYJX5_xLAz9gSoqIgRYRQUq0n7kQOXLP3kHXc8JJREoVPbaCU-X7_Y9go</ht:news_item_picture>
-				<ht:news_item_source>Kenyans.co.ke</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Overnight Southern Bypass crackdown: Expired licences, broken headlights land 13 vehicles in NTSA custody</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.the-star.co.ke/news/2026-10-29-13-vehicles-seized-in-ntsas-night-time-safety-crackdown</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn1P6NnDvVvcZ4PFz2Q90ILV46eBWhztO2p4bAsQn_tqlE_p6T5Zp-uevcvIA</ht:news_item_picture>
-				<ht:news_item_source>The Star, Kenya</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>NTSA road safety operation: What will be checked at roadblocks</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://nation.africa/kenya/news/ntsa-road-safety-operation-what-will-be-checked-at-roadblocks-5646622</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQMxN5fgjeV1gY-_U9oTNfJHOoi3bLMCUNy6UgXt99N0_sSXluuxYEtKro4IRQ</ht:news_item_picture>
+				<ht:news_item_url>https://nation.africa/kenya/news/why-kdf-was-blocked-from-supreme-court-appeal-over-sh25m-award-5649558</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWXlC9c99HyEzS_JFYQfxnJcJhaOtuEv5giPBT8Es6cGs08KJjYl4WpgEnvtk</ht:news_item_picture>
 				<ht:news_item_source>Daily Nation</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Former KDF soldier awarded Sh25m for unfair dismissal</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.standardmedia.co.ke/crime-and-justice/article/2001561016/former-kdf-soldier-awarded-sh25m-for-unfair-dismissal</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS-R1_oXCV6-_MzOel7_H72oCpLUD_WCE06TOw7JnWFefAsQjDV93T8nhEAqo</ht:news_item_picture>
+				<ht:news_item_source>The Standard</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Kenya Defence Forces (KDF) Medical Specialists Bring Advanced Medical Care Closer to Dhobley Community</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://africa.com/apo/kenya-defence-forces-kdf-medical-specialists-bring-advanced-medical-care-closer-to-dhobley-community</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQAaM0Bz0aAejciZv6BhPGLf2-GHpo2ZkZnMTvlZQ0H41zjNT4PodTJiE2Dpgg</ht:news_item_picture>
+				<ht:news_item_source>Africa.com</ht:news_item_source>
 			</ht:news_item>
 		</item>
 		<item>
-			<title>moi university student strikes</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
+			<title>ac milan vs inter milan</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Fri, 30 Oct 2026 02:00:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQgipHI4M0BwgpVTvqSvj8iee5G0JnHiNr9ot5h5aO0J3GpJHTk6mKeEjCNa1E</ht:picture>
-			<ht:picture_source>Daily Nation</ht:picture_source>
+			<pubDate>Sat, 31 Oct 2026 01:10:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO4kHCxWY5j2u1pJamA3lupe6vYT7h2S0NDJ6C5GMf0cJEe_tK3G_BEKk3Mq0</ht:picture>
+			<ht:picture_source>BBC</ht:picture_source>
 			<ht:news_item>
-				<ht:news_item_title>Nine years in campus: Price of Moi University’s endless strikes</ht:news_item_title>
+				<ht:news_item_title>AC Milan v Inter and the tale of an iconic image</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://nation.africa/kenya/news/education/nine-years-in-campus-price-of-moi-university-endless-strikes-5650832</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQgipHI4M0BwgpVTvqSvj8iee5G0JnHiNr9ot5h5aO0J3GpJHTk6mKeEjCNa1E</ht:news_item_picture>
+				<ht:news_item_url>https://www.bbc.com/sport/football/articles/cq99zlpzm87ro</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO4kHCxWY5j2u1pJamA3lupe6vYT7h2S0NDJ6C5GMf0cJEe_tK3G_BEKk3Mq0</ht:news_item_picture>
+				<ht:news_item_source>BBC</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Manuel Akanji issues Inter warning ahead of Milan derby as Nerazzurri eye massive Scudetto advantage</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.goal.com/en-ke/news/manuel-akanji-inter-ac-milan-derby/blt039dc285b1905897</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSsIKaAc9ghTmbJe6-hMgMI9-4F_X0nKplX56e1TN0itr8P6fCBdhTGr_Y22Iw</ht:news_item_picture>
+				<ht:news_item_source>Goal.com</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Amorim discusses Cardinale’s ‘Top Gun’ remark, Scudetto aim, Ramos’ struggles and injuries</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.livescore.com/en/news/football/more/amorim-discusses-cardinales-top-gun-remark-scudetto-aim-ramos-struggles-and-injuries-sempremilan/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRGN76srtSBMxgusNU9-3brDDSM8Kf0f-crjtrQuVoOFWEmFnQjzu4FuUqQXwc</ht:news_item_picture>
+				<ht:news_item_source>LiveScore</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>tottenham vs crystal palace</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Fri, 30 Oct 2026 23:40:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7lcRNyy22n2OkCT2Lvki20WwlechWjwmm5E1kfpGRJKZPpuZBx0Y1a3o5_V0</ht:picture>
+			<ht:picture_source>Sky Sports</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Tottenham vs Crystal Palace: Have Spurs genuinely turned a corner in the Premier League under Roberto De Zerbi?</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.skysports.com/football/news/13605317/tottenham-vs-crystal-palace-have-spurs-genuinely-turned-a-corner-in-the-premier-league-under-roberto-de-zerbi</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7lcRNyy22n2OkCT2Lvki20WwlechWjwmm5E1kfpGRJKZPpuZBx0Y1a3o5_V0</ht:news_item_picture>
+				<ht:news_item_source>Sky Sports</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Tottenham vs Crystal Palace Prediction, Betting Tips, Lineups &amp; Odds | 31 Oct 2026</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.sportsgambler.com/betting-tips/football/tottenham-vs-crystal-palace-prediction-lineups-odds-2026-10-31/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRBAW4gZobGqhzvWU3yBSh33LKv_ts9IGu8xpELxcprftXZhWJq3RxXDUhi7j4</ht:news_item_picture>
+				<ht:news_item_source>Sportsgambler</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Tottenham vs Crystal Palace predictions: 5-1 Bet Builder tip, team news and odds</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.racingpost.com/sport/football-tips/premier-league/tottenham-vs-crystal-palace-betting-tips-predictions-team-news-odds-bet-builder-avkYh2X9MD2h/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBXYGNcmH0wO7uYPVEjfmg0ebK9D8P9Hg2w4MOXIRrtyFdfqVmXcU5J5-ZiB4</ht:news_item_picture>
+				<ht:news_item_source>Racing Post</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>linda mwananchi movement</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Fri, 30 Oct 2026 23:00:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR6pq3eSn0uwvSz7vxXNvApXDTf2VHXxK7OPP302yGgaH8udzO5uPgf3c2XWRw</ht:picture>
+			<ht:picture_source>The EastAfrican</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Kalonzo versus Sifuna: A generational battle in Kenya’s opposition building up</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.theeastafrican.co.ke/tea/news/east-africa/kalonzo-versus-sifuna-a-generational-battle-5652844</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR6pq3eSn0uwvSz7vxXNvApXDTf2VHXxK7OPP302yGgaH8udzO5uPgf3c2XWRw</ht:news_item_picture>
+				<ht:news_item_source>The EastAfrican</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Sifuna unveils Linda Mwananchi Movement party dream team</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://nation.africa/kenya/videos/sifuna-unveils-linda-mwananchi-movement-party-dream-team-5651898</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-Ay2DfOFn5uRBdDSlvf6nu4OHmQhNtaEKwdOqeblkb9dsmbLBf8VxsQmOhjc</ht:news_item_picture>
 				<ht:news_item_source>Daily Nation</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
-				<ht:news_item_title>Moi University Postpones 49th Graduation Ceremony Amid Lecturers’ Strike</ht:news_item_title>
+				<ht:news_item_title>Edwin Sifuna moment: Opposition fires opening salvo in quest to unseat Ruto</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.tuko.co.ke/education/644807-moi-university-postpones-49th-graduation-ceremony-lecturers-strike/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS-r22o85p449d3zfBxRLjrFoQusj3dVUBf0AfutU69RnLX-KsBc70EppttRlw</ht:news_item_picture>
-				<ht:news_item_source>Tuko News</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Missing marks worry Moi University students as 49th graduation is postponed</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://educationnews.co.ke/news/missing-marks-worry-moi-university-students-as-49th-graduation-is-postponed</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRq7hPwKkrP0JL7B5h98aP4DvE_zajEhDKcSolSopuGF1aIWciMRzkLoa_Psik</ht:news_item_picture>
-				<ht:news_item_source>Education News</ht:news_item_source>
+				<ht:news_item_url>https://www.standardmedia.co.ke/article/2001561212/edwin-sifuna-moment-opposition-fires-opening-salvo-in-quest-to-unseat-ruto</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSq9sqFcJ_zVZN2g2MDZf5uY0PF541zIGJmtBrTpU8brnOhJ_AVXchCyV8glKU</ht:news_item_picture>
+				<ht:news_item_source>The Standard</ht:news_item_source>
 			</ht:news_item>
 		</item>
 		<item>
 			<title>absa</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
+			<ht:approx_traffic>1000+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Fri, 30 Oct 2026 02:00:00 -0700</pubDate>
+			<pubDate>Fri, 30 Oct 2026 22:20:00 -0700</pubDate>
 			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTKp5KG7YfXdgVv3TBFA82DQc2_xH7g2YjMwkNaBtn_2DhTYHjLLz_2pNL20us</ht:picture>
 			<ht:picture_source>Khusoko</ht:picture_source>
 			<ht:news_item>
@@ -96,213 +156,153 @@
 			</ht:news_item>
 		</item>
 		<item>
-			<title>safaricom</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Fri, 30 Oct 2026 01:10:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYCZuunAiVOHVQYkdXHVBGvEiX3vlSloFWnN9OcogpASjUAtJz7zAzpRDCtns</ht:picture>
-			<ht:picture_source>Business Daily</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Safaricom sacks 118 staff in fraud crackdown</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.businessdailyafrica.com/bd/corporate/companies/safaricom-sacks-118-staff-in-fraud-crackdown-5648112</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYCZuunAiVOHVQYkdXHVBGvEiX3vlSloFWnN9OcogpASjUAtJz7zAzpRDCtns</ht:news_item_picture>
-				<ht:news_item_source>Business Daily</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Safaricom sustainability efforts create Sh1.25tr societal value</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.standardmedia.co.ke/enterprise/article/2001560997/safaricom-sustainability-efforts-create-sh125tr-societal-value</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSBIdYdekQ6LwR0FlDhRvL96Gh8R1HXDIM6Ps2zRCfijGAM-GAU4pJA8izLQfs</ht:news_item_picture>
-				<ht:news_item_source>www.standardmedia.co.ke</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>M-Pesa active users hit 41.7 million</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://peopledaily.digital/business/m-pesa-active-users-hit-41-7-million</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQxwErmwJBxHNvnHwkt_8daun9LrmJEvTVckGW9trs3vrppNa2UawwrYWxBPEA</ht:news_item_picture>
-				<ht:news_item_source>People Daily</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>nz vs ind</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Fri, 30 Oct 2026 00:00:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-zKbjHusf5O7L187d2Kw2tIk-M8GgzO6Y3PJ8cwNDKjdiMc2CFDldA6KWpoI</ht:picture>
-			<ht:picture_source>Cricinfo</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Kishan, Mayank in as India bowl; Smith back for New Zealand</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.cricinfo.com/story/ishan-kishan-mayank-yadav-in-as-india-bowl-nathan-smith-back-for-new-zealand-1560688</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-zKbjHusf5O7L187d2Kw2tIk-M8GgzO6Y3PJ8cwNDKjdiMc2CFDldA6KWpoI</ht:news_item_picture>
-				<ht:news_item_source>Cricinfo</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>New Zealand record their highest-ever total in T20I cricket history | To follow the match live | Inshorts</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://inshorts.com/en/news/new-zealand-record-their-highest-ever-total-in-t20i-cricket-history-1793351243780</ht:news_item_url>
-				<ht:news_item_picture></ht:news_item_picture>
-				<ht:news_item_source>Inshorts</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>India wins the toss and bowls in the 4th T20 vs New Zealand with the series decided</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.oskaloosa.com/sports/national_sports/india-wins-the-toss-and-bowls-in-the-4th-t20-vs-new-zealand-with-the/article_d7575c68-b3b6-5286-a3e0-402d9e9b31f7.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQpYJTeKg72gsdrc9MD69Pgdmp3Pz6qPLMI6rmdeZz7L72ltH_64d9KZi7z0P4</ht:news_item_picture>
-				<ht:news_item_source>Oskaloosa Herald</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>citizen tv kenya</title>
+			<title>brentford vs nottm forest</title>
 			<ht:approx_traffic>200+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Thu, 29 Oct 2026 23:10:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT6ZZzNfr1NH1FV1JN-x3IjeinuECX02Ad-D1F5d2f0FLrG_NGdbIJo9bRyL40</ht:picture>
-			<ht:picture_source>Citizen Digital</ht:picture_source>
+			<pubDate>Fri, 30 Oct 2026 22:20:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVBWVETat1vJdojl7QKLil68ZRKuNKYyX1SY7u6_7a72TqZHBPNPioVd3RaBo</ht:picture>
+			<ht:picture_source>Sportsgambler</ht:picture_source>
 			<ht:news_item>
-				<ht:news_item_title>RMS staff bid farewell to exiting Citizen TV news anchor Yvonne Okwara</ht:news_item_title>
+				<ht:news_item_title>Brentford vs Nottingham Forest Prediction, Betting Tips, Lineups &amp; Odds | 31 Oct 2026</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://citizen.digital/article/rms-staff-bid-farewell-to-exiting-citizen-tv-news-anchor-yvonne-okwara-n392932</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT6ZZzNfr1NH1FV1JN-x3IjeinuECX02Ad-D1F5d2f0FLrG_NGdbIJo9bRyL40</ht:news_item_picture>
-				<ht:news_item_source>Citizen Digital</ht:news_item_source>
+				<ht:news_item_url>https://www.sportsgambler.com/betting-tips/football/brentford-vs-nottingham-forest-prediction-lineups-odds-2026-10-31/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVBWVETat1vJdojl7QKLil68ZRKuNKYyX1SY7u6_7a72TqZHBPNPioVd3RaBo</ht:news_item_picture>
+				<ht:news_item_source>Sportsgambler</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
-				<ht:news_item_title>Story Of The UK-Based Organisation Hiring Yvonne Okwara</ht:news_item_title>
+				<ht:news_item_title>Brentford vs Nottingham Forest predictions: Tricky Trees to test Bees in capital clash</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://thekenyatimes.com/featured/shuga-global-yvonne/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnU6SSPGXlvZPSUxkOrPJ6nvBnB5Zcm43759fnB6cM6K0ckzctVINBAFlFHZE</ht:news_item_picture>
-				<ht:news_item_source>The Kenya Times</ht:news_item_source>
+				<ht:news_item_url>https://www.livescore.com/en/news/football/premier-league/predictions/brentford-vs-nottingham-forest-predictions-premier-league/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGXO98jkALeA3ikCPk_eaJRJxOlFpY_MTuaQjVleKXAr7U__ZqbTYu65xIiLQ</ht:news_item_picture>
+				<ht:news_item_source>LiveScore</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
-				<ht:news_item_title>Sifuna pays tribute to Yvonne Okwara, recalls journalist gave him first TV appearance</ht:news_item_title>
+				<ht:news_item_title>Brentford vs Nottingham Forest: Where to watch, live stream, TV channel and kick-off time</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://sifafm.co.ke/sifuna-pays-tribute-to-yvonne-okwara-recalls-journalist-gave-him-first-tv-appearance/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT3thVO1ECeKPjcLaKSzX8idCZks2wYCXCrb2KEaCrN-BEpQOXt0gY3jS-i7B8</ht:news_item_picture>
-				<ht:news_item_source>Sifa FM Kenya</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>binance hacked</title>
-			<ht:approx_traffic>1000+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Thu, 29 Oct 2026 22:10:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4JZWCDBt8-sMggxmhwmmw32VWGc6t-bsKz4tYV0AGkez13ARv0dCbSavRwVk</ht:picture>
-			<ht:picture_source>BBC</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Crypto giant Binance hit by $6.3bn hack suspected to be largest in history</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.bbc.com/news/articles/cwg7xp8kx4v5o</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4JZWCDBt8-sMggxmhwmmw32VWGc6t-bsKz4tYV0AGkez13ARv0dCbSavRwVk</ht:news_item_picture>
-				<ht:news_item_source>BBC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Binance says $6.3bn stolen in biggest crypto heist in history</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.aljazeera.com/economy/2026/10/30/binance-says-2-54bn-in-crypto-funds-frozen-amid-potential-security-issue</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTJ501rkSKKxVlFIPGvoe36DOjXJWq_VDt-KROGuZz6FHui9CB8IXnQIFjG5cs</ht:news_item_picture>
-				<ht:news_item_source>Al Jazeera</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>World’s largest crypto exchange hit by world’s largest heist</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.cnn.com/2026/10/30/tech/binance-crypto-heist-hnk-intl</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS7VbmcD4RNWQCkHI6MHtkXeAGEpn2Boe4mMwSvvUUeX2EPaJtZLccTfuMWysk</ht:news_item_picture>
-				<ht:news_item_source>CNN</ht:news_item_source>
+				<ht:news_item_url>https://www.goal.com/en/news/live-stream-online-tv-where-to-watch-brentford-v-nottingham-forest/blt24ebec8b07c4d6f9</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSaqHqxU-gI7fzwrs-jp_cUvZQ6jH18yO0FOKeMDsUJkGQAFBElZRtvAM84tC0</ht:news_item_picture>
+				<ht:news_item_source>Goal.com</ht:news_item_source>
 			</ht:news_item>
 		</item>
 		<item>
-			<title>nice vs rennes</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Thu, 29 Oct 2026 21:40:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTjm9TSlBOnQTk4J6KPuQZvCncvWa2ej73Ex8MdDg7iiCeaVjA3qwk7DInTCWI</ht:picture>
-			<ht:picture_source>Nice-Matin</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>En confiance, l’OGC Nice passe au révélateur face au Stade rennais de Franck Haise</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.nicematin.com/sports/football/en-confiance-l-ogc-nice-passe-au-revelateur-face-au-stade-rennais-de-franck-haise-10748775</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTjm9TSlBOnQTk4J6KPuQZvCncvWa2ej73Ex8MdDg7iiCeaVjA3qwk7DInTCWI</ht:news_item_picture>
-				<ht:news_item_source>Nice-Matin</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Ligue 1 : les supporters compréhensifs face aux reports de matches</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://rmc.bfmtv.com/actualites/societe/video-ligue-1-les-supporters-comprehensifs-face-aux-reports-de-matches_VN-202610300201.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRbf3uCRdAbMhcbrUwOLJocUb97NGbAjVwItaSpAD0sQN67dPYCSGVnd_ydZHc</ht:news_item_picture>
-				<ht:news_item_source>RMC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>L1 : Nice-Rennes, les compos probables</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://news.maxifoot.fr/ligue-1/nice-rennes-les-compos-probables-foot-466714.htm</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsQM9bBWqX0eOqcNL3sh1FPln6s5lJJGT1BP5g7yL5cqwaMv6729Vjv8ykc_o</ht:news_item_picture>
-				<ht:news_item_source>Maxifoot</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>nice vs rennes prediction</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Thu, 29 Oct 2026 21:20:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTskut-GJ37RW5iSbd5R99k4kuKIVaMrsEt4lj53zLQGToSrEXrjMxD8x07-4k</ht:picture>
-			<ht:picture_source>BBC</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Nice vs Rennes: French Ligue 1 stats &amp; head-to-head</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.bbc.com/sport/football/live/cqrly40nd1l4t</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTskut-GJ37RW5iSbd5R99k4kuKIVaMrsEt4lj53zLQGToSrEXrjMxD8x07-4k</ht:news_item_picture>
-				<ht:news_item_source>BBC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Pantaloni: &quot;We need to keep working and to redouble our efforts&quot;</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.ogcnice.com/en/article/131060/pantaloni-we-need-to-keep-working-and-to-redouble-our-efforts.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_qTN6cM0IvFwSEMbT5DQoyXK15wp3eSrt-CW5HH4jhHVpA643Bvx9dfwPOPY</ht:news_item_picture>
-				<ht:news_item_source>OGC Nice</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>October 30, 2026: Elversberg vs Mainz: First Half Winner Soccer Prediction Market</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://robinhood.com/us/en/prediction-markets/soccer/events/elversberg-vs-mainz-first-half-winner-oct-30-2026/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQjUywkeBqCJNjoXmaam3qFympdG5bsep8wiL1px7sVreWHT0CEWDjqwVL34a8</ht:news_item_picture>
-				<ht:news_item_source>Robinhood</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>fafsa</title>
+			<title>peacekeeping</title>
 			<ht:approx_traffic>200+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Thu, 29 Oct 2026 21:10:00 -0700</pubDate>
-			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeQpMPZ9OFCOkqpqbJ68kTTD7YCPfCFuIDmZRjNfc8m2J6t8_NCVVSqrfGfx4</ht:picture>
+			<pubDate>Fri, 30 Oct 2026 22:20:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyApDnSE7H0um0Iwttf1cwVVzZnzG4Y5Ux4I0JT2uFzbKqRpn5xnQZ7V3W2lQ</ht:picture>
+			<ht:picture_source>Nepalnews.com</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Nepali women peacekeepers take charge of UN’s highest permanently manned position</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://english.nepalnews.com/s/security/nepali-women-peacekeepers-take-charge-of-uns-highest-permanently-manned-position/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyApDnSE7H0um0Iwttf1cwVVzZnzG4Y5Ux4I0JT2uFzbKqRpn5xnQZ7V3W2lQ</ht:news_item_picture>
+				<ht:news_item_source>Nepalnews.com</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Nepalese Lieutenant Colonel Rabin Thapa Promotes Women’s Role in UN Peacekeeping</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.hamropatro.com/en/news/detail/4842302831338127-nepalese-lieutenant-colonel-rabin-thapa-promotes-women-s-role-in</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9CeRfp9em2XRkX7eki_etUG8q3UgXvQDgKkdWEAmIe5W_JO_u5W_1qgOfzYU</ht:news_item_picture>
+				<ht:news_item_source>Hamro Patro</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Military, Police and civilian peacekeepers share how peace is more sustainable when we invest in women.</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://peacekeeping.un.org/en/news/military-police-and-civilian-peacekeepers-share-how-peace-is-more-sustainable</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgWHMyHBGGD0r024e7AS6oufot4XX_kYQg7T6NadtC_YcWKAsGYhqsVwBdj_g</ht:news_item_picture>
+				<ht:news_item_source>UN Peacekeeping</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>aston villa vs fulham</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Fri, 30 Oct 2026 22:10:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ2UqVWiq-P2HNAkXnrwmYCxDjDIu8zzBniYDBl3PIawFkbJrfno6RuvPJ1--w</ht:picture>
 			<ht:picture_source>BBC</ht:picture_source>
 			<ht:news_item>
-				<ht:news_item_title>From green card to fraud: Kenyans arrested in $130m US ghost student scam</ht:news_item_title>
+				<ht:news_item_title>Aston Villa vs Fulham: Premier League preview, team news, stats &amp; head-to-head</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.bbc.com/news/articles/cxvgdzpy7241o</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeQpMPZ9OFCOkqpqbJ68kTTD7YCPfCFuIDmZRjNfc8m2J6t8_NCVVSqrfGfx4</ht:news_item_picture>
+				<ht:news_item_url>https://www.bbc.com/sport/football/live/cq0ldj4pnz10t</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ2UqVWiq-P2HNAkXnrwmYCxDjDIu8zzBniYDBl3PIawFkbJrfno6RuvPJ1--w</ht:news_item_picture>
 				<ht:news_item_source>BBC</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
-				<ht:news_item_title>US student loan fraud crackdown targets Kenyans, Nairobi</ht:news_item_title>
+				<ht:news_item_title>Aston Villa vs Fulham predictions: 6-1 Bet Builder tip, team news and odds</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://nation.africa/kenya/news/diaspora/diaspora-news/us-student-loan-fraud-crackdown-targets-kenyans-nairobi--5651468</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhcLRkuYqGzwSKtegV14apcW058gBiSKaW0z5teThuUMUcMDINBzGZ1GW_Tyk</ht:news_item_picture>
-				<ht:news_item_source>Daily Nation</ht:news_item_source>
+				<ht:news_item_url>https://www.racingpost.com/sport/football-tips/premier-league/aston-villa-vs-fulham-predictions-team-news-odds-betting-tips-bet-builder-a3iQm6z7Yo3X/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQEXObGVIJgsoVoA3rPABz6tPF3aAjmZSemcCTuj_EEjh2LgMtAXjJnkq4cNFw</ht:news_item_picture>
+				<ht:news_item_source>Racing Post</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
-				<ht:news_item_title>US Justice Department uncovers a massive $200m student-aid scam involving fake enrolments, stolen identities and Kenyan networks</ht:news_item_title>
+				<ht:news_item_title>Bet £10 Get £50 in Free Bets for Aston Villa vs Fulham with Paddy Power</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://africa.businessinsider.com/local/lifestyle/us-justice-department-uncovers-a-massive-dollar200m-student-aid-scam-involving-fake/11rsfs0</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKjw1GwU5Q1dLC6J05Co4YvthDcHkUlZNLhFQKxGb86B5eQdvdIZ3leW6Czko</ht:news_item_picture>
-				<ht:news_item_source>Business Insider Africa</ht:news_item_source>
+				<ht:news_item_url>https://footyaccumulators.com/news/premier-league/bet-10-get-50-in-free-bets-for-aston-villa-vs-fulham-with-paddy-power</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQlE_89AWd8cEgxT4PY5mjqnOlO8MRfJAYJmH12iWgaHkxYesUGvAwANbNSQ9M</ht:news_item_picture>
+				<ht:news_item_source>Footy Accumulators</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>ind vs uae</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Fri, 30 Oct 2026 21:00:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-7IPMhKh6nwoF27ByqGZIterxgZKtHMKouEwp8pZrRp-C1uoP6BWZIXzsTwU</ht:picture>
+			<ht:picture_source>Gulf News</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>UAE beat India and Pakistan, reach Hong Kong Sixes Cup semifinals</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://gulfnews.com/sport/uae-beat-india-and-pakistan-reach-hong-kong-sixes-cup-semifinals-1.500730492</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-7IPMhKh6nwoF27ByqGZIterxgZKtHMKouEwp8pZrRp-C1uoP6BWZIXzsTwU</ht:news_item_picture>
+				<ht:news_item_source>Gulf News</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>India vs UAE, Hong Kong Sixes: UAE outplays Krunal Pandya’s side, wins by six wickets</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://sportstar.thehindu.com/cricket/india-vs-uae-hong-kong-sixes-uae-outplays-krunal-pandya-led-side-wins-by-six-wickets/article71648232.ece</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiHwfGJXhNpMvViV33ubNU8ELFKVjzstvAZ_RMr_EGNx44eeXsOgietAf3UF0</ht:news_item_picture>
+				<ht:news_item_source>Sportstar</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>India lose to UAE by 6 wickets, Natarajan smashes 4 sixes in 14-ball 38 after batting collapse</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://thesportstak.com/amp/cricket/story/india-lose-to-uae-by-6-wickets-natarajan-smashes-4-sixes-in-14-ball-38-after-batting-collapse-arste-3558755-2026-10-31</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQqOf6ejcnjo4vNKqy-wdrSl2R4S6Jen7XilSB5d_0o5Yt7b4LPIH1jiQYdSro</ht:news_item_picture>
+				<ht:news_item_source>SportsTak</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>weather</title>
+			<ht:approx_traffic>50000+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Fri, 30 Oct 2026 20:40:00 -0700</pubDate>
+			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcStpIARmlRuxN9WgcB8LaedUShHq6HdOzDQv2MgbNmA_2REnVsvV_oBlp07m5k</ht:picture>
+			<ht:picture_source>Sky Sports</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Josh Allen vs Lamar Jackson: Buffalo Bills and Baltimore Ravens resume rivalry as NFL greats knock at Super Bowl door again - NFL Gameday Guide</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.skysports.com/nfl/news/13604718/josh-allen-vs-lamar-jackson-buffalo-bills-and-baltimore-ravens-resume-rivalry-as-nfl-greats-knock-at-super-bowl-door-again-nfl-gameday-guide</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcStpIARmlRuxN9WgcB8LaedUShHq6HdOzDQv2MgbNmA_2REnVsvV_oBlp07m5k</ht:news_item_picture>
+				<ht:news_item_source>Sky Sports</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Bills QB Josh Allen Closing In on Rare NFL Rushing Milestone Against Ravens</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://roundtable.io/sports/nfl/bills/news/bills-qb-josh-allen-closing-in-on-rare-nfl-rushing-milestone-against-ravens</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQDyTsOdGL_NswA0yFsNfMk3LxmBXy5et9iuHWc7XQJwYqL1LrByjcDXPKy6_8</ht:news_item_picture>
+				<ht:news_item_source>roundtable.io</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Josh Allen vs Lamar Jackson: Two MVP careers, different playoff stories and one question about who will d</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://timesofindia.indiatimes.com/sports/nfl/news/josh-allen-vs-lamar-jackson-two-mvp-careers-different-playoff-stories-and-one-question-about-who-will-define-the-afc-era/articleshow/135349499.cms</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGzhQVVfmUMt7RfPDR6WA5sjHbL9-aR_nnn6aZe4V3j4KJtdMmsFY0cU1an0c</ht:news_item_picture>
+				<ht:news_item_source>The Times of India</ht:news_item_source>
 			</ht:news_item>
 		</item>
 	</channel>
