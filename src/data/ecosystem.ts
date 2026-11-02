@@ -305,14 +305,14 @@ export const REPORTS: Report[] = [
 
 /** Real consumer-interest snapshot (Google Trends KE RSS, Oct 15 2026). */
 export const TRENDS: { keyword: string; volume: string }[] = [
-  { keyword: 'paris fc vs monaco', volume: '100+' },
-  { keyword: 'india vs new zealand', volume: '500+' },
-  { keyword: 'kenya revenue authority', volume: '500+' },
-  { keyword: 'marseille vs toulouse', volume: '100+' },
-  { keyword: 'viral videos', volume: '100+' },
-  { keyword: 'como vs venezia', volume: '200+' },
-  { keyword: 'lyon vs angers', volume: '200+' },
-  { keyword: 'lazio vs cagliari', volume: '100+' },
-  { keyword: 'juventus vs napoli', volume: '500+' },
-  { keyword: 'liverpool vs arsenal prediction', volume: '500+' },
+  { keyword: 'driving', volume: '200+' },
+  { keyword: 'al-nassr fc', volume: '100+' },
+  { keyword: 'journalist', volume: '500+' },
+  { keyword: 'newcastle vs everton', volume: '100+' },
+  { keyword: 'all souls day', volume: '100+' },
+  { keyword: 'nssf', volume: '500+' },
+  { keyword: 'learjet', volume: '200+' },
+  { keyword: 'ethiopia', volume: '100+' },
+  { keyword: 'lakers vs raptors', volume: '500+' },
+  { keyword: 'moi university', volume: '500+' },
 ];
