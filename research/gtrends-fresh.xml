@@ -6,169 +6,296 @@
 		<link>https://trends.google.com/trending/rss?geo=KE</link>
 		<atom:link href="https://trends.google.com/trending/rss?geo=KE" rel="self" type="application/rss+xml"/>
 		<item>
-			<title>driving</title>
+			<title>traffic enforcement camera</title>
 			<ht:approx_traffic>200+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Mon, 2 Nov 2026 01:30:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTeig95ewJ7qFQuA0kN8jYVyklsdS2DHZ5rXyMjmUa2PyigERn6hm2kUYUiy-s</ht:picture>
-			<ht:picture_source>The Independent</ht:picture_source>
+			<pubDate>Tue, 3 Nov 2026 02:00:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRysh6aVlfXXNODWt5VeatfwC_XqgnnmrHvNsijys47FPGwTrFGE8fvu66uZg4</ht:picture>
+			<ht:picture_source>The Star, Kenya</ht:picture_source>
 			<ht:news_item>
-				<ht:news_item_title>US military in Japan rocked by second arrest of marine in less than a month</ht:news_item_title>
+				<ht:news_item_title>Highways under watch as NTSA rolls out speed cameras</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.independent.co.uk/asia/japan/japan-us-marine-arrest-okinawa-police-b3077298.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTeig95ewJ7qFQuA0kN8jYVyklsdS2DHZ5rXyMjmUa2PyigERn6hm2kUYUiy-s</ht:news_item_picture>
-				<ht:news_item_source>The Independent</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Licensable picture: Protest Over U.S. Military Incidents In Okinawa Near U.S. Embassy In Tokyo</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.reutersconnect.com/item/protest-over-us-military-incidents-in-okinawa-near-us-embassy-in-tokyo/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX01UMU5VUlBITzAwMFgyVEQ3OA</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1NZUOdmQgtKaPpk0gzWX7uBFD3bro7bm975gll0ShTc68ePQu8_mIsW2wN7U</ht:news_item_picture>
-				<ht:news_item_source>Reuters Connect</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Tokyo Protesters Demand End to US Military Presence in Okinawa after Woman’s Killing</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.tasnimnews.ir/en/news/2026/10/31/3736698/tokyo-protesters-demand-end-to-us-military-presence-in-okinawa-after-woman-s-killing</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR9gSNgcY10yVYc7Pn6R_HMDR5HKltd1MArMYwkmQwFL30mK83hkN97cpuItQM</ht:news_item_picture>
-				<ht:news_item_source>تسنیم</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>al-nassr fc</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Mon, 2 Nov 2026 00:00:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJXxqQ6AQqZJFfbHdijrQvYeEAlFa0jisjUigs7dxwfcA01YA2EgycJYxxr4U</ht:picture>
-			<ht:picture_source>ESPN</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Ronaldo off Al Nassr&apos;s ACL squad due to Saudi security concerns</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.espn.com/soccer/story/_/id/50353917/ronaldo-al-nassr-acl-squad-saudi-security-concerns</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJXxqQ6AQqZJFfbHdijrQvYeEAlFa0jisjUigs7dxwfcA01YA2EgycJYxxr4U</ht:news_item_picture>
-				<ht:news_item_source>ESPN</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Postecoglou settles on two changes to Al-Nassr&apos;s line-up against Pakhtakor</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.goal.com/en/news/postecoglou-settles-on-two-changes-to-al-nassr-s-line-up-against-pakhtakor/bltf0a079eeff0bd08a</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRSumQEdwVFOZaB5ptI_wVSeJZEbURgvSHhCjdOr6k-53hBFBLbValXsH4N7PA</ht:news_item_picture>
-				<ht:news_item_source>Goal.com</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Preview: Pakhtakor Tashkent vs Al-Nassr - prediction, team news, lineups</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.sportsmole.co.uk/football/al-nassr/preview/pakhtakor-vs-al-nassr-prediction-team-news-lineups_608164.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT5z_OGdhyorwk0lTaPiM5qc--Hx3LVpOpxRmloVnyN6Tzy3WCoYtNXX_NlALM</ht:news_item_picture>
-				<ht:news_item_source>Sports Mole</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>journalist</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 23:50:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8g04WB6zchspP6dnExO9i6uwGNpgvMEsdt8j9Lq7lg09uGerdWqcBhm25-gE</ht:picture>
-			<ht:picture_source>Daily Nation</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Former Nation journalist Kitavi Mutua dies after snake bite</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://nation.africa/kenya/news/former-nation-journalist-kitavi-mutua-dies-after-snake-bite-5653776</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8g04WB6zchspP6dnExO9i6uwGNpgvMEsdt8j9Lq7lg09uGerdWqcBhm25-gE</ht:news_item_picture>
-				<ht:news_item_source>Daily Nation</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Journalist Mutua Kitavi was writing my second autobiography before his demise - Kalonzo</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.the-star.co.ke/counties/eastern/2026-11-01-journalist-kitavi-was-writing-my-second-autobiography-before-his-demise-kalonzo</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQu9qO2CT293a6_TZYg0hpsKumYp1pFS6IcM5UJwbnEum1cOLjbT2pfBY3Ulnw</ht:news_item_picture>
+				<ht:news_item_url>https://www.the-star.co.ke/news/2026-11-03-highways-under-watch-as-ntsa-rolls-out-cameras</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRysh6aVlfXXNODWt5VeatfwC_XqgnnmrHvNsijys47FPGwTrFGE8fvu66uZg4</ht:news_item_picture>
 				<ht:news_item_source>The Star, Kenya</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
-				<ht:news_item_title>Former Nation Media Journalist Dies In Hospital</ht:news_item_title>
+				<ht:news_item_title>NTSA Exposes New Scam Targeting Drivers Amid Ongoing Crackdown</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.kenyans.co.ke/news/129029-veteran-journalist-kitavi-mutua-dies-while-icu</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRHI30e4DEdFLsOWIbUPEYfSm7II8IrhpuSyCCwstNN4JjW2sJPQ9TheCseMU0</ht:news_item_picture>
+				<ht:news_item_url>https://www.kenyans.co.ke/news/128998-ntsa-issues-warning-motorists-over-fake-traffic-offence-notices</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQzNpIYJX5_xLAz9gSoqIgRYRQUq0n7kQOXLP3kHXc8JJREoVPbaCU-X7_Y9go</ht:news_item_picture>
+				<ht:news_item_source>Kenyans.co.ke</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>NTSA road safety operation: What will be checked at roadblocks</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://nation.africa/kenya/news/ntsa-road-safety-operation-what-will-be-checked-at-roadblocks-5646622</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQMxN5fgjeV1gY-_U9oTNfJHOoi3bLMCUNy6UgXt99N0_sSXluuxYEtKro4IRQ</ht:news_item_picture>
+				<ht:news_item_source>Daily Nation</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>jesus de miguel</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 01:30:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_eN_Qc102cZb1giHc6DnTgbBUZz6Yt_UzW7HkjCv6Oihc9pyvqRmPn6QXmY</ht:picture>
+			<ht:picture_source>BBC</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Tenerife striker De Miguel dies after on-field collision</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.bbc.com/sport/football/articles/ck62yvz046pjo</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_eN_Qc102cZb1giHc6DnTgbBUZz6Yt_UzW7HkjCv6Oihc9pyvqRmPn6QXmY</ht:news_item_picture>
+				<ht:news_item_source>BBC</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Tenerife footballer Jesús de Miguel dies aged 30 after on-pitch collision</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.theguardian.com/football/2026/nov/03/tenerife-footballer-jesus-de-miguel-hospital-collision</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR3sa5X9AYliBtX-CPJbpHo1Qwwml5dGNzv8tCz-qhrBsQ4PNy1T3uT-a8x-HA</ht:news_item_picture>
+				<ht:news_item_source>The Guardian</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Watch: after the death of the Tenerife player, Andorra&apos;s goalkeeper faces four years in prison on a charge of involuntary manslaughter!</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.goal.com/en/news/watch-following-the-death-of-a-tenerife-player-the-andorra-goalkeeper-faces-four-years-in-prison-on-a-charge-of-manslaughter/blt6d99a73e3bbe7891</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQDlujgYgZauR79j_eFNZRpjqU05NPUgrA_rnalPAfYTZ_s7va0mGPuYbgtamo</ht:news_item_picture>
+				<ht:news_item_source>Goal.com</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>currency</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 01:20:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTV5OPHwlvzdQGzvDNPAjeH4wPYMUpxUDKia64IVzMB43uhxTZJQzHSt0GoLYA</ht:picture>
+			<ht:picture_source>Business Daily</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Kenya shilling unmoved as global volatility batters regional currencies</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.businessdailyafrica.com/bd/markets/currencies/kenya-shilling-unmoved-as-global-volatility-batters-currencies-5655334</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTV5OPHwlvzdQGzvDNPAjeH4wPYMUpxUDKia64IVzMB43uhxTZJQzHSt0GoLYA</ht:news_item_picture>
+				<ht:news_item_source>Business Daily</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Kenya Shilling Stability and What is Supporting It</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://businesstoday.co.ke/kenya-shilling-stability-and-what-supports-it/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSGYz_XHeiXRTwqeRGXpPX6TsaJZ0FEbAl_GdR4RUYiLCL3ZKnuPq0DYoNfpc4</ht:news_item_picture>
+				<ht:news_item_source>Business Today Kenya</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Kenya&apos;s balance of payments surplus is supporting shilling stability, Thugge tells MPs</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://techtrendske.co.ke/2026/10/31/shilling-stability/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSrDglKG7eljK6zZYKu8vZBHwfJ9GZ-aC_vaQnTecoIHfOiG5HcF7lXOmNkKwE</ht:news_item_picture>
+				<ht:news_item_source>TechTrendsKE</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>qpr vs burnley prediction</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 01:10:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQXdAC4BPVf9QloNyriF0-7TOZOqef9izr85C9sKCtmQqAItgui_5sT9I-Y-_8</ht:picture>
+			<ht:picture_source>BBC</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Queens Park Rangers v Burnley: Championship stats &amp; head-to-head</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.bbc.com/sport/football/live/cmlylp28k1lzt</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQXdAC4BPVf9QloNyriF0-7TOZOqef9izr85C9sKCtmQqAItgui_5sT9I-Y-_8</ht:news_item_picture>
+				<ht:news_item_source>BBC</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>QPR vs Burnley: TV channel, live stream and kick-off time for Championship fixture</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.goal.com/en/news/live-stream-online-tv-where-to-watch-queens-park-rangers-v-burnley/blt1e8337874e3b8888</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSlbcVUhliuyLnHnoaGO2fCRyHa4PSQiaMOGBrY6qDM_6z1vanHv9c2p1JrSXI</ht:news_item_picture>
+				<ht:news_item_source>Goal.com</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Football Bet of the Day: Kone to trouble Burnley’s fragile defence</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://insights.betfred.com/football/football-bet-of-the-day/daily-football-bet-tuesday-3-november-2026/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaD_xcbwk0jr4bEOde4XPU88mAdnHFgC89hcl8CtYS13z5Kc-v2B68jUtbK9w</ht:news_item_picture>
+				<ht:news_item_source>Betfred Insights</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>gta 6</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 01:00:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQetYr7vdxCKrXmseni78IJ-a8ZTZN9WCGfyRVX3NrPaasQ5BhLrQlT-O2_mt8</ht:picture>
+			<ht:picture_source>Sneaker Files</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Travis Scott&apos;s Cactus Jack x Rockstar Games x Nike Air Force 1 Low &quot;GTA 6&quot; Pack Releases November 2026</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.sneakerfiles.com/travis-scott-cactus-jack-rockstar-games-nike-air-force-1-low/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQetYr7vdxCKrXmseni78IJ-a8ZTZN9WCGfyRVX3NrPaasQ5BhLrQlT-O2_mt8</ht:news_item_picture>
+				<ht:news_item_source>Sneaker Files</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Travis Scott&apos;s GTA 6 AF1 Sneakers Drop November 19</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://resellcalendar.com/news/news/travis-scott-gta-6-sneaker-reseller-nike-af1/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSLH-3q3Bm-0L-DMB0-pgnlm0q9yCz49FrUtKFgbv5DNoG_bebbUo0TVdwX10k</ht:news_item_picture>
+				<ht:news_item_source>Resell Calendar</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Everything You Need to Know About the Rockstar x Travis Scott x Nike Collaboration</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.sneakerfreaker.com/releases/rockstar-travis-scott-nike-GTA-6-air-force-1-price-buy-release-date</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTCm3m_7MTy4h4pRtMzgKWNc7OH-yq5yYY5UqzmAHXs1YbV-89O4vXda0Ir7b8</ht:news_item_picture>
+				<ht:news_item_source>Sneaker Freaker</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>julius kipngetich</title>
+			<ht:approx_traffic>500+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 00:50:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR0OrXoIxKyhD25Y_yOqTlb8sqKOhlj8A-AKw9NNXBt-IF7-Y0-ttnwOB5nORg</ht:picture>
+			<ht:picture_source>Business Daily</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Kipngetich retires from Jubilee Holdings after 9 years</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.businessdailyafrica.com/bd/corporate/companies/kipngetich-retires-from-jubilee-holdings-after-9-years-5655960</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR0OrXoIxKyhD25Y_yOqTlb8sqKOhlj8A-AKw9NNXBt-IF7-Y0-ttnwOB5nORg</ht:news_item_picture>
+				<ht:news_item_source>Business Daily</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Jubilee Group appoints Juan Cazcarra as Group CEO, effective December 1,</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.the-star.co.ke/news/2026-11-02-jubilee-appoints-juan-cazcarra-as-group-ceo</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ_sRGIswflyu-sBonDr3GKeSeBit2E4BvTqd-113RiarckaHabX3YKM8Uo974</ht:news_item_picture>
+				<ht:news_item_source>The Star, Kenya</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Julius Kipngetich leaves Jubilee Group after serving as CEO for 8 years</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://peopledaily.digital/business/julius-kipngetich-leaves-jubilee-group-after-serving-as-ceo-for-8-years</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2eKQsNpW0jkuJFs0ZBRSvAYjqTHGIJdLueKQ-0-B8-ARWwRZIjpvbXmTzDWc</ht:news_item_picture>
+				<ht:news_item_source>People Daily</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>2026 kcse exam security rules</title>
+			<ht:approx_traffic>500+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 00:10:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTmzVpyMZjo1_BpYc6JDMlogHtZu4KkBADWeIXzsHHEDCEo8TvfuDeyf7zFTf0</ht:picture>
+			<ht:picture_source>Daily Nation</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Stray bullets, wristwatch ban and weather concerns as KCSE begins</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://nation.africa/kenya/news/education/stray-bullets-wristwatch-ban-and-weather-concerns-as-kcse-begins-5656228</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTmzVpyMZjo1_BpYc6JDMlogHtZu4KkBADWeIXzsHHEDCEo8TvfuDeyf7zFTf0</ht:news_item_picture>
+				<ht:news_item_source>Daily Nation</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Government assures security, integrity of national examination materials</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.kenyanews.go.ke/government-assures-security-integrity-of-national-examination-materials/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR5OL3-tOf8cDpwtIgA9k2XB6tST2NN-_iHkRJLBx-9lsgxR3u1nvwqMgHrH9c</ht:news_item_picture>
+				<ht:news_item_source>Kenya News Agency</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Basic Education PS Ololtuaa warns against malpractices as KCSE main exams kicks off</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.kbc.co.ke/two-choppers-deployed-to-ferry-papers-in-mandera/</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQrCcy4Nh_yIUjsPnzN0zuRH7yt-nc5SpF1tfL7vsxbxAb2sSHcAQ7UVbs0Rr8</ht:news_item_picture>
+				<ht:news_item_source>KBC Digital</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>road</title>
+			<ht:approx_traffic>200+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Tue, 3 Nov 2026 00:00:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT2LCsekZVUgZcFmibDZVPtB9AMUs0Na-PL3D_4uch0jvs_t8PZSuVcogT6PZM</ht:picture>
+			<ht:picture_source>Kenyans.co.ke</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Mbadi Fires Back at Gachagua Over Rironi-Mau Road Cost Claims</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.kenyans.co.ke/news/129093-cs-mbadi-rejects-claims-rironi-mau-summit-highway-cost-was-inflated</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT2LCsekZVUgZcFmibDZVPtB9AMUs0Na-PL3D_4uch0jvs_t8PZSuVcogT6PZM</ht:news_item_picture>
+				<ht:news_item_source>Kenyans.co.ke</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Gachagua: Ruto pocketed Sh3.5 billion from Rironi-Mau Summit Road deal</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.standardmedia.co.ke/politics/article/2001561380/gachagua-ruto-pocketed-sh35billion-from-rironi-mau-summit-road-deal</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTj_pIabTu_ZEv4JYJViN-gr9AvGeFZ5n7rr0DOzLsDk6mmw9UN-DwhKDm-4FY</ht:news_item_picture>
+				<ht:news_item_source>The Standard</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Treasury exposes Sh414bn termination fees threatening public-private deals</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://nation.africa/kenya/business/treasury-exposes-sh414bn-termination-fees-threatening-public-private-deals-5648366</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSJCJCbDnHqEhMyERkGIGWNBgRmZsjgDGzfmfqKAwcLs6nGNp3QTmng6TDCoRg</ht:news_item_picture>
+				<ht:news_item_source>Daily Nation</ht:news_item_source>
+			</ht:news_item>
+		</item>
+		<item>
+			<title>paul kihara kariuki</title>
+			<ht:approx_traffic>500+</ht:approx_traffic>
+			<description/>
+			<link>https://trends.google.com/trending/rss?geo=KE</link>
+			<pubDate>Mon, 2 Nov 2026 22:50:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQCTpV-ozRsLEd-rUaE83QiCUeue86AFXt67Z3YW7USZTo2Mh1gIDKCD-gVmwY</ht:picture>
+			<ht:picture_source>People Daily</ht:picture_source>
+			<ht:news_item>
+				<ht:news_item_title>Uhuru Kenyatta mourns former Attorney General Paul Kihara Kariuki</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://peopledaily.digital/news/uhuru-kenyatta-mourns-former-attorney-general-paul-kihara-kariuki</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQCTpV-ozRsLEd-rUaE83QiCUeue86AFXt67Z3YW7USZTo2Mh1gIDKCD-gVmwY</ht:news_item_picture>
+				<ht:news_item_source>People Daily</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Former Attorney General Paul Kihara dies</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://citizen.digital/article/former-attorney-general-paul-kihara-dies-n393224</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTWL5_jtx237zPOPiMo6Gt2zxIeOSeUI-owWKRQ2hgZ1Sw8zvVlRA0Hd1HJ-WM</ht:news_item_picture>
+				<ht:news_item_source>Citizen Digital</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Former Judge, Attorney General Dies at 72</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.kenyans.co.ke/news/129080-former-attorney-general-paul-kihara-kariuki-dies-72</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTRO5PN0hs3cIKgstvLqFq89mw_-q8Zyn9i5KU_Z99hbUZesTacCfE1idaznr8</ht:news_item_picture>
 				<ht:news_item_source>Kenyans.co.ke</ht:news_item_source>
 			</ht:news_item>
 		</item>
 		<item>
-			<title>newcastle vs everton</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 23:20:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRs5XdY86EgUvGodQjYnS97TP9iczaIMmX_VcXL1EQ9oP5cdRsGrMjvoNPA8Sk</ht:picture>
-			<ht:picture_source>BBC</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Premier League: build-up to Newcastle v Everton - live text</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.bbc.com/sport/football/live/cq2d68r9y6kwt</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRs5XdY86EgUvGodQjYnS97TP9iczaIMmX_VcXL1EQ9oP5cdRsGrMjvoNPA8Sk</ht:news_item_picture>
-				<ht:news_item_source>BBC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Newcastle vs. Everton: Prediction, Tips and Odds | Premier League</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.tntsports.co.uk/betting/tips/newcastle-vs-everton-prediction-tips-and-odds-02-11-26/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQj-PJO8tsvpApOPCCozzyOPTuQW3tWlmpK25yVnYOdbazfpesZ_Tu6bRyg29Y</ht:news_item_picture>
-				<ht:news_item_source>TNT Sports</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Newcastle v Everton: Back 20/1 Barry Bet Builder on Monday night</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://betting.betfair.com/football/premier-league/newcastle-v-everton-tips-predictions-best-bets-back-barry-in-20/1-bet-builder-311026-719.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTeGfXNN70bmrMJlPW9SO6lYBta7u5sI1XKoPyWUuo1uMWuirlK4MukDPIcZm4</ht:news_item_picture>
-				<ht:news_item_source>Betfair</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>all souls day</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 22:30:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR1iY8gPdaRcmxPPVRLDTlIytGfIoXOhzMhGVDm-KTRY5xPqfeWTktRcwoyIbg</ht:picture>
-			<ht:picture_source>Reuters Connect</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Licensable picture: Filipinos Observe All Soul&apos;s Day</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.reutersconnect.com/item/filipinos-observe-all-souls-day/dGFnOnJldXRlcnMuY29tLDIwMjY6bmV3c21sX01UMVpVTUEwMDBNNDE5SEo</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR1iY8gPdaRcmxPPVRLDTlIytGfIoXOhzMhGVDm-KTRY5xPqfeWTktRcwoyIbg</ht:news_item_picture>
-				<ht:news_item_source>Reuters Connect</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>APTOPIX Philippines All Saints Day</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.guardonline.com/news/world/aptopix-philippines-all-saints-day/image_932f07c7-ebc1-5c9f-a78e-d42d13c322fe.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTcAuRk9eDKVgyjal-LUItNeY4wKbJRqYYAQqydGd_DZAGsCfPT0qmEikZWeM0</ht:news_item_picture>
-				<ht:news_item_source>The Batesville Daily Guard</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Large crowds gathered in Manila for All Saints Day</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.2news.com/news/world/large-crowds-gathered-in-manila-for-all-saints-day/video_1bab44eb-b4cf-5fa0-9ca2-82ff60b1c77c.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQEAs6rKxKi9qOeXisyG7GZ_ph67O9xIuDY5Zf2kl1R0j3EOZzHVK5vStroGLw</ht:news_item_picture>
-				<ht:news_item_source>KTVN</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
 			<title>nssf</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
+			<ht:approx_traffic>200+</ht:approx_traffic>
 			<description/>
 			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 22:20:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQSRp2cLV8PoJwyUbLfFUv2-oDB7neEhMbofaEbABXA6lCO5aeVqwl9ult5O9Y</ht:picture>
-			<ht:picture_source>Citizen Digital</ht:picture_source>
+			<pubDate>Mon, 2 Nov 2026 22:20:00 -0800</pubDate>
+			<ht:picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVML2co3kOZtPLgCRjlPC73JXoCDwjymEeAS8gWOXM5bLYZGNKHLONvi0POTU</ht:picture>
+			<ht:picture_source>The Star, Kenya</ht:picture_source>
 			<ht:news_item>
-				<ht:news_item_title>Gachagua says Rironi-Mau Summit road construction stalling due to corruption</ht:news_item_title>
+				<ht:news_item_title>Nairobi-Nakuru jams set to end as Naivasha stretch 90% complete</ht:news_item_title>
 				<ht:news_item_snippet/>
-				<ht:news_item_url>https://citizen.digital/article/gachagua-says-rironi-mau-summit-road-construction-stalling-due-to-corruption-n393132</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQSRp2cLV8PoJwyUbLfFUv2-oDB7neEhMbofaEbABXA6lCO5aeVqwl9ult5O9Y</ht:news_item_picture>
-				<ht:news_item_source>Citizen Digital</ht:news_item_source>
+				<ht:news_item_url>https://www.the-star.co.ke/news/ground-check/2026-11-03-smooth-rides-ahead-as-rironi-naivasha-road-90-complete</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVML2co3kOZtPLgCRjlPC73JXoCDwjymEeAS8gWOXM5bLYZGNKHLONvi0POTU</ht:news_item_picture>
+				<ht:news_item_source>The Star, Kenya</ht:news_item_source>
+			</ht:news_item>
+			<ht:news_item>
+				<ht:news_item_title>Gachagua Reveals Alleged Plan to Halt Ksh200 Billion Rironi-Mau Road</ht:news_item_title>
+				<ht:news_item_snippet/>
+				<ht:news_item_url>https://www.kenyans.co.ke/news/129051-gachagua-disputes-chirchirs-explanation-rironi-mau-summit-road-delays</ht:news_item_url>
+				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTppnK9VA-8rvFgHd21GsAT3a7PL_z_scnWBUU8WfG3Q0c8q5tozmQj7fvzwAI</ht:news_item_picture>
+				<ht:news_item_source>Kenyans.co.ke</ht:news_item_source>
 			</ht:news_item>
 			<ht:news_item>
 				<ht:news_item_title>Missed deadline: CS Chirchir pushes Rironi-Naivasha highway opening to December</ht:news_item_title>
@@ -176,133 +303,6 @@
 				<ht:news_item_url>https://nation.africa/kenya/news/missed-deadline-cs-chirchir-pushes-rironi-naivasha-highway-opening-to-december-5652760</ht:news_item_url>
 				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRxfMHHckoRwMgCF44bRcT7tO0eafNbHwFNL4EQb7QM5_s20dPH084k2MJzkxk</ht:news_item_picture>
 				<ht:news_item_source>Daily Nation</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Explained: What Is Bitumen, Material Behind Rironi-Mau Road Delays</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.kenyans.co.ke/news/129052-explained-what-bitumen-material-behind-rironi-mau-road-delays</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSeOSwj0bkxzlFiaeFDHJPuFpalA3NsruhVqtCMGsrOiVMo1VxOT07AbSKsqps</ht:news_item_picture>
-				<ht:news_item_source>Kenyans.co.ke</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>learjet</title>
-			<ht:approx_traffic>200+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 22:00:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRS8wR5ZhINNCljXNhUQtDLny_6yzUPUb5w7D7O1IK5ju3cZsp-TCjo8I_vv1g</ht:picture>
-			<ht:picture_source>BBC</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Nine killed in fiery Florida Learjet crash in West Palm Beach County</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.bbc.com/news/articles/cm369yy7lw73o</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRS8wR5ZhINNCljXNhUQtDLny_6yzUPUb5w7D7O1IK5ju3cZsp-TCjo8I_vv1g</ht:news_item_picture>
-				<ht:news_item_source>BBC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>All nine people aboard business jet that crashed in Florida have died</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.theguardian.com/us-news/2026/nov/01/business-jet-crash-florida</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRR0MqITCL2jyytLnZgl6-dTFPlBf3ArO9ubSxBdn-W5aogPG4wD7iI0YjSgGA</ht:news_item_picture>
-				<ht:news_item_source>The Guardian</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Pilot&apos;s last words before jet crashes in Florida, killing all nine on board</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://news.sky.com/story/business-jet-carrying-nine-crashes-in-florida-13606818</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ3QVeBbsVuODR8hCKM5A7fPjQbWXYLoj_35k78orprA5hwVc5tr1QOAccKj2Q</ht:news_item_picture>
-				<ht:news_item_source>Sky News</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>ethiopia</title>
-			<ht:approx_traffic>100+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 20:10:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQBSdccGrC0k_IUXXEXrVbzgt3ECp49xaph68iTIGCAfio_HzCtkgESOpUkcT8</ht:picture>
-			<ht:picture_source>BBC</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Ethiopian PM Abiy Ahmed puts ministers through military training</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.bbc.com/news/articles/cmwyv2y7g9l8o</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQBSdccGrC0k_IUXXEXrVbzgt3ECp49xaph68iTIGCAfio_HzCtkgESOpUkcT8</ht:news_item_picture>
-				<ht:news_item_source>BBC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Ethiopia: PM Abiy&apos;s Medemer Govt Senior Leadership Taking &apos;Military Training&apos;at Hurso Center</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://allafrica.com/stories/202611020109.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR9Rknj6WwJu34LPib3Tq6xMGWQYBL7rbqlwNqdG8d7rzG4qrt4GXoCdek_PWo</ht:news_item_picture>
-				<ht:news_item_source>allAfrica.com</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Ethiopia&apos;s prime minister sends ministers to military training</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://aroundprague.cz/en/news/world/ethiopian-prime-minister-sends-ministers-to-military-training</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMjhfTPXS2Prw4gCfo3YGbpdIm405Vk9H3GD33uc9vSXJfWPBqmYdAggnpfAo</ht:news_item_picture>
-				<ht:news_item_source>Around Prague</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>lakers vs raptors</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 19:50:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTH4O9IKeKmJbugM-ulHzHPLaOBBPtREp5218pk6HAu1kMVu1CdmOHeDZE65XI</ht:picture>
-			<ht:picture_source>ESPN</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Luka Doncic touts his improved defense, draws praise from Lakers, Raptors</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.espn.com/nba/story/_/id/50356293/lakers-luka-doncic-touts-improved-defense-win-vs-raptors</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTH4O9IKeKmJbugM-ulHzHPLaOBBPtREp5218pk6HAu1kMVu1CdmOHeDZE65XI</ht:news_item_picture>
-				<ht:news_item_source>ESPN</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>NBA fans have mixed reactions to Scottie Barnes and Luka Doncic&apos;s scuffle during Lakers vs Raptors</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.hitc.com/nba-fans-have-mixed-reactions-to-scottie-barnes-and-luka-doncics-scuffle-during-lakers-vs-raptors/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTSfFQMfBwg3NVA8WMCXnJZAvFoPJTXYFKXEDYLR4btQ4y1m6AQkvT2lJDiPPY</ht:news_item_picture>
-				<ht:news_item_source>HITC</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>3 Takeaways in Raptors Loss vs. Lakers</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://sports.yahoo.com/articles/3-takeaways-raptors-loss-vs-043602149.html</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSQd7JgoESetwRpUwpFay7JbuFQIkbIogaxz3kQ5xee87Uuew5pQp00Fz0Kt08</ht:news_item_picture>
-				<ht:news_item_source>Yahoo Sports</ht:news_item_source>
-			</ht:news_item>
-		</item>
-		<item>
-			<title>moi university</title>
-			<ht:approx_traffic>500+</ht:approx_traffic>
-			<description/>
-			<link>https://trends.google.com/trending/rss?geo=KE</link>
-			<pubDate>Sun, 1 Nov 2026 19:40:00 -0800</pubDate>
-			<ht:picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS_B1SFq0heY82LX4bNF0DnMUAmdm4qLcWnWGsajdEbWcrbPI4cpV_CRy-8DuQ</ht:picture>
-			<ht:picture_source>The Star, Kenya</ht:picture_source>
-			<ht:news_item>
-				<ht:news_item_title>Moi University mourns ‘Dean of Deans’ David Mureithi</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://www.the-star.co.ke/news/2026-11-01-moi-university-mourns-ex-dean-david-mureithi</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS_B1SFq0heY82LX4bNF0DnMUAmdm4qLcWnWGsajdEbWcrbPI4cpV_CRy-8DuQ</ht:news_item_picture>
-				<ht:news_item_source>The Star, Kenya</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>Moi University’s ‘dean of deans’ dies at 78</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://nation.africa/kenya/news/education/moi-university-s-dean-of-deans-dies-at-78--5650442</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-c0mbAYr9or3qURtO8g9fIEyYgVQbRZ6mh4EAsB_R6uVnOe2aWzk7ENnFens</ht:news_item_picture>
-				<ht:news_item_source>Daily Nation</ht:news_item_source>
-			</ht:news_item>
-			<ht:news_item>
-				<ht:news_item_title>SH6M RESEARCH CASH SCANDAL! Mountains Of The Moon University Interdicts Dean Dr John Rwakihembo Over Student Extortion Claims</ht:news_item_title>
-				<ht:news_item_snippet/>
-				<ht:news_item_url>https://redpepper.co.ug/sh6m-research-cash-scandal-mountains-of-the-moon-university-interdicts-dean-dr-john-rwakihembo-over-student-extortion-claims/152451/</ht:news_item_url>
-				<ht:news_item_picture>https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS-EIEECj2lV36px52NaJmFZYPwx-E4iAoSobyZ9xpHInHJkzMbt-r_xUojy0s</ht:news_item_picture>
-				<ht:news_item_source>Red Pepper</ht:news_item_source>
 			</ht:news_item>
 		</item>
 	</channel>
