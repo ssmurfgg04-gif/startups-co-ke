@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-03",
+ "fetchedAt": "2026-11-04",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -92,6 +92,13 @@
    "location": "Kenya, Multiple Locations, Multiple Locations",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557044621",
    "department": "Partner Development Management"
+  },
+  {
+   "id": "microsoft-partner-solution-sales-ai-business-solutions",
+   "title": "Partner Solution Sales - AI Business Solutions",
+   "location": "Egypt, Multiple Locations, Multiple Locations",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557041305",
+   "department": "Partner Solution Sales"
   }
  ]
 }
