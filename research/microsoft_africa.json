@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-06",
+ "fetchedAt": "2026-11-07",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -106,6 +106,13 @@
    "location": "Romania, Multiple Locations, Multiple Locations; Ireland, Dublin, Dublin; United Kingdom, London, London; South Africa, Gauteng, Johannesburg; Sweden, Stockholm, Stockholm; Spain, Multiple Locations, Multiple Locations",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556979565",
    "department": "Solution Architecture"
+  },
+  {
+   "id": "microsoft-government-affairs-internship-opportunities",
+   "title": "Government Affairs Internship Opportunities",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557054332",
+   "department": "Government Affairs"
   }
  ]
 }
