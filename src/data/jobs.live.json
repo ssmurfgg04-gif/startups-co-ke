@@ -29,7 +29,7 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 142,
+   "count": 141,
    "kept": 12,
    "ok": true,
    "scope": "kenya"
@@ -147,11 +147,10 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 0,
+   "count": 240,
    "kept": 1,
    "ok": true,
-   "error": "The operation was aborted due to timeout",
-   "note": "kept the last snapshot, the board was unreachable"
+   "scope": "kenya"
   },
   {
    "id": "microsoft",
@@ -190,24 +189,24 @@
    "id": "moniepoint-engineering-manager",
    "title": "Engineering Manager",
    "companyId": "moniepoint",
-   "location": "Remote, Kenya + 4 more",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": 6,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
-   "board": "Greenhouse",
-   "scope": "kenya",
-   "tags": []
-  },
-  {
-   "id": "moniepoint-engineering-manager-tlkzuj",
-   "title": "Engineering Manager",
-   "companyId": "moniepoint",
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
    "postedDays": 6,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
+   "board": "Greenhouse",
+   "scope": "kenya",
+   "tags": []
+  },
+  {
+   "id": "moniepoint-engineering-manager-1jkecu",
+   "title": "Engineering Manager",
+   "companyId": "moniepoint",
+   "location": "Remote, Kenya + 4 more",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 6,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
    "board": "Greenhouse",
    "scope": "kenya",
    "tags": []
@@ -297,7 +296,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 23,
+   "postedDays": 24,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5009081101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -492,7 +491,7 @@
    "location": "Multiple Locations",
    "mode": "Remote",
    "category": "Growth",
-   "postedDays": 5,
+   "postedDays": 6,
    "applyUrl": "https://jobs.lever.co/distro/b29271df-9393-4890-a748-dda0f9d1132f",
    "board": "Lever",
    "scope": "kenya",
@@ -516,21 +515,6 @@
    ]
   },
   {
-   "id": "microsoft-government-affairs-internship-opportunities",
-   "title": "Government Affairs Internship Opportunities",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": 3,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557054332",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Government Affairs"
-   ]
-  },
-  {
    "id": "microsoft-senior-applied-science-lead",
    "title": "Senior Applied Science Lead",
    "companyId": "microsoft",
@@ -543,6 +527,21 @@
    "scope": "africa",
    "tags": [
     "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-government-affairs-internship-opportunities",
+   "title": "Government Affairs Internship Opportunities",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 3,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557054332",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
    ]
   },
   {
