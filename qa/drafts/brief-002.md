@@ -1,4 +1,4 @@
-# Brief #002 draft — triple reviewed 2026-11-09
+# Brief #002 draft - triple reviewed 2026-11-09
 
 Subject: PayServe raises $1M, Madica extends pre-seed with $6M
 
