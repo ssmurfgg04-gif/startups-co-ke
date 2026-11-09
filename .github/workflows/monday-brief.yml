@@ -1,0 +1,63 @@
+# Monday brief smoke test — validates the weekly release path
+# Cron: Mon 06:00 EAT (03:00 UTC). No secrets needed for smoke test.
+# If RESEND_API_KEY secret is set, emails a preview to the owner.
+name: Monday brief smoke test
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: monday-brief
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Unit tests
+        run: |
+          node scripts/unit_s7.mjs
+          node scripts/unit_s8.mjs
+          node scripts/unit_logo.mjs
+      - name: Astro check (best effort)
+        run: npm install --no-audit --no-fund && npx astro check || echo "astro check skipped or failed (non blocking)"
+      - name: Jobs freshness check
+        run: |
+          node scripts/fetch_jobs.mjs
+          test -f src/data/jobs.live.json && echo "jobs snapshot ok"
+          node -e "const j=JSON.parse(require('fs').readFileSync('src/data/jobs.live.json','utf8')); console.log('jobs fetchedAt', j.fetchedAt, 'sources', j.sources.length)"
+      - name: Events freshness check
+        run: |
+          node scripts/fetch_events.mjs
+          test -f src/data/events.live.json && echo "events snapshot ok"
+      - name: Brief draft checks
+        run: |
+          test -f qa/drafts/brief-002.md && echo "brief draft exists"
+          test -f worker/brief.mjs && echo "brief module exists"
+          if grep -q $'—' qa/drafts/brief-002.md worker/brief.mjs; then echo "FAIL: em dash found"; exit 1; else echo "PASS: no em dashes"; fi
+          wc -w qa/drafts/brief-002.md
+      - name: Email owner preview (if secret present)
+        if: ${{ secrets.RESEND_API_KEY }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DESK_EMAIL: ${{ secrets.DESK_EMAIL }}
+        run: |
+          node -e "
+          const fs=require('fs');
+          const key=process.env.RESEND_API_KEY; if(!key){console.log('no key, skip'); process.exit(0)}
+          const to=process.env.DESK_EMAIL || 'jack@startups.co.ke';
+          const draft=fs.readFileSync('qa/drafts/brief-002.md','utf8');
+          const brief=fs.readFileSync('worker/brief.mjs','utf8');
+          const m=brief.match(/subject: '([^']+)'/);
+          const subject=(m?m[1]:'The Ecosystem Brief preview')+' (Monday smoke test)';
+          fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({from:'startups.co.ke <notices@startups.co.ke>',to,subject,text:'Monday smoke test preview. Draft below.\n\n'+draft.slice(0,4000)})}).then(r=>r.text()).then(t=>console.log('preview send:',t.slice(0,200)));
+          "

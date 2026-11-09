@@ -1,0 +1,287 @@
+date,sent_at,name,sector,email,subject,status,resend_id,last_event
+2026-11-09,2026-11-09 03:50:56.332000+00,"West Pokot County Innovation",,info@westpokot.go.ke,"West Pokot County Innovation on the Kenya startup record",sent,01a1be6e-3560-7e73-92fc-eb8d10140a3a,delivered
+2026-11-09,2026-11-09 03:50:56.320000+00,"Tharaka Nithi County Innovation",,info@tharakadistrict.go.ke,"Tharaka Nithi County Innovation on the Kenya startup record",sent,01a1be6e-355f-7ed7-924f-cde0e43dcc0c,sent
+2026-11-09,2026-11-09 03:50:56.307000+00,"Kajiado County Innovation",,info@kajiado.go.ke,"Kajiado County Innovation on the Kenya startup record",sent,01a1be6e-3560-798d-af45-fe3e18885249,delivered
+2026-11-09,2026-11-09 03:50:56.306000+00,"Murang'a County Innovation",,info@muranga.go.ke,"Murang'a County Innovation on the Kenya startup record",sent,01a1be6e-3561-713c-bc92-7ef990fd4b74,delivered
+2026-11-09,2026-11-09 03:50:56.301000+00,"Nyamira County Innovation",,info@nyamira.go.ke,"Nyamira County Innovation on the Kenya startup record",sent,01a1be6e-3561-7748-8dd3-dd109ec07b97,delivered
+2026-11-09,2026-11-09 03:50:56.299000+00,"Kakamega County Innovation Desk",,innovation@kakamega.go.ke,"Kakamega County Innovation Desk on the Kenya startup record",sent,01a1be6e-355f-7edd-8f99-fac772e0f14f,bounced
+2026-11-09,2026-11-09 03:50:56.291000+00,"Trans Nzoia County Innovation",,info@transnzoia.go.ke,"Trans Nzoia County Innovation on the Kenya startup record",sent,01a1be6e-3561-70b1-b8a4-85ef9487588d,delivered
+2026-11-09,2026-11-09 03:50:56.289000+00,"Baringo County Innovation",,info@baringo.go.ke,"Baringo County Innovation on the Kenya startup record",sent,01a1be6e-3560-7699-b1da-e4f2d1823ffd,delivered
+2026-11-09,2026-11-09 03:50:56.289000+00,"Kirinyaga County Innovation",,info@kirinyaga.go.ke,"Kirinyaga County Innovation on the Kenya startup record",sent,01a1be6e-3560-76cf-aba0-6fd83d07c9a8,delivered
+2026-11-09,2026-11-09 03:50:56.281000+00,"Nyandarua County Innovation",,info@nyandarua.go.ke,"Nyandarua County Innovation on the Kenya startup record",sent,01a1be6e-3560-78e5-a2bf-ba4fdb17d61f,delivered
+2026-11-09,2026-11-09 03:50:56.280000+00,"Makueni County Innovation",,info@makueni.go.ke,"Makueni County Innovation on the Kenya startup record",sent,01a1be6e-3561-7820-9708-dfe09cd693bb,delivered
+2026-11-09,2026-11-09 03:50:56.275000+00,"Migori County Innovation",,info@migori.go.ke,"Migori County Innovation on the Kenya startup record",sent,01a1be6e-3561-7821-873d-80a9e0209dcc,delivered
+2026-11-09,2026-11-09 03:50:56.275000+00,"Bungoma County Innovation",,info@bungoma.go.ke,"Bungoma County Innovation on the Kenya startup record",sent,01a1be6e-355f-7f1c-b748-efffe271288a,bounced
+2026-11-09,2026-11-09 03:50:56.261000+00,"Embu County Innovation",,info@embu.go.ke,"Embu County Innovation on the Kenya startup record",sent,01a1be6e-355f-7f00-a980-b21805ed9de6,delivered
+2026-11-09,2026-11-09 03:50:56.260000+00,"Kitui County Innovation",,info@kitui.go.ke,"Kitui County Innovation on the Kenya startup record",sent,01a1be6e-3561-723b-9109-5d99972d2f84,delivered
+2026-11-09,2026-11-09 03:46:30.173000+00,"Turkana County Innovation",,info@turkana.go.ke,"Turkana County Innovation on the Kenya startup record",sent,01a1be6a-25c4-7c75-bc1a-d37aed3edb3b,delivered
+2026-11-09,2026-11-09 03:46:30.157000+00,"Elgeyo Marakwet County Innovation",,info@elgeyomarakwet.go.ke,"Elgeyo Marakwet County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7bda-92cb-aecb85834db1,delivered
+2026-11-09,2026-11-09 03:46:30.155000+00,"Garissa County Innovation",,info@garissa.go.ke,"Garissa County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7140-8998-d290da71ae8e,delivered
+2026-11-09,2026-11-09 03:46:30.153000+00,"Tana River County Innovation",,info@tanariver.go.ke,"Tana River County Innovation on the Kenya startup record",sent,01a1be6a-25c4-7b90-a110-017cb4716b7b,delivered
+2026-11-09,2026-11-09 03:46:30.142000+00,"Kenya Bankers Fintech Desk",,fintech@kba.co.ke,"Kenya Bankers Fintech Desk on the Kenya startup record",sent,01a1be6a-25c6-7099-aeb0-2ab539ce9e98,bounced
+2026-11-09,2026-11-09 03:46:30.138000+00,"Taita Taveta County Innovation",,info@taitataveta.go.ke,"Taita Taveta County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7b16-a411-1cb846b5d422,delivered
+2026-11-09,2026-11-09 03:46:30.137000+00,"Bomet County Innovation",,info@bomet.go.ke,"Bomet County Innovation on the Kenya startup record",sent,01a1be6a-25c4-7be0-bf20-1ab5926cb98f,delivered
+2026-11-09,2026-11-09 03:46:30.135000+00,"Kenya Association of Manufacturers SME Desk",,sme@kea.com,"Kenya Association of Manufacturers SME Desk on the Kenya startup record",sent,01a1be6a-25c4-7baa-a6cf-f3d4ac137498,delivery_delayed
+2026-11-09,2026-11-09 03:46:30.135000+00,"Kenya Industrial Research Startup Desk",,startups@kirdi.go.ke,"Kenya Industrial Research Startup Desk on the Kenya startup record",sent,01a1be6a-25c5-7ac1-acb5-b3e2b86b8ac7,bounced
+2026-11-09,2026-11-09 03:46:30.133000+00,"Lamu County Innovation",,info@lamu.go.ke,"Lamu County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7289-bb6e-cc6258b21420,delivered
+2026-11-09,2026-11-09 03:46:30.130000+00,"Kenya Revenue Authority Innovator Desk",,innovators@kra.go.ke,"Kenya Revenue Authority Innovator Desk on the Kenya startup record",sent,01a1be6a-25c6-73ed-a290-44a2270191c5,bounced
+2026-11-09,2026-11-09 03:46:30.129000+00,"Mandera County Innovation",,info@mandera.go.ke,"Mandera County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7a93-a128-22f0e032d481,delivered
+2026-11-09,2026-11-09 03:46:30.124000+00,"Isiolo County Innovation",,info@isiolo.go.ke,"Isiolo County Innovation on the Kenya startup record",sent,01a1be6a-25c6-7354-9857-a44f9ff902db,delivered
+2026-11-09,2026-11-09 03:46:30.123000+00,"Nandi County Innovation",,info@nandi.go.ke,"Nandi County Innovation on the Kenya startup record",sent,01a1be6a-25c5-75b2-8f60-20d7c6c284c3,delivered
+2026-11-09,2026-11-09 03:46:30.122000+00,"Kwale County Innovation",,info@kwale.go.ke,"Kwale County Innovation on the Kenya startup record",sent,01a1be6a-25c5-76f6-9b7f-97de4d911ec8,delivered
+2026-11-09,2026-11-09 03:46:30.120000+00,"Kenya ICT Authority Startup Desk",,startups@ict.go.ke,"Kenya ICT Authority Startup Desk on the Kenya startup record",sent,01a1be6a-25c5-767b-92ba-a993c3738e8c,bounced
+2026-11-09,2026-11-09 03:46:30.119000+00,"Kenya National Innovation Agency County Desk",,county@knia.go.ke,"Kenya National Innovation Agency County Desk on the Kenya startup record",sent,01a1be6a-25c5-7221-8212-9443d5ec268b,sent
+2026-11-09,2026-11-09 03:46:30.119000+00,"Marsabit County Innovation",,info@marsabit.go.ke,"Marsabit County Innovation on the Kenya startup record",sent,01a1be6a-25c6-757f-9257-fbc8ece8976d,delivered
+2026-11-09,2026-11-09 03:46:30.114000+00,"Samburu County Innovation",,info@samburu.go.ke,"Samburu County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7e26-81d5-c15c8fcb2bab,delivered
+2026-11-09,2026-11-09 03:46:30.113000+00,"Kenya Investment Authority SME Desk",,sme@keninvest.go.ke,"Kenya Investment Authority SME Desk on the Kenya startup record",sent,01a1be6a-25c4-7bb6-8f7e-554102978e99,sent
+2026-11-09,2026-11-09 03:46:30.113000+00,"Wajir County Innovation",,info@wajir.go.ke,"Wajir County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7676-84db-c9d35a339d89,delivered
+2026-11-09,2026-11-09 03:46:30.109000+00,"Kenya Agricultural Research Startup Desk",,startups@kalro.org,"Kenya Agricultural Research Startup Desk on the Kenya startup record",sent,01a1be6a-25c5-7efe-b24e-0283da0aec32,delivered
+2026-11-09,2026-11-09 03:46:30.107000+00,"Kericho County Innovation",,info@kericho.go.ke,"Kericho County Innovation on the Kenya startup record",sent,01a1be6a-25c5-7135-a1c7-66ca1421e83c,delivered
+2026-11-09,2026-11-09 03:46:30.107000+00,"Central Bank Fintech Desk",,fintech@centralbank.go.ke,"Central Bank Fintech Desk on the Kenya startup record",sent,01a1be6a-25c6-76ba-83b7-e4029bcc774f,sent
+2026-11-09,2026-11-09 03:46:28.416000+00,"Kabianga University Innovation Desk",,innovation@kabianga.ac.ke,"Kabianga University Innovation Desk on the Kenya startup record",sent,01a1be6a-1eca-72fb-a787-52d6f11e6634,bounced
+2026-11-09,2026-11-09 03:46:28.359000+00,"Murang'a University Innovation Desk",,innovation@mut.ac.ke,"Murang'a University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7ebf-af3c-beea1c88e985,bounced
+2026-11-09,2026-11-09 03:46:28.351000+00,"Zetech University Innovation Desk",,innovation@zetechuniversity.ac.ke,"Zetech University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-7d05-b61f-23681abdfade,sent
+2026-11-09,2026-11-09 03:46:28.342000+00,"Chuka University Innovation Desk",,innovation@chuka.ac.ke,"Chuka University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-78f7-96ec-a144e6330622,bounced
+2026-11-09,2026-11-09 03:46:28.341000+00,"Mount Kenya University Innovation Desk",,innovation@mku.ac.ke,"Mount Kenya University Innovation Desk on the Kenya startup record",sent,01a1be6a-1eca-737c-b4c6-f57a769291fe,bounced
+2026-11-09,2026-11-09 03:46:28.339000+00,"Riara University Innovation Desk",,innovation@riarauniversity.ac.ke,"Riara University Innovation Desk on the Kenya startup record",sent,01a1be6a-1eca-7783-a7f3-1061c47a03da,bounced
+2026-11-09,2026-11-09 03:46:28.339000+00,"Pwani University Innovation Desk",,innovation@pu.ac.ke,"Pwani University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-73b9-90df-fcae9fd62927,bounced
+2026-11-09,2026-11-09 03:46:28.337000+00,"University of Eldoret Innovation Desk",,innovation@ueab.ac.ke,"University of Eldoret Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7a4b-89e2-92244073460b,delivered
+2026-11-09,2026-11-09 03:46:28.334000+00,"East African University Innovation Desk",,innovation@eau.ac.ke,"East African University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-7409-9102-e814bb8d8aa4,sent
+2026-11-09,2026-11-09 03:46:28.332000+00,"Technical University of Mombasa Innovation Desk",,innovation@tum.ac.ke,"Technical University of Mombasa Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-767e-8568-c6eaf42f2f48,bounced
+2026-11-09,2026-11-09 03:46:28.329000+00,"Alupe University Innovation Desk",,innovation@alupe.ac.ke,"Alupe University Innovation Desk on the Kenya startup record",sent,01a1be6a-1eca-71dd-88c3-910b78adb063,sent
+2026-11-09,2026-11-09 03:46:28.329000+00,"Gretsa University Innovation Desk",,innovation@gretsauniversity.ac.ke,"Gretsa University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7edf-8cb5-f5ef00969d42,bounced
+2026-11-09,2026-11-09 03:46:28.328000+00,"Tangaza University Innovation Desk",,innovation@tangaza.ac.ke,"Tangaza University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7989-8958-aa6bf9b70bae,bounced
+2026-11-09,2026-11-09 03:46:28.327000+00,"Rongo University Innovation Desk",,innovation@rongo.ac.ke,"Rongo University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-7d42-b77f-edec310cf023,sent
+2026-11-09,2026-11-09 03:46:28.325000+00,"Kisii University Innovation Desk",,innovation@kisiiuniversity.ac.ke,"Kisii University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7966-974e-e06d1d591364,bounced
+2026-11-09,2026-11-09 03:46:28.325000+00,"Laikipia University Innovation Desk",,innovation@laikipia.ac.ke,"Laikipia University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-74a1-9547-52ae3dbe593e,bounced
+2026-11-09,2026-11-09 03:46:28.324000+00,"Meru University Innovation Desk",,innovation@must.ac.ke,"Meru University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-7cfd-9c3a-3af87e416f96,delivered
+2026-11-09,2026-11-09 03:46:28.323000+00,"Maasai Mara University Innovation Desk",,innovation@mmarau.ac.ke,"Maasai Mara University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7947-b0e4-542ffe55089a,delivered
+2026-11-09,2026-11-09 03:46:28.322000+00,"Kabarak University Innovation Desk",,innovation@kabarak.ac.ke,"Kabarak University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-78b7-84ce-0cffca9d8114,bounced
+2026-11-09,2026-11-09 03:46:28.321000+00,"Jaramogi Oginga Odinga Innovation Desk",,innovation@joust.ac.ke,"Jaramogi Oginga Odinga Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-7933-96bc-b7dcd3639b6a,sent
+2026-11-09,2026-11-09 03:46:28.320000+00,"South Eastern Kenya University Innovation Desk",,innovation@seku.ac.ke,"South Eastern Kenya University Innovation Desk on the Kenya startup record",sent,01a1be6a-1eca-70d5-876a-8399fb23561a,delivered
+2026-11-09,2026-11-09 03:46:28.319000+00,"Dedan Kimathi Innovation Desk",,innovation@dekut.ac.ke,"Dedan Kimathi Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-7b49-99f4-378e588e2d4f,sent
+2026-11-09,2026-11-09 03:46:28.317000+00,"Scott Christian University Innovation Desk",,innovation@scott.ac.ke,"Scott Christian University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-783c-8649-52b4afe93b3c,bounced
+2026-11-09,2026-11-09 03:46:28.316000+00,"Kirinyaga University Innovation Desk",,innovation@kirinyaga.ac.ke,"Kirinyaga University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec9-70eb-a419-871973ac8c41,sent
+2026-11-09,2026-11-09 03:46:28.314000+00,"Kibabuni University Innovation Desk",,innovation@kibabuni.ac.ke,"Kibabuni University Innovation Desk on the Kenya startup record",sent,01a1be6a-1ec8-79f8-acdc-8c11cd30476c,sent
+2026-11-09,2026-11-09 03:45:16.782000+00,"Busia County Innovation",,info@busia.go.ke,"Busia County Innovation on the Kenya startup record",sent,01a1be69-072e-757d-ba13-6d098c393d24,sent
+2026-11-09,2026-11-09 03:45:16.772000+00,"Siaya County Innovation",,info@siaya.go.ke,"Siaya County Innovation on the Kenya startup record",sent,01a1be69-072e-7ca4-9ef2-42ff529e04c2,delivery_delayed
+2026-11-09,2026-11-09 03:45:16.767000+00,"Homa Bay County Innovation",,info@homabay.go.ke,"Homa Bay County Innovation on the Kenya startup record",sent,01a1be69-072d-7d44-9ee7-99eeba18b2e5,delivered
+2026-11-09,2026-11-09 03:45:16.767000+00,"South Eastern Kenya University Innovation Hub",,info@seku.ac.ke,"South Eastern Kenya University Innovation Hub on the Kenya startup record",sent,01a1be69-072a-7d4d-8212-e2983c5397b4,delivered
+2026-11-09,2026-11-09 03:45:16.763000+00,"Tangaza University Innovation",,info@tangaza.ac.ke,"Tangaza University Innovation on the Kenya startup record",sent,01a1be69-072c-752d-985c-e1242a20074a,bounced
+2026-11-09,2026-11-09 03:45:16.759000+00,"Kabianga University Innovation Hub",,info@kabianga.ac.ke,"Kabianga University Innovation Hub on the Kenya startup record",sent,01a1be69-072b-7d81-9d1c-eaf015f40f13,delivered
+2026-11-09,2026-11-09 03:45:16.756000+00,"Nyeri County Innovation",,info@nyeri.go.ke,"Nyeri County Innovation on the Kenya startup record",sent,01a1be69-072d-7585-b553-17ad82eefe22,delivered
+2026-11-09,2026-11-09 03:45:16.754000+00,"Scott Christian University Innovation",,info@scott.ac.ke,"Scott Christian University Innovation on the Kenya startup record",sent,01a1be69-072c-7d5a-8714-9231a01fd6ba,delivered
+2026-11-09,2026-11-09 03:45:16.753000+00,"Vihiga County Innovation",,info@vihiga.go.ke,"Vihiga County Innovation on the Kenya startup record",sent,01a1be69-072a-75a6-ad5e-e9061a2d5ea1,delivered
+2026-11-09,2026-11-09 03:45:16.748000+00,"Jaramogi Oginga Odinga University Innovation Hub",,info@joust.ac.ke,"Jaramogi Oginga Odinga University Innovation Hub on the Kenya startup record",sent,01a1be69-072b-7645-bc3e-8ce3549261d7,sent
+2026-11-09,2026-11-09 03:44:27.897000+00,"NCBA Innovation",,info@ncbagroup.com,"NCBA Innovation on the Kenya startup record",sent,01a1be68-4833-7133-afcf-03d26e6cbcc0,bounced
+2026-11-09,2026-11-09 03:44:27.886000+00,"Kenyan Wall Street",,info@kenyanwallstreet.com,"Kenyan Wall Street on the Kenya startup record",sent,01a1be68-4834-7294-8f19-68e3f6c6e1d4,delivered
+2026-11-09,2026-11-09 03:44:27.880000+00,"Kahawa Tungu",,info@kahawatungu.com,"Kahawa Tungu on the Kenya startup record",sent,01a1be68-4833-7756-a964-536ad81a6eaa,bounced
+2026-11-09,2026-11-09 03:44:27.875000+00,"Absa Innovation Lab",,info@absa.africa,"Absa Innovation Lab on the Kenya startup record",sent,01a1be68-4833-77b1-a006-a4be406756da,bounced
+2026-11-09,2026-11-09 03:44:27.874000+00,"Nairobi Gov Code",,info@nairobgovcode.org,"Nairobi Gov Code on the Kenya startup record",sent,01a1be68-4833-7102-9aac-5e0400b73c5d,sent
+2026-11-09,2026-11-09 03:44:27.873000+00,"Co-op Bank Innovation",,info@coopbank.co.ke,"Co-op Bank Innovation on the Kenya startup record",sent,01a1be68-4833-7d26-a570-2fb9818c1760,sent
+2026-11-09,2026-11-09 03:44:27.871000+00,"Women in Tech Kenya",,info@womenintech.co.ke,"Women in Tech Kenya on the Kenya startup record",sent,01a1be68-4834-7135-855b-8fb8e57bafa1,delivery_delayed
+2026-11-09,2026-11-09 03:44:27.870000+00,"Business Daily Kenya",,info@businessdailyafrica.com,"Business Daily Kenya on the Kenya startup record",sent,01a1be68-4833-71fd-bb8f-dda9f57319ad,sent
+2026-11-09,2026-11-09 03:44:27.866000+00,"Airtel Africa Innovation",,info@airtel.com,"Airtel Africa Innovation on the Kenya startup record",sent,01a1be68-4834-73d7-b8e1-4500a7fb6bb6,delivered
+2026-11-09,2026-11-09 03:44:27.864000+00,"Kenya Power Innovation",,info@kplc.co.ke,"Kenya Power Innovation on the Kenya startup record",sent,01a1be68-4833-7dd6-913f-6d3f14cc8d13,delivered
+2026-11-09,2026-11-09 03:44:27.864000+00,"TechCabal Kenya Desk",,info@techcabal.com,"TechCabal Kenya Desk on the Kenya startup record",sent,01a1be68-4833-7103-8abf-0416134b0c32,bounced
+2026-11-09,2026-11-09 03:44:27.857000+00,"KenyaPipeline Company",,info@kpc.co.ke,"KenyaPipeline Company on the Kenya startup record",sent,01a1be68-4833-7941-a49f-2aaa426649d5,delivered
+2026-11-09,2026-11-09 03:44:27.855000+00,"WeeTracker Kenya",,info@weetracker.com,"WeeTracker Kenya on the Kenya startup record",sent,01a1be68-4833-78d8-9f42-ed4e5f108e10,bounced
+2026-11-09,2026-11-09 03:44:27.854000+00,"Disrupt Africa Kenya",,info@disruptafrica.com,"Disrupt Africa Kenya on the Kenya startup record",sent,01a1be68-4833-7d29-b27f-d6a799bc02a1,bounced
+2026-11-09,2026-11-09 03:44:27.848000+00,"HackWithHer Kenya",,info@hackwithher.co.ke,"HackWithHer Kenya on the Kenya startup record",sent,01a1be68-4833-7c15-ba97-748773590b86,sent
+2026-11-09,2026-11-09 03:44:27.841000+00,"Capital FM Kenya",,info@capitalfm.co.ke,"Capital FM Kenya on the Kenya startup record",sent,01a1be68-4833-71ff-913e-914d0ae64026,delivered
+2026-11-09,2026-11-09 03:44:26.523000+00,"Kenya Flower Growers Association",,info@kenyaflowerexporters.org,"Kenya Flower Growers Association on the Kenya startup record",sent,01a1be68-428d-7621-9142-4ea56db58850,sent
+2026-11-09,2026-11-09 03:44:26.514000+00,"Africa Nazarene University Innovation",,info@anu.ac.ke,"Africa Nazarene University Innovation on the Kenya startup record",sent,01a1be68-428c-7dd0-942c-35a595bf1a89,bounced
+2026-11-09,2026-11-09 03:44:26.513000+00,"Mombasa County Trade Department",,info@mombasa.go.ke,"Mombasa County Trade Department on the Kenya startup record",sent,01a1be68-428c-73f5-b662-d86ca8af19a3,delivered
+2026-11-09,2026-11-09 03:44:26.509000+00,"Nairobi County Trade Department",,info@nairobi.go.ke,"Nairobi County Trade Department on the Kenya startup record",sent,01a1be68-428b-7cee-8e19-3c4c22e5878d,delivered
+2026-11-09,2026-11-09 03:44:26.508000+00,"Kenya Association of Private Hospitals",,info@kashp.co.ke,"Kenya Association of Private Hospitals on the Kenya startup record",sent,01a1be68-428d-712b-a376-b1a271410633,sent
+2026-11-09,2026-11-09 03:44:26.505000+00,"Equity Bank Innovation Unit",,info@equitybank.co.ke,"Equity Bank Innovation Unit on the Kenya startup record",sent,01a1be68-428c-7dce-b786-bf74558c780c,delivered
+2026-11-09,2026-11-09 03:44:26.505000+00,"Uasin Gishu County Trade",,info@uasinngishu.go.ke,"Uasin Gishu County Trade on the Kenya startup record",sent,01a1be68-428c-7e8e-92fd-43900074ae34,sent
+2026-11-09,2026-11-09 03:44:26.505000+00,"Kenya Association of Realtors",,info@karanet.org,"Kenya Association of Realtors on the Kenya startup record",sent,01a1be68-428c-7bd9-af1f-e71747ac7641,delivery_delayed
+2026-11-09,2026-11-09 03:44:26.502000+00,"Meru County Trade",,info@meru.go.ke,"Meru County Trade on the Kenya startup record",sent,01a1be68-428d-7aaa-9a7c-f45d1e6422a7,delivered
+2026-11-09,2026-11-09 03:44:26.499000+00,"Kenya Dairy Farmers Federation",,info@kdf.org.ke,"Kenya Dairy Farmers Federation on the Kenya startup record",sent,01a1be68-428b-7d5d-9234-17e36ff05874,sent
+2026-11-09,2026-11-09 03:44:26.497000+00,"Federation of East Africa Freight Forwarders",,info@feaforg.com,"Federation of East Africa Freight Forwarders on the Kenya startup record",sent,01a1be68-428c-7513-aeb2-4839c3f9ed7e,sent
+2026-11-09,2026-11-09 03:44:26.496000+00,"Kenya Renewable Energy Association",,info@kerea.co.ke,"Kenya Renewable Energy Association on the Kenya startup record",sent,01a1be68-428c-7950-8cbc-f26364982a23,sent
+2026-11-09,2026-11-09 03:44:26.495000+00,"Nakuru County Trade Department",,info@nakuru.go.ke,"Nakuru County Trade Department on the Kenya startup record",sent,01a1be68-428d-7333-9d29-38d753f61e41,delivered
+2026-11-09,2026-11-09 03:44:26.495000+00,"Gretsa University Innovation",,info@gretsauniversity.ac.ke,"Gretsa University Innovation on the Kenya startup record",sent,01a1be68-428d-7647-a732-b1bdb64090ab,delivered
+2026-11-09,2026-11-09 03:44:26.494000+00,"Kenya Coffee Growers Association",,info@kcgc.co.ke,"Kenya Coffee Growers Association on the Kenya startup record",sent,01a1be68-428b-7ddd-ba40-7188125a89fd,sent
+2026-11-09,2026-11-09 03:44:26.492000+00,"Kilifi County Trade",,info@kilifi.go.ke,"Kilifi County Trade on the Kenya startup record",sent,01a1be68-428d-79a8-8397-eb5d23d578a9,sent
+2026-11-09,2026-11-09 03:44:26.489000+00,"Kisumu County Trade Department",,info@kisumu.go.ke,"Kisumu County Trade Department on the Kenya startup record",sent,01a1be68-428c-797c-b52e-ad77b3056472,delivered
+2026-11-09,2026-11-09 03:44:26.486000+00,"KCB Innovation Unit",,info@kcbgroup.com,"KCB Innovation Unit on the Kenya startup record",sent,01a1be68-428b-7d15-96c2-58283452a0ac,delivered
+2026-11-09,2026-11-09 03:44:26.485000+00,"Kenya Association of Travel Agents",,info@kata.co.ke,"Kenya Association of Travel Agents on the Kenya startup record",sent,01a1be68-428c-74e4-ab74-2d98e0a3384d,sent
+2026-11-09,2026-11-09 03:44:26.483000+00,"Kiambu County Trade Department",,info@kiambu.go.ke,"Kiambu County Trade Department on the Kenya startup record",sent,01a1be68-428b-7e32-a6b4-1945b10308a8,delivered
+2026-11-09,2026-11-09 03:44:26.482000+00,"Machakos County Trade",,info@machakos.go.ke,"Machakos County Trade on the Kenya startup record",sent,01a1be68-428d-772e-b103-80e1d5e0c12b,delivered
+2026-11-09,2026-11-09 03:44:26.475000+00,"Kakamega County Trade",,info@kakamega.go.ke,"Kakamega County Trade on the Kenya startup record",sent,01a1be68-428d-7713-a6bd-37b11c5217ef,delivered
+2026-11-09,2026-11-09 03:44:26.475000+00,"East African University Innovation",,info@eau.ac.ke,"East African University Innovation on the Kenya startup record",sent,01a1be68-428d-72a0-acb3-2681588f2875,sent
+2026-11-09,2026-11-09 03:44:26.468000+00,"Pan African Christian University Innovation",,info@pacuniversity.ac.ke,"Pan African Christian University Innovation on the Kenya startup record",sent,01a1be68-428c-787e-b4c9-5249418c976d,bounced
+2026-11-09,2026-11-09 03:44:26.456000+00,"Kenya Association of Manufacturers",,info@kea.com,"Kenya Association of Manufacturers on the Kenya startup record",sent,01a1be68-428b-7d41-b32a-08690b64c9d2,delivery_delayed
+2026-11-07,2026-11-07 14:25:19.996000+00,"Ascent Century",,info@century.co.ke,"Ascent Century on the Kenya startup record",sent,01a1b666-4bc4-7817-8794-fd6f6072180e,bounced
+2026-11-07,2026-11-07 14:25:19.976000+00,"Velocity Africa",,info@velocityafrica.com,"Velocity Africa on the Kenya startup record",sent,01a1b666-4bc4-7909-a060-976e4917b169,bounced
+2026-11-07,2026-11-07 14:25:19.960000+00,"Zeona Capital",,info@zeonacapital.com,"Zeona Capital on the Kenya startup record",sent,01a1b666-4bc4-78b7-8b38-647eadc8d961,bounced
+2026-11-07,2026-11-07 14:25:18.227000+00,"Yew Capital",,info@yewcapital.com,"Yew Capital on the Kenya startup record",sent,01a1b666-449d-775f-b8ab-95f22e424c6e,bounced
+2026-11-07,2026-11-07 14:25:18.227000+00,"Amethis",,info@amethis.com,"Amethis on the Kenya startup record",sent,01a1b666-449d-7dbc-aabc-adbd314471d3,delivered
+2026-11-07,2026-11-07 14:25:18.218000+00,"AfricInvest",,info@africinvest.com,"AfricInvest on the Kenya startup record",sent,01a1b666-449e-7057-8594-86242c25074c,bounced
+2026-11-07,2026-11-07 14:25:18.218000+00,"Kenya Association of Women Business Owners",,info@kawbo.co.ke,"Kenya Association of Women Business Owners on the Kenya startup record",sent,01a1b666-449d-789b-ae3a-401ff93c166b,bounced
+2026-11-07,2026-11-07 14:25:18.209000+00,"Sango Capital",,info@sangocapital.com,"Sango Capital on the Kenya startup record",sent,01a1b666-449d-70cb-bd01-1ef1306c7887,delivered
+2026-11-07,2026-11-07 14:25:18.208000+00,"Launch Africa Ventures",,info@launchafrica.com,"Launch Africa Ventures on the Kenya startup record",sent,01a1b666-449c-79e3-8d44-cef87e1aef70,bounced
+2026-11-07,2026-11-07 14:25:18.203000+00,"Maisha",,info@maisha.co.ke,"Maisha on the Kenya startup record",sent,01a1b666-449d-7e52-87f4-812c2cc0428e,delivered
+2026-11-07,2026-11-07 14:25:18.203000+00,"Save the Children Kenya",,info@savethechildren.or.ke,"Save the Children Kenya on the Kenya startup record",sent,01a1b666-449c-7334-964d-a17ddaab4131,bounced
+2026-11-07,2026-11-07 14:25:18.203000+00,"Youth Enterprise Development Fund",,info@youthfund.go.ke,"Youth Enterprise Development Fund on the Kenya startup record",sent,01a1b666-449d-7146-a900-fec64eef3a43,delivered
+2026-11-07,2026-11-07 14:25:18.199000+00,"BRAC Kenya",,info@brac.net,"BRAC Kenya on the Kenya startup record",sent,01a1b666-449d-7e0a-b8a4-1356aa306178,delivered
+2026-11-07,2026-11-07 14:25:18.198000+00,"World Vision Kenya",,info@worldvision.co.ke,"World Vision Kenya on the Kenya startup record",sent,01a1b666-449c-7a62-9665-b9cd8faede60,bounced
+2026-11-07,2026-11-07 14:25:18.196000+00,"Hanga Digital",,info@hangadigital.com,"Hanga Digital on the Kenya startup record",sent,01a1b666-449c-78a3-8adc-1f54b95e33c4,bounced
+2026-11-07,2026-11-07 14:25:18.193000+00,"Ubuntu Ventures",,info@ubuntoventures.com,"Ubuntu Ventures on the Kenya startup record",sent,01a1b666-449c-71e2-833d-d39c586ab34f,bounced
+2026-11-07,2026-11-07 14:25:18.193000+00,"Knife Capital",,info@knifecapital.com,"Knife Capital on the Kenya startup record",sent,01a1b666-449b-7960-bdf2-f2415e3e3d37,bounced
+2026-11-07,2026-11-07 14:25:18.191000+00,"Oxfam Kenya",,info@oxfam.org.ke,"Oxfam Kenya on the Kenya startup record",sent,01a1b666-449c-71a8-9018-755d5552e541,bounced
+2026-11-07,2026-11-07 14:25:18.191000+00,"Hand in Hand East Africa",,info@handinhandeastafrica.org,"Hand in Hand East Africa on the Kenya startup record",sent,01a1b666-449d-77d6-baf2-9b02e5657858,bounced
+2026-11-07,2026-11-07 14:25:18.191000+00,"Plan International Kenya",,info@plan-international.org,"Plan International Kenya on the Kenya startup record",sent,01a1b666-449c-79bd-be40-00e6fabc06cd,delivered
+2026-11-07,2026-11-07 14:25:18.189000+00,"Pangea Accelerator",,info@pangeaaccelerator.com,"Pangea Accelerator on the Kenya startup record",sent,01a1b666-449c-7063-b1ca-96e26b16863f,delivered
+2026-11-07,2026-11-07 14:25:18.188000+00,"Fusion X Kenya",,info@fusionx.co.ke,"Fusion X Kenya on the Kenya startup record",sent,01a1b666-449d-77ca-a1ca-0f1b17945b0d,bounced
+2026-11-07,2026-11-07 14:25:18.187000+00,"BuniHub",,info@buni.co.ke,"BuniHub on the Kenya startup record",sent,01a1b666-449b-7945-b7d2-34f89145e01d,delivered
+2026-11-07,2026-11-07 14:25:18.186000+00,"CcHUB Kenya",,info@cchub.co.ke,"CcHUB Kenya on the Kenya startup record",sent,01a1b666-449b-795a-8954-5714aab7e00b,bounced
+2026-11-07,2026-11-07 14:25:18.186000+00,"Zidisha",,info@zidisha.org,"Zidisha on the Kenya startup record",sent,01a1b666-449d-70b3-8391-483edf62ec45,bounced
+2026-11-07,2026-11-07 14:25:18.186000+00,"Seedstars Nairobi",,info@seedstars.com,"Seedstars Nairobi on the Kenya startup record",sent,01a1b666-449b-7915-8c7f-80e7f5c6d0f8,delivered
+2026-11-07,2026-11-07 14:25:18.186000+00,"Growth Collective Kenya",,info@growthcollective.ke,"Growth Collective Kenya on the Kenya startup record",sent,01a1b666-449d-7188-b0e4-fcde9a1e1ffb,bounced
+2026-11-07,2026-11-07 14:25:18.182000+00,"Nairobi Innovation Centre",,info@nairobiinnovation.co.ke,"Nairobi Innovation Centre on the Kenya startup record",sent,01a1b666-449d-718c-9fd9-e9fca4c73a6f,bounced
+2026-11-07,2026-11-07 14:25:15.690000+00,"Alupe University",,info@alupe.ac.ke,"Alupe University on the Kenya startup record",sent,01a1b666-3a89-7972-8ec0-6cc66a8cb0af,bounced
+2026-11-07,2026-11-07 14:25:15.659000+00,"EldoHub",,info@eldohub.co.ke,"EldoHub on the Kenya startup record",sent,01a1b666-3a88-7397-a317-8a51ccdf0a8a,delivered
+2026-11-07,2026-11-07 14:25:15.632000+00,"Maasai Mara University",,info@mmarau.ac.ke,"Maasai Mara University on the Kenya startup record",sent,01a1b666-3a87-7aa2-895a-f8df785849d5,delivered
+2026-11-07,2026-11-07 14:25:15.632000+00,"Kisii University",,info@kisiiuniversity.ac.ke,"Kisii University on the Kenya startup record",sent,01a1b666-3a87-7242-8350-4f5b4d1b5d43,bounced
+2026-11-07,2026-11-07 14:25:15.632000+00,"Kibabuni University",,info@kibabuni.ac.ke,"Kibabuni University on the Kenya startup record",sent,01a1b666-3a87-795a-a92e-d05dfaca1a59,bounced
+2026-11-07,2026-11-07 14:25:15.631000+00,"Kakamega Innovation Hub",,info@kakamegahub.co.ke,"Kakamega Innovation Hub on the Kenya startup record",sent,01a1b666-3a89-70fe-911e-4337d2933d0d,bounced
+2026-11-07,2026-11-07 14:25:15.631000+00,"Kirinyaga University",,info@kirinyaga.ac.ke,"Kirinyaga University on the Kenya startup record",sent,01a1b666-3a88-72e9-89de-959ac7dc1273,bounced
+2026-11-07,2026-11-07 14:25:15.630000+00,"Laikipia University",,info@laikipia.ac.ke,"Laikipia University on the Kenya startup record",sent,01a1b666-3a88-79ae-acd2-0c46cb4b35a5,delivered
+2026-11-07,2026-11-07 14:25:15.630000+00,"Meru University of Science and Technology",,info@must.ac.ke,"Meru University of Science and Technology on the Kenya startup record",sent,01a1b666-3a87-7a39-8d53-228e00584ae2,delivered
+2026-11-07,2026-11-07 14:25:15.629000+00,"Pwani University",,info@pu.ac.ke,"Pwani University on the Kenya startup record",sent,01a1b666-3a88-7272-8383-9a3edd4c716a,delivered
+2026-11-07,2026-11-07 14:25:15.628000+00,"SwahiliBox Mombasa",,info@swahilibox.com,"SwahiliBox Mombasa on the Kenya startup record",sent,01a1b666-3a87-7a37-bb6f-4528338362ec,bounced
+2026-11-07,2026-11-07 14:25:15.627000+00,"Chuka University",,info@chuka.ac.ke,"Chuka University on the Kenya startup record",sent,01a1b666-3a89-722b-8334-58f2a1ece0d4,delivered
+2026-11-07,2026-11-07 14:25:15.626000+00,"Nyeri Innovation Hub",,info@nyerihub.co.ke,"Nyeri Innovation Hub on the Kenya startup record",sent,01a1b666-3a89-7764-8f5f-cd3c6bfd8ef0,bounced
+2026-11-07,2026-11-07 14:25:15.623000+00,"Nakuru Tech Hub",,info@nakurutechhub.co.ke,"Nakuru Tech Hub on the Kenya startup record",sent,01a1b666-3a88-7a15-ac7c-c6cbd0f7be1a,bounced
+2026-11-07,2026-11-07 14:25:15.620000+00,"Rongo University",,info@rongo.ac.ke,"Rongo University on the Kenya startup record",sent,01a1b666-3a89-7376-8a4e-018e99a8b98c,bounced
+2026-11-07,2026-11-07 14:25:15.619000+00,"Kisii Innovation Hub",,info@kisiihub.co.ke,"Kisii Innovation Hub on the Kenya startup record",sent,01a1b666-3a87-7276-9b21-ea688a4fd329,bounced
+2026-11-07,2026-11-07 14:25:15.617000+00,"Murang'a University of Technology",,info@mut.ac.ke,"Murang'a University of Technology on the Kenya startup record",sent,01a1b666-3a88-7306-9b3f-b1743944bff4,delivered
+2026-11-07,2026-11-07 14:25:15.617000+00,"Dedan Kimathi University of Technology",,info@dekut.ac.ke,"Dedan Kimathi University of Technology on the Kenya startup record",sent,01a1b666-3a87-7214-8197-80ee62e36083,bounced
+2026-11-07,2026-11-07 14:25:15.616000+00,"Machakos Innovation Hub",,info@machakoshub.co.ke,"Machakos Innovation Hub on the Kenya startup record",sent,01a1b666-3a89-780f-b5b3-f8c5ccbaeb13,bounced
+2026-11-07,2026-11-07 14:25:15.614000+00,"University of Eldoret",,info@ueab.ac.ke,"University of Eldoret on the Kenya startup record",sent,01a1b666-3a87-7b16-a711-c3d87fa275f7,delivered
+2026-11-07,2026-11-07 14:25:15.612000+00,"Kilifi Innovation Hub",,info@kilifihub.co.ke,"Kilifi Innovation Hub on the Kenya startup record",sent,01a1b666-3a89-7267-b297-2efaba08fb42,bounced
+2026-11-07,2026-11-07 14:25:15.610000+00,"Meru Innovation Hub",,info@meruhub.co.ke,"Meru Innovation Hub on the Kenya startup record",sent,01a1b666-3a89-78ba-8f11-bce2f99fbf60,bounced
+2026-11-07,2026-11-07 14:25:15.610000+00,"Technical University of Mombasa",,info@tum.ac.ke,"Technical University of Mombasa on the Kenya startup record",sent,01a1b666-3a88-7abb-b662-a9b81cc51efa,delivered
+2026-11-07,2026-11-07 14:25:15.605000+00,"Lake Hub Kisumu",,info@lakehub.co.ke,"Lake Hub Kisumu on the Kenya startup record",sent,01a1b666-3a87-7274-af77-37184f0a5e4a,delivered
+2026-11-07,2026-11-07 14:25:15.599000+00,"Kabarak University",,info@kabarak.ac.ke,"Kabarak University on the Kenya startup record",sent,01a1b666-3a88-7c45-aa32-c0c320885726,delivered
+2026-11-07,2026-11-07 14:12:20.476000+00,"Africa's Talking",Company,hello@africastalking.com,"Africa's Talking on the Kenya startup record",sent,01a1b65a-669c-7565-87b7-1efa6d6a2222,bounced
+2026-11-07,2026-11-07 14:12:20.468000+00,"Wedo Global",Incubator,info@wedoglobal.org,"Wedo Global on the Kenya startup record",sent,01a1b65a-669c-7a0b-a851-37210b5b8536,bounced
+2026-11-07,2026-11-07 14:12:20.465000+00,"British Council Kenya",NGO,info@britishcouncil.or.ke,"British Council Kenya on the Kenya startup record",sent,01a1b65a-669c-7d1b-b0c9-00a703845c54,bounced
+2026-11-07,2026-11-07 14:12:20.463000+00,"GroFin Africa",Fund,info@grofin.com,"GroFin Africa on the Kenya startup record",sent,01a1b65a-669c-72dd-9271-b9febbb13577,bounced
+2026-11-07,2026-11-07 14:12:20.454000+00,"Ascent Capital Africa",Fund,info@ascentcapital.co.ke,"Ascent Capital Africa on the Kenya startup record",sent,01a1b65a-669b-7ea2-b8fd-61c91164a021,bounced
+2026-11-07,2026-11-07 14:12:20.447000+00,"Fanisi Capital",Fund,info@fanisicapital.com,"Fanisi Capital on the Kenya startup record",sent,01a1b65a-669c-7641-a2b4-3fc9b50173f2,bounced
+2026-11-07,2026-11-07 14:12:20.446000+00,"Mercy Corps Kenya",NGO,info@mercycorps.org,"Mercy Corps Kenya on the Kenya startup record",sent,01a1b65a-669d-70b7-95f6-7e1a06ebb303,delivered
+2026-11-07,2026-11-07 14:12:20.434000+00,"Kenya Association of Software and IT Services",Association,info@kasitow.org,"Kenya Association of Software and IT Services on the Kenya startup record",sent,01a1b65a-669c-795e-8ea4-6ac6980bcd40,bounced
+2026-11-07,2026-11-07 14:12:20.429000+00,"United Nations Kenya",NGO,info@un.org,"United Nations Kenya on the Kenya startup record",sent,01a1b65a-669c-7209-842a-abc34e9639ea,bounced
+2026-11-07,2026-11-07 14:12:20.424000+00,"Enactus Kenya",Incubator,info@enactus.or.ke,"Enactus Kenya on the Kenya startup record",sent,01a1b65a-669b-7aa5-bd0a-81b980e6300a,bounced
+2026-11-07,2026-11-07 14:12:20.423000+00,"African Business Angels Network",Fund,info@abanangels.org,"African Business Angels Network on the Kenya startup record",sent,01a1b65a-669b-7ea3-9f3b-5b2e58f46e32,bounced
+2026-11-07,2026-11-07 14:12:20.423000+00,"GIZ Kenya",NGO,info@giz.de,"GIZ Kenya on the Kenya startup record",sent,01a1b65a-669c-7ea4-b880-b74efc32e9f1,delivered
+2026-11-07,2026-11-07 14:12:20.422000+00,"Metropol Labs",Company,hello@metropol.co.ke,"Metropol Labs on the Kenya startup record",sent,01a1b65a-669c-773a-ab2d-78cd963f299d,delivered
+2026-11-07,2026-11-07 14:12:20.422000+00,"African Union Development Agency",Government,info@au.int,"African Union Development Agency on the Kenya startup record",sent,01a1b65a-669c-7afd-854a-977e5e0f661c,delivered
+2026-11-07,2026-11-07 14:12:20.420000+00,"Kenya Angels Network",Fund,info@kenyaangelsnetwork.com,"Kenya Angels Network on the Kenya startup record",sent,01a1b65a-669b-7b34-aa66-ea60a017c44a,bounced
+2026-11-07,2026-11-07 14:12:20.420000+00,"Kenya Ports Authority",Government,info@kpa.go.ke,"Kenya Ports Authority on the Kenya startup record",sent,01a1b65a-669b-7ab2-a381-b9252ba89787,bounced
+2026-11-07,2026-11-07 14:12:20.417000+00,"CrossBoundary Energy",Fund,info@crossboundary.com,"CrossBoundary Energy on the Kenya startup record",sent,01a1b65a-669c-7632-aa45-af7a981db350,delivered
+2026-11-07,2026-11-07 14:12:20.417000+00,"Nairobi Garage",Incubator,info@nairobi-garage.com,"Nairobi Garage on the Kenya startup record",sent,01a1b65a-669b-7a76-942b-9c22854750fb,bounced
+2026-11-07,2026-11-07 14:12:20.416000+00,"Kenya Red Cross",NGO,info@redcross.or.ke,"Kenya Red Cross on the Kenya startup record",sent,01a1b65a-669c-7bc7-a0c7-79b88b3b9261,delivered
+2026-11-07,2026-11-07 14:12:20.414000+00,"Impact Hub Nairobi",Incubator,hello@impacthub.net,"Impact Hub Nairobi on the Kenya startup record",sent,01a1b65a-669c-73fa-b355-446d50239c1b,delivered
+2026-11-07,2026-11-07 14:12:20.413000+00,"Sandbox",Incubator,hello@sandboxinnovations.co.ke,"Sandbox on the Kenya startup record",sent,01a1b65a-669c-7027-b0c4-28a0cf70ad3f,bounced
+2026-11-07,2026-11-07 14:12:20.411000+00,"Enza Capital",Fund,info@enzacapital.com,"Enza Capital on the Kenya startup record",sent,01a1b65a-669c-72fc-8125-e70a8b35b823,bounced
+2026-11-07,2026-11-07 14:12:20.411000+00,"Safaricom",Company,info@safaricom.co.ke,"Safaricom on the Kenya startup record",sent,01a1b65a-669c-7891-9a05-06c782699fd9,bounced
+2026-11-07,2026-11-07 14:12:20.410000+00,"Saviu Capital",Fund,info@saviucapital.com,"Saviu Capital on the Kenya startup record",sent,01a1b65a-669b-7a8c-836b-70ce2e15dbaf,bounced
+2026-11-07,2026-11-07 14:12:20.408000+00,"Digital Divide Data",Company,info@digitaldividedata.org,"Digital Divide Data on the Kenya startup record",sent,01a1b65a-669c-7cd2-ac28-62c3949581e1,delivered
+2026-11-07,2026-11-07 14:12:18.602000+00,"KNCCI",Association,info@kncci.org,"KNCCI on the Kenya startup record",sent,01a1b65a-5f30-7883-b332-89b513348167,bounced
+2026-11-07,2026-11-07 14:12:18.582000+00,"KenInvest",Government,info@keninvest.go.ke,"KenInvest on the Kenya startup record",sent,01a1b65a-5f31-7725-9542-f1c96074657b,bounced
+2026-11-07,2026-11-07 14:12:18.579000+00,"KALRO",Government,info@kalro.org,"KALRO on the Kenya startup record",sent,01a1b65a-5f31-713a-bb13-720759cd6486,delivered
+2026-11-07,2026-11-07 14:12:18.576000+00,"Kenya National Innovation Agency",Government,info@knia.go.ke,"Kenya National Innovation Agency on the Kenya startup record",sent,01a1b65a-5f31-74ad-95bc-7d1661b6b5a5,bounced
+2026-11-07,2026-11-07 14:12:18.572000+00,"Central Bank of Kenya",Government,info@centralbank.go.ke,"Central Bank of Kenya on the Kenya startup record",sent,01a1b65a-5f31-7461-92b8-6689283f62b9,delivered
+2026-11-07,2026-11-07 14:12:18.570000+00,"Communications Authority of Kenya",Government,info@ca.go.ke,"Communications Authority of Kenya on the Kenya startup record",sent,01a1b65a-5f30-7c93-b583-4979ffa4b726,delivered
+2026-11-07,2026-11-07 14:12:18.569000+00,"Kenya Climate Innovation Center",Incubator,info@kcic.or.ke,"Kenya Climate Innovation Center on the Kenya startup record",sent,01a1b65a-5f30-7f2b-8324-2c2598353c2e,bounced
+2026-11-07,2026-11-07 14:12:18.567000+00,"University of Nairobi",University,info@uonbi.ac.ke,"University of Nairobi on the Kenya startup record",sent,01a1b65a-5f30-7882-b004-3ebf5059a79e,bounced
+2026-11-07,2026-11-07 14:12:18.566000+00,"KIRDI",Government,info@kirdi.go.ke,"KIRDI on the Kenya startup record",sent,01a1b65a-5f30-7c67-9db1-efdc9d87c3f0,delivered
+2026-11-07,2026-11-07 14:12:18.565000+00,"Data Protection Commission Kenya",Government,info@odpc.go.ke,"Data Protection Commission Kenya on the Kenya startup record",sent,01a1b65a-5f31-7157-93cc-7eb94d16779a,delivered
+2026-11-07,2026-11-07 14:12:18.565000+00,"JKUAT",University,info@jkuat.ac.ke,"JKUAT on the Kenya startup record",sent,01a1b65a-5f31-7029-b874-83f4f6758137,delivered
+2026-11-07,2026-11-07 14:12:18.565000+00,"KEMRI",Government,info@kemri.org,"KEMRI on the Kenya startup record",sent,01a1b65a-5f30-7d71-aea6-1c0fd3204c5c,bounced
+2026-11-07,2026-11-07 14:12:18.562000+00,"Zetech University",University,info@zetechuniversity.ac.ke,"Zetech University on the Kenya startup record",sent,01a1b65a-5f31-76bb-bd3f-1524701ccf5d,bounced
+2026-11-07,2026-11-07 14:12:18.562000+00,"USIU Africa",University,info@usiu.ac.ke,"USIU Africa on the Kenya startup record",sent,01a1b65a-5f30-785d-b0a4-d8b84ee04391,delivered
+2026-11-07,2026-11-07 14:12:18.561000+00,"Kenyatta University",University,info@ku.ac.ke,"Kenyatta University on the Kenya startup record",sent,01a1b65a-5f30-7b85-88eb-bc75518c677c,delivered
+2026-11-07,2026-11-07 14:12:18.561000+00,"Kenya ICT Authority",Government,info@ict.go.ke,"Kenya ICT Authority on the Kenya startup record",sent,01a1b65a-5f31-7279-8173-7d3819ed57d2,delivered
+2026-11-07,2026-11-07 14:12:18.560000+00,"Catholic University of Eastern Africa",University,info@cuea.edu,"Catholic University of Eastern Africa on the Kenya startup record",sent,01a1b65a-5f31-740d-9127-1ce0abdc7378,delivered
+2026-11-07,2026-11-07 14:12:18.558000+00,"Riara University",University,info@riarauniversity.ac.ke,"Riara University on the Kenya startup record",sent,01a1b65a-5f31-750c-8bfe-6ebe1475c1f0,delivered
+2026-11-07,2026-11-07 14:12:18.558000+00,"Konza Technopolis",Government,info@konza.go.ke,"Konza Technopolis on the Kenya startup record",sent,01a1b65a-5f31-795e-88fe-dbaa7e4070bd,delivered
+2026-11-07,2026-11-07 14:12:18.556000+00,"Daystar University",University,info@daystar.ac.ke,"Daystar University on the Kenya startup record",sent,01a1b65a-5f31-727d-b513-22b73ec42ef8,delivered
+2026-11-07,2026-11-07 14:12:18.554000+00,"Strathmore University",University,info@strathmore.edu,"Strathmore University on the Kenya startup record",sent,01a1b65a-5f30-7870-be17-dfb4fa7f9982,bounced
+2026-11-07,2026-11-07 14:12:18.552000+00,"Kenya Revenue Authority",Government,info@kra.go.ke,"Kenya Revenue Authority on the Kenya startup record",sent,01a1b65a-5f31-76ed-9707-de403169b4f3,delivered
+2026-11-07,2026-11-07 14:12:18.549000+00,"Kenya Bankers Association",Association,info@kba.co.ke,"Kenya Bankers Association on the Kenya startup record",sent,01a1b65a-5f31-79d3-ac9f-5456e1eaa5e6,delivered
+2026-11-07,2026-11-07 14:12:18.546000+00,"Mount Kenya University",University,info@mku.ac.ke,"Mount Kenya University on the Kenya startup record",sent,01a1b65a-5f31-7755-9686-02f3064cea26,delivered
+2026-11-07,2026-11-07 14:12:18.545000+00,"KEPSA",Association,info@kepsa.or.ke,"KEPSA on the Kenya startup record",sent,01a1b65a-5f31-7919-a312-ca644fb01fa9,delivered
+2026-11-03,2026-11-03 17:17:17.013000+00,"Zydii",Edtech,info@zydii.com,"Zydii on the Kenya startup record",sent,01a1a26a-47fd-74e4-b11d-6e62a2bff1a3,bounced
+2026-11-03,2026-11-03 17:17:16.967000+00,"Hisa",Fintech,info@hisa.co.ke,"Hisa on the Kenya startup record",sent,01a1a26a-47fd-7373-aa42-76a079971ce0,bounced
+2026-11-03,2026-11-03 17:17:16.946000+00,"Churpy",Fintech,info@churpy.co,"Churpy on the Kenya startup record",sent,01a1a26a-47fc-798f-9c1a-97b4d82202ce,delivered
+2026-11-03,2026-11-03 17:17:16.946000+00,"Turaco",Insurtech,hello@turaco.com,"Turaco on the Kenya startup record",sent,01a1a26a-47fe-7578-8bb3-9a999954da3f,bounced
+2026-11-03,2026-11-03 17:17:16.929000+00,"Branch",Fintech,support@branch.co,"Branch on the Kenya startup record",sent,01a1a26a-47fe-7626-86aa-b26103bdf4b5,bounced
+2026-11-03,2026-11-03 17:17:16.922000+00,"Zanifu",Fintech,info@zanifu.com,"Zanifu on the Kenya startup record",sent,01a1a26a-47fd-74ed-b771-8a01cc39309b,delivered
+2026-11-03,2026-11-03 17:17:16.911000+00,"MarketForce",Commerce,info@marketforce.co.ke,"MarketForce on the Kenya startup record",sent,01a1a26a-47fc-7180-be7f-d309cdde68be,bounced
+2026-11-03,2026-11-03 17:17:16.910000+00,"Ndovu",Fintech,support@ndovu.co,"Ndovu on the Kenya startup record",sent,01a1a26a-47fc-7b53-9008-624ddcb240f6,delivered
+2026-11-03,2026-11-03 17:17:16.904000+00,"Lipa Later",Fintech,hello@lipalater.com,"Lipa Later on the Kenya startup record",sent,01a1a26a-47fd-7c84-b19b-f400493fa896,bounced
+2026-11-03,2026-11-03 17:17:16.898000+00,"Amini",Climate & Energy,info@amini.ai,"Amini on the Kenya startup record",sent,01a1a26a-47fd-7cb0-a855-50a57fdee59c,delivered
+2026-11-03,2026-11-03 17:17:16.893000+00,"mTek",Insurtech,hello@mtek.io,"mTek on the Kenya startup record",sent,01a1a26a-47fc-71a0-8ec2-6735ef57796f,bounced
+2026-11-03,2026-11-03 17:17:16.888000+00,"Tala",Fintech,info@tala.co.ke,"Tala on the Kenya startup record",sent,01a1a26a-47fd-7bba-ab4f-df31d67c4a23,bounced
+2026-11-03,2026-11-03 17:17:16.887000+00,"Wapi Pay",Fintech,info@wapipay.com,"Wapi Pay on the Kenya startup record",sent,01a1a26a-47fc-71b7-b0c1-36a58833e418,bounced
+2026-11-03,2026-11-03 17:17:16.886000+00,"M-TIBA",Health,office@carepay.co.ke,"M-TIBA on the Kenya startup record",sent,01a1a26a-47fd-728f-b88b-e664b70374b9,delivered
+2026-11-03,2026-11-03 17:17:16.885000+00,"Copia Global",Commerce,hello@copia.global,"Copia Global on the Kenya startup record",sent,01a1a26a-47fc-7ad9-9097-4a4843a0ff1e,bounced
+2026-11-03,2026-11-03 17:17:16.883000+00,"Nailab",Community,hello@nailab.co.ke,"Nailab on the Kenya startup record",sent,01a1a26a-47fc-7ade-803d-859f1d67dadf,delivered
+2026-11-03,2026-11-03 17:17:16.873000+00,"Pula",Agritech,info@pula.io,"Pula on the Kenya startup record",sent,01a1a26a-47fe-7077-883c-fb1f2b704774,delivered
+2026-11-03,2026-11-03 17:17:16.871000+00,"OkHi",SaaS,teamokhi@okhi.com,"OkHi on the Kenya startup record",sent,01a1a26a-47fc-7177-9da8-dd629baa3573,delivered
+2026-11-03,2026-11-03 17:13:16.527000+00,"DPO Group",,info@dpogroup.com,"DPO Group on the Kenya startup record",sent,01a1a266-9d22-7f02-9fda-af8b01718496,delivered
+2026-11-03,2026-11-03 17:13:16.509000+00,"Amini",Climate & Energy,hello@amini.ai,"Amini on the Kenya startup record",sent,01a1a266-9d22-7e7c-880f-4713b6a0f001,bounced
+2026-11-03,2026-11-03 17:12:42.030000+00,"Wapi Pay",Fintech,hello@wapipay.com,"Wapi Pay on the Kenya startup record",sent,01a1a266-164d-74a2-9358-5b25883c6a0d,bounced
+2026-11-03,2026-11-03 17:12:42.029000+00,"Kasha",Health,info@kasha.co,"Kasha on the Kenya startup record",sent,01a1a266-164c-73e6-817f-b120cd6af456,delivered
+2026-11-03,2026-11-03 17:12:42.029000+00,"Zydii",Edtech,hello@zydii.com,"Zydii on the Kenya startup record",sent,01a1a266-164b-7c3c-a389-0fd784383c19,bounced
+2026-11-03,2026-11-03 17:12:42.027000+00,"Roam",Mobility,info@roam-electric.com,"Roam on the Kenya startup record",sent,01a1a266-164d-7a5c-bdd0-edcd1347b3cc,delivered
+2026-11-03,2026-11-03 17:12:42.025000+00,"M-Gas",Climate & Energy,info@mgas.ke,"M-Gas on the Kenya startup record",sent,01a1a266-164d-7003-a7b3-d14c841410bd,delivered
+2026-11-03,2026-11-03 17:12:42.015000+00,"PowerGen",Energy,info@powergen-re.com,"PowerGen on the Kenya startup record",sent,01a1a266-164d-770e-ae2d-cb061dec10b7,delivered
+2026-11-03,2026-11-03 17:12:42.014000+00,"Kibanda",Commerce,hello@kibanda.co.ke,"Kibanda on the Kenya startup record",sent,01a1a266-164b-7cf0-901e-c67ba877750e,bounced
+2026-11-03,2026-11-03 17:12:42.014000+00,"M-TIBA",Health,info@mtiba.com,"M-TIBA on the Kenya startup record",sent,01a1a266-164b-76b2-bb8e-fba35bac1418,bounced
+2026-11-03,2026-11-03 17:12:41.993000+00,"Mesozi",SaaS,hello@mesozi.com,"Mesozi on the Kenya startup record",sent,01a1a266-164b-769a-bee6-5b09dd2f9ade,bounced
+2026-11-03,2026-11-03 17:12:41.991000+00,"Moringa School",Edtech,info@moringaschool.com,"Moringa School on the Kenya startup record",sent,01a1a266-164b-780e-8030-b16a05d8e029,delivered
+2026-11-03,2026-11-03 17:12:41.990000+00,"BasiGo",Climate & Energy,info@basigo.com,"BasiGo on the Kenya startup record",sent,01a1a266-164d-766f-9eb9-11c44fa459a6,bounced
+2026-11-03,2026-11-03 17:12:41.988000+00,"Aspira",Fintech,info@aspira.co.ke,"Aspira on the Kenya startup record",sent,01a1a266-164d-7c9d-aa7f-b7c71d9c8ee6,delivered
+2026-11-03,2026-11-03 17:12:41.984000+00,"Turaco",Insurtech,info@turaco.com,"Turaco on the Kenya startup record",sent,01a1a266-164d-738a-ac35-2c3ddac31dae,bounced
+2026-11-03,2026-11-03 17:12:41.979000+00,"Lami",Insurtech,info@lami.insure,"Lami on the Kenya startup record",sent,01a1a266-164c-7d4f-aff4-2417c3f90a9a,bounced
+2026-11-03,2026-11-03 17:12:41.979000+00,"Eneza Education",Edtech,info@enezaeducation.com,"Eneza Education on the Kenya startup record",sent,01a1a266-164b-7686-b20d-2f88bac2b591,bounced
+2026-11-03,2026-11-03 17:12:41.978000+00,"iHub",Community,info@ihub.co.ke,"iHub on the Kenya startup record",sent,01a1a266-164c-73a6-82c1-abb6b95c5991,delivered
+2026-11-03,2026-11-03 17:12:41.976000+00,"Pesapal",Fintech,info@pesapal.com,"Pesapal on the Kenya startup record",sent,01a1a266-164c-79c3-a389-b9e3dc94032a,delivered
+2026-11-03,2026-11-03 17:12:41.974000+00,"Kopo Kopo",Fintech,info@kopokopo.co.ke,"Kopo Kopo on the Kenya startup record",sent,01a1a266-164c-7ed0-98c0-f385953c7e7e,bounced
+2026-11-03,2026-11-03 17:12:41.971000+00,"Nailab",Community,info@nailab.co.ke,"Nailab on the Kenya startup record",sent,01a1a266-164c-7ed7-9c57-5d08f0dd9a07,bounced
+2026-11-03,2026-11-03 17:12:41.968000+00,"KOKO Networks",Climate & Energy,info@kokonetworks.com,"KOKO Networks on the Kenya startup record",sent,01a1a266-164c-789b-8e9f-3a4c217f6b22,bounced
+2026-11-03,2026-11-03 17:12:41.966000+00,"SunCulture",Agritech,info@sunculture.com,"SunCulture on the Kenya startup record",sent,01a1a266-164c-79b3-8876-d1b22906c67a,delivered
+2026-11-03,2026-11-03 17:12:41.963000+00,"Cellulant",Fintech,info@cellulant.io,"Cellulant on the Kenya startup record",sent,01a1a266-164c-723d-8cf0-2dc2704c45df,delivered
+2026-11-03,2026-11-03 17:12:41.961000+00,"mTek",Insurtech,info@mtek.io,"mTek on the Kenya startup record",sent,01a1a266-164c-781f-a926-2e1f786c3734,bounced
+2026-11-03,2026-11-03 17:12:40.221000+00,"Ndovu",Fintech,hello@ndovu.co,"Ndovu on the Kenya startup record",sent,01a1a266-0efc-7289-91f5-7113f585567d,bounced
+2026-11-03,2026-11-03 17:12:40.216000+00,"Branch",Fintech,info@branch.co,"Branch on the Kenya startup record",sent,01a1a266-0efc-79a7-a8b2-d92733b6bab1,bounced
+2026-11-03,2026-11-03 17:12:40.173000+00,"Gearbox",Hardware,info@gearbox.co.ke,"Gearbox on the Kenya startup record",sent,01a1a266-0efb-73d2-9e0e-ebda36fcb569,bounced
+2026-11-03,2026-11-03 17:12:40.160000+00,"MarketForce",Commerce,hello@marketforce360.com,"MarketForce on the Kenya startup record",sent,01a1a266-0efb-73c3-914a-84338331889f,bounced
+2026-11-03,2026-11-03 17:12:40.159000+00,"Pula",Agritech,info@pula-advisors.com,"Pula on the Kenya startup record",sent,01a1a266-0efb-73aa-8530-8256764cd279,bounced
+2026-11-03,2026-11-03 17:12:40.159000+00,"Lori Systems",Logistics,info@lorisystems.com,"Lori Systems on the Kenya startup record",sent,01a1a266-0efc-71ab-aedb-dc03921ae78b,delivered
+2026-11-03,2026-11-03 17:12:40.156000+00,"Churpy",Fintech,hello@churpy.co,"Churpy on the Kenya startup record",sent,01a1a266-0efc-725f-b719-86874584d8e3,bounced
+2026-11-03,2026-11-03 17:12:40.155000+00,"BRCK",Hardware,info@brck.com,"BRCK on the Kenya startup record",sent,01a1a266-0efc-749d-bd91-326c0d2b6c34,delivered
+2026-11-03,2026-11-03 17:12:40.153000+00,"OkHi",SaaS,hello@okhi.com,"OkHi on the Kenya startup record",sent,01a1a266-0efc-79b3-abeb-1dd1e6550ae7,bounced
+2026-11-03,2026-11-03 17:12:40.150000+00,"Pezesha",Fintech,info@pezesha.com,"Pezesha on the Kenya startup record",sent,01a1a266-0efc-7051-b123-9744d8411012,delivered
+2026-11-03,2026-11-03 17:12:40.148000+00,"Lipa Later",Fintech,info@lipalater.com,"Lipa Later on the Kenya startup record",sent,01a1a266-0efb-7c68-bdcd-6d5548adc2dd,bounced
+2026-11-03,2026-11-03 17:12:40.148000+00,"Sky.Garden",Commerce,hello@sky.garden,"Sky.Garden on the Kenya startup record",sent,01a1a266-0efb-79e9-8c12-a593d434a4e8,bounced
+2026-11-03,2026-11-03 17:12:40.148000+00,"FlexPay",Fintech,info@flexpay.co.ke,"FlexPay on the Kenya startup record",sent,01a1a266-0efc-7913-9f43-00dd8cccdeef,delivered
+2026-11-03,2026-11-03 17:12:40.147000+00,"M-KOPA",Fintech,info@m-kopa.com,"M-KOPA on the Kenya startup record",sent,01a1a266-0efb-7b63-9c30-622e908fff1b,delivered
+2026-11-03,2026-11-03 17:12:40.147000+00,"Kobo360",Logistics,info@kobo360.com,"Kobo360 on the Kenya startup record",sent,01a1a266-0efc-7b39-8bf4-bad9aa450701,delivered
+2026-11-03,2026-11-03 17:12:40.146000+00,"Apollo Agriculture",Agritech,info@apolloagriculture.com,"Apollo Agriculture on the Kenya startup record",sent,01a1a266-0efb-7907-9061-efa93f4b45ff,delivered
+2026-11-03,2026-11-03 17:12:40.145000+00,"Copia Global",Commerce,info@copia.global,"Copia Global on the Kenya startup record",sent,01a1a266-0efb-744a-92db-80de25828afa,bounced
+2026-11-03,2026-11-03 17:12:40.144000+00,"Ilara Health",Health,info@ilarahealth.com,"Ilara Health on the Kenya startup record",sent,01a1a266-0efb-73d7-b18e-4789a6f3221d,delivered
+2026-11-03,2026-11-03 17:12:40.144000+00,"Sendy",Logistics,info@sendyit.com,"Sendy on the Kenya startup record",sent,01a1a266-0efb-7da8-b37b-d295036ab6ad,bounced
+2026-11-03,2026-11-03 17:12:40.143000+00,"Wasoko",Commerce,info@wasoko.com,"Wasoko on the Kenya startup record",sent,01a1a266-0efb-7d7e-b840-0aa49c2fe4c3,bounced
+2026-11-03,2026-11-03 17:12:40.138000+00,"Hisa",Fintech,hello@hisa.co.ke,"Hisa on the Kenya startup record",sent,01a1a266-0efc-7778-9533-4bd570292b7f,bounced
+2026-11-03,2026-11-03 17:12:40.133000+00,"Twiga Foods",Commerce,info@twiga.com,"Twiga Foods on the Kenya startup record",sent,01a1a266-0efb-77c3-a2bb-9d07cc0e361b,delivered
+2026-11-03,2026-11-03 17:12:40.132000+00,"Zanifu",Fintech,hello@zanifu.com,"Zanifu on the Kenya startup record",sent,01a1a266-0efc-763a-ae64-fdac61a3db10,bounced
+2026-11-03,2026-11-03 17:12:40.130000+00,"Little Cab",Mobility,info@little.bz,"Little Cab on the Kenya startup record",sent,01a1a266-0efc-75b4-8fb0-3c4772530bdd,delivered
+2026-11-03,2026-11-03 17:12:40.124000+00,"Tala",Fintech,info@tala.co,"Tala on the Kenya startup record",sent,01a1a266-0efc-7cf2-b2ae-62c852391c30,bounced

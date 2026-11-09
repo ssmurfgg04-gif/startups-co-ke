@@ -1,0 +1,54 @@
+{
+ "fetchedAt": "2026-11-09",
+ "note": "Pulled from public listings. Dates are verified on the organiser page before promotion to hackathons.ts. No events are invented.",
+ "sources": [
+  {
+   "id": "gdg",
+   "name": "GDG Community",
+   "url": "https://gdg.community.dev/events/upcoming/",
+   "kind": "GDG",
+   "ok": false,
+   "status": 404,
+   "found": 0
+  },
+  {
+   "id": "techgroup",
+   "name": "Tech Events Kenya",
+   "url": "https://events.techgroupkenya.co.ke/events/",
+   "kind": "Listing",
+   "ok": true,
+   "status": 200,
+   "found": 0
+  },
+  {
+   "id": "openhackathons",
+   "name": "Open Hackathons",
+   "url": "https://openhackathons.org/upcoming-events/",
+   "kind": "Listing",
+   "ok": true,
+   "status": 200,
+   "found": 0
+  },
+  {
+   "id": "luma-nairobi",
+   "name": "Luma Nairobi",
+   "url": "https://lu.ma/nairobi",
+   "kind": "Listing",
+   "ok": true,
+   "status": 200,
+   "found": 0
+  }
+ ],
+ "events": [
+  {
+   "title": "DevFest Nairobi 2026",
+   "url": "https://gdg.community.dev/events/details/google-gdg-nairobi-presents-devfest-nairobi-2026/",
+   "source": "GDG Community"
+  },
+  {
+   "title": "Inter-University Hackathon 2026",
+   "url": "https://events.techgroupkenya.co.ke/events/TGK26HMIC4/inter-university-hackathon-2026/",
+   "source": "Tech Events Kenya"
+  }
+ ]
+}

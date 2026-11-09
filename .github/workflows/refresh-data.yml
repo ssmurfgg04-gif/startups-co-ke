@@ -43,6 +43,9 @@ jobs:
       - name: Refresh live jobs snapshot (link-checks included)
         run: node scripts/fetch_jobs.mjs
 
+      - name: Refresh live events snapshot (best effort)
+        run: node scripts/fetch_events.mjs || echo "events refresh skipped"
+
       - name: Refresh Google Trends snapshot (best effort)
         run: python3 scripts/refresh_trends.py || echo "trends refresh skipped"
 

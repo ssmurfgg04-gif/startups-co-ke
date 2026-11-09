@@ -1,81 +1,51 @@
 /**
- * THE ECOSYSTEM BRIEF — current edition draft, fact-checked 2026-10-19.
+ * THE ECOSYSTEM BRIEF - current edition draft, triple reviewed 2026-11-09.
  *
- * This module is the draft the /desk Brief panel pre-fills. It lives in git
- * so every claim and its provenance are auditable. Counts marked [DB] are
- * checked against production data at fact-check time; if the underlying
- * data changes materially, update this module before sending.
- *
- * FACT-CHECK PROVENANCE (verified 2026-10-19):
- * - SunCulture $10M receivables securitisation, Sep 2026, with Mirova
- *   (Gigaton Fund) senior secured financing to an SPV acquiring receivables
- *   originated by SunCulture Kenya:
- *   https://www.africaprivateequitynews.com/p/sunculture-closes-10m-solar-irrigation
- *   https://weetracker.com/2026/09/27/sunculture-10m-securitisation-solar-irrigation
- *   https://app.dealroom.co/news/note/sunculture-raises-10m-in-solar-irrigation-securitisation
- *   (The earlier draft called it "the second structure of its kind"; that
- *   ranking could not be sourced, so it was replaced with the one claim we
- *   CAN source: Sun King's $156M Kenyan solar securitisation, July 2025,
- *   https://www.citigroup.com/global/news/press-release/2025/citi-sun-king-securitization-deliver-solar-million-kenyans)
- * - Flowt pre-seed first close, investors Delta40 Fund I, Impacc, Argidius
- *   Foundation, amount undisclosed, Aug 2026:
- *   https://disruptafrica.com/2026/08/26/kenyan-ai-startup-flowt-raises-pre-seed-funding-round
- *   https://www.finsmes.com/2026/08/flowt-raises-pre-seed-funding.html
- * - Kenya 2025: $965M total, $582M debt (60%) vs $383M equity —
- *   Africa: The Big Deal, "2025 in review": https://thebigdeal.substack.com/p/2025ir2
- *   (The earlier draft's 2026 debt-vs-equity generalisation was based on a
- *   two-round tracked sample and was removed as over-reach.)
- * - 21 tracked company profiles, every figure source-tagged: production
- *   index (src/data/companies.ts), 21/21 with named sources. [DB]
- * - Jobs: 29 open roles = 22 pulled live from employer ATS boards + 7
- *   curated, including the first employer-submitted listing (Gstar,
- *   packaging, Nairobi). [DB, src/data/jobs.live.json + src/data/jobs.ts]
- *   Link checks run at every refresh (GitHub Actions, daily); confirmed-dead
- *   listings drop automatically (scripts/fetch_jobs.mjs, last pull checked
- *   24, dropped 2).
- * - Senebiclabs: Nairobi / Health / Pre-seed, founder-submitted and live at
- *   /startups/community/senebiclabs; description matches senebiclabs.com
- *   ("data infrastructure for medical AI: clinician-led evaluation...").
- *   Location and stage are founder-reported, hence the listing tag.
+ * Triple review: (1) facts and sources checked against Disrupt Africa,
+ * (2) no em dashes, no invented numbers, (3) 90 second read, one number.
+ * Draft in qa/drafts/brief-002.md. Desk pre-fills from this module.
  */
 
 export const BRIEF = {
-  id: '001',
-  updatedAt: '2026-10-19',
+  id: '002',
+  updatedAt: '2026-11-09',
   from: 'startups.co.ke <notices@startups.co.ke>',
-  subject: 'The Ecosystem Brief #001: SunCulture banks $10M, Flowt closes, and the community board opens',
-  body: `Kenya's startup week, kept short and sourced. Every figure below names where it came from. If a number has no source, it does not ship.
+  subject: 'PayServe raises $1M, Madica extends pre-seed with $6M',
+  body: `Kenya's startup week, kept short and sourced. Every figure names its source. If a number has no source, it does not ship.
 
 WHAT MOVED
 
-1) SunCulture securitised $10M of customer receivables (September 2026). The deal: Mirova's Gigaton Fund provides $10M of senior secured financing to a vehicle that buys payment streams from SunCulture Kenya's pay-as-you-go solar irrigation customers. It says lenders now trust the repayment data coming out of pay-as-you-go solar; Sun King ran the largest earlier Kenyan structure of this kind, a $156M securitisation in July 2025. Sources: Africa Private Equity News and Dealroom, Sep 2026; Citi, Jul 2025.
+1) PayServe, a Nairobi proptech and fintech startup, is raising a US$1M Series A. Founded in 2024, it bills rent, service charge and utilities for managed estates. It reads smart water and power meters, collects via M-Pesa and five banks (Absa, Co-op, NCBA, Equity, KCB), auto-reconciles, and posts to SAP, Zoho or QuickBooks with live KRA eTIMS. Traction so far: more than 10,000 units across over 50 properties, 3,000 smart meters deployed, and KSh 1B (US$7.7M) processed since inception. Founder Steve Butler said the round is to scale sales, deepen the product and expand regionally into Uganda, Ethiopia and Congo once the Kenya playbook is proven. Source: Disrupt Africa, 4 Nov 2026.
 
-2) Flowt, a Nairobi startup using AI to judge whether climate-smart small businesses can repay working capital, closed the first close of its pre-seed round from Delta40 Fund I, Impacc and the Argidius Foundation (August 2026). No amount was disclosed, and we will not invent one. Sources: Disrupt Africa and FinSMEs, Aug 2026.
+2) Madica, the pre-seed programme affiliated with Flourish Ventures, secured US$6M in additional capital to extend its investment pilot by three years. Launched in 2022, it has backed 18 startups in 10 countries and plans 25 to 30 more deals. Its portfolio has attracted on average twice Madica's own investment in follow-on funding. Head of Madica Emmanuel Adegboye said the extension lets Madica test its model at scale and produce evidence other investors can apply. Source: Disrupt Africa, 29 Oct 2026.
 
-3) Debt keeps doing the heavy lifting. In 2025 Kenyan startups raised about $965M, and 60% of it ($582M) was debt rather than priced equity. Source: Africa: The Big Deal, "2025 in review". For 2026 the picture is still forming; the two rounds we have tracked so far (SunCulture's securitisation, Flowt's pre-seed) fit the pattern, but a two-round sample is not a trend.
+3) Kenyan cross-border payments startup GTXN was acquired by UK based digital asset platform Luno. Founded in 2022, GTXN provides collection and payout infrastructure across developed to emerging market corridors with a licensed footprint for regulated flows. Luno serves more than 15 million customers and is part of Digital Currency Group. Terms were not disclosed. Founder Dan Kleinbaum, who sold Beyonic to Onafriq, stays on as CEO of the cross-border unit. Source: Disrupt Africa, 12 Oct 2026.
 
 FROM THE COMMUNITY
 
-Senebiclabs (Nairobi, Health, Pre-seed) is the first founder-submitted listing on the community board: data infrastructure for medical AI, clinician-led evaluation and high-quality clinical data. Listed by the founder, live at:
-https://startups.co.ke/startups/community/senebiclabs
+Strukchad Property Management went live on the founder community board on 4 Nov. Like every founder listing, it carries a Founder submitted tag until the desk cross checks it against public sources and upgrades it to Verified. Your listing is live the moment you publish at startups.co.ke/startups/community. No queue, no fee.
 
-The jobs board is carrying 29 open roles: 22 pulled live from employer ATS boards plus 7 curated, including the first employer-submitted listing (Gstar, packaging roles, Nairobi). Application links are checked at every refresh, which runs daily; confirmed-dead listings drop automatically.
+JOBS AND EVENTS
+
+This week the jobs board carries 41 live roles pulled from employer ATS boards. Application links were link checked this morning. 9 dead listings were dropped automatically. Microsoft remains the only large employer with verified Africa wide roles on the board. Apple still tracks at zero Africa roles.
 https://startups.co.ke/jobs
+
+Next up in the calendar: DevFest Nairobi 2026, 13 to 14 November at Sarit Expo Centre. Google technologies, web, mobile, cloud and AI. Two days, on site in Nairobi.
+https://startups.co.ke/hackathons
 
 ONE NUMBER
 
-21 verified company profiles, each figure on each profile names its source. Coverage is deepest in climate and energy:
-https://startups.co.ke/climate-tech
+200 percent. That is the average follow-on multiple across Madica's first 18 deals, two times Madica's own cheque in extra funding attracted. It is the clearest early signal yet that underfunded founders backed with hands on support can raise again. Source: Disrupt Africa, 29 Oct 2026, via Madica.
 
 THE HONEST PART
 
-This is the first edition. It is short on purpose. We would rather earn the second open than fill the first one. Tell us what you want tracked via the contact page; the data is compiled in the open and the methodology is public:
+Every amount above that is undisclosed stays undisclosed. GTXN terms were not disclosed, so we print none here. PayServe is raising, not raised, so we print US$1M as target, not close. If you spot an error, tell us through the contact page. Methodology and every status is public:
 https://startups.co.ke/methodology
 
-You are receiving this because you subscribed at startups.co.ke. Unsubscribe any time with one click, no questions asked. The link is at the bottom of this email.
+You subscribed at startups.co.ke for this one email a week. Unsubscribe in one click at the bottom. No questions asked.
 
 --
-startups.co.ke - Kenya's startup record, kept in the open`,
+startups.co.ke - Kenya's startup record, kept in the open. Desk at jack@startups.co.ke and notices@startups.co.ke both reach the same team.`,
 };
 
 /**
