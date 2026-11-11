@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-11-10",
+ "fetchedAt": "2026-11-11",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 48,
+  "checked": 49,
   "dropped": 9,
   "ambiguous": 0
  },
@@ -20,16 +20,16 @@
    "id": "tala",
    "company": "Tala",
    "board": "Lever",
-   "count": 0,
+   "count": 11,
    "kept": 0,
-   "ok": false,
-   "error": "The operation was aborted due to timeout"
+   "ok": true,
+   "scope": "kenya"
   },
   {
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 123,
+   "count": 112,
    "kept": 10,
    "ok": true,
    "scope": "kenya"
@@ -92,7 +92,7 @@
    "id": "basigo",
    "company": "BasiGo",
    "board": "BambooHR",
-   "count": 0,
+   "count": 1,
    "kept": 0,
    "ok": true,
    "scope": "kenya"
@@ -138,7 +138,7 @@
    "id": "ajaia",
    "company": "AJAIA",
    "board": "Workable",
-   "count": 103,
+   "count": 87,
    "kept": 6,
    "ok": true,
    "scope": "kenya"
@@ -147,7 +147,7 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 223,
+   "count": 251,
    "kept": 0,
    "ok": true,
    "scope": "kenya"
@@ -156,8 +156,8 @@
    "id": "microsoft",
    "company": "Microsoft",
    "board": "Microsoft Careers",
-   "count": 17,
-   "kept": 17,
+   "count": 18,
+   "kept": 18,
    "ok": true,
    "scope": "africa"
   },
@@ -176,24 +176,24 @@
    "id": "moniepoint-engineering-manager",
    "title": "Engineering Manager",
    "companyId": "moniepoint",
-   "location": "Remote, Kenya + 4 more",
+   "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 7,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
+   "postedDays": 8,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
    "board": "Greenhouse",
    "scope": "kenya",
    "tags": []
   },
   {
-   "id": "moniepoint-engineering-manager-tlkzuj",
+   "id": "moniepoint-engineering-manager-1jkecu",
    "title": "Engineering Manager",
    "companyId": "moniepoint",
-   "location": "Remote, Kenya",
+   "location": "Remote, Kenya + 4 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 7,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4978853101",
+   "postedDays": 8,
+   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923034101",
    "board": "Greenhouse",
    "scope": "kenya",
    "tags": []
@@ -205,7 +205,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 33,
+   "postedDays": 34,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -218,7 +218,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 49,
+   "postedDays": 50,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -231,7 +231,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 47,
+   "postedDays": 48,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -244,7 +244,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 61,
+   "postedDays": 62,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972356101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -257,7 +257,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 25,
+   "postedDays": 26,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4974187101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -270,7 +270,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 33,
+   "postedDays": 34,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4972346101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -283,7 +283,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Design",
-   "postedDays": 26,
+   "postedDays": 1,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5006759101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -296,7 +296,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Operations",
-   "postedDays": 32,
+   "postedDays": 33,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5001414101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -309,7 +309,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 30,
+   "postedDays": 31,
    "applyUrl": "https://apply.workable.com/j/584476AF04",
    "board": "Workable",
    "scope": "kenya",
@@ -322,7 +322,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 61,
+   "postedDays": 62,
    "applyUrl": "https://apply.workable.com/j/125368C404",
    "board": "Workable",
    "scope": "kenya",
@@ -335,7 +335,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 61,
+   "postedDays": 62,
    "applyUrl": "https://apply.workable.com/j/B891AB4811",
    "board": "Workable",
    "scope": "kenya",
@@ -348,7 +348,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 12,
+   "postedDays": 13,
    "applyUrl": "https://apply.workable.com/j/B5CE217424",
    "board": "Workable",
    "scope": "kenya",
@@ -361,7 +361,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 61,
+   "postedDays": 62,
    "applyUrl": "https://apply.workable.com/j/EEE70403B1",
    "board": "Workable",
    "scope": "kenya",
@@ -374,7 +374,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 35,
+   "postedDays": 36,
    "applyUrl": "https://apply.workable.com/j/00007C69D0",
    "board": "Workable",
    "scope": "kenya",
@@ -387,7 +387,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 140,
+   "postedDays": 141,
    "applyUrl": "https://apply.workable.com/j/E7AA1D58FD",
    "board": "Workable",
    "scope": "kenya",
@@ -400,7 +400,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 140,
+   "postedDays": 141,
    "applyUrl": "https://apply.workable.com/j/A62B548E95",
    "board": "Workable",
    "scope": "kenya",
@@ -413,7 +413,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 140,
+   "postedDays": 141,
    "applyUrl": "https://apply.workable.com/j/8F2BB57537",
    "board": "Workable",
    "scope": "kenya",
@@ -426,7 +426,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Product",
-   "postedDays": 61,
+   "postedDays": 62,
    "applyUrl": "https://apply.workable.com/j/28C10B9CD7",
    "board": "Workable",
    "scope": "kenya",
@@ -439,7 +439,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 71,
+   "postedDays": 72,
    "applyUrl": "https://apply.workable.com/j/EC24F51CB9",
    "board": "Workable",
    "scope": "kenya",
@@ -452,11 +452,71 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 61,
+   "postedDays": 62,
    "applyUrl": "https://apply.workable.com/j/55439F8E81",
    "board": "Workable",
    "scope": "kenya",
    "tags": []
+  },
+  {
+   "id": "microsoft-fasttrack-full-stack-engineer-italian-spanish-fr",
+   "title": "FastTrack Full-Stack Engineer - (Italian/Spanish/French/German) Speaking",
+   "companyId": "microsoft",
+   "location": "Egypt, Multiple Locations, Multiple Locations; Romania, Multiple Locations, Multiple Locations",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 1,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557053889",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Onboarding Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-government-affairs-internship-opportunities",
+   "title": "Government Affairs Internship Opportunities",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 5,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557054332",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
+   ]
+  },
+  {
+   "id": "microsoft-senior-applied-science-lead",
+   "title": "Senior Applied Science Lead",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 26,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
+   "companyId": "microsoft",
+   "location": "Nigeria, Niger, Abuja",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 22,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
+   ]
   },
   {
    "id": "microsoft-senior-copilot-and-agentic-cloud-solutions-archi",
@@ -465,7 +525,7 @@
    "location": "South Africa, Gauteng, Johannesburg; South Africa, Western Cape, Cape Town",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 1,
+   "postedDays": 2,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052759",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -480,7 +540,7 @@
    "location": "South Africa, Gauteng, Johannesburg",
    "mode": "—",
    "category": "Other",
-   "postedDays": 22,
+   "postedDays": 23,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -531,36 +591,6 @@
    "scope": "africa",
    "tags": [
     "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-senior-applied-science-lead",
-   "title": "Senior Applied Science Lead",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-government-affairs-director-west-africa",
-   "title": "Government Affairs Director, West Africa",
-   "companyId": "microsoft",
-   "location": "Nigeria, Niger, Abuja",
-   "mode": "—",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Government Affairs"
    ]
   },
   {
@@ -696,21 +726,6 @@
    "scope": "africa",
    "tags": [
     "Solution Architecture"
-   ]
-  },
-  {
-   "id": "microsoft-government-affairs-internship-opportunities",
-   "title": "Government Affairs Internship Opportunities",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557054332",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Government Affairs"
    ]
   }
  ]
