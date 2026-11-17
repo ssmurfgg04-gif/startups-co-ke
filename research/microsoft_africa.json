@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-16",
+ "fetchedAt": "2026-11-17",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -33,7 +33,7 @@
   {
    "id": "microsoft-government-affairs-director-west-africa",
    "title": "Government Affairs Director, West Africa",
-   "location": "Nigeria, Niger, Abuja",
+   "location": "Nigeria, Federal Capital Territory, Abuja",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
    "department": "Government Affairs"
   },
@@ -141,6 +141,20 @@
    "location": "United Kingdom, Multiple Locations, Multiple Locations; United Arab Emirates, Dubai, Dubai; Egypt, Cairo, Cairo; Romania, Bucharest, Bucharest",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557050682",
    "department": "Onboarding Mgmt"
+  },
+  {
+   "id": "microsoft-cloud-solution-architect-security",
+   "title": "Cloud Solution Architect - Security",
+   "location": "Egypt, Multiple Locations, Multiple Locations; Germany, Multiple Locations, Multiple Locations; Austria, Wien, Vienna; Jordan, Multiple Locations, Multiple Locations; Romania, Bucharest, Bucharest; Romania, Timis, Timisoara",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557056225",
+   "department": "Cloud Solution Architecture"
+  },
+  {
+   "id": "microsoft-customer-success-account-mgmt-french-speaker",
+   "title": "Customer Success Account Mgmt - French Speaker",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052679",
+   "department": "Customer Success Account Mgmt"
   }
  ]
 }
