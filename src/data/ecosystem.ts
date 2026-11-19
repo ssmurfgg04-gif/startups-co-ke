@@ -305,14 +305,14 @@ export const REPORTS: Report[] = [
 
 /** Real consumer-interest snapshot (Google Trends KE RSS, Oct 15 2026). */
 export const TRENDS: { keyword: string; volume: string }[] = [
-  { keyword: 'anne hathaway', volume: '100+' },
-  { keyword: 'twitch', volume: '100+' },
-  { keyword: 'dstv', volume: '200+' },
   { keyword: 'fraud', volume: '200+' },
-  { keyword: 'george saitoti', volume: '1000+' },
-  { keyword: 'military aircraft', volume: '200+' },
-  { keyword: 'nairobi expressway financial losses', volume: '500+' },
-  { keyword: 'lakers vs hornets', volume: '1000+' },
-  { keyword: 'mexico vs jamaica', volume: '500+' },
-  { keyword: 'business daily africa', volume: '1000+' },
+  { keyword: 'baboons', volume: '100+' },
+  { keyword: 'mykhailo mudryk', volume: '200+' },
+  { keyword: 'toll', volume: '200+' },
+  { keyword: 'bribery', volume: '200+' },
+  { keyword: 'international mens day', volume: '2000+' },
+  { keyword: 'lakers vs jazz', volume: '200+' },
+  { keyword: 'health care', volume: '500+' },
+  { keyword: 'vodacom', volume: '500+' },
+  { keyword: 'mavericks vs warriors', volume: '200+' },
 ];
