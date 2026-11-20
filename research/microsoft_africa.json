@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-19",
+ "fetchedAt": "2026-11-20",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -155,6 +155,13 @@
    "location": "Egypt, Cairo, Cairo",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052679",
    "department": "Customer Success Account Mgmt"
+  },
+  {
+   "id": "microsoft-senior-research-scientist",
+   "title": "Senior Research Scientist",
+   "location": "Kenya, Nairobi City, Nairobi",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557072759",
+   "department": "Research Sciences"
   }
  ]
 }
