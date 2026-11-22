@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-21",
+ "fetchedAt": "2026-11-22",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
   "checked": 51,
@@ -29,7 +29,7 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 66,
+   "count": 67,
    "kept": 4,
    "ok": true,
    "scope": "kenya"
@@ -147,7 +147,7 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 250,
+   "count": 248,
    "kept": 3,
    "ok": true,
    "scope": "kenya"
@@ -179,7 +179,7 @@
    "location": "Remote, Kenya + 6 more",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 44,
+   "postedDays": 45,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -192,7 +192,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 60,
+   "postedDays": 61,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -205,7 +205,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 58,
+   "postedDays": 59,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -218,7 +218,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 1,
+   "postedDays": 2,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5013834101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -231,7 +231,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 41,
+   "postedDays": 42,
    "applyUrl": "https://apply.workable.com/j/584476AF04",
    "board": "Workable",
    "scope": "kenya",
@@ -244,7 +244,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 72,
+   "postedDays": 73,
    "applyUrl": "https://apply.workable.com/j/125368C404",
    "board": "Workable",
    "scope": "kenya",
@@ -257,7 +257,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 72,
+   "postedDays": 73,
    "applyUrl": "https://apply.workable.com/j/B891AB4811",
    "board": "Workable",
    "scope": "kenya",
@@ -270,7 +270,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 23,
+   "postedDays": 24,
    "applyUrl": "https://apply.workable.com/j/B5CE217424",
    "board": "Workable",
    "scope": "kenya",
@@ -283,7 +283,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 72,
+   "postedDays": 73,
    "applyUrl": "https://apply.workable.com/j/EEE70403B1",
    "board": "Workable",
    "scope": "kenya",
@@ -296,7 +296,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 46,
+   "postedDays": 47,
    "applyUrl": "https://apply.workable.com/j/00007C69D0",
    "board": "Workable",
    "scope": "kenya",
@@ -309,7 +309,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 151,
+   "postedDays": 152,
    "applyUrl": "https://apply.workable.com/j/E7AA1D58FD",
    "board": "Workable",
    "scope": "kenya",
@@ -322,7 +322,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 151,
+   "postedDays": 152,
    "applyUrl": "https://apply.workable.com/j/A62B548E95",
    "board": "Workable",
    "scope": "kenya",
@@ -335,7 +335,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 151,
+   "postedDays": 152,
    "applyUrl": "https://apply.workable.com/j/8F2BB57537",
    "board": "Workable",
    "scope": "kenya",
@@ -348,7 +348,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Product",
-   "postedDays": 72,
+   "postedDays": 73,
    "applyUrl": "https://apply.workable.com/j/28C10B9CD7",
    "board": "Workable",
    "scope": "kenya",
@@ -361,7 +361,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Other",
-   "postedDays": 82,
+   "postedDays": 83,
    "applyUrl": "https://apply.workable.com/j/EC24F51CB9",
    "board": "Workable",
    "scope": "kenya",
@@ -374,7 +374,7 @@
    "location": "Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 72,
+   "postedDays": 73,
    "applyUrl": "https://apply.workable.com/j/55439F8E81",
    "board": "Workable",
    "scope": "kenya",
@@ -387,7 +387,7 @@
    "location": "Kenya",
    "mode": "Remote",
    "category": "Growth",
-   "postedDays": 11,
+   "postedDays": 12,
    "applyUrl": "https://jobs.lever.co/distro/54302f66-cbb6-4fce-9893-63222ff79c77",
    "board": "Lever",
    "scope": "kenya",
@@ -402,7 +402,7 @@
    "location": "Kenya",
    "mode": "Remote",
    "category": "Growth",
-   "postedDays": 8,
+   "postedDays": 9,
    "applyUrl": "https://jobs.lever.co/distro/ff6848b8-b174-476d-a2a4-2fa5894fe506",
    "board": "Lever",
    "scope": "kenya",
@@ -417,7 +417,7 @@
    "location": "Multiple Locations",
    "mode": "Remote",
    "category": "Engineering",
-   "postedDays": 5,
+   "postedDays": 6,
    "applyUrl": "https://jobs.lever.co/distro/e42b8b2c-50e0-492f-abb1-f18b8a3c0576",
    "board": "Lever",
    "scope": "kenya",
@@ -426,18 +426,123 @@
    ]
   },
   {
-   "id": "microsoft-senior-customer-success-account-manager",
-   "title": "Senior Customer Success Account Manager",
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
    "companyId": "microsoft",
-   "location": "South Africa",
+   "location": "Nigeria, Federal Capital Territory, Abuja",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 33,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
+   ]
+  },
+  {
+   "id": "microsoft-cloud-solution-architect-security",
+   "title": "Cloud Solution Architect - Security",
+   "companyId": "microsoft",
+   "location": "Egypt, Multiple Locations, Multiple Locations + 5 more",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 6,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557056225",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Cloud Solution Architecture"
+   ]
+  },
+  {
+   "id": "microsoft-fasttrack-full-stack-engineer-italian-spanish-fr",
+   "title": "FastTrack Full-Stack Engineer - (Italian/Spanish/French/German) Speaking",
+   "companyId": "microsoft",
+   "location": "Egypt, Multiple Locations, Multiple Locations; Romania, Multiple Locations, Multiple Locations",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 0,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557053889",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Onboarding Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-customer-success-account-mgmt-french-speaker",
+   "title": "Customer Success Account Mgmt - French Speaker",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
    "mode": "—",
    "category": "Growth",
-   "postedDays": 1,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
+   "postedDays": 5,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052679",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
     "Customer Success Account Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-snr-data-applied-scientist-shopping-",
+   "title": "Snr Data & Applied Scientist (Shopping)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 3,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-software-engineer-internship-opportunities-ignit",
+   "title": "Software Engineer: Internship Opportunities - Ignite Program for People with Disabilities",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 9,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073162",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Software Engineering"
+   ]
+  },
+  {
+   "id": "microsoft-technical-support-engineer-intern-for-people-wit",
+   "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 9,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073164",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-senior-applied-science-lead",
+   "title": "Senior Applied Science Lead",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 3,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
    ]
   },
   {
@@ -447,7 +552,7 @@
    "location": "South Africa, Gauteng, Johannesburg",
    "mode": "—",
    "category": "Other",
-   "postedDays": 33,
+   "postedDays": 34,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -462,42 +567,12 @@
    "location": "Kenya, Nairobi City, Nairobi",
    "mode": "—",
    "category": "Data",
-   "postedDays": 2,
+   "postedDays": 3,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557072759",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
     "Research Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-snr-data-applied-scientist-shopping-",
-   "title": "Snr Data & Applied Scientist (Shopping)",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Data",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-technical-support-engineer-intern-for-people-wit",
-   "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073164",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Business Program Management"
    ]
   },
   {
@@ -516,33 +591,18 @@
    ]
   },
   {
-   "id": "microsoft-senior-applied-science-lead",
-   "title": "Senior Applied Science Lead",
+   "id": "microsoft-senior-customer-success-account-manager",
+   "title": "Senior Customer Success Account Manager",
    "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
+   "location": "South Africa",
    "mode": "—",
-   "category": "Other",
+   "category": "Growth",
    "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038907",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-government-affairs-director-west-africa",
-   "title": "Government Affairs Director, West Africa",
-   "companyId": "microsoft",
-   "location": "Nigeria, Federal Capital Territory, Abuja",
-   "mode": "—",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Government Affairs"
+    "Customer Success Account Mgmt"
    ]
   },
   {
@@ -696,36 +756,6 @@
    ]
   },
   {
-   "id": "microsoft-fasttrack-full-stack-engineer-italian-spanish-fr",
-   "title": "FastTrack Full-Stack Engineer - (Italian/Spanish/French/German) Speaking",
-   "companyId": "microsoft",
-   "location": "Egypt, Multiple Locations, Multiple Locations; Romania, Multiple Locations, Multiple Locations",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557053889",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Onboarding Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-software-engineer-internship-opportunities-ignit",
-   "title": "Software Engineer: Internship Opportunities - Ignite Program for People with Disabilities",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073162",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Software Engineering"
-   ]
-  },
-  {
    "id": "microsoft-partner-success-manager",
    "title": "Partner Success Manager",
    "companyId": "microsoft",
@@ -738,36 +768,6 @@
    "scope": "africa",
    "tags": [
     "Onboarding Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-cloud-solution-architect-security",
-   "title": "Cloud Solution Architect - Security",
-   "companyId": "microsoft",
-   "location": "Egypt, Multiple Locations, Multiple Locations + 5 more",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557056225",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Cloud Solution Architecture"
-   ]
-  },
-  {
-   "id": "microsoft-customer-success-account-mgmt-french-speaker",
-   "title": "Customer Success Account Mgmt - French Speaker",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052679",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Customer Success Account Mgmt"
    ]
   }
  ]
