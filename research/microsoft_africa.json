@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-23",
+ "fetchedAt": "2026-11-24",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -162,6 +162,13 @@
    "location": "Kenya, Nairobi City, Nairobi",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557072759",
    "department": "Research Sciences"
+  },
+  {
+   "id": "microsoft-community-affairs-metro-manager",
+   "title": "Community Affairs Metro Manager",
+   "location": "South Africa, Multiple Locations, Multiple Locations",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073401",
+   "department": "Business Program Management"
   }
  ]
 }
