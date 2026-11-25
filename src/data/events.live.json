@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-24",
+ "fetchedAt": "2026-11-25",
  "note": "Pulled from public listings. Dates are verified on the organiser page before promotion to hackathons.ts. No events are invented.",
  "sources": [
   {
@@ -16,8 +16,8 @@
    "name": "Tech Events Kenya",
    "url": "https://events.techgroupkenya.co.ke/events/",
    "kind": "Listing",
-   "ok": true,
-   "status": 200,
+   "ok": false,
+   "status": 0,
    "found": 0
   },
   {
