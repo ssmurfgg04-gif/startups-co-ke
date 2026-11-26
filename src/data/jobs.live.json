@@ -1,10 +1,10 @@
 {
- "fetchedAt": "2026-11-25",
+ "fetchedAt": "2026-11-26",
  "note": "Pulled from employers’ own ATS boards. No salaries are invented for live rows. Application links checked every pull; confirmed-dead listings drop automatically.",
  "linkCheck": {
-  "checked": 54,
+  "checked": 53,
   "dropped": 9,
-  "ambiguous": 0
+  "ambiguous": 2
  },
  "sources": [
   {
@@ -20,7 +20,7 @@
    "id": "tala",
    "company": "Tala",
    "board": "Lever",
-   "count": 13,
+   "count": 12,
    "kept": 0,
    "ok": true,
    "scope": "kenya"
@@ -29,8 +29,8 @@
    "id": "moniepoint",
    "company": "Moniepoint",
    "board": "Greenhouse",
-   "count": 67,
-   "kept": 4,
+   "count": 63,
+   "kept": 3,
    "ok": true,
    "scope": "kenya"
   },
@@ -129,8 +129,8 @@
    "id": "fairmoney",
    "company": "FairMoney",
    "board": "Workable",
-   "count": 56,
-   "kept": 1,
+   "count": 54,
+   "kept": 0,
    "ok": true,
    "scope": "kenya"
   },
@@ -147,7 +147,7 @@
    "id": "distro",
    "company": "Distro",
    "board": "Lever",
-   "count": 261,
+   "count": 254,
    "kept": 4,
    "ok": true,
    "scope": "kenya"
@@ -156,8 +156,8 @@
    "id": "microsoft",
    "company": "Microsoft",
    "board": "Microsoft Careers",
-   "count": 24,
-   "kept": 24,
+   "count": 25,
+   "kept": 25,
    "ok": true,
    "scope": "africa"
   },
@@ -173,26 +173,13 @@
  ],
  "jobs": [
   {
-   "id": "moniepoint-engineering-relations-partner",
-   "title": "Engineering Relations Partner",
-   "companyId": "moniepoint",
-   "location": "Remote, Kenya + 6 more",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": 48,
-   "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4874410101",
-   "board": "Greenhouse",
-   "scope": "kenya",
-   "tags": []
-  },
-  {
    "id": "moniepoint-financial-planning-analyst",
    "title": "Financial Planning Analyst",
    "companyId": "moniepoint",
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Data",
-   "postedDays": 64,
+   "postedDays": 65,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923321101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -205,7 +192,7 @@
    "location": "Nairobi, Kenya",
    "mode": "—",
    "category": "Executive",
-   "postedDays": 62,
+   "postedDays": 63,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/4923290101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -218,7 +205,7 @@
    "location": "Remote, Kenya",
    "mode": "—",
    "category": "Engineering",
-   "postedDays": 5,
+   "postedDays": 6,
    "applyUrl": "https://job-boards.eu.greenhouse.io/moniepoint/jobs/5013834101",
    "board": "Greenhouse",
    "scope": "kenya",
@@ -298,19 +285,6 @@
    "category": "Engineering",
    "postedDays": 77,
    "applyUrl": "https://apply.workable.com/j/EEE70403B1",
-   "board": "Workable",
-   "scope": "kenya",
-   "tags": []
-  },
-  {
-   "id": "fairmoney-head-of-collections-strategy-analytics",
-   "title": "Head of Collections - Strategy & Analytics",
-   "companyId": "fairmoney",
-   "location": "Nairobi, Kenya",
-   "mode": "—",
-   "category": "Data",
-   "postedDays": 51,
-   "applyUrl": "https://apply.workable.com/j/00007C69D0",
    "board": "Workable",
    "scope": "kenya",
    "tags": []
@@ -400,7 +374,7 @@
    "location": "Kenya",
    "mode": "Remote",
    "category": "Growth",
-   "postedDays": 15,
+   "postedDays": 16,
    "applyUrl": "https://jobs.lever.co/distro/54302f66-cbb6-4fce-9893-63222ff79c77",
    "board": "Lever",
    "scope": "kenya",
@@ -415,7 +389,7 @@
    "location": "Kenya",
    "mode": "Remote",
    "category": "Growth",
-   "postedDays": 12,
+   "postedDays": 13,
    "applyUrl": "https://jobs.lever.co/distro/ff6848b8-b174-476d-a2a4-2fa5894fe506",
    "board": "Lever",
    "scope": "kenya",
@@ -430,7 +404,7 @@
    "location": "Multiple Locations",
    "mode": "Remote",
    "category": "Executive",
-   "postedDays": 1,
+   "postedDays": 2,
    "applyUrl": "https://jobs.lever.co/distro/b5f9af54-203e-4cfd-b04a-e85eec620525",
    "board": "Lever",
    "scope": "kenya",
@@ -445,7 +419,7 @@
    "location": "Multiple Locations",
    "mode": "Remote",
    "category": "Engineering",
-   "postedDays": 9,
+   "postedDays": 10,
    "applyUrl": "https://jobs.lever.co/distro/e42b8b2c-50e0-492f-abb1-f18b8a3c0576",
    "board": "Lever",
    "scope": "kenya",
@@ -454,18 +428,123 @@
    ]
   },
   {
-   "id": "microsoft-senior-research-scientist",
-   "title": "Senior Research Scientist",
+   "id": "microsoft-cloud-solution-architect-security",
+   "title": "Cloud Solution Architect - Security",
    "companyId": "microsoft",
-   "location": "Kenya, Nairobi City, Nairobi",
+   "location": "Egypt, Multiple Locations, Multiple Locations + 5 more",
    "mode": "—",
-   "category": "Data",
-   "postedDays": 6,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557072759",
+   "category": "Engineering",
+   "postedDays": 10,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557056225",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Research Sciences"
+    "Cloud Solution Architecture"
+   ]
+  },
+  {
+   "id": "microsoft-cloud-ai-solution-area-specialist-arabic-speakin",
+   "title": "Cloud & AI Solution Area Specialist - Arabic Speaking",
+   "companyId": "microsoft",
+   "location": "Ireland, Multiple Locations, Multiple Locations; Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 1,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557074271",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Digital Solution Area Specialists"
+   ]
+  },
+  {
+   "id": "microsoft-customer-success-account-mgmt-french-speaker",
+   "title": "Customer Success Account Mgmt - French Speaker",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Growth",
+   "postedDays": 1,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052679",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Customer Success Account Mgmt"
+   ]
+  },
+  {
+   "id": "microsoft-software-engineer-internship-opportunities-ignit",
+   "title": "Software Engineer: Internship Opportunities - Ignite Program for People with Disabilities",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 13,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073162",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Software Engineering"
+   ]
+  },
+  {
+   "id": "microsoft-technical-support-engineer-intern-for-people-wit",
+   "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Engineering",
+   "postedDays": 13,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073164",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Business Program Management"
+   ]
+  },
+  {
+   "id": "microsoft-snr-data-applied-scientist-shopping-",
+   "title": "Snr Data & Applied Scientist (Shopping)",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Data",
+   "postedDays": 7,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-senior-applied-science-lead",
+   "title": "Senior Applied Science Lead",
+   "companyId": "microsoft",
+   "location": "Egypt, Cairo, Cairo",
+   "mode": "—",
+   "category": "Other",
+   "postedDays": 7,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Applied Sciences"
+   ]
+  },
+  {
+   "id": "microsoft-government-affairs-director-west-africa",
+   "title": "Government Affairs Director, West Africa",
+   "companyId": "microsoft",
+   "location": "Nigeria, Federal Capital Territory, Abuja",
+   "mode": "—",
+   "category": "Executive",
+   "postedDays": 37,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
+   "board": "Microsoft Careers",
+   "scope": "africa",
+   "tags": [
+    "Government Affairs"
    ]
   },
   {
@@ -475,7 +554,7 @@
    "location": "South Africa, Multiple Locations, Multiple Locations",
    "mode": "—",
    "category": "Other",
-   "postedDays": 2,
+   "postedDays": 3,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073401",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -490,7 +569,7 @@
    "location": "South Africa, Gauteng, Johannesburg",
    "mode": "—",
    "category": "Other",
-   "postedDays": 37,
+   "postedDays": 38,
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393556972272",
    "board": "Microsoft Careers",
    "scope": "africa",
@@ -499,33 +578,18 @@
    ]
   },
   {
-   "id": "microsoft-snr-data-applied-scientist-shopping-",
-   "title": "Snr Data & Applied Scientist (Shopping)",
+   "id": "microsoft-senior-research-scientist",
+   "title": "Senior Research Scientist",
    "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
+   "location": "Kenya, Nairobi City, Nairobi",
    "mode": "—",
    "category": "Data",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557008581",
+   "postedDays": 7,
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557072759",
    "board": "Microsoft Careers",
    "scope": "africa",
    "tags": [
-    "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-technical-support-engineer-intern-for-people-wit",
-   "title": "Technical Support Engineer Intern for People with Disabilities (Ignite Program)",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073164",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Business Program Management"
+    "Research Sciences"
    ]
   },
   {
@@ -541,36 +605,6 @@
    "scope": "africa",
    "tags": [
     "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-senior-applied-science-lead",
-   "title": "Senior Applied Science Lead",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Other",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557038540",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Applied Sciences"
-   ]
-  },
-  {
-   "id": "microsoft-government-affairs-director-west-africa",
-   "title": "Government Affairs Director, West Africa",
-   "companyId": "microsoft",
-   "location": "Nigeria, Federal Capital Territory, Abuja",
-   "mode": "—",
-   "category": "Executive",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557025854",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Government Affairs"
    ]
   },
   {
@@ -754,21 +788,6 @@
    ]
   },
   {
-   "id": "microsoft-software-engineer-internship-opportunities-ignit",
-   "title": "Software Engineer: Internship Opportunities - Ignite Program for People with Disabilities",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557073162",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Software Engineering"
-   ]
-  },
-  {
    "id": "microsoft-partner-success-manager",
    "title": "Partner Success Manager",
    "companyId": "microsoft",
@@ -781,36 +800,6 @@
    "scope": "africa",
    "tags": [
     "Onboarding Mgmt"
-   ]
-  },
-  {
-   "id": "microsoft-cloud-solution-architect-security",
-   "title": "Cloud Solution Architect - Security",
-   "companyId": "microsoft",
-   "location": "Egypt, Multiple Locations, Multiple Locations + 5 more",
-   "mode": "—",
-   "category": "Engineering",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557056225",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Cloud Solution Architecture"
-   ]
-  },
-  {
-   "id": "microsoft-customer-success-account-mgmt-french-speaker",
-   "title": "Customer Success Account Mgmt - French Speaker",
-   "companyId": "microsoft",
-   "location": "Egypt, Cairo, Cairo",
-   "mode": "—",
-   "category": "Growth",
-   "postedDays": null,
-   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557052679",
-   "board": "Microsoft Careers",
-   "scope": "africa",
-   "tags": [
-    "Customer Success Account Mgmt"
    ]
   }
  ]

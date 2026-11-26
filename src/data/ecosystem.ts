@@ -305,14 +305,14 @@ export const REPORTS: Report[] = [
 
 /** Real consumer-interest snapshot (Google Trends KE RSS, Oct 15 2026). */
 export const TRENDS: { keyword: string; volume: string }[] = [
-  { keyword: 'shilling', volume: '100+' },
-  { keyword: 'moses wetang’ula', volume: '200+' },
-  { keyword: 'marcus rashford', volume: '200+' },
-  { keyword: 'mike sonko', volume: '500+' },
-  { keyword: 'import', volume: '2000+' },
-  { keyword: 'kenya revenue authority internships', volume: '100+' },
-  { keyword: 'national police service', volume: '200+' },
-  { keyword: 'pete edochie', volume: '2000+' },
-  { keyword: 'kenya airways', volume: '5000+' },
-  { keyword: 'miss universe 2026', volume: '100+' },
+  { keyword: 'india a vs sri lanka a', volume: '100+' },
+  { keyword: 'muhoozi kainerugaba', volume: '1000+' },
+  { keyword: 'arsenal news', volume: '500+' },
+  { keyword: 'somalia', volume: '200+' },
+  { keyword: 'actor pete edochie', volume: '100+' },
+  { keyword: 'trail blazers vs spurs', volume: '200+' },
+  { keyword: 'association of african air forces', volume: '2000+' },
+  { keyword: 'warriors vs kings', volume: '500+' },
+  { keyword: 'pastor emmanuel ushindi', volume: '1000+' },
+  { keyword: 'kenya power', volume: '2000+' },
 ];
