@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-11-27",
+ "fetchedAt": "2026-11-28",
  "note": "Microsoft roles in African countries, pulled from apply.careers.microsoft.com/api/pcsx/search (its location filter works per country). Committed so the board keeps working when Microsoft rate-limits us.",
  "jobs": [
   {
@@ -176,6 +176,13 @@
    "location": "Ireland, Multiple Locations, Multiple Locations; Egypt, Cairo, Cairo",
    "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557074271",
    "department": "Digital Solution Area Specialists"
+  },
+  {
+   "id": "microsoft-senior-cloud-solution-architect-cloud-ai-infra-",
+   "title": "Senior Cloud Solution Architect (Cloud & AI Infra)",
+   "location": "Egypt, Cairo, Cairo",
+   "applyUrl": "https://apply.careers.microsoft.com/careers/job/1970393557095749",
+   "department": "Cloud Solution Architecture"
   }
  ]
 }
